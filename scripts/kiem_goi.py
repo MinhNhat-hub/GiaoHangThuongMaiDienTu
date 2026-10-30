@@ -11,8 +11,7 @@ Kiểm:
   - Gói 3–6: có ít nhất một hạng mục (Issue) gắn milestone của gói. Issues đọc qua GitHub API
     (GITHUB_TOKEN, GITHUB_REPOSITORY; trong Actions có sẵn). Chạy ở máy không có token thì mục này
     chỉ là cảnh báo. Thử với tệp: --issues <tệp JSON> (mảng Issue theo dạng GitHub API);
-  - Gói 4, 5, 6: phiếu thay đổi đợt 1, 2, 3 `phieu-thay-doi/dot<k>_N<xx>_TD-xx.md`, log phiên
-    `log-tac-tu/phieu-dot<k>.md` và một ADR trong `adr/` nhắc mã phiếu đó (TD-xx);
+  - Gói 4, 5, 6: phiếu thay đổi đợt 1, 2, 3 `phieu-thay-doi/dot<k>_N<xx>_TD-xx.md`;
   - review-cheo: đủ bốn phần, mỗi phát hiện trỏ tới tệp, dòng hoặc PR và ghi mã người phát hiện;
   - cảnh báo (không đánh trượt): email hoặc dãy 8 chữ số giống MSSV trong tệp .md; hạng mục chưa
     gắn milestone.
@@ -236,7 +235,7 @@ def ds_tep(kho: str, thu_muc: str) -> list[str]:
 
 
 def kiem_phieu(kho: str, goi: str, ma_nhom: str | None) -> list[tuple[str, str, bool | None, str]]:
-    """Gói 4, 5, 6: phiếu thay đổi của đợt 1, 2, 3, log phiên và ADR nhắc mã phiếu."""
+    """Gói 4, 5, 6: phiếu thay đổi của đợt 1, 2, 3."""
     if goi not in DOT_PHIEU:
         return []
     k = DOT_PHIEU[goi]
@@ -248,20 +247,6 @@ def kiem_phieu(kho: str, goi: str, ma_nhom: str | None) -> list[tuple[str, str, 
          ", ".join(f"`phieu-thay-doi/{t}`" for t, _ in phieu) if phieu else
          f"Không có `phieu-thay-doi/dot{k}_{ma_nhom or 'Nxx'}_TD-xx.md`. Chạy agent mô phỏng thay đổi "
          f"(`.se100/01_mo_phong_thay_doi.md`) với mã đợt {k} rồi đưa phiếu vào kho qua PR tài liệu.")]
-    log = [t for t in ds_tep(kho, "log-tac-tu") if re.match(rf"^phieu-dot{k}([_.-].*)?\.md$", t)]
-    kq.append(("Phiếu thay đổi", f"Log phiên tạo phiếu đợt {k}", bool(log),
-               ", ".join(f"`log-tac-tu/{t}`" for t in log) or f"Không có `log-tac-tu/phieu-dot{k}.md`."))
-    if not phieu:
-        kq.append(("Phiếu thay đổi", f"ADR xử lý phiếu đợt {k}", False, "Chưa có phiếu nên chưa tìm được ADR."))
-        return kq
-    adr = [t for t in ds_tep(kho, "adr") if t.lower().endswith(".md") and not t.startswith("0000")]
-    noi_dung = {t: t + "\n" + bo_chu_thich(doc(kho, f"adr/{t}") or "") for t in adr}
-    for _, ma in phieu:
-        co = [t for t, nd in noi_dung.items() if re.search(rf"(?<![A-Za-z0-9]){ma}(?!\d)", nd)]
-        kq.append(("Phiếu thay đổi", f"ADR xử lý {ma}", bool(co),
-                   ", ".join(f"`adr/{t}`" for t in co) if co else
-                   f"Không có ADR nào trong `adr/` nhắc `{ma}`. Viết `adr/NNNN-xu-ly-{ma}.md` theo khuôn "
-                   "`adr/0000-mau-xu-ly-phieu.md`."))
     return kq
 
 

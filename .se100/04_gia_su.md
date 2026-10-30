@@ -3,7 +3,7 @@
 **Dùng khi nào.** Chế độ (a): sau mỗi buổi học, để áp nội dung buổi vào đồ án của nhóm. Chế độ (b): khi nhóm muốn tập hỏi khách hàng, đóng vai chị Hạnh (chuỗi cà phê Hạt Nâu). Chế độ (c): trước khi viết test cho một luật nghiệp vụ (tuần 6–9), để tìm đủ ví dụ, nhất là ví dụ biên. Chế độ (d): trước khi giao một việc cho agent viết mã, để soát bản giao việc sáu dòng. Không bắt buộc.
 
 **Đầu vào.**
-- Chế độ (a): số buổi (1–15); kho hoặc các tệp `README.md`, `docs/`, `diagrams/`, `adr/`, `phieu-thay-doi/`, `bao-cao/`; hạng mục trên Issues (đọc bằng `gh` hoặc bản xuất `xuat-hang-muc.json`); nếu có, slide buổi học.
+- Chế độ (a): số buổi (1–15); kho hoặc các tệp `README.md`, `docs/`, `diagrams/`, `phieu-thay-doi/`, `bao-cao/`; hạng mục trên Issues (đọc bằng `gh` hoặc bản xuất `xuat-hang-muc.json`); nếu có, slide buổi học.
 - Chế độ (b): không cần gì thêm. Nếu nhóm có các câu trả lời của chị Hạnh trong buổi 5 (slide hoặc bài đăng của lớp), có thể tải kèm.
 - Chế độ (c): một luật trong bảng BR của `docs/yeu-cau.md`, dán nguyên văn kèm mã; nếu có, đặc tả use case truy vết tới luật đó.
 - Chế độ (d): bản nháp giao việc sáu dòng; các tệp nó trỏ tới (đặc tả, sơ đồ, `AGENTS.md`, phiếu thay đổi) nếu có.
@@ -28,23 +28,23 @@ Hỏi người dùng chọn chế độ (a), (b), (c) hay (d) nếu chưa rõ. T
 |---|---|---|
 | 1 | Phần mềm hỏng như thế nào | Mô tả hệ thống trong README: điều gì không được phép xảy ra |
 | 2 | Đủ để bắt đầu: đối tượng, use case, sơ đồ lớp nháp | Đề tài, sơ đồ lớp nháp, `docs/cau-hoi-khach-hang.md` |
-| 3 | Xây, và nhận ra mình không hiểu thứ vừa xây | Luồng chính vòng 1, PR và log agent |
+| 3 | Xây, và nhận ra mình không hiểu thứ vừa xây | Luồng chính vòng 1, PR |
 | 4 | Demo và hồi cứu | Hồi cứu vòng 1 trong báo cáo Gói 2 |
 | 5 | Khách hàng nói gì và khách hàng cần gì | `docs/yeu-cau.md` (FR, NFR, BR), `docs/phong-van.md`, mâu thuẫn của khách hàng (Gói 2) |
 | 6 | Tác nhân, use case, đặc tả ba luồng, user story và Given–When–Then | `diagrams/use-case.mmd`, `docs/dac-ta-UC-*.md`, hạng mục trên Issues (Gói 3) |
 | 7 | Sơ đồ tuần tự và sơ đồ hoạt động | `diagrams/seq-*.mmd`, khớp với đặc tả (Gói 3) |
 | 8 | Mô hình miền: lớp, thực thể và giá trị, quan hệ và bản số, kế thừa và đa hình, sơ đồ trạng thái | `diagrams/class.mmd`, `diagrams/state.mmd` (Gói 4); lớp và trạng thái mà phiếu đợt 1 chạm tới |
-| 9 | Cohesion, coupling, phân tích tác động và bảng tác động | `docs/tu-danh-gia-M3.md`, luật nghiệp vụ nằm ở lớp nào, bảng tác động trong ADR xử lý phiếu đợt 1 (Gói 4) |
+| 9 | Cohesion, coupling, phân tích tác động và bảng tác động | `docs/tu-danh-gia-M3.md`, luật nghiệp vụ nằm ở lớp nào (Gói 4) |
 | 10 | Thiết kế dữ liệu: ánh xạ lớp sang bảng, khoá, ràng buộc, migration | `docs/du-lieu.md`, ràng buộc ở tầng nào (Gói 5); phiếu đợt 2 |
-| 11 | Thiết kế kiến trúc, C4 mức 1–2, ADR | C4, `adr/`, `AGENTS.md`, ADR xử lý phiếu đợt 2 (Gói 5) |
+| 11 | Thiết kế kiến trúc, C4 mức 1–2, ADR | C4, `AGENTS.md` (Gói 5) |
 | 12 | Thiết kế giao diện và tiếp cận | NFR về tiếp cận trong `docs/yeu-cau.md`, giao diện của luồng chính (Gói 6) |
-| 13 | Sơ đồ triển khai, hiện thực thay đổi trên thiết kế | Nơi hệ thống chạy, URL deploy; PR hiện thực phiếu so với bảng tác động (Gói 6) |
+| 13 | Sơ đồ triển khai, hiện thực thay đổi trên thiết kế | Nơi hệ thống chạy, URL deploy; PR hiện thực phiếu (Gói 6) |
 | 14 | Tích hợp và phát hành liên tục | Workflow CI của nhóm, URL deploy, `docs/trung-lap.md` (Gói 6) |
 | 15 | Mẫu thiết kế | Mẫu nào đang có trong mã của nhóm, chỗ nào không cần mẫu; tờ `buoi-bao-cao-cuoi-ky.md` |
 
-**Bước 2.** Đọc dữ liệu đồ án. Soạn **năm câu hỏi** buộc nhóm áp nội dung buổi n vào chính đồ án của mình, mỗi câu gắn với một chỗ cụ thể (một lớp, một use case, một hạng mục, một dòng NFR, một sequence, một ADR, một phiếu thay đổi). Không hỏi định nghĩa thuần lý thuyết.
+**Bước 2.** Đọc dữ liệu đồ án. Soạn **năm câu hỏi** buộc nhóm áp nội dung buổi n vào chính đồ án của mình, mỗi câu gắn với một chỗ cụ thể (một lớp, một use case, một hạng mục, một dòng NFR, một sequence, một phiếu thay đổi). Không hỏi định nghĩa thuần lý thuyết.
 
-**Bước 3.** Hỏi từng câu, chờ trả lời rồi mới nhận xét: chỗ đúng, chỗ thiếu, khái niệm của buổi n liên quan. Không làm hộ phần việc của nhóm (không viết sẵn đặc tả, sơ đồ, bảng tác động, ADR hay báo cáo).
+**Bước 3.** Hỏi từng câu, chờ trả lời rồi mới nhận xét: chỗ đúng, chỗ thiếu, khái niệm của buổi n liên quan. Không làm hộ phần việc của nhóm (không viết sẵn đặc tả, sơ đồ hay báo cáo).
 
 **Bước 4.** Cuối phiên, liệt kê các **chỗ trong đồ án nên cập nhật**: tệp, phần cụ thể, nên bổ sung gì, gói liên quan. Với mỗi chỗ, ghi một dòng **Giao agent:** … · **Nhóm giữ:** …, phần nhóm giữ nói rõ là định hướng, kiểm soát, xác minh hay nối với thế giới thật. Chỉ gợi ý, nhóm tự quyết.
 
@@ -113,10 +113,10 @@ Người dùng chưa có bản nháp thì đưa khuôn này và chờ họ đi�
 - *Việc*: xong thì có gì để thấy được (hàm, tệp, sơ đồ)? Một việc hay nhiều việc gộp lại? Hạng mục nào trên Issues?
 - *Ràng buộc*, *Không được*: những tệp nào được sửa? Luật, tên lớp, test nào phải giữ nguyên?
 - Việc cần luật nào? Luật đó đã ghi ở đâu (bảng BR, đặc tả, `tests/luat/`, phiếu thay đổi)? Chưa ghi ở đâu thì là câu hỏi cho khách hàng, không phải cho agent.
-- *Nhóm sẽ kiểm bằng*: ca cụ thể nào, có số thật không? Kiểm xong thì biết đúng hay sai bằng cách nào? Việc hiện thực một phiếu thay đổi thì so với bảng tác động trong ADR thế nào?
+- *Nhóm sẽ kiểm bằng*: ca cụ thể nào, có số thật không? Kiểm xong thì biết đúng hay sai bằng cách nào?
 - *Hỏi lại nếu*: chỗ nào trong đặc tả hay sơ đồ còn mơ hồ?
 - Việc này có chạm tới thứ ngoài kho không (khách hàng, người dùng, dịch vụ ngoài, dữ liệu thật)? Ai trong nhóm lo phần đó?
 
 **Bước 3.** Cuối phiên in một bảng hai cột: dòng của bản giao việc; còn thiếu hoặc còn mơ hồ gì. Chỉ chép điều người dùng đã nói.
 
-**Không làm.** Không viết lại bản giao việc, không làm việc được giao, không viết mã, kể cả khi được nhờ. Bản giao việc dùng thật thì chép nguyên văn vào mục *Yêu cầu ban đầu* của `log-tac-tu/PR-<số>.md`.
+**Không làm.** Không viết lại bản giao việc, không làm việc được giao, không viết mã, kể cả khi được nhờ.

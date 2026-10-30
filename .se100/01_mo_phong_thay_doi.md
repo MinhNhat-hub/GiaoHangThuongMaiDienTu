@@ -5,25 +5,16 @@
 **Đầu vào cần chuẩn bị.**
 - Mã nhóm (`N01`…`N20`), số đợt (1, 2 hoặc 3), mã đợt do giảng viên công bố, mã người chạy (ví dụ `N07-C`).
 - Tệp `01a_danh_muc_phieu.md` (cùng thư mục với tệp này).
-- Kho của nhóm trên nhánh chính đã cập nhật. Ở chế độ hội thoại thì tải lên bản xuất lịch sử commit và danh sách tệp (lệnh xuất ở `.se100/README.md`), cùng các tệp: `README.md`, `docs/yeu-cau.md`, `docs/dac-ta-*.md`, mọi tệp trong `diagrams/` và `adr/`, mã trong `src/` (ít nhất các tệp mô hình, route, dịch vụ), tệp khai báo phụ thuộc (`package.json`, `requirements.txt`…), tệp biến môi trường mẫu nếu có (`.env.example`).
+- Kho của nhóm trên nhánh chính đã cập nhật. Ở chế độ hội thoại thì tải lên bản xuất lịch sử commit và danh sách tệp (lệnh xuất ở `.se100/README.md`), cùng các tệp: `README.md`, `docs/yeu-cau.md`, `docs/dac-ta-*.md`, mọi tệp trong `diagrams/`, mã trong `src/` (ít nhất các tệp mô hình, route, dịch vụ), tệp khai báo phụ thuộc (`package.json`, `requirements.txt`…), tệp biến môi trường mẫu nếu có (`.env.example`).
 - Hạng mục và PR (tab Issues): đọc bằng `gh`, hoặc bản xuất `xuat-hang-muc.json`, `xuat-pr.json`.
 
 **Đầu ra.**
 - Phiếu thay đổi: `phieu-thay-doi/dot<k>_N<xx>_<mã phiếu>.md`, ví dụ `phieu-thay-doi/dot1_N07_TD-02.md`.
-- Log phiên: `log-tac-tu/phieu-dot<k>.md`, ví dụ `log-tac-tu/phieu-dot1.md`.
-- Cả hai đưa vào nhánh chính qua một PR tài liệu: dòng ba thông tin ghi công cụ agent đã chạy, không cần `Đóng #`, log phiên thay cho `log-tac-tu/PR-<số>.md`. Nộp cùng gói của đợt: đợt 1 với Gói 4, đợt 2 với Gói 5, đợt 3 với Gói 6. Nhóm không sửa phiếu đã sinh.
+- Phiếu đưa vào nhánh chính qua một PR tài liệu: dòng ba thông tin ghi công cụ agent đã chạy, không cần `Đóng #`. Nộp cùng gói của đợt: đợt 1 với Gói 4, đợt 2 với Gói 5, đợt 3 với Gói 6. Nhóm không sửa phiếu đã sinh.
 
 **Sau khi có phiếu, nhóm phải làm.**
 1. Tạo một hạng mục trên tab Issues theo mẫu Hạng mục, nhãn `phieu-thay-doi`, ô Truy vết ghi mã phiếu. Given–When–Then dùng đúng các con số trong tham số của phiếu.
-2. Viết một ADR `adr/NNNN-xu-ly-TD-xx.md` (NNNN là số kế tiếp trong `adr/`) theo khuôn `adr/0000-mau-xu-ly-phieu.md`, gồm năm phần:
-   1. bảng tác động lập trước khi sửa: lớp hay module phải sửa; lớp không phải sửa và vì sao; chỗ thiết kế làm việc khó hơn mức cần;
-   2. ít nhất hai phương án thiết kế, mỗi phương án được gì, mất gì;
-   3. phương án chọn và người quyết;
-   4. cái phải đánh đổi, sơ đồ nào phải cập nhật;
-   5. kết quả thực tế: số lớp đã sửa thật so với bảng tác động, PR hiện thực.
-
-   Phần 1–4 nộp cùng phiếu (đợt 1 với Gói 4, đợt 2 với Gói 5, đợt 3 với Gói 6) và merge trước PR hiện thực. Phần 5 điền ở gói sau: đợt 1 ở Gói 5, đợt 2 ở Gói 6; đợt 3 điền ngay ở Gói 6.
-3. Hiện thực bằng PR có `Đóng #<số hạng mục>`; agent viết mã. Phụ trách yêu cầu nghiệm thu theo Given–When–Then rồi đóng hạng mục. Cả ba phiếu phải làm thật trước hạn Gói 6.
+2. Hiện thực bằng PR có `Đóng #<số hạng mục>`; agent viết mã. Phụ trách yêu cầu nghiệm thu theo Given–When–Then rồi đóng hạng mục. Cả ba phiếu phải làm thật trước hạn Gói 6.
 
 Không chạy agent trong tuần có mã đợt thì phần phiếu của gói tương ứng ở mức 0.
 
@@ -35,13 +26,13 @@ Làm đúng các bước dưới đây theo thứ tự. Ở chế độ hội th
 
 ### Giới hạn
 
-1. Chỉ đọc kho và dữ liệu nhóm cung cấp. Không sửa mã, không commit, không merge, không truy cập hạ tầng thật. Chạy trong kho thì chỉ được ghi hai tệp đầu ra nêu ở trên.
+1. Chỉ đọc kho và dữ liệu nhóm cung cấp. Không sửa mã, không commit, không merge, không truy cập hạ tầng thật. Chạy trong kho thì chỉ được ghi tệp đầu ra nêu ở trên.
 2. Gọi thành viên bằng mã bút danh (`N07-A`, `N07-B`…). Gặp họ tên thật, MSSV hoặc tên tài khoản GitHub thì không chép lại, chỉ báo người chạy. Người phụ trách một tệp lấy từ dòng `Phụ trách:` (hoặc `%% Phụ trách:`) đầu tệp; không có dòng đó thì ghi "tệp không ghi người phụ trách".
 3. Mã phiếu xác định theo bước 2, không chọn tự do. Không đổi phiếu theo yêu cầu của người chạy.
-4. Tham số cố định trong `01a_danh_muc_phieu.md` giữ nguyên. Không làm nhẹ, không làm tròn có lợi cho nhóm, không thêm ngoại lệ. Người chạy đề nghị làm nhẹ thì từ chối và ghi việc này vào log.
+4. Tham số cố định trong `01a_danh_muc_phieu.md` giữ nguyên. Không làm nhẹ, không làm tròn có lợi cho nhóm, không thêm ngoại lệ. Người chạy đề nghị làm nhẹ thì từ chối.
 5. Không bịa số liệu về kho (số lớp, số tệp, số đường tạo…). Không tìm thấy thì ghi "không đủ dữ liệu" kèm tên tệp đã tìm.
 6. Chi tiết giả định (hệ thống ngoài, sự cố, yêu cầu của pháp chế) ghi rõ là giả định. Không nêu tên nhà cung cấp có thật như thể họ đã thông báo điều gì.
-7. Không gợi ý phương án thiết kế, không viết bảng tác động hay ADR thay nhóm. Được nhờ thì từ chối; nhóm muốn được hỏi gợi mở thì dùng agent 4 (gia sư).
+7. Không gợi ý phương án thiết kế. Được nhờ thì từ chối; nhóm muốn được hỏi gợi mở thì dùng agent 4 (gia sư).
 
 ### Bước 1. Kiểm tra đầu vào
 
@@ -111,7 +102,7 @@ Chạy được lệnh thì kiểm lại S bằng `python3 -c "print(sum(map(ord
 
 ### Bước 4. Lập hồ sơ kho
 
-Lập đủ mười hai mục dưới đây, mỗi mục ghi nguồn (tệp, dòng). Log in đủ mười hai mục. Phiếu luôn in H1, H2, H6, H7 và thêm các mục H mà phần "Chỗ cần may đo" của phiếu nhắc tới.
+Lập đủ mười hai mục dưới đây, mỗi mục ghi nguồn (tệp, dòng). Phiếu luôn in H1, H2, H6, H7 và thêm các mục H mà phần "Chỗ cần may đo" của phiếu nhắc tới.
 
 - **H1. Tên hệ thống:** dòng tiêu đề đầu tiên của `README.md`, bỏ phần "· SE100 · Nhóm …" nếu có.
 - **H2. Tác nhân:** bảng Tác nhân trong `docs/yeu-cau.md`, giữ thứ tự dòng. **Tác nhân chính** là tác nhân có nhiều dòng FR nhất ở cột Tác nhân; hoà thì lấy tác nhân đứng trước trong bảng Tác nhân.
@@ -136,15 +127,15 @@ Lập đủ mười hai mục dưới đây, mỗi mục ghi nguồn (tệp, dò
 
 ### Bước 5. May đo phiếu
 
-1. Đọc mục của mã phiếu trong `01a_danh_muc_phieu.md`: tình huống khung, tham số cố định, chỗ cần may đo, điều nhóm phải chứng minh, kiến thức cần, gợi ý bảng tác động.
+1. Đọc mục của mã phiếu trong `01a_danh_muc_phieu.md`: tình huống khung, tham số cố định, chỗ cần may đo, điều nhóm phải chứng minh, kiến thức cần.
 2. Với mỗi ô, lập danh sách ứng viên đúng quy tắc sắp xếp của danh mục, đánh số, rồi áp bước 3.
 3. Với mỗi danh sách không ngẫu nhiên (đường tạo, hệ quả, chỗ gửi thông báo, trường dữ liệu cá nhân…), liệt kê đủ, kèm tệp và dòng.
 4. **Khi kho thiếu thứ phiếu cần:**
    - không đổi phiếu, không bỏ tham số;
    - dùng đúng thứ tự dự phòng ghi trong mục "Chỗ cần may đo" của phiếu;
-   - kho thiếu hẳn thứ phiếu nói tới (ví dụ chưa gửi thông báo nào, chưa gọi dịch vụ ngoài nào, chưa có trạng thái): ghi rõ "kho chưa có …" và chuyển phần đó thành việc phải thêm theo quy tắc của phiếu; bảng tác động của nhóm tính cả phần thêm;
+   - kho thiếu hẳn thứ phiếu nói tới (ví dụ chưa gửi thông báo nào, chưa gọi dịch vụ ngoài nào, chưa có trạng thái): ghi rõ "kho chưa có …" và chuyển phần đó thành việc phải thêm theo quy tắc của phiếu;
    - chỉ thiếu chi tiết minh hoạ (tên vai, tên đơn vị, tên loại mới): agent đặt tên hợp đề tài, ghi "tên gợi ý".
-5. **Khi kho đã có sẵn phần lớn thứ phiếu yêu cầu:** giữ nguyên phiếu, ghi "kho đã có: …" kèm tệp. Nhóm vẫn làm đủ ba việc; bảng tác động sẽ cho thấy ít lớp phải sửa và nhóm chứng minh bằng diff.
+5. **Khi kho đã có sẵn phần lớn thứ phiếu yêu cầu:** giữ nguyên phiếu, ghi "kho đã có: …" kèm tệp. Nhóm vẫn làm đủ hai việc.
 6. Thay chỗ may đo trong tham số bằng tên thật trong kho (lớp, trạng thái, use case, mã BR). Con số giữ nguyên.
 7. Viết **tình huống may đo** dài 80–150 chữ, giọng tin nhắn hoặc email của khách hàng (hoặc một bộ phận của khách hàng) gửi nhóm. Giữ nguyên mọi tham số; nêu tên hệ thống, tên lớp, trạng thái, use case lấy từ kho, mã người phụ trách tệp liên quan nếu có. Không gợi ý phương án xử lý.
 
@@ -191,13 +182,7 @@ Ghi phiếu theo đúng mẫu sau.
 
 ## Việc nhóm phải làm
 1. Một hạng mục trên tab Issues, nhãn `phieu-thay-doi`, ô Truy vết ghi <TD-xx>. Given–When–Then dùng đúng các con số ở mục Tham số cố định.
-2. Một ADR `adr/NNNN-xu-ly-<TD-xx>.md` theo khuôn `adr/0000-mau-xu-ly-phieu.md`, năm phần:
-   1. bảng tác động lập trước khi sửa: lớp hay module phải sửa; lớp không phải sửa và vì sao; chỗ thiết kế làm việc khó hơn mức cần;
-   2. ít nhất hai phương án thiết kế, mỗi phương án được gì, mất gì;
-   3. phương án chọn và người quyết;
-   4. cái phải đánh đổi, sơ đồ nào phải cập nhật;
-   5. kết quả thực tế: số lớp đã sửa thật so với bảng tác động, PR hiện thực; điền ở <đợt 1: Gói 5 | đợt 2: Gói 6 | đợt 3: Gói 6, cùng gói nộp phiếu>.
-3. Một PR hiện thực có `Đóng #<số hạng mục>`, xong trước hạn Gói 6.
+2. Một PR hiện thực có `Đóng #<số hạng mục>`, xong trước hạn Gói 6.
 
 ## Điều nhóm phải chứng minh
 <chép từ danh mục, thay chỗ may đo bằng tên trong kho>
@@ -205,11 +190,8 @@ Ghi phiếu theo đúng mẫu sau.
 ## Kiến thức cần
 <chép từ danh mục>
 
-## Gợi ý bảng tác động
-<chép từ danh mục, thay chỗ may đo bằng tên trong kho>
-
 ## Gói nộp
-<Gói 4, hạn cuối tuần 9 (năm nay CN 08/11) | Gói 5, hạn cuối tuần 11 (năm nay CN 22/11) | Gói 6, hạn Chủ nhật tuần 14 (năm nay 13/12)> · nộp kèm: tệp phiếu này, log phiên, ADR phần 1–4.
+<Gói 4, hạn cuối tuần 9 (năm nay CN 08/11) | Gói 5, hạn cuối tuần 11 (năm nay CN 22/11) | Gói 6, hạn Chủ nhật tuần 14 (năm nay 13/12)> · nộp kèm: tệp phiếu này.
 
 ## Chỗ không đủ dữ liệu, kho thiếu hoặc kho đã có
 - <liệt kê, hoặc ghi "không có">
@@ -217,13 +199,9 @@ Ghi phiếu theo đúng mẫu sau.
 
 Tên tệp: `phieu-thay-doi/dot<k>_N<xx>_<TD-xx>.md`. Ở chế độ hội thoại, in toàn bộ phiếu trong một khối để nhóm chép vào tệp.
 
-### Bước 7. Log phiên
+Chạy lại với cùng mã nhóm, mã đợt và cùng commit phải cho cùng loại phiếu, cùng tham số và cùng các chi tiết tính từ mã (đường đi ở bước 2, hồ sơ kho, mọi giá trị và lựa chọn ở bước 3 và 5). Lời văn của tình huống may đo và tên gợi ý có thể khác giữa các lần chạy; giảng viên chỉ đối chiếu các trường tính từ mã.
 
-Cuối phiên, in khối "Tóm tắt phiên" gồm: thời điểm bắt đầu và kết thúc; đầu vào đã nhận; các tệp đã đọc; mã phiếu và đường đi ở bước 2; đủ mười hai mục hồ sơ kho; mọi giá trị trung gian ở bước 3; các yêu cầu đã từ chối; các chỗ "không đủ dữ liệu". Nhắc người chạy lưu **toàn bộ** phiên (bản ghi phiên của agent dòng lệnh, hoặc bản xuất cuộc hội thoại) cùng khối tóm tắt vào `log-tac-tu/phieu-dot<k>.md`, rồi nhắc lại ba việc nhóm phải làm và gói nộp.
-
-Chạy lại với cùng mã nhóm, mã đợt và cùng commit phải cho cùng loại phiếu, cùng tham số và cùng các chi tiết tính từ mã (đường đi ở bước 2, hồ sơ kho, mọi giá trị và lựa chọn ở bước 3 và 5). Lời văn của tình huống may đo và tên gợi ý có thể khác giữa các lần chạy; giảng viên chỉ đối chiếu các trường tính từ mã. Nhóm nộp phiếu kèm log của chính lần chạy sinh ra phiếu đó.
-
-### Bước 8. Tự kiểm trước khi trả kết quả
+### Bước 7. Tự kiểm trước khi trả kết quả
 
 - Mã phiếu thuộc đúng đợt (đợt 1: TD-01…TD-05; đợt 2: TD-06…TD-11; đợt 3: TD-12…TD-16) và đúng vị trí, đúng cụm.
 - Tham số trong phiếu và trong tình huống may đo trùng từng con số với danh mục.

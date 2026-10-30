@@ -6,14 +6,11 @@ Kiểm:
   - mã người đúng dạng N<2 số>-<chữ>, thuộc nhóm của kho (khi biết mã nhóm);
   - người review khác người điều khiển;
   - PR thường (không phải PR tài liệu) có đúng một dòng `Đóng #<số hạng mục>`;
-  - PR dùng agent (Agent khác "không") thêm hoặc sửa log-tac-tu/PR-<số PR>.md trong chính PR;
-    PR tài liệu dùng agent được thay bằng log-tac-tu/phieu-dot<k>.md (PR đưa phiếu thay đổi vào kho);
   - PR không sửa THANH-VIEN.md (tệp do hệ thống đăng ký ghi);
   - cảnh báo, không chặn: PR sửa, đổi tên hoặc xoá tệp đã có trong tests/ mà dòng
     "Sửa hoặc xoá test đã có? Vì sao:" của mẫu PR để trống; PR sửa tệp của kiểm tra tự động.
-PR tài liệu: mọi tệp thay đổi thuộc bao-cao/, docs/, diagrams/, adr/, phieu-thay-doi/,
-log-tac-tu/phieu-dot<k>.md hoặc là tệp .md ở gốc kho (trừ THANH-VIEN.md), có thể kèm
-log-tac-tu/PR-<số>.md. PR tài liệu không cần `Đóng #`.
+PR tài liệu: mọi tệp thay đổi thuộc bao-cao/, docs/, diagrams/, phieu-thay-doi/
+hoặc là tệp .md ở gốc kho (trừ THANH-VIEN.md). PR tài liệu không cần `Đóng #`.
 
 Đọc PR từ GITHUB_EVENT_PATH. Danh sách tệp lấy qua GitHub API (GITHUB_TOKEN, GITHUB_REPOSITORY).
 Chạy thử: đặt SE100_DU_LIEU_THU = thư mục có pr_files.json (mảng {"filename", "status"},
@@ -40,8 +37,7 @@ KHONG_DUNG_AGENT = {"không", "khong", "none", "no", "-"}
 TEP_HE_THONG = "THANH-VIEN.md"
 # Năm chuyển tiếp: PR từ nhánh này đưa tệp kho mẫu vào kho cũ, chưa có hạng mục để đóng.
 NHANH_KHO_MAU = "kho-mau"
-THU_MUC_TAI_LIEU = ("bao-cao/", "docs/", "diagrams/", "adr/", "phieu-thay-doi/")
-LOG_PHIEU = re.compile(r"^log-tac-tu/phieu-dot\d+([_.-][^/]*)?\.md$")
+THU_MUC_TAI_LIEU = ("bao-cao/", "docs/", "diagrams/", "phieu-thay-doi/")
 # Test đã có: tệp trong thư mục này mà PR sửa, đổi tên hoặc xoá.
 THU_MUC_TEST = "tests/"
 TRANG_THAI_SUA = {"modified", "changed", "removed", "renamed"}
@@ -113,15 +109,13 @@ def hang_muc_dong(than: str) -> list[int]:
 def la_tep_tai_lieu(ten: str) -> bool:
     if ten == TEP_HE_THONG:
         return False
-    return (ten.startswith(THU_MUC_TAI_LIEU) or bool(LOG_PHIEU.match(ten))
-            or ("/" not in ten and ten.lower().endswith(".md")))
+    return ten.startswith(THU_MUC_TAI_LIEU) or ("/" not in ten and ten.lower().endswith(".md"))
 
 
-def la_pr_tai_lieu(tep: list[str] | None, so_pr: int) -> bool:
+def la_pr_tai_lieu(tep: list[str] | None) -> bool:
     if not tep:
         return False
-    con_lai = [t for t in tep if t != f"log-tac-tu/PR-{so_pr}.md"]
-    return bool(con_lai) and all(la_tep_tai_lieu(t) for t in con_lai)
+    return all(la_tep_tai_lieu(t) for t in tep)
 
 
 def goi_api(duong: str) -> list:
@@ -213,16 +207,15 @@ def kiem(than: str, so_pr: int, ds_tep: list[dict] | None, repo: str = "",
         kq.append(("Người review khác người điều khiển", khac,
                    "" if khac else "Review trùng Điều khiển; nhờ một thành viên khác review."))
 
-    # 2. loại PR, hạng mục đóng, log agent
+    # 2. loại PR, hạng mục đóng
     agent = la_pr_agent(pt)
-    ten_log = f"log-tac-tu/PR-{so_pr}.md"
-    tai_lieu = la_pr_tai_lieu(tep, so_pr)
+    tai_lieu = la_pr_tai_lieu(tep)
     if nhanh == NHANH_KHO_MAU:
         kq.append(("Loại PR", True, f"PR đưa kho mẫu vào kho cũ (nhánh `{NHANH_KHO_MAU}`, năm chuyển tiếp): "
                    "không cần `Đóng #`"))
     elif tai_lieu:
-        kq.append(("Loại PR", True, "PR tài liệu (chỉ sửa bao-cao/, docs/, diagrams/, adr/, phieu-thay-doi/, "
-                   "log-tac-tu/phieu-dot<k>.md hoặc .md ở gốc): không cần `Đóng #`"))
+        kq.append(("Loại PR", True, "PR tài liệu (chỉ sửa bao-cao/, docs/, diagrams/, phieu-thay-doi/ "
+                   "hoặc .md ở gốc): không cần `Đóng #`"))
     else:
         kq.append(("Loại PR", True, "PR dùng agent" if agent else "PR làm tay (`Agent: không`)"))
         dong = hang_muc_dong(than)
@@ -233,19 +226,6 @@ def kiem(than: str, so_pr: int, ds_tep: list[dict] | None, repo: str = "",
         else:
             kq.append(("Hạng mục đóng", False, "Mỗi PR ghi đúng một `Đóng #<số>`; đang có: "
                        + ", ".join(f"#{x}" for x in dong) + ". Tách PR, hoặc gộp hạng mục trên Issues."))
-
-    if agent:
-        if tep is None:
-            kq.append(("Log agent", False, f"Không lấy được danh sách tệp của PR để tìm `{ten_log}`."))
-        elif ten_log in tep:
-            kq.append(("Log agent", True, f"Có `{ten_log}`"))
-        elif tai_lieu and any(LOG_PHIEU.match(t) for t in tep):
-            kq.append(("Log agent", True, "Có " + ", ".join(f"`{t}`" for t in tep if LOG_PHIEU.match(t))))
-        elif tai_lieu:
-            kq.append(("Log agent", False, f"PR tài liệu có dùng agent nhưng chưa thêm `{ten_log}` "
-                       "hoặc `log-tac-tu/phieu-dot<k>.md` (khuôn ở `log-tac-tu/README.md`)."))
-        else:
-            kq.append(("Log agent", False, f"PR dùng agent nhưng chưa thêm `{ten_log}` (khuôn ở `log-tac-tu/README.md`)."))
 
     # 3. cảnh báo: PR sửa hoặc xoá test đã có mà không nói vì sao
     if ds_tep:
@@ -277,7 +257,7 @@ def in_ket_qua(so_pr: int, kq: list[tuple[str, bool | None, str]]) -> str:
           "| Kiểm tra | Kết quả | Ghi chú |", "|---|---|---|"]
     ra += [f"| {ten} | {nhan[ok]} | {gc.replace('|', '/')} |" for ten, ok, gc in kq]
     if not dat:
-        ra += ["", "Sửa mô tả PR (Edit ở phần mô tả) hoặc đẩy thêm commit chứa log; kiểm tra tự chạy lại."]
+        ra += ["", "Sửa mô tả PR (Edit ở phần mô tả) hoặc đẩy thêm commit; kiểm tra tự chạy lại."]
     return "\n".join(ra) + "\n"
 
 

@@ -14,7 +14,7 @@
 
 ## 3. Thẩm định
 
-<!-- điền: hai lần nhóm kiểm kết quả của agent trong gói. Mỗi lần ghi: kết quả nào (PR, log-tac-tu/PR-<số>.md); kiểm bằng gì (test, đối chiếu sơ đồ, đọc diff, chạy thử); kết luận đúng hay sai, đã sửa gì. Agent làm đúng mà nhóm chứng minh được là đúng vẫn đạt -->
+<!-- điền: hai lần nhóm kiểm kết quả của agent trong gói. Mỗi lần ghi: kết quả nào (PR); kiểm bằng gì (test, đối chiếu sơ đồ, đọc diff, chạy thử); kết luận đúng hay sai, đã sửa gì. Agent làm đúng mà nhóm chứng minh được là đúng vẫn đạt -->
 
 ## 4. Retro ba dòng
 

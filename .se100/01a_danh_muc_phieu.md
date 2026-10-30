@@ -33,13 +33,7 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 ## Việc nhóm làm với mọi phiếu
 
 1. Một hạng mục trên tab Issues, nhãn `phieu-thay-doi`, ô Truy vết ghi mã phiếu. Given–When–Then dùng đúng các con số trong tham số.
-2. Một ADR `adr/NNNN-xu-ly-TD-xx.md`, năm phần:
-   1. bảng tác động lập trước khi sửa: lớp hay module phải sửa; lớp không phải sửa và vì sao; chỗ thiết kế làm việc khó hơn mức cần;
-   2. ít nhất hai phương án thiết kế, mỗi phương án được gì, mất gì;
-   3. phương án chọn và người quyết;
-   4. cái phải đánh đổi, sơ đồ nào phải cập nhật;
-   5. kết quả thực tế, điền ở gói sau: số lớp đã sửa thật so với bảng tác động, PR hiện thực.
-3. Một PR hiện thực có `Đóng #<số hạng mục>`; agent viết mã.
+2. Một PR hiện thực có `Đóng #<số hạng mục>`; agent viết mã.
 
 ---
 
@@ -53,7 +47,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
   1. con số đầu tiên trong luật ô 1, với loại mới, giảm còn **một nửa** (làm tròn xuống theo đơn vị của con số đó, nhỏ nhất là 1);
   2. loại mới có thêm đúng **một** thông tin bắt buộc mà loại cũ không có;
   3. với loại mới, chuyển trạng thái ô 2 chỉ hợp lệ trong **24 giờ** kể từ lúc <ĐTTT> vào trạng thái nguồn của chuyển đó; quá 24 giờ thì bị từ chối.
-- Phần 5 của ADR ghi thêm số lớp phải sửa nếu thêm loại thứ ba cùng kiểu.
 
 **Chỗ cần may đo:**
 - Ô 1 · luật bị đổi số: các dòng BR rồi các dòng FR trong `docs/yeu-cau.md` có ít nhất một con số, theo thứ tự mã. Chọn một. Không có dòng nào: luật ô 1 là thời hạn hiệu lực, loại cũ không đổi, loại mới hết hiệu lực sau 7 ngày kể từ lúc tạo.
@@ -63,8 +56,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Điều nhóm phải chứng minh:** Thêm loại mới bằng cách mở rộng chứ không sửa rải rác: luật riêng của mỗi loại nằm ở một chỗ (lớp con, đối tượng chiến lược hay dữ liệu cấu hình; nhóm chọn và nói vì sao); đếm được số lớp phải sửa khi thêm loại thứ ba.
 
 **Kiến thức cần:** buổi 5 (luật nghiệp vụ), 8 (kế thừa và đa hình, sơ đồ trạng thái), 9 (bảng tác động).
-
-**Gợi ý bảng tác động:** tìm mọi chỗ dùng luật ô 1 và mọi chỗ thực hiện chuyển ô 2: lớp miền, controller, giao diện, truy vấn. Mỗi chỗ một dòng. `if` hay `switch` theo loại lặp lại ở nhiều lớp là chỗ thiết kế làm việc khó hơn.
 
 ## TD-02 · Giới hạn trên nhiều đối tượng · đợt 1 · vị trí 2
 
@@ -84,8 +75,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Điều nhóm phải chứng minh:** Luật trên một tập đối tượng nằm ở một lớp chịu trách nhiệm rõ, mọi đường tạo đều đi qua lớp đó, không nằm ở controller hay giao diện; phân biệt luật của một đối tượng với luật của nhiều đối tượng; đặc tả (luồng lỗi) và sequence cập nhật đúng chỗ kiểm.
 
 **Kiến thức cần:** buổi 5 (luật nghiệp vụ), 6 (luồng lỗi), 7 (sequence), 8 (trách nhiệm lớp), 9 (bảng tác động).
-
-**Gợi ý bảng tác động:** mỗi đường tạo một dòng; lớp nào hiện biết "người này đang có mấy <ĐTTT> mở"; quyền vượt giới hạn là use case mới hay luồng thay thế.
 
 ## TD-03 · Người làm thay · đợt 1 · vị trí 3
 
@@ -108,8 +97,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 
 **Kiến thức cần:** buổi 5 (yêu cầu), 6 (tác nhân, use case), 8 (lớp, quan hệ), 9 (bảng tác động).
 
-**Gợi ý bảng tác động:** mọi chỗ lấy "người dùng hiện tại" làm chủ của <ĐTTT>; mọi chỗ kiểm vai; ba use case trong phiếu đi qua những lớp nào.
-
 ## TD-04 · Một thành nhiều · đợt 1 · vị trí 4
 
 **Tình huống khung:** Hiện mỗi <ĐTTT> gắn với đúng một <lớp liên quan>. Khách hàng muốn từ nay một <ĐTTT> gồm nhiều <lớp liên quan>. Từng phần có thể bị từ chối riêng, các phần khác vẫn đi tiếp.
@@ -128,8 +115,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Điều nhóm phải chứng minh:** Đổi bản số là đổi mô hình chứ không chỉ thêm bảng: trạng thái nằm ở <ĐTTT> hay ở từng phần; composition giữa <ĐTTT> và phần; luật hoàn tất tính ở lớp nào; sơ đồ lớp, sơ đồ trạng thái và sequence cập nhật khớp nhau.
 
 **Kiến thức cần:** buổi 7 (`loop` trong sequence), 8 (quan hệ, bản số, composition, trạng thái), 9 (bảng tác động).
-
-**Gợi ý bảng tác động:** mọi chỗ đọc thẳng một <lớp liên quan> từ <ĐTTT>; chỗ tính tổng, hiển thị, kiểm luật của <lớp liên quan>; sơ đồ trạng thái thành hai mức.
 
 ## TD-05 · Bước chờ có hạn giờ · đợt 1 · vị trí 5
 
@@ -151,8 +136,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 
 **Kiến thức cần:** buổi 6 (luồng thay thế, luồng lỗi), 7 (sequence), 8 (sơ đồ trạng thái), 9 (bảng tác động).
 
-**Gợi ý bảng tác động:** mọi chỗ gán trạng thái trực tiếp; chỗ tính "còn bao nhiêu" của thứ đang giữ; ai phát sự kiện hết giờ.
-
 ## TD-06 · Nhiều đơn vị · đợt 2 · vị trí 1
 
 **Tình huống khung:** Khách hàng mở rộng: từ nay hệ thống phục vụ nhiều <đơn vị> độc lập. Mỗi <đơn vị> có danh mục, nhân sự và số liệu riêng; người của đơn vị này không được thấy dữ liệu của đơn vị kia. Một quản trị chung xem được số liệu tổng của mọi đơn vị nhưng không sửa dữ liệu nghiệp vụ.
@@ -171,11 +154,9 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 - Liệt kê lớp và bảng nghiệp vụ (`diagrams/class.mmd`, migration hoặc schema, model trong `src/`); đánh dấu lớp nào là dữ liệu dùng chung (ví dụ tài khoản <tác nhân chính>). Không ngẫu nhiên.
 - Tên <đơn vị>: gợi ý theo đề tài (chi nhánh, cơ sở, câu lạc bộ, lớp…).
 
-**Điều nhóm phải chứng minh:** Thêm một chiều dữ liệu: ánh xạ (khoá đơn vị, khoá ngoại, ràng buộc duy nhất trong một đơn vị); việc lọc theo đơn vị nằm ở tầng nào và vì sao; dữ liệu nào dùng chung, dữ liệu nào theo đơn vị; C4 container và ADR ghi rõ quyết định.
+**Điều nhóm phải chứng minh:** Thêm một chiều dữ liệu: ánh xạ (khoá đơn vị, khoá ngoại, ràng buộc duy nhất trong một đơn vị); việc lọc theo đơn vị nằm ở tầng nào và vì sao; dữ liệu nào dùng chung, dữ liệu nào theo đơn vị; C4 container ghi rõ quyết định.
 
 **Kiến thức cần:** buổi 8 (mô hình miền), 9 (bảng tác động), 10 (ánh xạ, khoá, ràng buộc ở tầng nào, migration), 11 (kiến trúc, ADR).
-
-**Gợi ý bảng tác động:** đếm truy vấn và đường API hiện có; lọc rải ở từng truy vấn thì mỗi chỗ một dòng; ràng buộc duy nhất nào phải đổi thành "duy nhất trong một đơn vị".
 
 ## TD-07 · Dữ liệu từ hệ thống ngoài · đợt 2 · vị trí 2
 
@@ -185,7 +166,7 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 - <lớp ô 1> do hệ thống ngoài làm chủ. Hệ thống của nhóm chỉ đọc; bỏ việc thêm, sửa, xoá <lớp ô 1> trong hệ thống của nhóm.
 - API ngoài (giả định) trả lời trong **0,2 đến 3 giây**; mỗi ngày ngừng **một** lần, mỗi lần **10 phút**, không báo trước; giới hạn **60** lệnh gọi mỗi phút.
 - Khi API ngừng: luồng chính vẫn chạy với dữ liệu cũ không quá **1 giờ**. Dữ liệu cũ hơn 1 giờ thì báo rõ cho người dùng, không im lặng dùng tiếp.
-- Nhóm tự dựng bản giả của API theo đúng các con số trên và mô tả bản giả trong ADR. Không gọi dịch vụ thật.
+- Nhóm tự dựng bản giả của API theo đúng các con số trên. Không gọi dịch vụ thật.
 
 **Chỗ cần may đo:**
 - Ô 1: các lớp trong `diagrams/class.mmd` (chưa có thì mô hình trong `src/`) mà <ĐTTT> tham chiếu và <tác nhân chính> không có use case thêm, sửa, xoá; theo thứ tự xuất hiện, bỏ <ĐTTT> và lớp của các tác nhân. Chọn một. Danh sách rỗng: xét mọi lớp <ĐTTT> tham chiếu, trừ lớp của tác nhân.
@@ -194,8 +175,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Điều nhóm phải chứng minh:** Coupling với hạ tầng: phần nghiệp vụ phụ thuộc một giao diện do nhóm định nghĩa chứ không phụ thuộc thẳng HTTP hay ORM; một bộ chuyển cho API thật, một cho bản giả; xử lý khi phụ thuộc ngoài không sẵn sàng; ánh xạ dữ liệu khi bảng cũ bị bỏ; C4 có thêm hệ thống ngoài.
 
 **Kiến thức cần:** buổi 9 (coupling), 10 (ánh xạ, migration), 11 (kiến trúc, C4, ADR).
-
-**Gợi ý bảng tác động:** mọi chỗ truy vấn thẳng bảng của <lớp ô 1>; khoá ngoại từ <ĐTTT> tới <lớp ô 1> còn giữ được không; chỗ nào cần dữ liệu mới nhất, chỗ nào dùng dữ liệu cũ được.
 
 ## TD-08 · Xoá dữ liệu cá nhân · đợt 2 · vị trí 3
 
@@ -218,8 +197,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 
 **Kiến thức cần:** buổi 5 (yêu cầu, luật), 8 (trạng thái của yêu cầu xoá), 10 (ánh xạ, khoá, ràng buộc), 11 (kiến trúc).
 
-**Gợi ý bảng tác động:** mọi bảng có khoá ngoại tới người dùng; truy vấn thống kê đang đếm theo người dùng hay theo bản ghi; log hay tệp xuất có chép dữ liệu cá nhân không.
-
 ## TD-09 · Lịch sử thay đổi · đợt 2 · vị trí 4
 
 **Tình huống khung:** Sau một lần tranh chấp với khách, chủ hệ thống không chứng minh được <ĐTTT> đã ở trạng thái nào, ai đã đổi, lúc nào. Khách hàng yêu cầu giữ lại mọi thay đổi của <ĐTTT> và xem lại được nó ở một thời điểm bất kỳ trong quá khứ.
@@ -233,11 +210,9 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Chỗ cần may đo:**
 - Ô 1: thuộc tính của <ĐTTT> trong `diagrams/class.mmd` (chưa có thì trong mô hình ở `src/`), theo thứ tự khai báo, bỏ mã định danh và trạng thái. Chọn ba thuộc tính liên tiếp. Ít hơn ba: lấy tất cả, ghi n và sửa tham số "ba" cho đúng số đó.
 
-**Điều nhóm phải chứng minh:** Thiết kế dữ liệu theo thời gian: ADR so ít nhất hai cách (bảng lịch sử, chuỗi sự kiện, phiên bản hoá bản ghi…); lớp nào chịu trách nhiệm ghi lịch sử để không đường sửa nào lọt; ràng buộc "không sửa được" nằm ở tầng nào.
+**Điều nhóm phải chứng minh:** Thiết kế dữ liệu theo thời gian: lớp nào chịu trách nhiệm ghi lịch sử để không đường sửa nào lọt; ràng buộc "không sửa được" nằm ở tầng nào.
 
 **Kiến thức cần:** buổi 8 (thực thể, trạng thái), 10 (ánh xạ, ràng buộc ở tầng nào), 11 (ADR).
-
-**Gợi ý bảng tác động:** mọi chỗ ghi vào <ĐTTT> (gán thuộc tính, `UPDATE`, lưu qua ORM); chỗ nào sửa thẳng cơ sở dữ liệu, không qua lớp miền; truy vấn "tại thời điểm" chạm những bảng nào.
 
 ## TD-10 · Tranh chấp suất cuối · đợt 2 · vị trí 5 (cụm 1 và 3)
 
@@ -246,16 +221,14 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Tham số cố định:**
 - **50** yêu cầu gần như cùng lúc giành **1** suất cuối: đúng **1** thành công, **49** bị từ chối với thông báo rõ; vượt giới hạn **0** lần.
 - Vẫn đúng khi ứng dụng chạy **2** tiến trình song song dùng chung cơ sở dữ liệu. Không dựa vào biến hay khoá trong bộ nhớ của một tiến trình.
-- Nhóm có một bài thử tái hiện được (script gửi 50 yêu cầu đồng thời), chạy trước và sau khi sửa; kết quả hai lần chạy ghi ở phần 5 của ADR.
+- Nhóm có một bài thử tái hiện được (script gửi 50 yêu cầu đồng thời), chạy trước và sau khi sửa.
 
 **Chỗ cần may đo:**
 - Ô 1 · luật giới hạn: các dòng BR nói về giới hạn số lượng (sức chứa, tồn kho, số suất, hạn mức, "tối đa", "không quá"), theo mã. Chọn một. Không có: dùng ràng buộc không trùng của <ĐTTT> (một <lớp liên quan> không gắn với hai <ĐTTT> trong cùng thời điểm). Vẫn không có: "mỗi <tác nhân chính> tối đa một <ĐTTT> mỗi ngày". Ghi rõ.
 
-**Điều nhóm phải chứng minh:** Ràng buộc nằm ở tầng nào: lớp miền kiểm luật, nhưng bảo đảm cuối cùng nằm ở chỗ chịu được đồng thời (ràng buộc cơ sở dữ liệu, khoá, giao dịch); lớp miền không bị kéo chi tiết cơ sở dữ liệu vào; ADR so các phương án.
+**Điều nhóm phải chứng minh:** Ràng buộc nằm ở tầng nào: lớp miền kiểm luật, nhưng bảo đảm cuối cùng nằm ở chỗ chịu được đồng thời (ràng buộc cơ sở dữ liệu, khoá, giao dịch); lớp miền không bị kéo chi tiết cơ sở dữ liệu vào.
 
 **Kiến thức cần:** buổi 7 (sequence có hai tác nhân song song), 8 (luật ở lớp nào), 10 (ràng buộc ở tầng nào), 11 (ADR).
-
-**Gợi ý bảng tác động:** đường đi từ lúc đọc "còn bao nhiêu" tới lúc ghi; khoảng hở giữa kiểm và ghi; ràng buộc nào chỉ có trong mã mà không có trong lược đồ.
 
 ## TD-11 · Nhập dữ liệu cũ · đợt 2 · vị trí 5 (cụm 2 và 4)
 
@@ -276,8 +249,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 
 **Kiến thức cần:** buổi 5 (luật nghiệp vụ), 8 (lớp miền), 10 (ánh xạ, ràng buộc, dữ liệu bẩn), 11 (kiến trúc).
 
-**Gợi ý bảng tác động:** luật ô 1, ô 2 đang được kiểm ở đâu (giao diện, controller, lớp miền, cơ sở dữ liệu); đường nhập mới đi qua những lớp nào.
-
 ## TD-12 · Tách phần thông báo · đợt 3 · vị trí 1
 
 **Tình huống khung (nguyên văn):** Toàn bộ phần thông báo (email, tin nhắn, thông báo đẩy, hoặc bất kỳ kênh nào hệ thống đang dùng để báo cho người dùng) phải tách thành một dịch vụ độc lập: có thể tắt, thay bằng nhà cung cấp khác, hoặc chạy trên máy khác, mà không sửa một dòng nào trong phần còn lại của hệ thống. Nếu dịch vụ thông báo chết, phần còn lại vẫn hoạt động bình thường.
@@ -291,13 +262,11 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Chỗ cần may đo:**
 - Liệt kê mọi chỗ trong `src/` gửi thông báo (hồ sơ H9), mỗi chỗ kèm sự kiện nghiệp vụ dẫn tới nó.
 - Ô 1: một sự kiện trong danh sách trên, theo thứ tự đường dẫn tệp rồi số dòng. Chọn một; tình huống nêu sự kiện này.
-- Kho chưa gửi thông báo nào: phiếu ghi rõ "kho chưa có phần thông báo". Khi đó ô 1 chọn **hai** chuyển liền nhau trong danh sách chuyển của <ĐTTT> ở hồ sơ H7 (bỏ chuyển từ `[*]` và vào `[*]`); nhóm thêm thông báo cho hai sự kiện đó, làm ngay dưới dạng dịch vụ riêng; bảng tác động tính cả phần thêm.
+- Kho chưa gửi thông báo nào: phiếu ghi rõ "kho chưa có phần thông báo". Khi đó ô 1 chọn **hai** chuyển liền nhau trong danh sách chuyển của <ĐTTT> ở hồ sơ H7 (bỏ chuyển từ `[*]` và vào `[*]`); nhóm thêm thông báo cho hai sự kiện đó, làm ngay dưới dạng dịch vụ riêng.
 
 **Điều nhóm phải chứng minh (nguyên văn):** Coupling với một mối quan tâm cắt ngang (cross-cutting concern); có dùng sự kiện, hàng đợi hay gọi trực tiếp; xử lý lỗi khi phụ thuộc ngoài không sẵn sàng.
 
 **Kiến thức cần:** buổi 7 (thông điệp bất đồng bộ), 9 (coupling), 11 (kiến trúc), 13 (sơ đồ triển khai), 14 (pipeline cho thành phần thứ hai).
-
-**Gợi ý bảng tác động:** mỗi lời gọi gửi thông báo nằm trong lớp nào (lớp miền, controller, dịch vụ); lớp nào biết tên nhà cung cấp; `sendEmail()` gọi thẳng từ logic nghiệp vụ thì mỗi chỗ một dòng.
 
 ## TD-13 · Hoàn tác sau khi đã hoàn tất · đợt 3 · vị trí 2
 
@@ -318,8 +287,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 
 **Kiến thức cần:** buổi 8 (sơ đồ trạng thái), 9 (bảng tác động), 10 (dữ liệu), 11 (kiến trúc), 13 (hiện thực thay đổi trên thiết kế).
 
-**Gợi ý bảng tác động:** mỗi hệ quả một dòng: lớp nào gây ra, lớp nào phải đảo; hệ quả nào đang làm trong controller thay vì gắn với chuyển trạng thái.
-
 ## TD-14 · Thêm môi trường thử · đợt 3 · vị trí 3
 
 **Tình huống khung:** Khách hàng không muốn thử tính năng mới trên bản đang có người dùng thật. Khách yêu cầu một môi trường thử chạy song song với môi trường thật: cùng mã, khác cấu hình, khác dữ liệu, không bao giờ gửi gì ra ngoài thật.
@@ -337,8 +304,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Điều nhóm phải chứng minh:** Cấu hình tách khỏi mã; phụ thuộc hạ tầng được đưa vào từ ngoài chứ không tạo thẳng trong lớp nghiệp vụ; sơ đồ triển khai có hai môi trường; pipeline có cổng trước môi trường thật; ba quy tắc agent vẫn giữ.
 
 **Kiến thức cần:** buổi 11 (kiến trúc), 13 (sơ đồ triển khai), 14 (CI/CD, phát hành).
-
-**Gợi ý bảng tác động:** mỗi giá trị viết cứng một dòng; lớp nào tự tạo kết nối cơ sở dữ liệu hay client của dịch vụ ngoài; workflow nào phải sửa.
 
 ## TD-15 · Bên thứ ba qua API · đợt 3 · vị trí 4
 
@@ -364,8 +329,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 
 **Kiến thức cần:** buổi 6 (tác nhân), 9 (bảng tác động), 10 (dữ liệu), 11 (ranh giới kiến trúc), 12 (API là một giao diện), 13 (triển khai), 14 (pipeline).
 
-**Gợi ý bảng tác động:** mọi chỗ kiểm vai; logic nghiệp vụ nào nằm trong controller của giao diện web (phải chép lại cho API); lớp nào biết "người gọi là ai".
-
 ## TD-16 · Thêm tiếng Anh · đợt 3 · vị trí 5
 
 **Tình huống khung:** Khách hàng sắp phục vụ cả người nước ngoài. Toàn bộ giao diện phải có thêm tiếng Anh; người dùng tự chọn và hệ thống nhớ lựa chọn. Thông báo lỗi khi vi phạm luật nghiệp vụ cũng phải đúng ngôn ngữ đã chọn; tiền và ngày giờ hiển thị theo cách quen của ngôn ngữ đó.
@@ -376,7 +339,6 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 - Lựa chọn ngôn ngữ được nhớ cho lần đăng nhập sau. Đổi ngôn ngữ giữa chừng không mất dữ liệu đang nhập.
 - Ngày và tiền hiển thị theo ngôn ngữ (tiếng Việt: 31/12/2026, 1.250.000 ₫; tiếng Anh: 12/31/2026 hoặc Dec 31, 2026, VND 1,250,000). Giá trị lưu trong cơ sở dữ liệu không đổi.
 - Thuộc tính `lang` của trang đổi theo ngôn ngữ đang hiển thị (WCAG 2.2, tiêu chí 3.1.1).
-- Phần 5 của ADR ghi số tệp phải sửa nếu thêm ngôn ngữ thứ ba.
 
 **Chỗ cần may đo:**
 - Liệt kê màn hình của luồng chính (theo đặc tả use case chính và route trong `src/`) và mọi chỗ sinh thông báo lỗi của luật BR, kèm tệp và dòng.
@@ -385,5 +347,3 @@ Bảng đủ 20 nhóm ở bước 2 của `01_mo_phong_thay_doi.md`.
 **Điều nhóm phải chứng minh:** Lớp miền không giữ câu chữ hiển thị (báo lỗi bằng mã hoặc kiểu lỗi, tầng giao diện chuyển thành câu); định dạng là việc của tầng trình bày; thành phần giao diện dùng chung; đếm được số tệp phải sửa khi thêm ngôn ngữ thứ ba.
 
 **Kiến thức cần:** buổi 8 (lớp miền), 11 (phân tầng), 12 (giao diện và tiếp cận), 14 (kiểm trong pipeline).
-
-**Gợi ý bảng tác động:** mỗi chỗ câu tiếng Việt nằm trong lớp miền hay controller một dòng; chỗ định dạng tiền, ngày; thành phần giao diện nào lặp lại ở nhiều màn hình.
