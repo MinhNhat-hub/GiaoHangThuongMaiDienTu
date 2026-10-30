@@ -161,10 +161,9 @@ def _():
     assert "| Cảnh báo |" in (dong(bang, "Sửa test đã có") or ""), bang
 
 
-@ca("PR agent có log, sửa test có lý do: đạt")
+@ca("PR agent sửa test có lý do: đạt")
 def _():
-    tep = SUA_TEST + [{"filename": "log-tac-tu/PR-12.md", "status": "added"}]
-    ma, bang = chay(than_pr(DONG_DAU_AGENT, "đổi tên lớp Don thành DonHang"), tep)
+    ma, bang = chay(than_pr(DONG_DAU_AGENT, "đổi tên lớp Don thành DonHang"), SUA_TEST)
     assert ma == 0 and "| Đạt |" in (dong(bang, "Sửa test đã có") or ""), bang
 
 
@@ -226,43 +225,26 @@ def _():
     assert ma == 1 and "| Hạng mục đóng | Chưa đạt |" in bang, bang
 
 
-@ca("PR tài liệu (bao-cao/, docs/, diagrams/, adr/, .md ở gốc) không có Đóng #: đạt")
+@ca("PR tài liệu (bao-cao/, docs/, diagrams/, .md ở gốc) không có Đóng #: đạt")
 def _():
     tep = [{"filename": f, "status": "modified"} for f in (
-        "bao-cao/goi4-mo-hinh.md", "docs/dac-ta-UC-03.md", "diagrams/class.mmd", "adr/0002-xu-ly-TD-04.md",
+        "bao-cao/goi4-mo-hinh.md", "docs/dac-ta-UC-03.md", "diagrams/class.mmd",
         "README.md", "AGENTS.md")]
     ma, bang = chay(than_pr(DONG_DAU_TAY, dong=None), tep)
     assert ma == 0 and "PR tài liệu" in (dong(bang, "Loại PR") or "") and dong(bang, "Hạng mục đóng") is None, bang
 
 
-@ca("PR đưa phiếu thay đổi vào kho, dùng agent, kèm log phiên phieu-dot1.md: đạt")
+@ca("PR đưa phiếu thay đổi vào kho, dùng agent: đạt, không đòi log")
 def _():
-    tep = [{"filename": "phieu-thay-doi/dot1_N07_TD-04.md", "status": "added"},
-           {"filename": "log-tac-tu/phieu-dot1.md", "status": "added"}]
+    tep = [{"filename": "phieu-thay-doi/dot1_N07_TD-04.md", "status": "added"}]
     ma, bang = chay(than_pr(DONG_DAU_AGENT, dong=None), tep)
-    assert ma == 0 and "| Log agent | Đạt |" in bang and "phieu-dot1.md" in bang, bang
+    assert ma == 0 and "PR tài liệu" in bang and dong(bang, "Log agent") is None, bang
 
 
-@ca("PR tài liệu dùng agent, không có log nào: chưa đạt")
+@ca("PR sửa mã dùng agent, có Đóng #: đạt, không đòi log")
 def _():
-    tep = [{"filename": "phieu-thay-doi/dot2_N07_TD-09.md", "status": "added"}]
-    ma, bang = chay(than_pr(DONG_DAU_AGENT, dong=None), tep)
-    assert ma == 1 and "| Log agent | Chưa đạt |" in bang, bang
-
-
-@ca("PR tài liệu dùng agent, có log-tac-tu/PR-<số>.md: đạt")
-def _():
-    tep = [{"filename": "adr/0003-xu-ly-TD-09.md", "status": "added"},
-           {"filename": "log-tac-tu/PR-12.md", "status": "added"}]
-    ma, bang = chay(than_pr(DONG_DAU_AGENT, dong=None), tep)
-    assert ma == 0 and "| Log agent | Đạt |" in bang and "PR tài liệu" in bang, bang
-
-
-@ca("PR sửa mã kèm log phiên phieu-dot1.md, không có PR-<số>.md: chưa đạt (không phải PR tài liệu)")
-def _():
-    tep = MA_NGUON + [{"filename": "log-tac-tu/phieu-dot1.md", "status": "added"}]
-    ma, bang = chay(than_pr(DONG_DAU_AGENT), tep)
-    assert ma == 1 and "| Log agent | Chưa đạt |" in bang and dong(bang, "Hạng mục đóng"), bang
+    ma, bang = chay(than_pr(DONG_DAU_AGENT), MA_NGUON)
+    assert ma == 0 and "| Hạng mục đóng | Đạt |" in bang and dong(bang, "Log agent") is None, bang
 
 
 @ca("PR có cả tài liệu và mã: là PR thường, cần Đóng #")

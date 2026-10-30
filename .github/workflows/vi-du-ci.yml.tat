@@ -7,8 +7,7 @@
 #
 # Bốn bước của một pipeline tối thiểu: kiểm định dạng → chạy kiểm thử →
 # dựng bản build → deploy bản xem trước. Nhóm nào chưa có test thì bỏ bước 2
-# và ghi vào ADR vì sao — nhưng đến Gói 6 nên có ít nhất một test cho luật
-# nghiệp vụ lõi (tests/luat/).
+# — nhưng đến Gói 6 nên có ít nhất một test cho luật nghiệp vụ lõi (tests/luat/).
 #
 # Job dot-bien (mutation testing) chỉ chạy tay: Actions → CI → Run workflow.
 # Không chạy khi push hay PR, không chặn merge. Xem TH6 phần tự chọn và tờ TC8.

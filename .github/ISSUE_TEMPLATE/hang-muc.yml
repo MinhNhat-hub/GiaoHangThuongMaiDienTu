@@ -13,7 +13,7 @@ body:
     id: cau-chuyen
     attributes:
       label: Câu chuyện người dùng
-      description: Hạng mục kỹ thuật không có người dùng hưởng lợi trực tiếp (vẽ sơ đồ, viết ADR) thì ghi việc cần làm và để làm gì.
+      description: Hạng mục kỹ thuật không có người dùng hưởng lợi trực tiếp (vẽ sơ đồ) thì ghi việc cần làm và để làm gì.
       placeholder: "Là <tác nhân>, tôi muốn <việc cần làm> để <giá trị nhận được>."
     validations:
       required: false

@@ -240,13 +240,6 @@ def kiem_M4():
         ghi(ok, f"{f} parse được", loi)
     ton_tai("docs/du-lieu.md", "Có tài liệu thiết kế dữ liệu")
 
-    adrs = [p for p in (GOC / "adr").glob("*.md") if not p.name.startswith("0000")]
-    ghi(len(adrs) >= 1, f"Có ≥ 1 ADR ngoài mẫu (thấy {len(adrs)})")
-    for p in adrs[:3]:
-        t = p.read_text(encoding="utf-8")
-        ghi("## Các phương án đã cân nhắc" in t and t.count("|") >= 12,
-            f"{p.name} có bảng phương án đã cân nhắc (≥ 2 phương án)")
-
     ag = doc("AGENTS.md") or ""
     kien_truc = ag.split("## Kiến trúc")[1].split("## Kiểm thử")[0] if "## Kiến trúc" in ag else ""
     da_viet = bool(kien_truc.strip()) and "<!--" not in kien_truc

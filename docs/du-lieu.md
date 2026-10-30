@@ -2,7 +2,7 @@
 
 ## Quyết định: quan hệ hay tài liệu?
 
-Chọn: **quan hệ (SQL)** / **tài liệu (NoSQL)** / **cả hai**. Viết một đoạn nói vì sao chọn thế, kể cả cái mất mà nhóm chấp nhận. Bản đầy đủ ghi thành `adr/000x-chon-csdl.md`.
+Chọn: **quan hệ (SQL)** / **tài liệu (NoSQL)** / **cả hai**. Viết một đoạn nói vì sao chọn thế, kể cả cái mất mà nhóm chấp nhận.
 
 ## Lược đồ
 

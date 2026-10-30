@@ -7,13 +7,12 @@
 ## Quy tắc làm việc (giữ nguyên)
 
 1. Agent không merge và không đẩy thẳng lên nhánh chính. Mọi thay đổi vào nhánh chính đi qua PR, do người merge sau khi một thành viên khác người điều khiển đã review.
-2. Mỗi PR ghi ba thông tin ở dòng đầu: `Agent: <công cụ> · Điều khiển: N07-B · Review: N07-A`, dòng sau ghi đúng một `Đóng #<số hạng mục>`. PR tài liệu (chỉ sửa `bao-cao/`, `docs/`, `diagrams/`, `adr/`, `phieu-thay-doi/`, `log-tac-tu/phieu-dot<k>.md` hoặc `.md` ở gốc) không cần `Đóng #`.
+2. Mỗi PR ghi ba thông tin ở dòng đầu: `Agent: <công cụ> · Điều khiển: N07-B · Review: N07-A`, dòng sau ghi đúng một `Đóng #<số hạng mục>`. PR tài liệu (chỉ sửa `bao-cao/`, `docs/`, `diagrams/`, `phieu-thay-doi/` hoặc `.md` ở gốc) không cần `Đóng #`.
 3. Agent chỉ làm trên nhánh riêng, không giữ khoá triển khai, không ghi vào cơ sở dữ liệu thật.
-4. PR do agent tạo kèm `log-tac-tu/PR-<số>.md` theo khuôn trong `log-tac-tu/README.md`: yêu cầu ban đầu, số vòng, kết quả chạy test cuối, tóm tắt diff, người điều khiển, thời điểm. PR đưa phiếu thay đổi vào kho kèm log phiên `log-tac-tu/phieu-dot<k>.md`.
-5. Gọi thành viên bằng mã `N07-A`, `N07-B`… Không ghi họ tên, MSSV, email vào tệp, commit hay log.
-6. Agent không viết phụ lục phản tỉnh cá nhân trong `bao-cao/goi6-tong-ket.md`.
-7. Test trong `tests/luat/` do người viết và là đặc tả. Agent không sửa, không xoá, không đổi tên, không đánh dấu bỏ qua test nào trong đó, không nới assert, không viết mã xử lý riêng đúng đầu vào của test.
-8. Test mâu thuẫn với đặc tả, với test khác, hoặc không qua được nếu không sửa test: dừng lại, báo người điều khiển test nào, mâu thuẫn chỗ nào. Không tự chọn cách hiểu.
+4. Gọi thành viên bằng mã `N07-A`, `N07-B`… Không ghi họ tên, MSSV, email vào tệp, commit hay log.
+5. Agent không viết phụ lục phản tỉnh cá nhân trong `bao-cao/goi6-tong-ket.md`.
+6. Test trong `tests/luat/` do người viết và là đặc tả. Agent không sửa, không xoá, không đổi tên, không đánh dấu bỏ qua test nào trong đó, không nới assert, không viết mã xử lý riêng đúng đầu vào của test.
+7. Test mâu thuẫn với đặc tả, với test khác, hoặc không qua được nếu không sửa test: dừng lại, báo người điều khiển test nào, mâu thuẫn chỗ nào. Không tự chọn cách hiểu.
 
 ## Khi nhận việc (giữ nguyên)
 
@@ -36,7 +35,6 @@ Hỏi lại nếu: <chỗ chưa rõ thì dừng và hỏi>
 ## Quy ước chung (giữ nguyên)
 
 - Sơ đồ viết bằng Mermaid trong `diagrams/`, không dùng ảnh.
-- Mỗi quyết định kiến trúc một tệp trong `adr/`, theo mẫu `adr/0000-mau.md`; xử lý phiếu thay đổi theo `adr/0000-mau-xu-ly-phieu.md`.
 - Không commit khoá API, mật khẩu, tệp `.env`.
 - Không sửa `.github/`, `scripts/`, `THANH-VIEN.md` và phiếu đã sinh trong `phieu-thay-doi/`.
 - Commit message tiếng Việt hoặc Anh, một dòng, nói **vì sao** chứ không phải cái gì.
@@ -61,7 +59,6 @@ Hỏi lại nếu: <chỗ chưa rõ thì dừng và hỏi>
 <!-- Ví dụ:
 - Không gọi CSDL trực tiếp từ `src/ui/` hay `src/domain/`.
 - Không gọi `sendEmail`/`sendPush` từ bất kỳ đâu ngoài `infra/thong-bao/`.
-- Không thêm thư viện mới mà không ghi ADR.
 -->
 
 ### Khi thêm tính năng mới
@@ -75,7 +72,7 @@ Hỏi lại nếu: <chỗ chưa rõ thì dừng và hỏi>
 
 - Test cho luật nghiệp vụ nằm trong `tests/luat/`, đặt tên theo mã luật (`test_BR03_quay_da_nhan_thi_khong_huy_duoc`), chạy không cần cơ sở dữ liệu.
 - Test agent viết thêm đặt ngoài `tests/luat/`, ví dụ `tests/khac/`.
-- Xong việc thì chạy toàn bộ test và dán kết quả cuối vào log.
+- Xong việc thì chạy toàn bộ test.
 <!-- Ghi lệnh chạy test của nhóm, ví dụ:
 - Chạy: `python -m pytest tests -v` / `node --test` / `npm test`
 -->

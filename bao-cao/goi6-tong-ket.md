@@ -2,7 +2,7 @@
 
 <!-- điền: mã nhóm, đề tài, mã thành viên -->
 
-<!-- 3–4 trang. Mọi nhận định trỏ được tới tệp, PR, log hoặc con số. Viết xong mục nào thì xoá dòng giữ chỗ "điền" của mục đó. -->
+<!-- 3–4 trang. Mọi nhận định trỏ được tới tệp, PR hoặc con số. Viết xong mục nào thì xoá dòng giữ chỗ "điền" của mục đó. -->
 
 ## 1. Hệ thống cuối và mức đạt yêu cầu
 
@@ -14,7 +14,7 @@
 
 ### Ba phiếu thay đổi
 
-<!-- điền: với từng phiếu đợt 1, 2, 3: mã phiếu, ADR xử lý (adr/NNNN-xu-ly-TD-xx.md), PR hiện thực; số lớp sửa thật so với bảng tác động trong ADR, lớp nào ngoài dự kiến và vì sao. Phần "Kết quả thực tế" của cả ba ADR đã điền -->
+<!-- điền: với từng phiếu đợt 1, 2, 3: mã phiếu, PR hiện thực -->
 
 ## 3. Cách nhóm dùng agent
 
@@ -22,7 +22,7 @@
 
 ### Ba lần thẩm định quan trọng nhất
 
-<!-- điền: ba lần nhóm kiểm kết quả của agent quan trọng nhất cả kỳ. Mỗi lần trỏ tới PR hoặc log-tac-tu/PR-<số>.md; kiểm bằng gì (test, đối chiếu sơ đồ, đọc diff, chạy thử); kết luận đúng hay sai, đã sửa gì. Agent làm đúng mà nhóm chứng minh được vẫn tính -->
+<!-- điền: ba lần nhóm kiểm kết quả của agent quan trọng nhất cả kỳ. Mỗi lần trỏ tới PR; kiểm bằng gì (test, đối chiếu sơ đồ, đọc diff, chạy thử); kết luận đúng hay sai, đã sửa gì. Agent làm đúng mà nhóm chứng minh được vẫn tính -->
 
 ## 4. Điều học được từ review chéo
 

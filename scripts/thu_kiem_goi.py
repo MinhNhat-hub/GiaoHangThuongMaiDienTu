@@ -4,7 +4,7 @@
 Dùng khi sửa kiem_goi.py. Nhóm không cần chạy tệp này.
     python3 scripts/thu_kiem_goi.py          (in ĐẠT ở cuối nếu mọi ca đạt)
 
-Mỗi ca dựng một kho giả trong thư mục tạm (phieu-thay-doi/, log-tac-tu/, adr/) và một danh sách
+Mỗi ca dựng một kho giả trong thư mục tạm (phieu-thay-doi/) và một danh sách
 Issue giả, gọi hàm của kiem_goi.py hoặc chạy kiem_goi.py như trong Actions. Không gọi GitHub.
 """
 from __future__ import annotations
@@ -48,11 +48,8 @@ def tim(kq, ten: str):
     return None
 
 
-ADR_TD04 = "# ADR-0002 — Xử lý TD-04\n\n## Bảng tác động\n\nLớp LuotDat, Phong.\n"
 DU_DOT1 = {
     "phieu-thay-doi/dot1_N07_TD-04.md": "# Phiếu TD-04\n",
-    "log-tac-tu/phieu-dot1.md": "# Log phiên\n",
-    "adr/0002-xu-ly-TD-04.md": ADR_TD04,
 }
 
 
@@ -64,74 +61,44 @@ def issue(so: int, milestone: str | None, pr: bool = False) -> dict:
 
 
 # ---------------------------------------------------------------- phiếu thay đổi
-@ca("Gói 4 đủ phiếu đợt 1, log phiên, ADR nhắc mã phiếu: đạt")
+@ca("Gói 4 có phiếu đợt 1: đạt, chỉ kiểm phiếu")
 def _():
     with kho_gia(DU_DOT1) as k:
         kq = kiem_goi.kiem_phieu(k, "4", "N07")
     assert tim(kq, "Phiếu đợt 1")[0] is True, kq
-    assert tim(kq, "Log phiên tạo phiếu đợt 1")[0] is True, kq
-    ok, gc = tim(kq, "ADR xử lý TD-04")
-    assert ok is True and "0002-xu-ly-TD-04.md" in gc, kq
+    assert [x[1] for x in kq] == ["Phiếu đợt 1"], kq
 
 
-@ca("Gói 4 không có phiếu: phiếu, log, ADR đều chưa đạt")
+@ca("Gói 4 không có phiếu: chưa đạt")
 def _():
-    with kho_gia({"adr/0001-chon-csdl.md": "# ADR-0001\n"}) as k:
+    with kho_gia({}) as k:
         kq = kiem_goi.kiem_phieu(k, "4", "N07")
-    assert [x[2] for x in kq] == [False, False, False], kq
+    assert [x[2] for x in kq] == [False], kq
     assert "dot1_N07_TD-xx.md" in tim(kq, "Phiếu đợt 1")[1], kq
 
 
 @ca("Phiếu của đợt khác hoặc nhóm khác không tính")
 def _():
-    with kho_gia({"phieu-thay-doi/dot2_N07_TD-09.md": "x", "phieu-thay-doi/dot1_N08_TD-03.md": "x",
-                  "log-tac-tu/phieu-dot2.md": "x"}) as k:
+    with kho_gia({"phieu-thay-doi/dot2_N07_TD-09.md": "x", "phieu-thay-doi/dot1_N08_TD-03.md": "x"}) as k:
         kq = kiem_goi.kiem_phieu(k, "4", "N07")
-    assert tim(kq, "Phiếu đợt 1")[0] is False and tim(kq, "Log phiên tạo phiếu đợt 1")[0] is False, kq
+    assert tim(kq, "Phiếu đợt 1")[0] is False, kq
 
 
 @ca("Không biết mã nhóm (chạy ở máy): nhận phiếu của bất kỳ mã nhóm nào")
 def _():
     with kho_gia(DU_DOT1) as k:
         kq = kiem_goi.kiem_phieu(k, "4", None)
-    assert tim(kq, "Phiếu đợt 1")[0] is True and tim(kq, "ADR xử lý TD-04")[0] is True, kq
+    assert tim(kq, "Phiếu đợt 1")[0] is True, kq
 
 
-@ca("ADR không nhắc mã phiếu, hoặc chỉ nhắc trong chú thích HTML, hoặc là khuôn 0000: chưa đạt")
+@ca("Gói 5 kiểm đợt 2, Gói 6 kiểm đợt 3")
 def _():
-    du = {k: v for k, v in DU_DOT1.items() if not k.startswith("adr/")}
-    du["adr/0002-xu-ly-phieu-dot1.md"] = "# ADR-0002\n<!-- TD-04 -->\nXử lý phiếu đợt 1.\n"
-    du["adr/0000-mau-xu-ly-phieu.md"] = "# Khuôn, ví dụ TD-04\n"
-    du["adr/0003-xu-ly-TD-14.md"] = "# ADR-0003 — TD-14\n"
-    with kho_gia(du) as k:
-        kq = kiem_goi.kiem_phieu(k, "4", "N07")
-    assert tim(kq, "ADR xử lý TD-04")[0] is False, kq
-
-
-@ca("ADR nhắc mã phiếu trong tên tệp hoặc trong nội dung đều được")
-def _():
-    du = {k: v for k, v in DU_DOT1.items() if not k.startswith("adr/")}
-    du["adr/0005-tach-thong-bao.md"] = "# ADR-0005 — Tách phần thông báo\n\nPhiếu: phieu-thay-doi/dot1_N07_TD-04.md\n"
-    with kho_gia(du) as k:
-        kq = kiem_goi.kiem_phieu(k, "4", "N07")
-    assert tim(kq, "ADR xử lý TD-04")[0] is True, kq
-    du = {k: v for k, v in DU_DOT1.items() if not k.startswith("adr/")}
-    du["adr/0005-xu-ly-TD-04.md"] = "# ADR-0005\n"
-    with kho_gia(du) as k:
-        kq = kiem_goi.kiem_phieu(k, "4", "N07")
-    assert tim(kq, "ADR xử lý TD-04")[0] is True, kq
-
-
-@ca("Gói 5 kiểm đợt 2, Gói 6 kiểm đợt 3; log có hậu tố (phieu-dot3-lan2.md) vẫn nhận")
-def _():
-    with kho_gia({"phieu-thay-doi/dot2_N07_TD-09.md": "x", "log-tac-tu/phieu-dot2.md": "x",
-                  "adr/0004-xu-ly-TD-09.md": "TD-09"}) as k:
+    with kho_gia({"phieu-thay-doi/dot2_N07_TD-09.md": "x"}) as k:
         kq = kiem_goi.kiem_phieu(k, "5", "N07")
-    assert all(x[2] is True for x in kq) and tim(kq, "ADR xử lý TD-09"), kq
-    with kho_gia({"phieu-thay-doi/dot3_N07_TD-13.md": "x", "log-tac-tu/phieu-dot3-lan2.md": "x",
-                  "adr/0006-xu-ly-TD-13.md": "TD-13"}) as k:
+    assert all(x[2] is True for x in kq) and tim(kq, "Phiếu đợt 2"), kq
+    with kho_gia({"phieu-thay-doi/dot3_N07_TD-13.md": "x"}) as k:
         kq = kiem_goi.kiem_phieu(k, "6", "N07")
-    assert all(x[2] is True for x in kq) and tim(kq, "Log phiên tạo phiếu đợt 3"), kq
+    assert all(x[2] is True for x in kq) and tim(kq, "Phiếu đợt 3"), kq
 
 
 @ca("Gói 2, 3 và review chéo không kiểm phiếu")
@@ -209,12 +176,11 @@ def dong(bang: str, ten: str) -> str:
     return next((d for d in bang.splitlines() if f"| {ten} |" in d), "")
 
 
-@ca("kiem_goi.py Gói 4 với tệp Issues: có dòng hạng mục và ba dòng phiếu, đúng mã nhóm từ tên kho")
+@ca("kiem_goi.py Gói 4 với tệp Issues: có dòng hạng mục và dòng phiếu, đúng mã nhóm từ tên kho")
 def _():
     ma, bang = chay("4", DU_DOT1, [issue(3, "Gói 4")])
     assert "| Đạt |" in dong(bang, "Có hạng mục gắn milestone Gói 4"), bang
     assert "| Đạt |" in dong(bang, "Phiếu đợt 1") and "dot1_N07_TD-04" in dong(bang, "Phiếu đợt 1"), bang
-    assert "| Đạt |" in dong(bang, "ADR xử lý TD-04"), bang
 
 
 @ca("kiem_goi.py Gói 4 chạy ở máy không có token: hạng mục là cảnh báo, không có dòng tac-dong")

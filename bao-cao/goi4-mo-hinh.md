@@ -14,7 +14,7 @@
 
 ## 3. Thẩm định
 
-<!-- điền: hai lần nhóm kiểm kết quả của agent trong gói. Mỗi lần ghi: kết quả nào (PR, log-tac-tu/PR-<số>.md); kiểm bằng gì (test, đối chiếu sơ đồ, đọc diff, chạy thử); kết luận đúng hay sai, đã sửa gì. Agent làm đúng mà nhóm chứng minh được là đúng vẫn đạt. Ví dụ, không bắt buộc: nhóm viết test cho luật trước, rồi giao agent viết mã cho qua; ghi PR có test, PR có mã, kết quả chạy -->
+<!-- điền: hai lần nhóm kiểm kết quả của agent trong gói. Mỗi lần ghi: kết quả nào (PR); kiểm bằng gì (test, đối chiếu sơ đồ, đọc diff, chạy thử); kết luận đúng hay sai, đã sửa gì. Agent làm đúng mà nhóm chứng minh được là đúng vẫn đạt. Ví dụ, không bắt buộc: nhóm viết test cho luật trước, rồi giao agent viết mã cho qua; ghi PR có test, PR có mã, kết quả chạy -->
 
 ## 4. Retro ba dòng
 
@@ -22,4 +22,4 @@
 
 ## 5. Xử lý phiếu thay đổi đợt 1
 
-<!-- điền: mã phiếu và đường dẫn phieu-thay-doi/dot1_N<xx>_TD-xx.md, log-tac-tu/phieu-dot1.md; ADR xử lý phiếu (adr/NNNN-xu-ly-TD-xx.md) và một dòng tóm tắt phương án đã chọn, ai quyết; hạng mục trên Issues (nhãn phieu-thay-doi) và PR hiện thực nếu đã có -->
+<!-- điền: mã phiếu và đường dẫn phieu-thay-doi/dot1_N<xx>_TD-xx.md; hạng mục trên Issues (nhãn phieu-thay-doi) và PR hiện thực nếu đã có -->
