@@ -9,8 +9,8 @@
 **Đầu vào.**
 - Mã nhóm, gói định kiểm (2, 3, 4, 5, 6 hoặc review chéo), mã người chạy.
 - Kho ở trạng thái định gắn thẻ (nhánh chính đã cập nhật), hoặc các tệp: báo cáo trong `bao-cao/`, `docs/`, `diagrams/`, `phieu-thay-doi/`, `AGENTS.md`.
-- Hạng mục và PR: đọc bằng `gh`, hoặc bản xuất `xuat-hang-muc.json`, `xuat-pr.json` (lệnh xuất ở `.se100/README.md`).
-- Kết quả `kiem-goi` gần nhất của gói (chép phần Summary vào `.se100/dau-vao/ket-qua-kiem-goi.md`), nếu có.
+- Hạng mục và PR: đọc bằng `gh`, hoặc bản xuất `xuat-hang-muc.json`, `xuat-pr.json` (lệnh xuất ở `.se113/README.md`).
+- Kết quả `kiem-goi` gần nhất của gói (chép phần Summary vào `.se113/dau-vao/ket-qua-kiem-goi.md`), nếu có.
 - Gói 4, 5, 6: phiếu thay đổi đã sinh của đợt 1, 2, 3. Review chéo: quyền đọc kho của nhóm được review.
 
 **Đầu ra.** Bảng các mục kiểm, mỗi mục ghi **Đủ**, **Thiếu** hoặc **Không kiểm được**, kèm vị trí (tệp, đề mục, dòng, số hạng mục, số PR) và việc cần bổ sung. Không có điểm.

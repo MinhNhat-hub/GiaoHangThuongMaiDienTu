@@ -5,7 +5,7 @@
 **Đầu vào cần chuẩn bị.**
 - Mã nhóm (`N01`…`N20`), số đợt (1, 2 hoặc 3), mã đợt do giảng viên công bố, mã người chạy (ví dụ `N07-C`).
 - Tệp `01a_danh_muc_phieu.md` (cùng thư mục với tệp này).
-- Kho của nhóm trên nhánh chính đã cập nhật. Ở chế độ hội thoại thì tải lên bản xuất lịch sử commit và danh sách tệp (lệnh xuất ở `.se100/README.md`), cùng các tệp: `README.md`, `docs/yeu-cau.md`, `docs/dac-ta-*.md`, mọi tệp trong `diagrams/`, mã trong `src/` (ít nhất các tệp mô hình, route, dịch vụ), tệp khai báo phụ thuộc (`package.json`, `requirements.txt`…), tệp biến môi trường mẫu nếu có (`.env.example`).
+- Kho của nhóm trên nhánh chính đã cập nhật. Ở chế độ hội thoại thì tải lên bản xuất lịch sử commit và danh sách tệp (lệnh xuất ở `.se113/README.md`), cùng các tệp: `README.md`, `docs/yeu-cau.md`, `docs/dac-ta-*.md`, mọi tệp trong `diagrams/`, mã trong `src/` (ít nhất các tệp mô hình, route, dịch vụ), tệp khai báo phụ thuộc (`package.json`, `requirements.txt`…), tệp biến môi trường mẫu nếu có (`.env.example`).
 - Hạng mục và PR (tab Issues): đọc bằng `gh`, hoặc bản xuất `xuat-hang-muc.json`, `xuat-pr.json`.
 
 **Đầu ra.**
@@ -104,7 +104,7 @@ Chạy được lệnh thì kiểm lại S bằng `python3 -c "print(sum(map(ord
 
 Lập đủ mười hai mục dưới đây, mỗi mục ghi nguồn (tệp, dòng). Phiếu luôn in H1, H2, H6, H7 và thêm các mục H mà phần "Chỗ cần may đo" của phiếu nhắc tới.
 
-- **H1. Tên hệ thống:** dòng tiêu đề đầu tiên của `README.md`, bỏ phần "· SE100 · Nhóm …" nếu có.
+- **H1. Tên hệ thống:** dòng tiêu đề đầu tiên của `README.md`, bỏ phần "· SE113 · Nhóm …" nếu có.
 - **H2. Tác nhân:** bảng Tác nhân trong `docs/yeu-cau.md`, giữ thứ tự dòng. **Tác nhân chính** là tác nhân có nhiều dòng FR nhất ở cột Tác nhân; hoà thì lấy tác nhân đứng trước trong bảng Tác nhân.
 - **H3. Use case:** lấy từ `diagrams/use-case.mmd`: nút use case trong `subgraph`; use case của một tác nhân là các nút có cạnh từ nút tác nhân đó, theo thứ tự cạnh trong tệp. Chưa có tệp này thì mỗi dòng FR là một use case của tác nhân ghi ở dòng đó, theo mã FR. Mã của use case: UC-xx nếu nhãn nút hoặc tệp đặc tả có, không thì mã FR tương ứng, không nữa thì tên. **Use case chính** là UC-01 nếu có `docs/dac-ta-UC-01.md`, không thì use case đầu tiên của tác nhân chính.
 - **H4. Luật:** các dòng `BR-xx` trong `docs/yeu-cau.md`, theo mã, chép nguyên văn.

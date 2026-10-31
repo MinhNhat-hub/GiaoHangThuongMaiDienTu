@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Kiểm gói nộp SE100 (kiểm thủ tục, không chấm điểm).
+"""Kiểm gói nộp SE113 (kiểm thủ tục, không chấm điểm).
 
 Dùng:  python scripts/kiem_goi.py --goi 4 [--kho .] [--ma-nhom N07] [--issues issues.json]
        --goi nhận 2, 3, 4, 5, 6, review-cheo hoặc tên thẻ (goi-3, review-cheo).
-       Không có --goi thì lấy từ SE100_GOI hoặc GITHUB_REF_NAME.
+       Không có --goi thì lấy từ SE113_GOI hoặc GITHUB_REF_NAME.
 
 Kiểm:
   - báo cáo của gói đúng tên, không còn dòng giữ chỗ `<!-- điền: … -->`;
@@ -67,7 +67,7 @@ NGAY_8_SO = re.compile(r"^20[2-3]\d(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$")
 TIEN_SAU = re.compile(r"^\s*(?:đ|đồng|vnd|vnđ|triệu|tr)\b", re.IGNORECASE)
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 EMAIL_BO_QUA = re.compile(r"noreply|@example\.(com|org|net)$|^git@github\.com$", re.IGNORECASE)
-BO_QUA_THU_MUC = {".git", ".github", ".se100", "scripts", "node_modules", ".venv", "venv", "__pycache__",
+BO_QUA_THU_MUC = {".git", ".github", ".se113", "scripts", "node_modules", ".venv", "venv", "__pycache__",
                   "dist", "build", ".next", "target", "vendor"}
 
 
@@ -246,7 +246,7 @@ def kiem_phieu(kho: str, goi: str, ma_nhom: str | None) -> list[tuple[str, str, 
         ("Phiếu thay đổi", f"Phiếu đợt {k}", bool(phieu),
          ", ".join(f"`phieu-thay-doi/{t}`" for t, _ in phieu) if phieu else
          f"Không có `phieu-thay-doi/dot{k}_{ma_nhom or 'Nxx'}_TD-xx.md`. Chạy agent mô phỏng thay đổi "
-         f"(`.se100/01_mo_phong_thay_doi.md`) với mã đợt {k} rồi đưa phiếu vào kho qua PR tài liệu.")]
+         f"(`.se113/01_mo_phong_thay_doi.md`) với mã đợt {k} rồi đưa phiếu vào kho qua PR tài liệu.")]
     return kq
 
 
@@ -306,15 +306,15 @@ def in_ket_qua(goi: str, kq: list[tuple[str, str, bool | None, str]], ma_nhom: s
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Kiểm gói nộp SE100.")
-    ap.add_argument("--goi", default=os.environ.get("SE100_GOI") or os.environ.get("GITHUB_REF_NAME"))
+    ap = argparse.ArgumentParser(description="Kiểm gói nộp SE113.")
+    ap.add_argument("--goi", default=os.environ.get("SE113_GOI") or os.environ.get("GITHUB_REF_NAME"))
     ap.add_argument("--kho", default=".")
-    ap.add_argument("--ma-nhom", default=None, help="mã nhóm N07; mặc định đọc từ tên kho se100-N07")
+    ap.add_argument("--ma-nhom", default=None, help="mã nhóm N07; mặc định đọc từ tên kho se113-N07")
     ap.add_argument("--issues", default=None, help="tệp JSON danh sách Issue thay cho GitHub API (để thử)")
     a = ap.parse_args()
     goi = chuan_goi(a.goi)
     kho = os.path.abspath(a.kho)
-    m = re.search(r"se100-(N\d\d)", os.environ.get("GITHUB_REPOSITORY") or repo_tu_git(kho) or "", re.IGNORECASE)
+    m = re.search(r"se113-(N\d\d)", os.environ.get("GITHUB_REPOSITORY") or repo_tu_git(kho) or "", re.IGNORECASE)
     ma_nhom = (a.ma_nhom or (m.group(1) if m else "")).upper() or None
 
     issues, ghi_chu = lay_issues(kho, a.issues) if goi in MILESTONE else (None, "")

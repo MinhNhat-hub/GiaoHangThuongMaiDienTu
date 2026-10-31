@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kiểm nội dung theo mốc M0–M5 — SE100.
+Kiểm nội dung theo mốc M0–M5 — SE113.
 
 Chạy tay:  python scripts/kiem_moc.py M3            (kiểm kho hiện tại)
            python scripts/kiem_moc.py M3 <thư mục>  (kiểm kho khác)

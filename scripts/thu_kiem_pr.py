@@ -5,7 +5,7 @@ Dùng khi sửa kiem_pr.py. Nhóm không cần chạy tệp này.
     python3 scripts/thu_kiem_pr.py          (in ĐẠT ở cuối nếu mọi ca đạt)
 
 Mỗi ca dựng một sự kiện pull_request giả (GITHUB_EVENT_PATH) và danh sách tệp giả
-(SE100_DU_LIEU_THU/pr_files.json), chạy kiem_pr.py như trong Actions, rồi đọc mã thoát
+(SE113_DU_LIEU_THU/pr_files.json), chạy kiem_pr.py như trong Actions, rồi đọc mã thoát
 và bảng kết quả.
 """
 from __future__ import annotations
@@ -48,8 +48,8 @@ def chay(than: str, tep: list[dict], so_pr: int = 12, nhanh: str = "") -> tuple[
                            encoding="utf-8")
         (Path(tm) / "pr_files.json").write_text(json.dumps(tep), encoding="utf-8")
         tom_tat = Path(tm) / "summary.md"
-        env = dict(os.environ, GITHUB_EVENT_PATH=str(su_kien), SE100_DU_LIEU_THU=tm,
-                   GITHUB_REPOSITORY="uit-se100-2026-hk1/se100-N07", GITHUB_STEP_SUMMARY=str(tom_tat))
+        env = dict(os.environ, GITHUB_EVENT_PATH=str(su_kien), SE113_DU_LIEU_THU=tm,
+                   GITHUB_REPOSITORY="uit-se113-2026-hk1/se113-N07", GITHUB_STEP_SUMMARY=str(tom_tat))
         env.pop("GITHUB_TOKEN", None)
         env.pop("GITHUB_HEAD_REF", None)
         ra = subprocess.run([sys.executable, str(KIEM_PR)], env=env, capture_output=True, text=True)
@@ -271,7 +271,7 @@ def _():
 @ca("Năm chuyển tiếp: PR từ nhánh kho-mau đưa kho mẫu vào, không cần Đóng #")
 def _():
     tep = [{"filename": ".github/workflows/kiem-pr.yml", "status": "added"},
-           {"filename": "scripts/kiem_pr.py", "status": "added"}, {"filename": ".se100/README.md", "status": "added"}]
+           {"filename": "scripts/kiem_pr.py", "status": "added"}, {"filename": ".se113/README.md", "status": "added"}]
     ma, bang = chay(than_pr(DONG_DAU_TAY, dong=None), tep, nhanh="kho-mau")
     assert ma == 0 and "PR đưa kho mẫu" in bang and dong(bang, "Hạng mục đóng") is None, bang
 

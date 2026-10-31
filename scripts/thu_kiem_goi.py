@@ -165,7 +165,7 @@ def chay(goi: str, tep: dict[str, str], issues: list | None) -> tuple[int, str]:
         if issues is not None:
             (Path(k) / "_issues.json").write_text(json.dumps(issues), encoding="utf-8")
             lenh += ["--issues", str(Path(k) / "_issues.json")]
-        env = dict(os.environ, GITHUB_REPOSITORY="uit-se100-2026-hk1/se100-N07")
+        env = dict(os.environ, GITHUB_REPOSITORY="uit-se113-2026-hk1/se113-N07")
         for x in ("GITHUB_TOKEN", "GH_TOKEN", "GITHUB_STEP_SUMMARY"):
             env.pop(x, None)
         ra = subprocess.run(lenh, env=env, capture_output=True, text=True)

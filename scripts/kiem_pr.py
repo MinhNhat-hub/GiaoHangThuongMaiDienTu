@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Kiểm thân PR theo mẫu SE100. Chạy trong GitHub Actions (sự kiện pull_request).
+"""Kiểm thân PR theo mẫu SE113. Chạy trong GitHub Actions (sự kiện pull_request).
 
 Kiểm:
   - dòng ba thông tin `Agent: <công cụ> · Điều khiển: N07-B · Review: N07-A`;
@@ -13,7 +13,7 @@ PR tài liệu: mọi tệp thay đổi thuộc bao-cao/, docs/, diagrams/, phie
 hoặc là tệp .md ở gốc kho (trừ THANH-VIEN.md). PR tài liệu không cần `Đóng #`.
 
 Đọc PR từ GITHUB_EVENT_PATH. Danh sách tệp lấy qua GitHub API (GITHUB_TOKEN, GITHUB_REPOSITORY).
-Chạy thử: đặt SE100_DU_LIEU_THU = thư mục có pr_files.json (mảng {"filename", "status"},
+Chạy thử: đặt SE113_DU_LIEU_THU = thư mục có pr_files.json (mảng {"filename", "status"},
 thêm "previous_filename" khi status là "renamed"). Bộ thử: python3 scripts/thu_kiem_pr.py
 Ghi kết quả vào GITHUB_STEP_SUMMARY (nếu có); thoát mã 1 khi có mục chưa đạt.
 Chỉ dùng thư viện chuẩn Python 3.10+.
@@ -127,7 +127,7 @@ def goi_api(duong: str) -> list:
         req = urllib.request.Request(url, headers={
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "se100-kiem-pr",
+            "User-Agent": "se113-kiem-pr",
             **({"Authorization": f"Bearer {token}"} if token else {}),
         })
         with urllib.request.urlopen(req, timeout=60) as r:
@@ -141,7 +141,7 @@ def goi_api(duong: str) -> list:
 
 def tep_cua_pr(so_pr: int, su_kien: dict) -> list[dict] | None:
     """[{filename, status}] của PR; None nếu không lấy được."""
-    thu = os.environ.get("SE100_DU_LIEU_THU")
+    thu = os.environ.get("SE113_DU_LIEU_THU")
     if thu:
         duong = os.path.join(thu, "pr_files.json")
         if not os.path.exists(duong):
@@ -178,7 +178,7 @@ def kiem(than: str, so_pr: int, ds_tep: list[dict] | None, repo: str = "",
     kq: list[tuple[str, bool | None, str]] = []
     tep_ca_xoa = None if ds_tep is None else [f["filename"] for f in ds_tep]
     tep = None if ds_tep is None else [f["filename"] for f in ds_tep if f.get("status") != "removed"]
-    m_nhom = re.search(r"se100-(N\d\d)", repo or "", re.IGNORECASE)
+    m_nhom = re.search(r"se113-(N\d\d)", repo or "", re.IGNORECASE)
     ma_nhom = m_nhom.group(1).upper() if m_nhom else None
 
     # 0. THANH-VIEN.md do hệ thống ghi
