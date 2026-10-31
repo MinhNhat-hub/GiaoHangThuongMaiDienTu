@@ -1,4 +1,4 @@
-# [Tên hệ thống] — SE100 · Nhóm N__
+# [Tên hệ thống] — SE113 · Nhóm N__
 
 > Xoá dòng này rồi viết 5 dòng mô tả hệ thống: **ai** dùng, để **làm gì**, và điều gì **không được phép** xảy ra. Giảng viên đọc phần này đầu tiên khi duyệt đề tài, nên viết cho rõ.
 
@@ -23,7 +23,7 @@ diagrams/         sơ đồ Mermaid (.mmd): use case, lớp, tuần tự, trạn
 phieu-thay-doi/   phiếu thay đổi do agent sinh, dot<k>_N<xx>_TD-xx.md (không sửa)
 src/              mã nguồn
 tests/luat/       test cho luật nghiệp vụ, do nhóm viết; có sẵn test mẫu Python và JavaScript
-.se100/           bộ agent SE100: mô phỏng thay đổi, tự kiểm gói, luyện vấn đáp, gia sư
+.se113/           bộ agent SE113: mô phỏng thay đổi, tự kiểm gói, luyện vấn đáp, gia sư
 .github/          mẫu Hạng mục, mẫu PR và hai kiểm tra tự động kiem-pr, kiem-goi (không sửa)
 scripts/          mã của kiểm tra tự động và bộ thử của nó (không sửa)
 AGENTS.md         quy tắc và ràng buộc kiến trúc cho agent đọc
@@ -74,7 +74,7 @@ Vi phạm quy tắc 1: tiêu chí 1 của gói tương ứng bằng 0. Vi phạm
 
 ## Phiếu thay đổi
 
-Agent mô phỏng thay đổi (`.se100/01_mo_phong_thay_doi.md`, kèm danh mục `.se100/01a_danh_muc_phieu.md`) là **bắt buộc ở cả ba đợt**. Đầu tuần 7, 9, 11 (năm nay thứ Hai 19/10, 02/11, 16/11), giảng viên công bố mã đợt; trong tuần đó nhóm chạy agent với mã nhóm và mã đợt, đưa phiếu vào kho qua một PR tài liệu, rồi xử lý phiếu: một hạng mục nhãn `phieu-thay-doi`, một PR hiện thực có `Đóng #` hạng mục đó. Chi tiết trong `phieu-thay-doi/README.md`.
+Agent mô phỏng thay đổi (`.se113/01_mo_phong_thay_doi.md`, kèm danh mục `.se113/01a_danh_muc_phieu.md`) là **bắt buộc ở cả ba đợt**. Đầu tuần 7, 9, 11 (năm nay thứ Hai 19/10, 02/11, 16/11), giảng viên công bố mã đợt; trong tuần đó nhóm chạy agent với mã nhóm và mã đợt, đưa phiếu vào kho qua một PR tài liệu, rồi xử lý phiếu: một hạng mục nhãn `phieu-thay-doi`, một PR hiện thực có `Đóng #` hạng mục đó. Chi tiết trong `phieu-thay-doi/README.md`.
 
 ## Các gói
 

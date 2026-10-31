@@ -1,10 +1,10 @@
-# Bộ agent SE100 — Hướng dẫn sử dụng
+# Bộ agent SE113 — Hướng dẫn sử dụng
 
-SE100 – Phương pháp phát triển phần mềm hướng đối tượng · Năm học 2026–2027
+SE113 – Phương pháp phát triển phần mềm hướng đối tượng · Năm học 2026–2027
 
 > *Mỗi nhóm phân tích, thiết kế và xây một hệ thống phần mềm nhỏ, trong đó phần lớn mã do agent AI viết; nhóm chịu trách nhiệm về yêu cầu, mô hình, quyết định thiết kế và giải thích được mọi thứ đã nộp. Trong cùng học kỳ, nhóm còn review chéo kho của một nhóm khác.*
 
-Bộ gồm bốn agent viết dưới dạng tệp chỉ dẫn Markdown. Nhóm dùng các tệp này với công cụ agent sẵn có, không phải tự xây agent. Mỗi kho nhóm có sẵn bản sao của bộ trong thư mục `.se100/`.
+Bộ gồm bốn agent viết dưới dạng tệp chỉ dẫn Markdown. Nhóm dùng các tệp này với công cụ agent sẵn có, không phải tự xây agent. Mỗi kho nhóm có sẵn bản sao của bộ trong thư mục `.se113/`.
 
 ## Bốn agent
 
@@ -23,16 +23,16 @@ Bộ gồm bốn agent viết dưới dạng tệp chỉ dẫn Markdown. Nhóm d
 
 - **Tệp trong kho**: `README.md`, `docs/`, `diagrams/`, `src/`, `bao-cao/`, `phieu-thay-doi/`, `AGENTS.md`, tệp khai báo phụ thuộc.
 - **Hạng mục và PR** (bảng công việc là tab Issues của kho): agent dòng lệnh đọc bằng `gh` nếu đã đăng nhập, ví dụ `gh issue list --state all --limit 300` và `gh pr list --state all --limit 300`.
-- **Kết quả kiểm gói**: tab **Actions** → **kiem-goi** → chọn lần chạy → **Summary**. Chép phần Summary vào `.se100/dau-vao/ket-qua-kiem-goi.md` nếu agent cần.
+- **Kết quả kiểm gói**: tab **Actions** → **kiem-goi** → chọn lần chạy → **Summary**. Chép phần Summary vào `.se113/dau-vao/ket-qua-kiem-goi.md` nếu agent cần.
 
 ## Cách chạy
 
 ### (a) Agent dòng lệnh trong kho
 
-1. Tạo một nhánh riêng cho phiên, ví dụ `se100/phieu-dot1`.
-2. Tệp chưa nằm trong kho (bản xuất, kết quả kiểm gói đã chép) đặt vào `.se100/dau-vao/` và nói cho agent biết. Thư mục này không commit.
+1. Tạo một nhánh riêng cho phiên, ví dụ `se113/phieu-dot1`.
+2. Tệp chưa nằm trong kho (bản xuất, kết quả kiểm gói đã chép) đặt vào `.se113/dau-vao/` và nói cho agent biết. Thư mục này không commit.
 3. Mở agent tại gốc kho và ra lệnh, ví dụ:
-   `Đọc .se100/01_mo_phong_thay_doi.md và làm theo. Mã nhóm N07, đợt 1, mã đợt <mã đợt>, người chạy N07-C.`
+   `Đọc .se113/01_mo_phong_thay_doi.md và làm theo. Mã nhóm N07, đợt 1, mã đợt <mã đợt>, người chạy N07-C.`
 4. Đọc lại tệp agent ghi ra, rồi đưa vào nhánh chính bằng PR theo mẫu PR của kho và ba quy tắc dưới đây; PR phải qua `kiem-pr`. PR chỉ chứa phiếu là PR tài liệu: chỉ cần dòng ba thông tin, không cần `Đóng #`. Kết quả phải có trên nhánh chính trước khi gắn thẻ gói thì mới được nộp.
 
 Agent 2, 3, 4 chỉ đọc. Nhóm sửa tệp theo gợi ý thì sửa qua PR như mọi thay đổi khác.

@@ -49,5 +49,5 @@ jobs:
       - name: Kiểm gói
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SE100_GOI: ${{ github.event_name == 'workflow_dispatch' && inputs.goi || github.ref_name }}
+          SE113_GOI: ${{ github.event_name == 'workflow_dispatch' && inputs.goi || github.ref_name }}
         run: python scripts/kiem_goi.py --kho .
