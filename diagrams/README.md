@@ -1,44 +1,41 @@
 # Sơ đồ
 
-Tất cả viết bằng **Mermaid**, đuôi `.mmd`. GitHub render trực tiếp khi mở tệp `.md` có khối ```mermaid. Còn kiểm gói thì đọc tệp `.mmd` thuần, nên ở đây **không** bọc trong ```mermaid.
+Sơ đồ thiết kế (giai đoạn 2) viết bằng **Mermaid**, đuôi `.mmd`, không bọc trong ```mermaid. Sơ đồ của SRS nằm ở `docs/srs/diagrams/` (draw.io).
 
-## Tên tệp kiểm gói tìm
+## Tên tệp
 
-| Gói | Tệp | Loại Mermaid |
-|---|---|---|
-| 3 | `use-case.mmd` | `flowchart` (Mermaid chưa có use case chuẩn, xem quy ước bên dưới) |
-| 3 | `seq-*.mmd` (≥ 2 tệp) | `sequenceDiagram` |
-| 4 | `class.mmd` | `classDiagram` |
-| 4 | `state.mmd` | `stateDiagram-v2` |
-| 5 | `c4-context.mmd`, `c4-container.mmd` | `C4Context`, `C4Container` |
+| Tệp | Loại Mermaid |
+|---|---|
+| `use-case.mmd` | `flowchart` (Mermaid chưa có use case chuẩn, xem quy ước bên dưới) |
+| `seq-*.mmd` | `sequenceDiagram` |
+| `class.mmd` | `classDiagram` |
+| `state.mmd` | `stateDiagram-v2` |
+| `c4-context.mmd`, `c4-container.mmd` | `C4Context`, `C4Container` |
 
 ## Quy ước use case bằng flowchart
 
 ```
 flowchart LR
-  SV([Sinh viên])
-  GV([Giáo vụ])
-  subgraph HT[Hệ thống đặt phòng]
-    UC1(Đặt phòng)
-    UC2(Duyệt đặt phòng)
-    UC3(Xác thực)
+  Customer([Customer])
+  Admin([Admin])
+  subgraph System[Delivery management]
+    UC1(Create order)
+    UC2(Assign shipper)
+    UC3(Sign in)
   end
-  SV --> UC1
-  GV --> UC2
+  Customer --> UC1
+  Admin --> UC2
   UC1 -. include .-> UC3
 ```
 
-Tác nhân dùng `([ ])`, use case dùng `( )`, include dùng mũi tên đứt `-. include .->`. Extend thì chỉ cần đọc được khi gặp, đồ án không bắt vẽ (xem `tra-cuu/TC4-uml.md`).
+Tác nhân dùng `([ ])`, use case dùng `( )`, include dùng mũi tên đứt `-. include .->`.
 
-## Quy ước để kiểm gói đối chiếu chéo được
+## Quy ước đặt tên
 
-- Tên lớp trong `class.mmd`: `class TenLop {`
-- Tên lớp trong `seq-*.mmd`: `participant TenLop`, **dùng đúng tên lớp**, đừng đặt biệt danh, vì kiểm gói lấy hiệu hai tập tên.
-- Phương thức gọi trong sequence: `A->>B: tenPhuongThuc(...)`. Kiểm gói xem `tenPhuongThuc` có trong lớp `B` không.
-- **Mỗi lớp trong `class.mmd` phải được nhắc tên, đúng chính tả, trong ít nhất một tệp ở `docs/`**, đặc tả use case hoặc `yeu-cau.md` đều được. Lớp không sinh ra từ yêu cầu nào thì kiểm gói báo.
-- Tên lớp: chữ không dấu, số, gạch dưới. `class Phong` được; `class Phòng` không.
-- Từ Gói 6, mọi lớp trong `class.mmd` phải có trong `src/` với đúng tên đó.
-- Ghi mã người phụ trách ở dòng đầu sau khai báo loại sơ đồ: `%% Phụ trách: N07-B`.
+- Tên lớp, phương thức, participant bằng tiếng Anh, khớp với tên trong `src/`.
+- Tên lớp trong `seq-*.mmd`: `participant ClassName`, **dùng đúng tên lớp** trong `class.mmd`, không đặt biệt danh.
+- Phương thức gọi trong sequence: `A->>B: methodName(...)`, và `methodName` phải có trong lớp `B`.
+- Đổi tên lớp trong `class.mmd` thì sửa luôn các `seq-*.mmd` dùng lớp đó.
 
 ## Xem trước
 
