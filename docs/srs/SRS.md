@@ -1,18 +1,20 @@
 # Đặc tả yêu cầu phần mềm cho Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử, phiên bản 1.0
 
-Phiên bản 1.0 nháp 1
+Phiên bản 1.0 nháp 3
 
 Soạn bởi TV1
 
 Nhóm 10 – SE113 Kiểm chứng phần mềm
 
-31/10/2026
+03/11/2026
 
 ## Lịch sử sửa đổi
 
 | **Tên** | **Ngày** | **Lý do thay đổi** | **Phiên bản** |
 |---|---|---|---|
 | TV1 | 31/10/2026 | Bản nháp đầu tiên, gửi TV2 review | 1.0 nháp 1 |
+| TV1 | 02/11/2026 | Sửa theo review: tách, thêm và đổi nội dung một số ID (xem srs_id_changes.md) | 1.0 nháp 2 |
+| TV2 | 03/11/2026 | Sửa theo review: đóng C-15, thêm luồng 3.2 của UC-03, SEC-8, SEC-9; tách bước 3 của luồng 7.0; đổi Return.Review.Issue thành Return.Review.OrderStatus; SRS.md thành bản gốc | 1.0 nháp 3 |
 
 ## 1 Giới thiệu
 
@@ -68,7 +70,7 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 - Thanh toán, phí, hoàn tiền, bồi thường. Hệ thống chỉ ghi nhận kết quả xử lý (xem BR-07).
 - Danh mục sản phẩm, đánh giá sản phẩm, kho trung chuyển.
 
-Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1 và PRE-1 của các Use Case.
+Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1, SEC-9 và PRE-1 của các Use Case.
 
 ### 1.4 Tài liệu tham khảo
 
@@ -206,13 +208,13 @@ Admin tạo vận đơn và phân công đơn ở trạng thái "Chờ xác nh�
 | **Điều kiện kích hoạt:** | Shipper cho biết muốn cập nhật trạng thái của một đơn được phân công cho mình. |  |  |
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Shipper. |  |  |
 | **Hậu điều kiện:** | POST-1. Đơn ở trạng thái mới theo một bước chuyển trên Hình A.2 (xem BR-01).<br>POST-2. Lịch sử trạng thái của đơn có thêm bản ghi cho mỗi lần đổi trạng thái (xem Track.Update.History).<br>POST-3. Nếu Shipper báo sự cố, sự cố được lưu (xem Issue.Report.Store). |  |  |
-| **Luồng chính:** | **3.0 Cập nhật trạng thái giao hàng**<br>1. Shipper mở danh sách đơn được phân công.<br>2. Hệ thống hiển thị danh sách đơn được phân công cho chính Shipper đó.<br>3. Shipper chọn một đơn ở trạng thái "Chờ lấy hàng".<br>4. Hệ thống hiển thị các trạng thái kế tiếp Shipper được chọn (xem Track.Update.Next).<br>5. Shipper lấy hàng và chọn trạng thái "Đang giao".<br>6. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>7. Hệ thống chuyển đơn sang trạng thái "Đang giao" (xem Hình A.2, Track.Update.Status) và ghi lịch sử trạng thái.<br>8. Shipper giao hàng cho người nhận (xem 3.0.E1, 3.0.E2, 3.0.E3).<br>9. Shipper chọn trạng thái "Đã giao".<br>10. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>11. Hệ thống chuyển đơn sang trạng thái "Đã giao" (xem Hình A.2, Track.Update.Status) và ghi lịch sử trạng thái. |  |  |
-| **Luồng thay thế:** | **3.1 Giao lại sau khi giao không thành công**<br>1. Shipper chọn một đơn ở trạng thái "Giao không thành công" trong danh sách đơn được phân công.<br>2. Hệ thống chỉ cho chọn trạng thái "Đang giao" khi số lần giao không thành công của đơn chưa đạt giới hạn ở BR-06.<br>3. Shipper chọn trạng thái "Đang giao".<br>4. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>5. Hệ thống chuyển đơn từ "Giao không thành công" sang "Đang giao" (xem Hình A.2, Track.Update.Status) và ghi lịch sử trạng thái.<br>6. Quay lại bước 8 của luồng chính. |  |  |
+| **Luồng chính:** | **3.0 Cập nhật trạng thái giao hàng**<br>1. Shipper mở danh sách đơn được phân công.<br>2. Hệ thống hiển thị danh sách đơn được phân công cho chính Shipper đó.<br>3. Shipper chọn một đơn ở trạng thái "Chờ lấy hàng" (xem 3.2).<br>4. Hệ thống hiển thị các trạng thái kế tiếp Shipper được chọn (xem Track.Update.Next).<br>5. Shipper lấy hàng và chọn trạng thái "Đang giao".<br>6. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>7. Hệ thống chuyển đơn sang trạng thái "Đang giao" (xem Hình A.2, Track.Update.Status) và ghi lịch sử trạng thái.<br>8. Shipper giao hàng cho người nhận (xem 3.0.E1, 3.0.E2, 3.0.E3).<br>9. Shipper chọn trạng thái "Đã giao".<br>10. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>11. Hệ thống chuyển đơn sang trạng thái "Đã giao" (xem Hình A.2, Track.Update.Status) và ghi lịch sử trạng thái. |  |  |
+| **Luồng thay thế:** | **3.1 Giao lại sau khi giao không thành công**<br>1. Shipper chọn một đơn ở trạng thái "Giao không thành công" trong danh sách đơn được phân công.<br>2. Hệ thống chỉ cho chọn trạng thái "Đang giao" khi số lần giao không thành công của đơn chưa đạt giới hạn ở BR-06.<br>3. Shipper chọn trạng thái "Đang giao".<br>4. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>5. Hệ thống chuyển đơn từ "Giao không thành công" sang "Đang giao" (xem Hình A.2, Track.Update.Status) và ghi lịch sử trạng thái.<br>6. Quay lại bước 8 của luồng chính.<br>**3.2 Tiếp tục giao đơn đang giao**<br>1. Thay vì bước 3 của luồng chính, Shipper chọn một đơn ở trạng thái "Đang giao" trong danh sách đơn được phân công.<br>2. Quay lại bước 8 của luồng chính. |  |  |
 | **Ngoại lệ:** | **3.0.E1 Hàng bị hỏng khi giao**<br>1. Shipper phát hiện hàng bị hư hỏng khi đơn đang ở trạng thái "Đang giao".<br>2. Shipper chọn báo sự cố, loại "Hàng hỏng" (xem Issue.Report.Type).<br>3. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>4. Hệ thống lưu sự cố (xem Issue.Report.Store).<br>5. Hệ thống chuyển đơn sang trạng thái "Hư hỏng" (xem Hình A.2), ghi lịch sử trạng thái và hiển thị trạng thái mới cho Admin (xem RT-2).<br>6. Hệ thống kết thúc UC. Admin xử lý sự cố ở UC-07.<br>**3.0.E2 Giao không thành công**<br>1. Shipper không giao được hàng cho người nhận khi đơn đang ở trạng thái "Đang giao".<br>2. Shipper chọn báo sự cố, loại "Giao không thành công" (xem Issue.Report.Type).<br>3. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>4. Hệ thống lưu sự cố (xem Issue.Report.Store).<br>5. Hệ thống chuyển đơn sang trạng thái "Giao không thành công" (xem Hình A.2), ghi lịch sử trạng thái và hiển thị trạng thái mới cho Admin (xem RT-2).<br>6. Hệ thống tính số lần giao không thành công của đơn (xem BR-06).<br>7a. Nếu số lần này chưa đạt giới hạn ở BR-06, thì Shipper giao lại theo luồng 3.1.<br>7b. Ngược lại, nếu số lần này đạt giới hạn ở BR-06, thì Shipper không được giao lại; Admin chuyển đơn sang trạng thái "Đang hoàn hàng" rồi "Đã hoàn về người bán" ở UC-07 (xem Hình A.2), và hệ thống kết thúc UC.<br>**3.0.E3 Hàng thất lạc**<br>1. Shipper không tìm thấy hàng khi đơn đang ở trạng thái "Đang giao".<br>2. Shipper chọn báo sự cố, loại "Thất lạc" (xem Issue.Report.Type).<br>3. Hệ thống yêu cầu xác nhận và Shipper xác nhận.<br>4. Hệ thống lưu sự cố (xem Issue.Report.Store).<br>5. Hệ thống chuyển đơn sang trạng thái "Thất lạc" (xem Hình A.2), ghi lịch sử trạng thái và hiển thị trạng thái mới cho Admin (xem RT-2).<br>6. Hệ thống kết thúc UC. Admin cũng có thể xác nhận thất lạc ở UC-07 (luồng 7.1). |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
 | **Tần suất sử dụng:** | Chưa có số liệu |  |  |
 | **Quy tắc nghiệp vụ:** | BR-01, BR-06 |  |  |
-| **Thông tin khác:** | Shipper chỉ xem và cập nhật được đơn được phân công cho chính mình (xem SEC-4).<br>Hệ thống từ chối mọi bước chuyển không có trên Hình A.2 và báo lý do (xem Track.Update.Valid).<br>Các bước chuyển T5, T9, T10 chỉ thực hiện qua báo sự cố (xem Issue.Report), không chọn qua Track.Update.Next.<br>Mỗi lần trạng thái đơn thay đổi, màn hình đang mở của Customer và Admin hiển thị trạng thái mới mà không cần tải lại trang (xem RT-1, RT-2); Customer được thông báo theo CI-1, kênh TBD (xem C-2).<br>Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao"; báo sự cố ở trạng thái khác: TBD (xem C-11).<br>Hàng hỏng hoặc thất lạc do Customer báo sau khi đơn "Đã giao" được xử lý qua yêu cầu hoàn hàng (xem UC-05, UC-06). |  |  |
+| **Thông tin khác:** | Shipper chỉ xem và cập nhật được đơn được phân công cho chính mình (xem SEC-4, SEC-8).<br>Hệ thống từ chối mọi bước chuyển không có trên Hình A.2 và báo lý do (xem Track.Update.Valid).<br>Các bước chuyển T5, T9, T10 chỉ thực hiện qua báo sự cố (xem Issue.Report), không chọn qua Track.Update.Next.<br>Mỗi lần trạng thái đơn thay đổi, màn hình đang mở của Customer và Admin hiển thị trạng thái mới mà không cần tải lại trang (xem RT-1, RT-2); Customer được thông báo theo CI-1, kênh TBD (xem C-2).<br>Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao"; báo sự cố ở trạng thái khác: TBD (xem C-11).<br>Hàng hỏng hoặc thất lạc do Customer báo sau khi đơn "Đã giao" được xử lý qua yêu cầu hoàn hàng (xem UC-05, UC-06). |  |  |
 | **Giả định:** | Tài khoản Shipper đã có sẵn (xem AS-2). |  |  |
 
 | **Mã và tên:** | UC-04 Theo dõi đơn hàng |  |  |
@@ -271,8 +273,8 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Customer. |  |  |
 | **Hậu điều kiện:** | POST-1. Yêu cầu hoàn hàng được lưu với trạng thái "Chờ duyệt" và thời điểm gửi (xem Hình A.2).<br>POST-2. Trạng thái đơn hàng không đổi (xem Hình A.2). |  |  |
 | **Luồng chính:** | **5.0 Gửi yêu cầu hoàn hàng**<br>1. Customer chọn một đơn hàng do chính mình tạo và chọn gửi yêu cầu hoàn hàng (xem SEC-3, 5.1).<br>2. Hệ thống kiểm tra đơn đang ở trạng thái "Đã giao" (xem 5.0.E1) và còn trong thời hạn yêu cầu hoàn hàng (xem 5.0.E2).<br>3. Hệ thống hiển thị danh sách lý do hoàn hàng (xem BR-04).<br>4. Customer chọn một lý do và gửi yêu cầu (xem 5.0.E3).<br>5. Hệ thống lưu yêu cầu hoàn hàng với trạng thái "Chờ duyệt" và thời điểm gửi (R1, xem Hình A.2). |  |  |
-| **Luồng thay thế:** | **5.1 Xem trạng thái yêu cầu hoàn hàng**<br>1. Thay vì bước 1 của luồng chính, Customer chọn xem các yêu cầu hoàn hàng đã gửi.<br>2. Hệ thống hiển thị trạng thái hiện tại của các yêu cầu hoàn hàng do chính Customer gửi (xem SEC-2, Hình A.2).<br>3. Hệ thống kết thúc use case. |  |  |
-| **Ngoại lệ:** | **5.0.E1 Đơn chưa ở trạng thái "Đã giao"**<br>1. Hệ thống báo Customer chỉ được yêu cầu hoàn hàng cho đơn ở trạng thái "Đã giao" (xem BR-02).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc use case.<br>**5.0.E2 Quá thời hạn yêu cầu hoàn hàng**<br>1. Hệ thống báo Customer đơn đã quá thời hạn yêu cầu hoàn hàng (xem BR-03); thời hạn là TBD (xem C-4).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc use case.<br>**5.0.E3 Chưa chọn lý do hoàn hàng**<br>1. Hệ thống báo Customer phải chọn một lý do hoàn hàng (xem BR-04).<br>2a. Nếu Customer chọn một lý do, thì quay lại bước 4 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc use case. |  |  |
+| **Luồng thay thế:** | **5.1 Xem trạng thái yêu cầu hoàn hàng**<br>1. Thay vì bước 1 của luồng chính, Customer chọn xem các yêu cầu hoàn hàng đã gửi.<br>2. Hệ thống hiển thị trạng thái hiện tại của các yêu cầu hoàn hàng do chính Customer gửi (xem SEC-2, Hình A.2).<br>3. Hệ thống kết thúc UC. |  |  |
+| **Ngoại lệ:** | **5.0.E1 Đơn chưa ở trạng thái "Đã giao"**<br>1. Hệ thống báo Customer chỉ được yêu cầu hoàn hàng cho đơn ở trạng thái "Đã giao" (xem BR-02).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E2 Quá thời hạn yêu cầu hoàn hàng**<br>1. Hệ thống báo Customer đơn đã quá thời hạn yêu cầu hoàn hàng (xem BR-03); thời hạn là TBD (xem C-4).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E3 Chưa chọn lý do hoàn hàng**<br>1. Hệ thống báo Customer phải chọn một lý do hoàn hàng (xem BR-04).<br>2a. Nếu Customer chọn một lý do, thì quay lại bước 4 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC. |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
 | **Tần suất sử dụng:** | Chưa có số liệu |  |  |
 | **Quy tắc nghiệp vụ:** | BR-02, BR-03, BR-04 |  |  |
@@ -309,7 +311,7 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 - **.List:** Hệ thống phải hiển thị cho Admin danh sách yêu cầu hoàn hàng ở trạng thái "Chờ duyệt" và "Đã chấp nhận", kèm đơn hàng và lý do hoàn hàng của mỗi yêu cầu.
 - **.Approve:** Hệ thống phải chuyển yêu cầu sang trạng thái "Đã chấp nhận" khi Admin chấp nhận yêu cầu đó (R2, xem Hình A.2).
 - **.Reject:** Hệ thống phải chuyển yêu cầu sang trạng thái "Bị từ chối" khi Admin từ chối yêu cầu đó (R3, xem Hình A.2); việc có bắt buộc ghi lý do từ chối hay không là TBD (xem C-6).
-- **.Issue:** Hệ thống phải chuyển đơn hàng sang trạng thái "Hư hỏng" (T11) hoặc "Thất lạc" (T12) theo BR-05 khi Admin chấp nhận yêu cầu có lý do thuộc BR-05 (xem Hình A.2).
+- **.OrderStatus:** Hệ thống phải chuyển đơn hàng sang trạng thái "Hư hỏng" (T11) hoặc "Thất lạc" (T12) theo BR-05 khi Admin chấp nhận yêu cầu có lý do thuộc BR-05 (xem Hình A.2).
 - **.Complete:** Hệ thống phải cho Admin ghi nhận "Hoàn tất" cho yêu cầu ở trạng thái "Đã chấp nhận" (R4, xem Hình A.2) mà không xử lý tiền (xem BR-07).
 - **.Valid:** Hệ thống phải từ chối mọi thao tác chuyển trạng thái yêu cầu hoàn hàng không có trên Hình A.2 và báo lý do (xem BR-01).
 
@@ -346,9 +348,9 @@ Admin xử lý các sự cố Shipper đã báo ở mục 3.4.1, gồm cả ngo�
 | **Điều kiện kích hoạt:** | Có sự cố chưa có kết quả xử lý; hoặc Admin phát hiện một đơn ở trạng thái "Đang giao" bị thất lạc; hoặc Admin đã nhận lại hàng của một đơn ở trạng thái "Đang hoàn hàng". |  |  |
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Admin. |  |  |
 | **Hậu điều kiện:** | POST-1. Sự cố có kết quả xử lý (xem BR-07).<br>POST-2. Đơn trả lại ở trạng thái "Đang hoàn hàng" hoặc "Đã hoàn về người bán"; đơn được Admin xác nhận thất lạc ở trạng thái "Thất lạc" (xem Hình A.2). |  |  |
-| **Luồng chính:** | **7.0 Xử lý sự cố**<br>1. Hệ thống hiển thị cho Admin danh sách sự cố chưa có kết quả xử lý (xem Issue.Resolve.List).<br>2. Admin chọn một sự cố.<br>3. Nếu sự cố thuộc loại "Giao không thành công" (xem 3.0.E2) và đơn đang ở trạng thái "Giao không thành công", hệ thống kiểm tra số lần giao không thành công của đơn đã đạt giới hạn ở BR-06 chưa, với số lần là TBD (xem C-3): đạt thì sang bước 4; ngược lại (chưa đạt, sự cố khác loại, hoặc đơn không còn ở "Giao không thành công") thì sang bước 5 (Admin yêu cầu chuyển trả lại khi chưa đạt: xem 7.0.E1).<br>4. Khi đã đạt giới hạn, Admin phải chuyển đơn sang trả lại trước khi ghi kết quả (xem BR-06, Issue.Resolve.Result); hệ thống chuyển đơn sang "Đang hoàn hàng" (T7, xem Hình A.2).<br>5. Admin ghi kết quả xử lý của sự cố; hệ thống lưu kết quả, chỉ ghi nhận, không xử lý tiền (xem BR-07). Sự cố không còn trong danh sách ở bước 1. |  |  |
-| **Luồng thay thế:** | **7.1 Admin xác nhận thất lạc**<br>1. Thay vì bước 2 của luồng chính, Admin chọn một đơn ở trạng thái "Đang giao" trong danh sách đơn hàng (xem Track.Admin.List) và xác nhận thất lạc.<br>2. Hệ thống ghi sự cố loại "Thất lạc" với người báo là Admin.<br>3. Hệ thống chuyển đơn sang "Thất lạc" (T10, xem Hình A.2).<br>4. Quay lại bước 1 của luồng chính.<br>**7.2 Admin xác nhận đã nhận lại hàng**<br>1. Thay vì bước 1 của luồng chính, Admin chọn một đơn ở trạng thái "Đang hoàn hàng" trong danh sách đơn hàng (xem Track.Admin.List).<br>2. Khi đã nhận lại hàng, Admin xác nhận.<br>3. Hệ thống chuyển đơn sang "Đã hoàn về người bán" (T8, xem Hình A.2). |  |  |
-| **Ngoại lệ:** | **7.0.E1 Admin yêu cầu chuyển trả lại khi chưa đạt số lần giao không thành công ở BR-06** |  |  |
+| **Luồng chính:** | **7.0 Xử lý sự cố**<br>1. Hệ thống hiển thị cho Admin danh sách sự cố chưa có kết quả xử lý (xem Issue.Resolve.List).<br>2. Admin chọn một sự cố.<br>3. Hệ thống kiểm tra loại sự cố, trạng thái đơn và số lần giao không thành công của đơn (xem BR-06; số lần là TBD, xem C-3).<br>3a. Nếu sự cố thuộc loại "Giao không thành công" (xem 3.0.E2), đơn đang ở trạng thái "Giao không thành công" và số lần giao không thành công đã đạt giới hạn ở BR-06, thì sang bước 4.<br>3b. Ngược lại (chưa đạt giới hạn, sự cố khác loại, hoặc đơn không còn ở "Giao không thành công"), thì sang bước 5. Admin yêu cầu chuyển trả lại khi chưa đạt giới hạn: xem 7.0.E1.<br>4. Khi đã đạt giới hạn, Admin phải chuyển đơn sang trả lại trước khi ghi kết quả (xem BR-06, Issue.Resolve.Result); hệ thống chuyển đơn sang "Đang hoàn hàng" (T7, xem Hình A.2).<br>5. Admin ghi kết quả xử lý của sự cố; hệ thống lưu kết quả, chỉ ghi nhận, không xử lý tiền (xem BR-07). Sự cố không còn trong danh sách ở bước 1. |  |  |
+| **Luồng thay thế:** | **7.1 Admin xác nhận thất lạc**<br>1. Thay vì bước 2 của luồng chính, Admin chọn một đơn ở trạng thái "Đang giao" trong danh sách đơn hàng (xem Track.Admin.List) và xác nhận thất lạc.<br>2. Hệ thống ghi sự cố loại "Thất lạc" với người báo là Admin.<br>3. Hệ thống chuyển đơn sang "Thất lạc" (T10, xem Hình A.2).<br>4. Quay lại bước 1 của luồng chính.<br>**7.2 Admin xác nhận đã nhận lại hàng**<br>1. Thay vì bước 1 của luồng chính, Admin chọn một đơn ở trạng thái "Đang hoàn hàng" trong danh sách đơn hàng (xem Track.Admin.List).<br>2. Khi đã nhận lại hàng, Admin xác nhận.<br>3. Hệ thống chuyển đơn sang "Đã hoàn về người bán" (T8, xem Hình A.2).<br>4. Hệ thống kết thúc UC. |  |  |
+| **Ngoại lệ:** | **7.0.E1 Admin yêu cầu chuyển trả lại khi chưa đạt số lần giao không thành công ở BR-06 (xem Issue.Resolve.Return, Track.Update.Valid)** |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
 | **Quy tắc nghiệp vụ:** | BR-01, BR-06, BR-07 |  |  |
 | **Thông tin khác:** | Trạng thái đơn đã đổi ngay khi sự cố được ghi (xem Issue.Report.Status, Issue.Resolve.LostStatus); luồng 7.0 chỉ đổi trạng thái đơn ở bước 4 (T7).<br>Bốn ý của ngoại lệ "Trả lại" nằm ở 3.0.E2 của UC-03; UC này là phần Admin xử lý (T7 ở luồng 7.0, T8 ở luồng 7.2).<br>Mỗi lần đổi trạng thái đơn được ghi vào lịch sử trạng thái (xem Track.Update.History). |  |  |
@@ -482,6 +484,10 @@ Trạng thái được cập nhật theo sự kiện (xem CO-1), nên các yêu 
 
 **SEC-7:** Hệ thống phải chỉ cho phép Admin xử lý sự cố (xem UC-07).
 
+**SEC-8:** Hệ thống phải chỉ cho phép Shipper được phân công cho một đơn hàng cập nhật trạng thái giao hàng của đơn đó (T3, T4, T6, xem Hình A.2) và báo sự cố cho đơn đó (xem Issue.Report).
+
+**SEC-9:** Hệ thống phải cho người dùng đã đăng nhập đăng xuất; sau khi đăng xuất, người dùng phải đăng nhập lại để thực hiện các thao tác ở SEC-1.
+
 ### 6.3 Độ bền vững
 
 **ROB-1:** Khi người dùng đang mở một màn hình hiển thị trạng thái đơn hàng (xem RT-1, RT-2) thì mất kết nối rồi kết nối lại, hệ thống phải hiển thị trạng thái mới nhất của các đơn hàng trên màn hình đó, kể cả thay đổi xảy ra trong lúc mất kết nối.
@@ -494,13 +500,13 @@ Cột Nguồn chỉ ghi "Đề bài" (tài liệu [1], mục 1.4) hoặc "Quyế
 
 | **Mã** | **Định nghĩa** | **Loại** | **Tĩnh hay động** | **Nguồn** |
 |---|---|---|---|---|
-| BR-01 | Trạng thái đơn hàng và trạng thái yêu cầu hoàn hàng chỉ được chuyển theo các bước chuyển trên Hình A.2. | Ràng buộc | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1, S2, S5 |
-| BR-02 | Chỉ được yêu cầu hoàn hàng cho đơn hàng ở trạng thái "Đã giao". | Ràng buộc | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1 |
-| BR-03 | Thời hạn yêu cầu hoàn hàng là TBD (xem C-4), tính từ thời điểm đơn hàng chuyển sang trạng thái "Đã giao". | Ràng buộc | Động | Quyết định nhóm ngày TBD (xem C-15) (mốc tính), tham khảo S1. Con số: TBD (xem C-4) |
-| BR-04 | Lý do hoàn hàng gồm: "Hàng lỗi / hư hỏng", "Chưa nhận được hàng" và các lý do khác TBD (xem C-5). | Dữ kiện | Động | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1 |
-| BR-05 | Khi yêu cầu hoàn hàng được chấp nhận: lý do "Hàng lỗi / hư hỏng" thì đơn hàng chuyển sang "Hư hỏng"; lý do "Chưa nhận được hàng" thì đơn hàng chuyển sang "Thất lạc". | Ràng buộc | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1 |
-| BR-06 | Đơn hàng giao không thành công đủ TBD lần (xem C-3) thì chuyển sang trả lại ("Đang hoàn hàng"); chưa đủ thì được giao lại. Số lần giao không thành công bằng số sự cố loại "Giao không thành công" đã ghi cho đơn hàng. | Ràng buộc | Động | Quyết định nhóm ngày TBD (xem C-15), tham khảo S3. Con số: TBD (xem C-3); S3 không ghi con số |
-| BR-07 | Hệ thống không xử lý tiền (thanh toán, phí giao, phí hoàn, hoàn tiền, bồi thường); hệ thống chỉ ghi nhận kết quả xử lý. | Dữ kiện | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1, S3 |
+| BR-01 | Trạng thái đơn hàng và trạng thái yêu cầu hoàn hàng chỉ được chuyển theo các bước chuyển trên Hình A.2. | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1, S2, S5 |
+| BR-02 | Chỉ được yêu cầu hoàn hàng cho đơn hàng ở trạng thái "Đã giao". | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1 |
+| BR-03 | Thời hạn yêu cầu hoàn hàng là TBD (xem C-4), tính từ thời điểm đơn hàng chuyển sang trạng thái "Đã giao". | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026 (mốc tính), tham khảo S1. Con số: TBD (xem C-4) |
+| BR-04 | Lý do hoàn hàng gồm: "Hàng lỗi / hư hỏng", "Chưa nhận được hàng" và các lý do khác TBD (xem C-5). | Dữ kiện | Động | Quyết định nhóm ngày 31/10/2026, tham khảo S1 |
+| BR-05 | Khi yêu cầu hoàn hàng được chấp nhận: lý do "Hàng lỗi / hư hỏng" thì đơn hàng chuyển sang "Hư hỏng"; lý do "Chưa nhận được hàng" thì đơn hàng chuyển sang "Thất lạc". | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1 |
+| BR-06 | Đơn hàng giao không thành công đủ TBD lần (xem C-3) thì chuyển sang trả lại ("Đang hoàn hàng"); chưa đủ thì được giao lại. Số lần giao không thành công bằng số sự cố loại "Giao không thành công" đã ghi cho đơn hàng. | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026, tham khảo S3. Con số: TBD (xem C-3); S3 không ghi con số |
+| BR-07 | Hệ thống không xử lý tiền (thanh toán, phí giao, phí hoàn, hoàn tiền, bồi thường); hệ thống chỉ ghi nhận kết quả xử lý. | Dữ kiện | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1, S3 |
 
 ## Phụ lục A Mô hình phân tích
 
@@ -565,6 +571,7 @@ Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, 
 | Sự cố | Delivery Issue | — | Vấn đề ghi nhận trong lúc giao hàng, gồm 3 loại: "Hàng hỏng", "Giao không thành công", "Thất lạc". Shipper báo sự cố (Admin cũng ghi được sự cố "Thất lạc"); Admin xử lý (xem 3.4). |
 | TBD | To Be Determined | — | Nhóm chưa chốt, không có nguồn. Mỗi TBD trỏ tới 1 dòng ở Phụ lục C. |
 | Thất lạc | Lost Order | Mất hàng, thất lạc (S3) | Trạng thái kết thúc của đơn hàng khi không tìm thấy hàng. Phát hiện qua 2 ngả: Shipper hoặc Admin xác nhận khi giao, hoặc qua yêu cầu hoàn hàng (xem BR-05, Hình A.2). |
+| TMĐT | E-commerce | — | Viết tắt của "thương mại điện tử", dùng trong tên hệ thống ở Hình 1 và Hình A.1. |
 | Trả lại | Returned Order | "Giao hàng không thành công" → "Đang hoàn hàng" (S5); "hoàn trả hàng" (S3) | Ngoại lệ (xem 3.4): giao không thành công, hàng quay về người bán. Shipper báo, Admin xử lý. Đơn chuyển qua "Đang hoàn hàng" rồi "Đã hoàn về người bán" (xem BR-06, Hình A.2). |
 | Vận đơn | Shipment | Đơn vận chuyển (S5) | Đơn vận chuyển do Admin tạo cho một đơn hàng, có mã vận đơn duy nhất và Shipper được phân công (xem 3.2). |
 | Yêu cầu hoàn hàng | Return Request | Yêu cầu "Trả hàng / Hoàn tiền" (S1) | Yêu cầu Customer gửi cho một đơn "Đã giao", kèm lý do hoàn hàng (xem BR-02, BR-04). Admin chấp nhận hoặc từ chối (xem 3.3). |
@@ -586,7 +593,6 @@ Các vấn đề dưới đây nhóm chưa chốt; mỗi chỗ ghi TBD trong tà
 | C-9 | Ngôn ngữ giao diện (tiếng Việt?) | §2.4 | Cả nhóm | 04/11/2026 |
 | C-10 | Thông tin tài khoản khi Customer đăng ký / đăng nhập | §4.2 (người dùng, thông tin đăng nhập) | Cả nhóm | 04/11/2026 |
 | C-11 | Có báo sự cố được khi đơn ở trạng thái khác "Đang giao" (vd "Chờ lấy hàng", "Đang hoàn hàng") không | Hình A.2, Issue.Report.Type, UC-03, 3.4.1.1, Issue.Resolve.Lost, UC-07 (7.1) | Cả nhóm | 04/11/2026 |
-| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.Issue, UC-06 | Cả nhóm | 04/11/2026 |
+| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.OrderStatus, UC-06 | Cả nhóm | 04/11/2026 |
 | C-13 | Lịch sử trạng thái hiển thị theo thứ tự cũ → mới hay mới → cũ | Track.View.History, UC-04 | Cả nhóm | 04/11/2026 |
 | C-14 | Kết quả xử lý sự cố có bắt buộc nhập không (để trống thì hệ thống báo lỗi, hay vẫn coi sự cố đã xử lý) | Issue.Resolve.Result, UC-07 (7.0 bước 5), §4.2 | Cả nhóm | 04/11/2026 |
-| C-15 | Ngày họp nhóm chốt các quyết định theo file 03 (ngày ghi ở cột Nguồn của BR) | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-07 (§7) | Cả nhóm | 04/11/2026 |

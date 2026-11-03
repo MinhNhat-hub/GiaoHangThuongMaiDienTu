@@ -8,7 +8,7 @@
 ## Review
 - Ai trong nhóm cũng review được Test Plan của bạn: bạn gửi bản nháp cho nhóm ngày 03/11.
 - Bạn cũng review được SRS và việc của người khác. SRS nháp có ngày 02/11, Comment trả chậm nhất 03/11.
-- Review theo checklist ở mục 5 của file tổng quan. SRS góp ý bằng Comment trong Word; Test Plan góp ý trên PR theo `docs/templates/review-pr.md`. Không sửa thẳng file của người kia.
+- Review theo checklist ở mục 5 của file tổng quan. SRS và Test Plan góp ý trên PR theo `docs/templates/review-pr.md`. Không sửa thẳng file của người kia.
 
 ## Đọc trước (xong trước buổi họp 29/10)
 | Tài liệu | Phần | Học gì |
@@ -24,7 +24,7 @@
 |---|---|---|---|
 | 1 | Họp cả nhóm (TV1 ghi biên bản) | T5 29/10 | — |
 | 2 | Viết các mục **không phụ thuộc SRS**: §1 (trừ 1.2, mục này trỏ tới SRS §1.3), §3 (6 loại kiểm thử, giai đoạn, công cụ), §4, §6. Nhận danh sách ID từ TV1 | T7 31/10 | Khung Test Plan |
-| 3 | Viết §2 theo danh sách ID. Nhận SRS nháp, review SRS cùng nhóm | T2 02/11 – T3 03/11 | §2 nháp; Comment trong `SRS.docx` |
+| 3 | Viết §2 theo danh sách ID. Nhận SRS nháp, review SRS cùng nhóm | T2 02/11 – T3 03/11 | §2 nháp; góp ý trên PR SRS |
 | 4 | Viết xong §2 cho mọi ID, §2.3, ước lượng ở §5. Gửi nhóm review | T3 03/11 | Test Plan nháp (Markdown trong `docs/test-plan/`), mở PR |
 | 5 | Sửa theo Comment của TV1. Cập nhật §2 nếu SRS đổi ID | T4 04/11 | Comment đã xử lý |
 | 6 | Chốt: đối chiếu §2 với ID trong SRS bản cuối | T5 05/11 | Test Plan bản cuối, xuất `TestPlan.docx` |

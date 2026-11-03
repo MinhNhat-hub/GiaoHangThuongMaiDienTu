@@ -15,7 +15,6 @@ Các vấn đề dưới đây nhóm chưa chốt; mỗi chỗ ghi TBD trong tà
 | C-9 | Ngôn ngữ giao diện (tiếng Việt?) | §2.4 | Cả nhóm | 04/11/2026 |
 | C-10 | Thông tin tài khoản khi Customer đăng ký / đăng nhập | §4.2 (người dùng, thông tin đăng nhập) | Cả nhóm | 04/11/2026 |
 | C-11 | Có báo sự cố được khi đơn ở trạng thái khác "Đang giao" (vd "Chờ lấy hàng", "Đang hoàn hàng") không | Hình A.2, Issue.Report.Type, UC-03, 3.4.1.1, Issue.Resolve.Lost, UC-07 (7.1) | Cả nhóm | 04/11/2026 |
-| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.Issue, UC-06 | Cả nhóm | 04/11/2026 |
+| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.OrderStatus, UC-06 | Cả nhóm | 04/11/2026 |
 | C-13 | Lịch sử trạng thái hiển thị theo thứ tự cũ → mới hay mới → cũ | Track.View.History, UC-04 | Cả nhóm | 04/11/2026 |
 | C-14 | Kết quả xử lý sự cố có bắt buộc nhập không (để trống thì hệ thống báo lỗi, hay vẫn coi sự cố đã xử lý) | Issue.Resolve.Result, UC-07 (7.0 bước 5), §4.2 | Cả nhóm | 04/11/2026 |
-| C-15 | Ngày họp nhóm chốt các quyết định theo file 03 (ngày ghi ở cột Nguồn của BR) | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-07 (§7) | Cả nhóm | 04/11/2026 |

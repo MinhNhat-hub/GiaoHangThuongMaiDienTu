@@ -49,7 +49,7 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 - Thanh toán, phí, hoàn tiền, bồi thường. Hệ thống chỉ ghi nhận kết quả xử lý (xem BR-07).
 - Danh mục sản phẩm, đánh giá sản phẩm, kho trung chuyển.
 
-Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1 và PRE-1 của các Use Case.
+Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1, SEC-9 và PRE-1 của các Use Case.
 
 ## 1.4 Tài liệu tham khảo
 

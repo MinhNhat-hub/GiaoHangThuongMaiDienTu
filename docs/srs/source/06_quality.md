@@ -16,6 +16,8 @@ Trạng thái được cập nhật theo sự kiện (xem CO-1), nên các yêu 
 - **SEC-5:** Hệ thống phải chỉ cho phép Admin tạo vận đơn và phân công đơn hàng cho Shipper.
 - **SEC-6:** Hệ thống phải chỉ cho phép Admin duyệt, từ chối và ghi nhận hoàn tất yêu cầu hoàn hàng.
 - **SEC-7:** Hệ thống phải chỉ cho phép Admin xử lý sự cố (xem UC-07).
+- **SEC-8:** Hệ thống phải chỉ cho phép Shipper được phân công cho một đơn hàng cập nhật trạng thái giao hàng của đơn đó (T3, T4, T6, xem Hình A.2) và báo sự cố cho đơn đó (xem Issue.Report).
+- **SEC-9:** Hệ thống phải cho người dùng đã đăng nhập đăng xuất; sau khi đăng xuất, người dùng phải đăng nhập lại để thực hiện các thao tác ở SEC-1.
 
 ## 6.3 Độ bền vững
 
