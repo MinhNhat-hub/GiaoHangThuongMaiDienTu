@@ -19,6 +19,7 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 ## Quy ước chung
 
 - Code viết bằng tiếng Anh: tên biến, hàm, lớp, tệp, comment trong code, log. Commit, PR, review, comment viết tiếng Việt được, thuật ngữ kỹ thuật giữ tiếng Anh (xem mục "Ngôn ngữ" trong `README.md`).
+- Tên file và tên folder trong toàn repo (cả `docs/`, `diagrams/`) đặt bằng tiếng Anh, không dấu, không tiếng Việt không dấu.
 - Code và test không chứa ID SRS (`UC-`, `FR-`, `NFR-`, `BR-`…) ở bất kỳ đâu: tên biến, hàm, lớp, tệp, tên test, comment, chuỗi, log. Chỉ mô tả làm gì. Truy vết ghi trong mô tả PR.
 - Không comment trong thân hàm. Comment ngắn đặt trên hàm; header của file chỉ chứa TODO còn cần bổ sung (xem mục "Comment trong code" của `README.md`).
 - Sơ đồ thiết kế viết bằng Mermaid trong `diagrams/`.
