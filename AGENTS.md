@@ -1,78 +1,33 @@
-# AGENTS.md — quy tắc và ràng buộc kiến trúc cho agent
+# AGENTS.md — quy tắc cho agent lập trình
 
-> Hầu hết agent lập trình đọc tự động tệp này trước khi làm việc trong kho. Trong đây ghi những gì agent **phải** tuân theo và **không được** làm. Phần "Kiến trúc" viết ở Gói 5, sau khi đã có kiến trúc. Trước đó cứ để nguyên "Quy tắc làm việc", "Khi nhận việc" và "Quy ước chung".
->
-> Muốn thử xem nó có tác dụng không thì giao cho agent một việc đụng tới ranh giới module. Agent xuyên qua ranh giới nghĩa là ràng buộc viết chưa đủ rõ, sửa tệp này trước rồi hãy sửa mã.
+Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ranh giới module nghĩa là ràng buộc viết chưa đủ rõ: sửa tệp này trước rồi hãy sửa mã.
 
-## Quy tắc làm việc (giữ nguyên)
+## Quy tắc làm việc
 
-1. Agent không merge và không đẩy thẳng lên nhánh chính. Mọi thay đổi vào nhánh chính đi qua PR, do người merge sau khi một thành viên khác người điều khiển đã review.
-2. Mỗi PR ghi ba thông tin ở dòng đầu: `Agent: <công cụ> · Điều khiển: N07-B · Review: N07-A`, dòng sau ghi đúng một `Đóng #<số hạng mục>`. PR tài liệu (chỉ sửa `bao-cao/`, `docs/`, `diagrams/`, `phieu-thay-doi/` hoặc `.md` ở gốc) không cần `Đóng #`.
-3. Agent chỉ làm trên nhánh riêng, không giữ khoá triển khai, không ghi vào cơ sở dữ liệu thật.
-4. Gọi thành viên bằng mã `N07-A`, `N07-B`… Không ghi họ tên, MSSV, email vào tệp, commit hay log.
-5. Agent không viết phụ lục phản tỉnh cá nhân trong `bao-cao/goi6-tong-ket.md`.
-6. Test trong `tests/luat/` do người viết và là đặc tả. Agent không sửa, không xoá, không đổi tên, không đánh dấu bỏ qua test nào trong đó, không nới assert, không viết mã xử lý riêng đúng đầu vào của test.
-7. Test mâu thuẫn với đặc tả, với test khác, hoặc không qua được nếu không sửa test: dừng lại, báo người điều khiển test nào, mâu thuẫn chỗ nào. Không tự chọn cách hiểu.
+1. Agent chỉ làm trên nhánh riêng, không merge, không đẩy thẳng lên `main`.
+2. Không ghi vào cơ sở dữ liệu thật, không giữ khoá triển khai.
+3. Không commit khoá API, mật khẩu, tệp `.env`.
+4. Test do người viết là đặc tả: agent không sửa, không xoá, không đánh dấu bỏ qua, không nới assert, không viết mã xử lý riêng đúng đầu vào của test.
+5. Test mâu thuẫn với SRS hoặc với test khác: dừng lại, báo test nào, mâu thuẫn chỗ nào. Không tự chọn cách hiểu.
 
-## Khi nhận việc (giữ nguyên)
+## Khi nhận việc
 
-Người điều khiển giao việc theo sáu dòng:
+- Đối chiếu yêu cầu trong `docs/SRS/nguon/` (FR, BR-xx, UC-xx). Việc cần một luật chưa có trong SRS thì hỏi lại trước khi làm.
+- Không tự thêm luật, giới hạn, con số hay trạng thái mà SRS chưa có. Thấy cần thì nêu trong phần trả lời, không đưa vào mã.
+- Xong việc thì báo: đã sửa tệp nào, đã chạy gì và kết quả, chỗ nào còn chưa chắc.
 
-```
-Bối cảnh: <đồ án, nhánh, tệp cần đọc>
-Việc: <làm gì, xong thì có gì>
-Ràng buộc: <tệp được sửa, quy ước phải theo>
-Không được: <những gì không đụng tới>
-Nhóm sẽ kiểm bằng: <test, đối chiếu sơ đồ, chạy thử, đọc diff>
-Hỏi lại nếu: <chỗ chưa rõ thì dừng và hỏi>
-```
+## Quy ước chung
 
-- Việc gắn với một hạng mục trên Issues: đọc tiêu chí chấp nhận Given–When–Then của hạng mục đó; mã xong phải thoả từng khối.
-- Thiếu dòng nào, hoặc việc cần một luật chưa có trong `docs/yeu-cau.md`, đặc tả, `diagrams/` hay `tests/luat/`: hỏi lại người điều khiển trước khi làm. Không tự chọn cách hiểu.
-- Không tự thêm luật, giới hạn, con số hay trạng thái mà tài liệu của nhóm chưa có. Thấy cần thì nêu trong phần trả lời, không đưa vào mã.
-- Xong việc thì báo: đã sửa tệp nào; đã chạy gì và kết quả nguyên văn; nhóm kiểm theo dòng "Nhóm sẽ kiểm bằng" ở đâu, ví dụ chạy thử ca nào, đối chiếu lớp nào; chỗ nào còn chưa chắc.
+- Sơ đồ thiết kế viết bằng Mermaid trong `diagrams/`.
+- Thuật ngữ dùng đúng `docs/SRS/nguon/92_PhuLucB_ThuatNgu.md`.
+- Commit message một dòng, nói **vì sao** chứ không phải cái gì.
 
-## Quy ước chung (giữ nguyên)
+## Kiến trúc
 
-- Sơ đồ viết bằng Mermaid trong `diagrams/`, không dùng ảnh.
-- Không commit khoá API, mật khẩu, tệp `.env`.
-- Không sửa `.github/`, `scripts/`, `THANH-VIEN.md` và phiếu đã sinh trong `phieu-thay-doi/`.
-- Commit message tiếng Việt hoặc Anh, một dòng, nói **vì sao** chứ không phải cái gì.
-
-## Kiến trúc (viết ở Gói 5)
-
-### Phân tầng
-<!-- Ví dụ, thay bằng của nhóm:
-- `src/domain/`: thực thể, giá trị, luật nghiệp vụ. KHÔNG import gì từ tầng khác.
-- `src/app/`: use case, điều phối. Import domain. KHÔNG biết về HTTP hay CSDL.
-- `src/infra/`: CSDL, gọi API ngoài, gửi thông báo. Hiện thực interface do domain/app định nghĩa.
-- `src/ui/`: giao diện. Chỉ gọi app.
--->
-
-### Bất biến nghiệp vụ — KHÔNG được vi phạm
-<!-- Ví dụ:
-- Một phòng không có hai lượt đặt trùng giờ. Kiểm tại `domain/DatCho.kiemTraTrung()`, không kiểm ở UI.
-- Điểm thưởng không âm. Enforce trong constructor của `Diem`.
--->
-
-### Ranh giới — agent KHÔNG được
-<!-- Ví dụ:
-- Không gọi CSDL trực tiếp từ `src/ui/` hay `src/domain/`.
-- Không gọi `sendEmail`/`sendPush` từ bất kỳ đâu ngoài `infra/thong-bao/`.
--->
-
-### Khi thêm tính năng mới
-<!-- Ví dụ:
-1. Thêm use case vào `diagrams/use-case.mmd` trước.
-2. Thêm lớp vào `diagrams/class.mmd`.
-3. Rồi mới viết mã. Sơ đồ là nguồn sự thật.
--->
+<!-- Điền khi chốt công nghệ ở giai đoạn 2: phân tầng, bất biến nghiệp vụ (BR-xx đặt ở lớp nào), ranh giới agent không được vượt. -->
 
 ## Kiểm thử
 
-- Test cho luật nghiệp vụ nằm trong `tests/luat/`, đặt tên theo mã luật (`test_BR03_quay_da_nhan_thi_khong_huy_duoc`), chạy không cần cơ sở dữ liệu.
-- Test agent viết thêm đặt ngoài `tests/luat/`, ví dụ `tests/khac/`.
+- Test luật nghiệp vụ đặt tên theo mã luật, ví dụ `test_BR03_quay_da_nhan_thi_khong_huy_duoc`.
 - Xong việc thì chạy toàn bộ test.
-<!-- Ghi lệnh chạy test của nhóm, ví dụ:
-- Chạy: `python -m pytest tests -v` / `node --test` / `npm test`
--->
+<!-- Ghi lệnh chạy test của nhóm khi đã chọn công nghệ. -->

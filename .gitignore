@@ -7,7 +7,6 @@ __pycache__/
 dist/
 build/
 /tmp/
-.se113/dau-vao/
 xuat-*.txt
 xuat-*.json
 .coverage

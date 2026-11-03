@@ -1,8 +1,8 @@
 # Sơ đồ
 
-Tất cả viết bằng **Mermaid**, đuôi `.mmd`. GitHub render trực tiếp khi mở tệp `.md` có khối ```mermaid. Còn kiểm gói thì đọc tệp `.mmd` thuần, nên ở đây **không** bọc trong ```mermaid.
+Tất cả viết bằng **Mermaid**, đuôi `.mmd`, không bọc trong ```mermaid.
 
-## Tên tệp kiểm gói tìm
+## Tên tệp
 
 | Gói | Tệp | Loại Mermaid |
 |---|---|---|
