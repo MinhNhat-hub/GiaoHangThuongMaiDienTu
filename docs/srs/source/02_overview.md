@@ -4,7 +4,7 @@
 
 Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử là một hệ thống phần mềm mới. Hệ thống là web riêng của một cửa hàng, không phải sàn có nhiều người bán (xem AS-1). Ba lớp người dùng làm việc với hệ thống: Customer, Admin và Shipper (xem 2.2). Sơ đồ ngữ cảnh ở Hình 1 thể hiện các lớp người dùng và dữ liệu trao đổi giữa từng lớp với hệ thống. Phiên bản này không kết nối với hệ thống bên ngoài nào (xem 5.2, C-2).
 
-![Hình 1. Sơ đồ ngữ cảnh của hệ thống](../so-do/ngu-canh.png)
+![Hình 1. Sơ đồ ngữ cảnh của hệ thống](../diagrams/context.png)
 
 ## 2.2 Các lớp người dùng
 

@@ -6,14 +6,14 @@ Hạn nộp: **Thứ Sáu 06/11/2026** (file .docx) · Chốt nội bộ: **Th�
 | File | Ai đọc | Nội dung |
 |---|---|---|
 | File này | Cả nhóm | Quyết định đã chốt, phân công, lịch, review, việc còn mở |
-| [KeHoach/01_DeCuong_SRS.md](KeHoach/01_DeCuong_SRS.md) | TV1 viết, TV2 review | Từng mục SRS: viết gì, học mẫu nào. **Quy ước ID nằm ở đây** |
-| [KeHoach/02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md) | TV2 viết, TV1 review | Từng mục Test Plan theo slide giảng viên |
-| [KeHoach/03_ThamKhao_Shopee.md](KeHoach/03_ThamKhao_Shopee.md) | Cả nhóm | Quy trình Shopee/SPX có nguồn → Customer là ai, hoàn hàng / trả lại, trạng thái |
-| [KeHoach/04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md) | Cả nhóm | Đủ 79 task backlog: giai đoạn nào, ai làm |
-| [KeHoach/TV1_SRS.md](KeHoach/TV1_SRS.md) | TV1 | Việc của người viết SRS |
-| [KeHoach/TV2_TestPlan.md](KeHoach/TV2_TestPlan.md) | TV2 | Việc của người viết Test Plan |
-| [KeHoach/TV3_Frontend.md](KeHoach/TV3_Frontend.md) | TV3 | Việc của người làm frontend |
-| [KeHoach/TV4_Backend.md](KeHoach/TV4_Backend.md) | TV4 | Việc của người làm backend |
+| [01_srs_outline.md](01_srs_outline.md) | TV1 viết, TV2 review | Từng mục SRS: viết gì, học mẫu nào. **Quy ước ID nằm ở đây** |
+| [02_test_plan_outline.md](02_test_plan_outline.md) | TV2 viết, TV1 review | Từng mục Test Plan theo slide giảng viên |
+| [03_shopee_reference.md](03_shopee_reference.md) | Cả nhóm | Quy trình Shopee/SPX có nguồn → Customer là ai, hoàn hàng / trả lại, trạng thái |
+| [04_backlog_assignment.md](04_backlog_assignment.md) | Cả nhóm | Đủ 79 task backlog: giai đoạn nào, ai làm |
+| [TV1_SRS.md](TV1_SRS.md) | TV1 | Việc của người viết SRS |
+| [TV2_TestPlan.md](TV2_TestPlan.md) | TV2 | Việc của người viết Test Plan |
+| [TV3_Frontend.md](TV3_Frontend.md) | TV3 | Việc của người làm frontend |
+| [TV4_Backend.md](TV4_Backend.md) | TV4 | Việc của người làm backend |
 
 Mỗi file TV chia thành các bước có đầu ra riêng. Bước của TV1, TV2 có hạn cụ thể; bước của TV3, TV4 chờ hạn cuối kỳ (mục 6.1). Sau này mỗi bước tách được thành 1 issue GitHub (bàn sau).
 
@@ -33,7 +33,7 @@ Mỗi file TV chia thành các bước có đầu ra riêng. Bước của TV1, 
 | 2 | Admin / Report / Auth | Admin là tác nhân, Report và Auth chưa rõ | Xem 1.1 |
 | 3 | Real-time | Theo sự kiện: Shipper xác nhận thì trạng thái đổi luôn, không tải lại theo chu kỳ | Xem 1.2 |
 | 4 | Cách chia việc | Theo vai trò, 4 người ngang nhau, không phân trưởng nhóm (phương án A) | Mục 2 |
-| 5 | Ngôn ngữ | Tiếng Việt | Tên mục SRS đã dịch sẵn trong [01_DeCuong_SRS.md](KeHoach/01_DeCuong_SRS.md) |
+| 5 | Ngôn ngữ | Tiếng Việt | Tên mục SRS đã dịch sẵn trong [01_srs_outline.md](01_srs_outline.md) |
 | 6 | Định dạng nộp | .docx | Xem 1.3 |
 | 7 | Hạn cuối kỳ | Chưa có | Các mốc sau 06/11 ghi "Chưa xác định" (mục 6.1) |
 | 8 | Template / Checklist Test Plan của giảng viên | Không có | Giữ cấu trúc slide 8 + checklist tự rút từ slide (mục 6.1) |
@@ -89,7 +89,7 @@ Cách đưa vào SRS: **không viết thành tính năng riêng ở §3**, vì �
 | Test case chi tiết A69 | Slide 34 tách Test Plan, Test Cases, Test Report thành 3 sản phẩm bàn giao riêng; slide 33 có mốc *Test design* riêng, sau Test planning. Hạn 06/11 chỉ cần Test Plan |
 | Report A41, A54–A57, A70 | Ngoài phạm vi (mục 1.1) |
 
-Nếu giảng viên yêu cầu khác thì người nhận task đó trong [04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md) làm sớm.
+Nếu giảng viên yêu cầu khác thì người nhận task đó trong [04_backlog_assignment.md](04_backlog_assignment.md) làm sớm.
 
 ---
 
@@ -100,11 +100,11 @@ Nếu giảng viên yêu cầu khác thì người nhận task đó trong [04_Ba
 | Người | Vai trò | Trước 06/11 | Sau 06/11 (giai đoạn 2) | Review chéo |
 |---|---|---|---|---|
 | **TV1** | SRS | Toàn bộ SRS, gồm 4 sơ đồ (ngữ cảnh, ERD, Use Case, trạng thái) | Cập nhật SRS, hướng dẫn sử dụng, báo cáo cuối (5 task) | Với TV2 |
-| **TV2** | Test Plan | Toàn bộ Test Plan | Viết test case, chạy system / regression test (5 task: A69, A80, A81, A83, A84). Kiểm thêm chỗ nối sau khi TV3, TV4 làm xong A59, A60, A62 (mục 6 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md)) | Với TV1 |
+| **TV2** | Test Plan | Toàn bộ Test Plan | Viết test case, chạy system / regression test (5 task: A69, A80, A81, A83, A84). Kiểm thêm chỗ nối sau khi TV3, TV4 làm xong A59, A60, A62 (mục 6 của [02_test_plan_outline.md](02_test_plan_outline.md)) | Với TV1 |
 | **TV3** | Frontend | Không có việc phải nộp | 9 mockup + phần giao diện của 36 task chung với TV4 | Với TV4 |
 | **TV4** | Backend | Không có việc phải nộp | 5 sơ đồ thiết kế + phần server của 36 task chung với TV3 | Với TV3 |
 
-Chi tiết từng task: [04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md). Cách làm từng người: các file TV.
+Chi tiết từng task: [04_backlog_assignment.md](04_backlog_assignment.md). Cách làm từng người: các file TV.
 
 ---
 
@@ -164,15 +164,15 @@ Thứ tự phụ thuộc: **danh sách ID của TV1 (31/10)** là mốc quan tr�
 
 | Cặp | Review cái gì | Cách làm |
 |---|---|---|
-| TV1 ↔ TV2 | SRS và Test Plan (giai đoạn 1) | Comment trong Word. TV2 review SRS theo checklist bên dưới; TV1 review Test Plan theo checklist ở mục 7 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md) |
+| TV1 ↔ TV2 | SRS và Test Plan (giai đoạn 1) | Comment trong Word. TV2 review SRS theo checklist bên dưới; TV1 review Test Plan theo checklist ở mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md) |
 | TV3 ↔ TV4 | Code (giai đoạn 2) | Mọi thay đổi đi qua pull request trên GitHub; người kia duyệt rồi mới gộp vào nhánh chính. Checklist review code chốt khi bắt đầu giai đoạn 2 (YAGNI) |
 
 Checklist review SRS (TV2 dùng):
 - [ ] Mỗi yêu cầu chức năng là 1 câu "Hệ thống phải…", có ID, kiểm được.
 - [ ] Không chép lại nội dung BR / trạng thái / thuật ngữ, chỉ ghi ID hoặc tham chiếu.
-- [ ] Mỗi UC đủ các trường của mẫu COS. UC đơn giản được bỏ 2 trường như COS UC-5 (danh sách ở mục 2 của [01_DeCuong_SRS.md](KeHoach/01_DeCuong_SRS.md)).
+- [ ] Mỗi UC đủ các trường của mẫu COS. UC đơn giản được bỏ 2 trường như COS UC-5 (danh sách ở mục 2 của [01_srs_outline.md](01_srs_outline.md)).
 - [ ] Mỗi ngoại lệ của đề (hỏng, trả lại, thất lạc) đủ 4 ý: điều kiện phát hiện, ai phát hiện, hệ thống làm gì, chuyển sang trạng thái nào.
-- [ ] Mỗi yêu cầu có ID đều kiểm được, để Test Plan §2 có dòng cho nó (luật phủ ở mục 3 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md)).
+- [ ] Mỗi yêu cầu có ID đều kiểm được, để Test Plan §2 có dòng cho nó (luật phủ ở mục 3 của [02_test_plan_outline.md](02_test_plan_outline.md)).
 - [ ] Không có số liệu tự đặt ra (tần suất dùng, số người dùng…). Chưa có thì ghi "chưa có số liệu".
 - [ ] Không có nội dung ngoài phạm vi (mục 1.1, 1.4).
 
@@ -185,10 +185,10 @@ Checklist review SRS (TV2 dùng):
   - Test Plan §5 chỉ ghi ngày cho mốc Test planning; các mốc sau ghi "Chưa xác định".
   - TV2 ghi điều này vào Test Plan §1.5 Ràng buộc và §1.6 Rủi ro.
   - Khi có hạn thì nâng Test Plan lên v1.1 và chốt hạn cho giai đoạn 2.
-- **Giảng viên không có `Template_Test Plan.doc` và `Checklist_Test plan review.xls`.** Giữ cấu trúc slide 8 và checklist tự rút từ slide 9–34 (mục 7 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md)).
+- **Giảng viên không có `Template_Test Plan.doc` và `Checklist_Test plan review.xls`.** Giữ cấu trúc slide 8 và checklist tự rút từ slide 9–34 (mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md)).
 
 ### 6.2 Tác nhân và hoàn hàng / trả lại: chốt theo Shopee
-Chi tiết, nguồn và lý do nằm ở [KeHoach/03_ThamKhao_Shopee.md](KeHoach/03_ThamKhao_Shopee.md). Tóm tắt:
+Chi tiết, nguồn và lý do nằm ở [03_shopee_reference.md](03_shopee_reference.md). Tóm tắt:
 1. **Tác nhân:**
    - **Customer = người mua**, giống người mua trên Shopee: tạo đơn, theo dõi, yêu cầu hoàn hàng.
    - **Admin = người bán + sàn**, gộp làm một.

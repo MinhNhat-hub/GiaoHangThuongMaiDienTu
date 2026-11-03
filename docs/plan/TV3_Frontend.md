@@ -8,7 +8,7 @@ Giao diện web cho 3 vai trò: Customer, Shipper, Admin.
   - Phần giao diện của 28 task chức năng. Mỗi task này làm chung với TV4: bạn làm giao diện, TV4 làm server.
   - Unit test và sửa lỗi phần giao diện: 8 task chung với TV4 (A73–A79, A82).
   - Tổng cộng: 9 task riêng + 36 task chung (28 task chức năng + 8 task test/sửa lỗi), khớp file 04.
-- Danh sách task đầy đủ: [04_Backlog_PhanCong.md](04_Backlog_PhanCong.md), lọc cột "Người" có TV3.
+- Danh sách task đầy đủ: [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV3.
 
 ## Review chéo với TV4
 - Mọi thay đổi code đi qua pull request trên GitHub. TV4 review rồi mới được gộp vào nhánh chính.

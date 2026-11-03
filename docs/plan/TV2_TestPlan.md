@@ -1,9 +1,9 @@
 # TV2 – Test Plan
-"Viết gì" của từng mục xem trong [02_DeCuong_TestPlan.md](02_DeCuong_TestPlan.md). File này chỉ nói: làm theo thứ tự nào, hạn nào, nộp ra cái gì, ai review.
+"Viết gì" của từng mục xem trong [02_test_plan_outline.md](02_test_plan_outline.md). File này chỉ nói: làm theo thứ tự nào, hạn nào, nộp ra cái gì, ai review.
 
 ## Bạn sở hữu
 - **Toàn bộ Test Plan:** 6 mục theo slide 8, kể cả §2 (dòng kiểm thử cho mọi yêu cầu có ID trong SRS).
-- **Backlog giai đoạn 1:** A42. Viết Test Plan không có trong backlog nhưng là việc chính của bạn. Giai đoạn 2: xem [04_Backlog_PhanCong.md](04_Backlog_PhanCong.md), lọc cột "Người" có TV2.
+- **Backlog giai đoạn 1:** A42. Viết Test Plan không có trong backlog nhưng là việc chính của bạn. Giai đoạn 2: xem [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV2.
 
 ## Review chéo với TV1
 - Bạn review SRS của TV1: nhận bản nháp ngày 02/11, trả Comment chậm nhất 03/11.
@@ -16,7 +16,7 @@
 | `4_Test-Plan_v1.0.pdf` | Slide 5–34 | Toàn bộ khung Test Plan |
 | `COS SRS.docx` | §3.1 (FR), §6 (NFR) | Yêu cầu viết thế nào, để biết lấy ID nào vào §2 |
 | `COS Use Cases.docx` | UC-1, phần Exceptions | Mỗi ngoại lệ là ít nhất 1 dòng kiểm thử |
-| [03_ThamKhao_Shopee.md](03_ThamKhao_Shopee.md) | Mục 3.3, 3.4, 4 | Trạng thái và các ngả ngoại lệ, để thiết kế kiểm thử chuyển trạng thái |
+| [03_shopee_reference.md](03_shopee_reference.md) | Mục 3.3, 3.4, 4 | Trạng thái và các ngả ngoại lệ, để thiết kế kiểm thử chuyển trạng thái |
 | File tổng quan | Mục 1.2 | Real-time kiểm kiểu có/không |
 
 ## Các bước
@@ -40,8 +40,8 @@
 - §2 phụ thuộc SRS. Danh sách ID gửi sớm ngày 31/10 là để bạn không phải chờ tới 02/11. Nếu 31/10 chưa có danh sách thì làm tiếp các mục ở bước 2 và báo cả nhóm.
 
 ## Xong khi
-- [ ] Qua hết checklist ở mục 7 của [02_DeCuong_TestPlan.md](02_DeCuong_TestPlan.md).
-- [ ] Mọi ID trong SRS bản cuối có dòng ở §2, hoặc có lý do ở §2.3 (luật phủ ở mục 3 của [02_DeCuong_TestPlan.md](02_DeCuong_TestPlan.md)).
+- [ ] Qua hết checklist ở mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md).
+- [ ] Mọi ID trong SRS bản cuối có dòng ở §2, hoặc có lý do ở §2.3 (luật phủ ở mục 3 của [02_test_plan_outline.md](02_test_plan_outline.md)).
 - [ ] Kiểm thử chuyển trạng thái có cả các bước chuyển **không hợp lệ**. Real-time kiểm bằng 2 phiên trình duyệt song song.
 - [ ] Số ước lượng ở §5 do bạn ước lượng (slide 30), không lấy số của nhóm khác.
 - [ ] Mọi Comment của TV1 đã xử lý.

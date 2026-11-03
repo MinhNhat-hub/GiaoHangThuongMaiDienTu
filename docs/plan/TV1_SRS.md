@@ -1,10 +1,10 @@
 # TV1 – SRS
-"Viết gì" của từng mục xem trong [01_DeCuong_SRS.md](01_DeCuong_SRS.md). File này chỉ nói: làm theo thứ tự nào, hạn nào, nộp ra cái gì, ai review.
+"Viết gì" của từng mục xem trong [01_srs_outline.md](01_srs_outline.md). File này chỉ nói: làm theo thứ tự nào, hạn nào, nộp ra cái gì, ai review.
 
 ## Bạn sở hữu
 - **Toàn bộ SRS:** §1–§7, Phụ lục A (sơ đồ Use Case, sơ đồ trạng thái), Phụ lục B (thuật ngữ), Phụ lục C (vấn đề mở).
 - **4 sơ đồ:** sơ đồ ngữ cảnh (§2.1), ERD (§4.1), sơ đồ Use Case (A.1), sơ đồ trạng thái (A.2).
-- **Backlog giai đoạn 1:** A4, A5, A6, A17, A29, A30, A31. Giai đoạn 2: xem [04_Backlog_PhanCong.md](04_Backlog_PhanCong.md), lọc cột "Người" có TV1.
+- **Backlog giai đoạn 1:** A4, A5, A6, A17, A29, A30, A31. Giai đoạn 2: xem [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV1.
 
 ## Review chéo với TV2
 - TV2 review SRS của bạn: bạn gửi bản nháp ngày 02/11, TV2 trả Comment chậm nhất 03/11.
@@ -19,7 +19,7 @@
 | `COS Business Rules.docx` | Cả file | Bảng 5 cột của quy tắc nghiệp vụ |
 | `COS Vision and Scope.docx` | 2.1 Major Features, 2.3 Limitations and Exclusions | Cách viết §1.3 |
 | `PearlsFromSand.com SRS Example.docx` | §3 (UC trong SRS), mục 6 (BR), Appendix B (Issues List) | Cách gộp nhiều tài liệu vào 1 SRS |
-| [03_ThamKhao_Shopee.md](03_ThamKhao_Shopee.md) | Toàn bộ | Tác nhân, hoàn hàng / trả lại, trạng thái |
+| [03_shopee_reference.md](03_shopee_reference.md) | Toàn bộ | Tác nhân, hoàn hàng / trả lại, trạng thái |
 | File tổng quan | Mục 1.1, 1.2 | Auth, Report, cách viết real-time |
 
 ## Các bước
@@ -45,11 +45,11 @@
 
 ## Xong khi
 - [ ] Mỗi FR là 1 câu "Hệ thống phải…", có ID, kiểm được.
-- [ ] 7 UC theo mẫu ở mục 2 của [01_DeCuong_SRS.md](01_DeCuong_SRS.md). UC-01, UC-03, UC-05 là UC đầy đủ; UC-02, UC-04, UC-06, UC-07 là UC đơn giản. Mỗi UC có PRE-1 về đăng nhập.
+- [ ] 7 UC theo mẫu ở mục 2 của [01_srs_outline.md](01_srs_outline.md). UC-01, UC-03, UC-05 là UC đầy đủ; UC-02, UC-04, UC-06, UC-07 là UC đơn giản. Mỗi UC có PRE-1 về đăng nhập.
 - [ ] 3 ngoại lệ của đề (hỏng, trả lại, thất lạc) đủ 4 ý: điều kiện phát hiện, ai phát hiện, hệ thống làm gì, chuyển sang trạng thái nào.
 - [ ] Trạng thái chỉ định nghĩa ở sơ đồ A.2. Từ điển dữ liệu chép đúng tên từ sơ đồ. Hai ngả phát hiện hỏng / thất lạc về cùng trạng thái.
 - [ ] RT viết theo sự kiện, kiểm được kiểu có/không; có ROB cho tình huống mất kết nối. SEC phủ quyền của cả 3 vai trò.
-- [ ] Mỗi BR đủ 5 cột, cột nguồn đúng luật ở [01_DeCuong_SRS.md](01_DeCuong_SRS.md), và được ít nhất 1 FR hoặc UC tham chiếu.
+- [ ] Mỗi BR đủ 5 cột, cột nguồn đúng luật ở [01_srs_outline.md](01_srs_outline.md), và được ít nhất 1 FR hoặc UC tham chiếu.
 - [ ] Thuật ngữ: mỗi khái niệm 1 tên. Có định nghĩa "Hoàn hàng" và "Trả lại".
 - [ ] ERD có tối thiểu: người dùng (3 vai trò), sản phẩm, đơn hàng, lịch sử trạng thái, yêu cầu hoàn hàng, sự cố. Không có thực thể Cửa hàng.
 - [ ] Mọi Comment của TV2 đã xử lý.

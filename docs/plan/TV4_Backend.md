@@ -8,7 +8,7 @@ Server, cơ sở dữ liệu, xác thực/phân quyền, real-time.
   - Phần server của 28 task chức năng. Mỗi task này làm chung với TV3: bạn làm server, TV3 làm giao diện.
   - Unit test và sửa lỗi phần server: 8 task chung với TV3 (A73–A79, A82).
   - Tổng cộng: 5 task riêng + 36 task chung (28 task chức năng + 8 task test/sửa lỗi), khớp file 04.
-- Danh sách task đầy đủ: [04_Backlog_PhanCong.md](04_Backlog_PhanCong.md), lọc cột "Người" có TV4.
+- Danh sách task đầy đủ: [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV4.
 
 ## Review chéo với TV3
 - Mọi thay đổi code đi qua pull request trên GitHub. TV3 review rồi mới được gộp vào nhánh chính.

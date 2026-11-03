@@ -6,34 +6,34 @@ Web riêng của một cửa hàng (không phải sàn nhiều người bán), p
 - **Admin**: tạo vận đơn, phân công Shipper, duyệt hoặc từ chối hoàn hàng, xử lý sự cố.
 - **Shipper**: lấy hàng, giao hàng, cập nhật trạng thái, báo sự cố.
 
-Trạng thái đơn cập nhật theo sự kiện trên màn hình đang mở, không cần tải lại trang. Chi tiết yêu cầu ở `docs/SRS/`.
+Trạng thái đơn cập nhật theo sự kiện trên màn hình đang mở, không cần tải lại trang. Chi tiết yêu cầu ở `docs/srs/`.
 
 ## Thành viên
 
-Xem `THANH-VIEN.md`. Phân công công việc ở `docs/KeHoach/04_Backlog_PhanCong.md`.
+Xem `MEMBERS.md`. Phân công công việc ở `docs/plan/04_backlog_assignment.md`.
 
 ## Cấu trúc kho
 
 ```
-docs/SRS/         SRS: nguồn Markdown theo chương (nguon/), sơ đồ draw.io (so-do/), bản SRS.docx
-docs/KeHoach/     kế hoạch SRS, Test Plan, phân công theo backlog
+docs/srs/         SRS: nguồn Markdown theo chương (source/), sơ đồ draw.io (diagrams/), bản SRS.docx
+docs/plan/     kế hoạch SRS, Test Plan, phân công theo backlog
 diagrams/         sơ đồ Mermaid (.mmd) cho thiết kế
 src/              mã nguồn (giai đoạn 2)
 tests/            test
 AGENTS.md         quy tắc cho agent lập trình
-THANH-VIEN.md     danh sách thành viên
+MEMBERS.md     danh sách thành viên
 ```
 
 ## Giai đoạn
 
 1. **SRS + Test Plan** (hạn 06/11).
-2. **Làm web** theo backlog trong `docs/KeHoach/04_Backlog_PhanCong.md`.
+2. **Làm web** theo backlog trong `docs/plan/04_backlog_assignment.md`.
 
 ## Quy trình làm việc
 
 - Mỗi việc làm trên một nhánh riêng, mở PR vào `main`. Không dùng Issues.
-- Mô tả PR theo `docs/mau/pull-request.md`.
-- Ai cũng review được PR của người khác, không phân cặp cố định. PR cần ít nhất một người không phải tác giả duyệt trước khi merge. Review theo `docs/mau/review-pr.md`. Comment trên dòng mã cũng dùng mẫu này.
+- Mô tả PR theo `docs/templates/pull-request.md`.
+- Ai cũng review được PR của người khác, không phân cặp cố định. PR cần ít nhất một người không phải tác giả duyệt trước khi merge. Review theo `docs/templates/review-pr.md`. Comment trên dòng mã cũng dùng mẫu này.
 - Mô tả PR, bản review và comment: chạy bản cuối qua `humanizer:humanizer` trước khi đăng.
 - Không commit khoá API, mật khẩu, tệp `.env`.
 

@@ -4,7 +4,7 @@
 
 Hình 2 thể hiện các thực thể dữ liệu của hệ thống và quan hệ giữa chúng. Mô hình không có thực thể Cửa hàng vì hệ thống chỉ phục vụ một cửa hàng (xem AS-1).
 
-![Hình 2. Mô hình dữ liệu logic của hệ thống](../so-do/erd.png)
+![Hình 2. Mô hình dữ liệu logic của hệ thống](../diagrams/erd.png)
 
 Hình 2 vẽ bội số theo trường hợp tổng quát. Bội số ĐƠN HÀNG – DÒNG ĐƠN HÀNG: TBD (xem C-7); ĐƠN HÀNG – YÊU CẦU HOÀN HÀNG: TBD (xem C-12).
 

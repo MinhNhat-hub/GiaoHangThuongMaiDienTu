@@ -7,10 +7,10 @@ File này là **nơi duy nhất** định nghĩa ID, trạng thái, BR và vấn
 | Mã | Nguồn |
 |---|---|
 | ĐB | Đề bài 20 "Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử" (`DetaiGiaoHangThuongMaiDienTu.png`): FR tạo đơn hàng, theo dõi tình trạng vận chuyển, hoàn hàng; NFR cập nhật trạng thái real-time; ngoại lệ hỏng, trả lại, thất lạc |
-| KH | `KeHoach_PhanCong_SRS_TestPlan.md` v4 (29/10/2026), số sau là mục |
-| 01 | `KeHoach/01_DeCuong_SRS.md`, số sau là mục |
-| 03 | `KeHoach/03_ThamKhao_Shopee.md`, số sau là mục. Nhóm đã chốt mục 3–4 của file này (xác nhận 31/10/2026). Riêng "1 cửa hàng" chốt ngày 28/10/2026 (03 §3.2) |
-| A-xx | Dòng backlog `BackLogPlan.xlsx`, ánh xạ ở `KeHoach/04_Backlog_PhanCong.md` |
+| KH | `srs_test_plan_assignment.md` v4 (29/10/2026), số sau là mục |
+| 01 | `docs/plan/01_srs_outline.md`, số sau là mục |
+| 03 | `docs/plan/03_shopee_reference.md`, số sau là mục. Nhóm đã chốt mục 3–4 của file này (xác nhận 31/10/2026). Riêng "1 cửa hàng" chốt ngày 28/10/2026 (03 §3.2) |
+| A-xx | Dòng backlog `BackLogPlan.xlsx`, ánh xạ ở `docs/plan/04_backlog_assignment.md` |
 | S1–S5 | Nguồn Shopee/SPX, danh sách ở 03 §1 |
 | COS | Bộ mẫu `COS_Document_Example` (học format, không phải nguồn nghiệp vụ) |
 

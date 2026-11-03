@@ -4,13 +4,13 @@
 
 Hình A.1 là sơ đồ Use Case của hệ thống, gồm ba tác nhân Customer, Admin, Shipper và bảy Use Case từ UC-01 đến UC-07. Mỗi Use Case được mô tả chi tiết ở mục 3.
 
-![Hình A.1. Sơ đồ Use Case của hệ thống](../so-do/use-case.png)
+![Hình A.1. Sơ đồ Use Case của hệ thống](../diagrams/use-case.png)
 
 ## A.2 Sơ đồ trạng thái
 
 Hình A.2 là sơ đồ trạng thái, cho thấy các trạng thái có thể có của (a) đơn hàng và (b) yêu cầu hoàn hàng, cùng các bước chuyển trạng thái được phép (xem BR-01). Đây là nơi duy nhất định nghĩa trạng thái; mọi mục khác của SRS chép đúng tên trạng thái ở đây.
 
-![Hình A.2. Sơ đồ trạng thái đơn hàng và yêu cầu hoàn hàng](../so-do/trang-thai.png)
+![Hình A.2. Sơ đồ trạng thái đơn hàng và yêu cầu hoàn hàng](../diagrams/state.png)
 
 Bảng dưới đây liệt kê các bước chuyển trên Hình A.2. T1–T12 là bước chuyển của đơn hàng, R1–R4 là bước chuyển của yêu cầu hoàn hàng.
 
