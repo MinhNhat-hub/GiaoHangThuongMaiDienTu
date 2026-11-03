@@ -1,5 +1,5 @@
 # Đề cương Test Plan
-**Toàn bộ Test Plan do TV2 viết, TV1 review** (file tổng quan, mục 5).
+**Toàn bộ Test Plan do N10-B viết, N10-A review** (file tổng quan, mục 5).
 
 Nguồn: slide `4_Test-Plan_v1.0.pdf` của giảng viên. Cấu trúc 6 mục lấy từ **slide 8**, nội dung từng mục lấy từ slide 9–34 (số slide ghi trong ngoặc).
 
@@ -35,11 +35,11 @@ Viết bằng tiếng Việt. Tên các loại kiểm thử giữ tiếng Anh nh
 | **5 Mốc kiểm thử và ước lượng** | (28–33) Cách làm ở mục 4 | Có (đếm dòng §2) |
 | **6 Sản phẩm bàn giao** | (34) Bảng ở mục 5 | Không |
 
-Cột "Phụ thuộc SRS?" cho biết mục nào viết được ngay (trước 31/10), mục nào phải chờ TV1: §2 và §5 chờ danh sách ID (31/10); §1.2 và §2.3 chờ SRS nháp (02/11).
+Cột "Phụ thuộc SRS?" cho biết mục nào viết được ngay (trước 31/10), mục nào phải chờ N10-A: §2 và §5 chờ danh sách ID (31/10); §1.2 và §2.3 chờ SRS nháp (02/11).
 
 **"Plan defects" (slide 9):** slide chỉ ghi đúng 2 chữ này. Nhóm hiểu là kế hoạch quản lý lỗi: ghi lỗi ở đâu (GitHub Issues), phân mức nghiêm trọng, ai xử lý. Giảng viên không có template (đã xác minh 28/10), nên nhóm dùng cách hiểu này.
 
-**§4.1 Nhân lực:** TV2 phụ trách kiểm thử (slide 27 gọi là Test Leader / Tester). TV3, TV4 tự unit test phần code của mình. TV1 cập nhật SRS khi có lỗi do yêu cầu sai.
+**§4.1 Nhân lực:** N10-B phụ trách kiểm thử (slide 27 gọi là Test Leader / Tester). N10-C, N10-D tự unit test phần code của mình. N10-A cập nhật SRS khi có lỗi do yêu cầu sai.
 
 ---
 
@@ -49,7 +49,7 @@ Cột "Phụ thuộc SRS?" cho biết mục nào viết được ngay (trước 
 |---|---|---|
 | Function Testing (15–16) | Có → §3.1.1 | Kiểm mọi yêu cầu chức năng của 3.1–3.4 |
 | Business Cycle Testing (19) | Có → §3.1.2 | Slide 19 yêu cầu "mỗi business rule được áp dụng đúng". Nhóm áp vào bằng cách chạy trọn vòng đời đơn (tạo → phân công → giao → hoàn hàng / sự cố) và kiểm từng BR ở SRS §7. Riêng phần "chức năng chạy theo lịch định kỳ" của slide 19 thì không áp dụng, vì hệ thống chạy theo sự kiện |
-| User Interface Testing (17) | Có → §3.1.3 | Ứng dụng web có giao diện. Tiêu chí hoàn thành là khớp mockup (TV3 làm ở giai đoạn 2) |
+| User Interface Testing (17) | Có → §3.1.3 | Ứng dụng web có giao diện. Tiêu chí hoàn thành là khớp mockup (N10-C làm ở giai đoạn 2) |
 | Data and Database Integrity Testing (18) | Có → §3.1.4 | Dữ liệu đơn và lịch sử trạng thái phải được lưu đúng. Đây là cơ sở để theo dõi đơn và giải quyết thất lạc |
 | Security and Access Control Testing (24) | Có → §3.1.5 | Phân quyền theo vai trò (SEC-x) |
 | Regression Testing (25) | Có → §3.1.6 | Backlog A84 |
@@ -98,14 +98,14 @@ Slide 15–25 có sẵn câu mẫu cho từng loại. Dịch ra, rồi gắn và
 
 Cách ước lượng (slide 30–31):
 1. Đếm số dòng ở §2 theo 3 mức độ phức tạp.
-2. Với mỗi mức, TV2 ước lượng công cho từng việc: đọc yêu cầu, viết test case, chuẩn bị dữ liệu… (expert-based, slide 30). Công unit test do TV3, TV4 ước lượng khi vào giai đoạn 2.
+2. Với mỗi mức, N10-B ước lượng công cho từng việc: đọc yêu cầu, viết test case, chuẩn bị dữ liệu… (expert-based, slide 30). Công unit test do N10-C, N10-D ước lượng khi vào giai đoạn 2.
 3. Cộng thêm công viết Test Plan.
 
 Mỗi con số trong bảng phải có người ước lượng đứng tên. Không lấy số của nhóm khác, không tự đặt.
 
 | Mốc (slide 33) | Công (person-day) | Bắt đầu | Kết thúc |
 |---|---|---|---|
-| Test planning | (TV2 ước lượng) | 28/10/2026 | 06/11/2026 |
+| Test planning | (N10-B ước lượng) | 28/10/2026 | 06/11/2026 |
 | Test design (viết test case) | | Chưa xác định | Chưa xác định |
 | Test execution | | Chưa xác định | Chưa xác định |
 | Test evaluation (Test Report) | | Chưa xác định | Chưa xác định |
@@ -118,9 +118,9 @@ Chưa có hạn cuối kỳ (đã xác minh 28/10), nên các mốc sau Test pla
 
 | Sản phẩm | Ngày | Người giao | Người nhận |
 |---|---|---|---|
-| Test Plan | 06/11/2026 | TV2 | Giảng viên |
-| Test Cases | Chưa xác định | TV2 | Giảng viên |
-| Test Report | Chưa xác định | TV2 | Giảng viên |
+| Test Plan | 06/11/2026 | N10-B | Giảng viên |
+| Test Cases | Chưa xác định | N10-B | Giảng viên |
+| Test Report | Chưa xác định | N10-B | Giảng viên |
 
 ---
 
@@ -130,9 +130,9 @@ Chưa có hạn cuối kỳ (đã xác minh 28/10), nên các mốc sau Test pla
 
 | Giai đoạn | Dẫn chứng backlog | Ai làm |
 |---|---|---|
-| Unit test | A73, A74, A76, A77, A79 | TV3, TV4, mỗi người test code của mình |
-| Integration test | A59, A60, A62 (các task "Integrate …") | TV2 |
-| System test | A80, A81, A83 | TV2 |
+| Unit test | A73, A74, A76, A77, A79 | N10-C, N10-D, mỗi người test code của mình |
+| Integration test | A59, A60, A62 (các task "Integrate …") | N10-B |
+| System test | A80, A81, A83 | N10-B |
 | Acceptance test | Không có trong backlog | Nhóm không có khách hàng thật. Đề xuất coi buổi demo với giảng viên là nghiệm thu; ghi vào giả định ở §1.4 |
 
 **Công cụ**, xếp theo đúng các nhóm ở slide 26:
@@ -150,7 +150,7 @@ Chưa có hạn cuối kỳ (đã xác minh 28/10), nên các mốc sau Test pla
 
 ## 7. Checklist tự review Test Plan
 
-Giảng viên không có file `Checklist_Test plan review.xls` (slide 35–36; đã xác minh 28/10), nên nhóm dùng checklist rút từ slide 9–34. TV1 cũng dùng checklist này khi review:
+Giảng viên không có file `Checklist_Test plan review.xls` (slide 35–36; đã xác minh 28/10), nên nhóm dùng checklist rút từ slide 9–34. N10-A cũng dùng checklist này khi review:
 - [ ] §1 đủ 6 ý của slide 9: mục đích, thông tin nền, tài liệu tham chiếu, phạm vi (giai đoạn, loại test, giả định, quản lý lỗi), ràng buộc, rủi ro.
 - [ ] §2 có đủ yêu cầu chức năng, phi chức năng và danh sách không kiểm thử (slide 11).
 - [ ] Mỗi loại kiểm thử đủ Mục tiêu / Kỹ thuật / Tiêu chí hoàn thành / Lưu ý đặc biệt (slide 14).
