@@ -18,9 +18,13 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 
 ## Quy ước chung
 
+- Code viết bằng tiếng Anh: tên biến, hàm, lớp, tệp, comment trong code, log. Commit, PR, review, comment viết tiếng Việt được, thuật ngữ kỹ thuật giữ tiếng Anh (xem mục "Ngôn ngữ" trong `README.md`).
+- Code và test không chứa ID SRS (`UC-`, `FR-`, `NFR-`, `BR-`…) ở bất kỳ đâu: tên biến, hàm, lớp, tệp, tên test, comment, chuỗi, log. Chỉ mô tả làm gì. Truy vết ghi trong mô tả PR.
+- Không comment trong thân hàm. Comment ngắn đặt trên hàm; header của file chỉ chứa TODO còn cần bổ sung (xem mục "Comment trong code" của `README.md`).
 - Sơ đồ thiết kế viết bằng Mermaid trong `diagrams/`.
 - Thuật ngữ dùng đúng `docs/SRS/nguon/92_PhuLucB_ThuatNgu.md`.
-- Commit message một dòng, nói **vì sao** chứ không phải cái gì.
+- Commit message theo mục "Quy ước commit" trong `README.md`. Agent chạy skill `humanizer:humanizer` trên phần mô tả trước khi commit.
+- Mô tả PR (`docs/mau/pull-request.md`), bản review PR và comment (cùng mẫu `docs/mau/review-pr.md`): agent chạy `humanizer:humanizer` trên văn bản cuối cùng trước khi đưa cho người dùng.
 
 ## Kiến trúc
 
@@ -28,6 +32,6 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 
 ## Kiểm thử
 
-- Test luật nghiệp vụ đặt tên theo mã luật, ví dụ `test_BR03_quay_da_nhan_thi_khong_huy_duoc`.
+- Tên test mô tả hành vi, không chứa ID SRS, ví dụ `test_cannot_cancel_delivered_order`.
 - Xong việc thì chạy toàn bộ test.
 <!-- Ghi lệnh chạy test của nhóm khi đã chọn công nghệ. -->
