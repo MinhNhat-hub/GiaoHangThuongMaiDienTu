@@ -33,7 +33,7 @@ THANH-VIEN.md     danh sách thành viên
 
 - Mỗi việc làm trên một nhánh riêng, mở PR vào `main`. Không dùng Issues.
 - Mô tả PR theo `docs/mau/pull-request.md`.
-- Một thành viên khác người làm review PR trước khi merge, theo `docs/mau/review-pr.md`. Comment trên dòng mã cũng dùng mẫu này.
+- Ai cũng review được PR của người khác, không phân cặp cố định. PR cần ít nhất một người không phải tác giả duyệt trước khi merge. Review theo `docs/mau/review-pr.md`. Comment trên dòng mã cũng dùng mẫu này.
 - Mô tả PR, bản review và comment: chạy bản cuối qua `humanizer:humanizer` trước khi đăng.
 - Không commit khoá API, mật khẩu, tệp `.env`.
 

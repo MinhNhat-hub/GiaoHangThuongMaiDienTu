@@ -1,5 +1,4 @@
 <!-- Viết xong thì chạy toàn bộ mô tả qua humanizer:humanizer rồi mới đăng. Xoá các dòng chú thích. -->
-Người làm: TVx · Agent: <công cụ hoặc "không"> · Review: TVy
 
 ## Tóm tắt
 
