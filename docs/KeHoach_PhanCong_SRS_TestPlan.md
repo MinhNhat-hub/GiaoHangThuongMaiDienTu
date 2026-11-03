@@ -6,22 +6,22 @@ Hạn nộp: **Thứ Sáu 06/11/2026** (file .docx) · Chốt nội bộ: **Th�
 | File | Ai đọc | Nội dung |
 |---|---|---|
 | File này | Cả nhóm | Quyết định đã chốt, phân công, lịch, review, việc còn mở |
-| [KeHoach/01_DeCuong_SRS.md](KeHoach/01_DeCuong_SRS.md) | TV1 viết, TV2 review | Từng mục SRS: viết gì, học mẫu nào. **Quy ước ID nằm ở đây** |
-| [KeHoach/02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md) | TV2 viết, TV1 review | Từng mục Test Plan theo slide giảng viên |
+| [KeHoach/01_DeCuong_SRS.md](KeHoach/01_DeCuong_SRS.md) | N10-A viết, N10-B review | Từng mục SRS: viết gì, học mẫu nào. **Quy ước ID nằm ở đây** |
+| [KeHoach/02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md) | N10-B viết, N10-A review | Từng mục Test Plan theo slide giảng viên |
 | [KeHoach/03_ThamKhao_Shopee.md](KeHoach/03_ThamKhao_Shopee.md) | Cả nhóm | Quy trình Shopee/SPX có nguồn → Customer là ai, hoàn hàng / trả lại, trạng thái |
 | [KeHoach/04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md) | Cả nhóm | Đủ 79 task backlog: giai đoạn nào, ai làm |
-| [KeHoach/TV1_SRS.md](KeHoach/TV1_SRS.md) | TV1 | Việc của người viết SRS |
-| [KeHoach/TV2_TestPlan.md](KeHoach/TV2_TestPlan.md) | TV2 | Việc của người viết Test Plan |
-| [KeHoach/TV3_Frontend.md](KeHoach/TV3_Frontend.md) | TV3 | Việc của người làm frontend |
-| [KeHoach/TV4_Backend.md](KeHoach/TV4_Backend.md) | TV4 | Việc của người làm backend |
+| [KeHoach/N10-A_SRS.md](KeHoach/N10-A_SRS.md) | N10-A | Việc của người viết SRS |
+| [KeHoach/N10-B_TestPlan.md](KeHoach/N10-B_TestPlan.md) | N10-B | Việc của người viết Test Plan |
+| [KeHoach/N10-C_Frontend.md](KeHoach/N10-C_Frontend.md) | N10-C | Việc của người làm frontend |
+| [KeHoach/N10-D_Backend.md](KeHoach/N10-D_Backend.md) | N10-D | Việc của người làm backend |
 
-Mỗi file TV chia thành các bước có đầu ra riêng. Bước của TV1, TV2 có hạn cụ thể; bước của TV3, TV4 chờ hạn cuối kỳ (mục 6.1). Sau này mỗi bước tách được thành 1 issue GitHub (bàn sau).
+Mỗi file của từng thành viên chia thành các bước có đầu ra riêng. Bước của N10-A, N10-B có hạn cụ thể; bước của N10-C, N10-D chờ hạn cuối kỳ (mục 6.1). Sau này mỗi bước tách được thành 1 issue GitHub (bàn sau).
 
 **Lịch sử thay đổi:**
 - v1 (28/10): bản đầu, Test Plan theo IEEE 829.
 - v2 (28/10): Test Plan theo slide giảng viên; real-time theo sự kiện; chia việc theo số liệu mẫu COS.
 - v3 (28/10): tra theo Shopee: Customer là người mua, phân biệt hoàn hàng / trả lại (file 03); web cho 1 cửa hàng; chưa có hạn cuối kỳ; giảng viên không có template.
-- v4 (29/10): chia theo vai trò: TV1 SRS, TV2 Test Plan, TV3 Frontend, TV4 Backend (phương án A). Review chéo TV1 ↔ TV2, TV3 ↔ TV4. Không phân trưởng nhóm. Use case đánh số lại UC-01 đến UC-07.
+- v4 (29/10): chia theo vai trò: N10-A SRS, N10-B Test Plan, N10-C Frontend, N10-D Backend (phương án A). Review chéo N10-A ↔ N10-B, N10-C ↔ N10-D. Không phân trưởng nhóm. Use case đánh số lại UC-01 đến UC-07.
 
 ---
 
@@ -67,7 +67,7 @@ Cách đưa vào SRS: **không viết thành tính năng riêng ở §3**, vì �
 ### 1.2 Real-time theo sự kiện: viết và kiểm thế nào
 
 - **Nghĩa:** Shipper bấm xác nhận (vd chuyển đơn sang "Đang giao") thì trạng thái đổi ngay lúc đó. Màn hình Customer/Admin đang mở tự hiện trạng thái mới. Không có cơ chế "cứ N giây tải lại".
-- **Viết trong SRS (§6.1, TV1):** mô tả bằng *sự kiện* và *kết quả nhìn thấy được*. Ví dụ format: "Khi Shipper xác nhận thay đổi trạng thái, hệ thống phải lưu trạng thái mới và hiển thị trạng thái đó trên màn hình theo dõi đang mở của Customer mà không cần người dùng tải lại trang."
+- **Viết trong SRS (§6.1, N10-A):** mô tả bằng *sự kiện* và *kết quả nhìn thấy được*. Ví dụ format: "Khi Shipper xác nhận thay đổi trạng thái, hệ thống phải lưu trạng thái mới và hiển thị trạng thái đó trên màn hình theo dõi đang mở của Customer mà không cần người dùng tải lại trang."
 - **Tránh** các chữ "nhanh", "ngay lập tức" đứng một mình, vì tester không đo được. Tiêu chí kiểm là **có/không**: trạng thái mới có xuất hiện mà không phải tải lại trang hay không.
 - **Hệ quả cho Test Plan:** không làm Performance / Load / Stress / Volume test (slide 20–23), vì SRS không có yêu cầu nào về thời gian hay khối lượng. Ghi ở Test Plan §1.4 (phạm vi: loại kiểm thử nào làm, loại nào không) kèm lý do.
 - **Thêm 1 yêu cầu ROB** (học theo COS ROB-1): người xem mất kết nối rồi vào lại phải thấy trạng thái mới nhất. Lý do: cập nhật theo sự kiện thì sự kiện xảy ra lúc mất mạng sẽ bị lỡ.
@@ -75,7 +75,7 @@ Cách đưa vào SRS: **không viết thành tính năng riêng ở §3**, vì �
 ### 1.3 Làm việc trên .docx
 
 - Chỉ có **1 file `SRS.docx` + 1 file `TestPlan.docx`**, đặt trên OneDrive (thư mục đồ án đang nằm trong OneDrive).
-- `SRS.docx`: TV1 sửa, TV2 chỉ góp ý bằng **Comment**. `TestPlan.docx`: TV2 sửa, TV1 chỉ góp ý bằng Comment.
+- `SRS.docx`: N10-A sửa, N10-B chỉ góp ý bằng **Comment**. `TestPlan.docx`: N10-B sửa, N10-A chỉ góp ý bằng Comment.
 - Dùng style Heading 1/2/3 có sẵn của Word để mục lục tự sinh. Hình chèn kèm Caption ("Hình x").
 - Sơ đồ vẽ bằng draw.io, lưu file nguồn `.drawio` cạnh file docx để sau sửa lại được (DRY: mỗi sơ đồ chỉ có 1 nguồn).
 
@@ -99,12 +99,12 @@ Nếu giảng viên yêu cầu khác thì người nhận task đó trong [04_Ba
 
 | Người | Vai trò | Trước 06/11 | Sau 06/11 (giai đoạn 2) | Review chéo |
 |---|---|---|---|---|
-| **TV1** | SRS | Toàn bộ SRS, gồm 4 sơ đồ (ngữ cảnh, ERD, Use Case, trạng thái) | Cập nhật SRS, hướng dẫn sử dụng, báo cáo cuối (5 task) | Với TV2 |
-| **TV2** | Test Plan | Toàn bộ Test Plan | Viết test case, chạy system / regression test (5 task: A69, A80, A81, A83, A84). Kiểm thêm chỗ nối sau khi TV3, TV4 làm xong A59, A60, A62 (mục 6 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md)) | Với TV1 |
-| **TV3** | Frontend | Không có việc phải nộp | 9 mockup + phần giao diện của 36 task chung với TV4 | Với TV4 |
-| **TV4** | Backend | Không có việc phải nộp | 5 sơ đồ thiết kế + phần server của 36 task chung với TV3 | Với TV3 |
+| **N10-A** | SRS | Toàn bộ SRS, gồm 4 sơ đồ (ngữ cảnh, ERD, Use Case, trạng thái) | Cập nhật SRS, hướng dẫn sử dụng, báo cáo cuối (5 task) | Với N10-B |
+| **N10-B** | Test Plan | Toàn bộ Test Plan | Viết test case, chạy system / regression test (5 task: A69, A80, A81, A83, A84). Kiểm thêm chỗ nối sau khi N10-C, N10-D làm xong A59, A60, A62 (mục 6 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md)) | Với N10-A |
+| **N10-C** | Frontend | Không có việc phải nộp | 9 mockup + phần giao diện của 36 task chung với N10-D | Với N10-D |
+| **N10-D** | Backend | Không có việc phải nộp | 5 sơ đồ thiết kế + phần server của 36 task chung với N10-C | Với N10-C |
 
-Chi tiết từng task: [04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md). Cách làm từng người: các file TV.
+Chi tiết từng task: [04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md). Cách làm từng người: các file của từng thành viên.
 
 ---
 
@@ -131,13 +131,13 @@ Chi tiết từng task: [04_Backlog_PhanCong.md](KeHoach/04_Backlog_PhanCong.md)
 
 | Người | Trước 06/11 | Sau 06/11 (60 task backlog) |
 |---|---|---|
-| TV1 SRS | 100% SRS (≈ 7.672 từ) + 4 sơ đồ. Gấp 3,4 lần mức cao nhất ở cách chia trước (2.260 từ) | 5 task |
-| TV2 Test Plan | 100% Test Plan (không có mẫu để đo). §2 phải chờ danh sách ID của TV1 | 5 task. A69 (viết test case cho mọi chức năng) là việc lớn |
-| TV3 Frontend | Không có | 9 task riêng + 36 task chung |
-| TV4 Backend | Không có | 5 task riêng + 36 task chung |
+| N10-A SRS | 100% SRS (≈ 7.672 từ) + 4 sơ đồ. Gấp 3,4 lần mức cao nhất ở cách chia trước (2.260 từ) | 5 task |
+| N10-B Test Plan | 100% Test Plan (không có mẫu để đo). §2 phải chờ danh sách ID của N10-A | 5 task. A69 (viết test case cho mọi chức năng) là việc lớn |
+| N10-C Frontend | Không có | 9 task riêng + 36 task chung |
+| N10-D Backend | Không có | 5 task riêng + 36 task chung |
 
-Nhóm đã chọn phương án A dù biết tải lệch: trước 06/11 dồn vào TV1, TV2; sau 06/11 dồn vào TV3, TV4. Cách giảm rủi ro:
-- TV1 gửi danh sách ID cho TV2 ngày 31/10, để TV2 viết §2 song song chứ không phải chờ SRS nháp.
+Nhóm đã chọn phương án A dù biết tải lệch: trước 06/11 dồn vào N10-A, N10-B; sau 06/11 dồn vào N10-C, N10-D. Cách giảm rủi ro:
+- N10-A gửi danh sách ID cho N10-B ngày 31/10, để N10-B viết §2 song song chứ không phải chờ SRS nháp.
 - Ngày 31/10 là mốc kiểm tra: chưa có sơ đồ trạng thái và danh sách ID thì báo cả nhóm ngay.
 - Review chéo giúp bắt lỗi sớm trong cả 2 giai đoạn.
 
@@ -147,16 +147,16 @@ Nhóm đã chọn phương án A dù biết tải lệch: trước 06/11 dồn v
 
 | Mốc | Hạn | Việc | Ai |
 |---|---|---|---|
-| M0 Họp nhóm | T5 29/10 | Mỗi người đọc phần "Đọc trước" trong file của mình. Họp cả nhóm: xác nhận 3 điểm ở mục 6.2, chốt các trường của đơn hàng, kênh thông báo, thuật ngữ bản đầu. TV1 ghi biên bản | Cả nhóm |
-| M1 Nền móng | T7 31/10 | TV1: sơ đồ trạng thái, sơ đồ Use Case, **danh sách ID gửi TV2**. TV2: khung Test Plan (các mục không phụ thuộc SRS) | TV1, TV2 |
-| M2 Nháp SRS | T2 02/11 | TV1: SRS nháp đủ mục, gửi TV2 review. TV2: viết §2 theo danh sách ID | TV1, TV2 |
-| M3 Nháp Test Plan | T3 03/11 | TV2: trả Comment cho SRS; Test Plan nháp đủ mục, gửi TV1 review | TV2 |
-| M4 Sửa | T4 04/11 | TV1 trả Comment cho Test Plan. Cả hai sửa theo review của nhau | TV1, TV2 |
-| M5 Chốt | T5 05/11 | TV1 chốt SRS, TV2 chốt Test Plan | TV1, TV2 |
-| Nộp | T6 06/11 | Dự phòng, chỉ sửa lỗi phát sinh. TV1 nộp SRS, TV2 nộp Test Plan | TV1, TV2 |
-| Giai đoạn 2 | Sau 06/11 | TV3, TV4 bắt đầu làm web; TV1, TV2 làm task giai đoạn 2 của mình. Hạn chốt khi có hạn cuối kỳ | Cả nhóm |
+| M0 Họp nhóm | T5 29/10 | Mỗi người đọc phần "Đọc trước" trong file của mình. Họp cả nhóm: xác nhận 3 điểm ở mục 6.2, chốt các trường của đơn hàng, kênh thông báo, thuật ngữ bản đầu. N10-A ghi biên bản | Cả nhóm |
+| M1 Nền móng | T7 31/10 | N10-A: sơ đồ trạng thái, sơ đồ Use Case, **danh sách ID gửi N10-B**. N10-B: khung Test Plan (các mục không phụ thuộc SRS) | N10-A, N10-B |
+| M2 Nháp SRS | T2 02/11 | N10-A: SRS nháp đủ mục, gửi N10-B review. N10-B: viết §2 theo danh sách ID | N10-A, N10-B |
+| M3 Nháp Test Plan | T3 03/11 | N10-B: trả Comment cho SRS; Test Plan nháp đủ mục, gửi N10-A review | N10-B |
+| M4 Sửa | T4 04/11 | N10-A trả Comment cho Test Plan. Cả hai sửa theo review của nhau | N10-A, N10-B |
+| M5 Chốt | T5 05/11 | N10-A chốt SRS, N10-B chốt Test Plan | N10-A, N10-B |
+| Nộp | T6 06/11 | Dự phòng, chỉ sửa lỗi phát sinh. N10-A nộp SRS, N10-B nộp Test Plan | N10-A, N10-B |
+| Giai đoạn 2 | Sau 06/11 | N10-C, N10-D bắt đầu làm web; N10-A, N10-B làm task giai đoạn 2 của mình. Hạn chốt khi có hạn cuối kỳ | Cả nhóm |
 
-Thứ tự phụ thuộc: **danh sách ID của TV1 (31/10)** là mốc quan trọng nhất trước 06/11, vì Test Plan §2 cần nó.
+Thứ tự phụ thuộc: **danh sách ID của N10-A (31/10)** là mốc quan trọng nhất trước 06/11, vì Test Plan §2 cần nó.
 
 ---
 
@@ -164,10 +164,10 @@ Thứ tự phụ thuộc: **danh sách ID của TV1 (31/10)** là mốc quan tr�
 
 | Cặp | Review cái gì | Cách làm |
 |---|---|---|
-| TV1 ↔ TV2 | SRS và Test Plan (giai đoạn 1) | Comment trong Word. TV2 review SRS theo checklist bên dưới; TV1 review Test Plan theo checklist ở mục 7 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md) |
-| TV3 ↔ TV4 | Code (giai đoạn 2) | Mọi thay đổi đi qua pull request trên GitHub; người kia duyệt rồi mới gộp vào nhánh chính. Checklist review code chốt khi bắt đầu giai đoạn 2 (YAGNI) |
+| N10-A ↔ N10-B | SRS và Test Plan (giai đoạn 1) | Comment trong Word. N10-B review SRS theo checklist bên dưới; N10-A review Test Plan theo checklist ở mục 7 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md) |
+| N10-C ↔ N10-D | Code (giai đoạn 2) | Mọi thay đổi đi qua pull request trên GitHub; người kia duyệt rồi mới gộp vào nhánh chính. Checklist review code chốt khi bắt đầu giai đoạn 2 (YAGNI) |
 
-Checklist review SRS (TV2 dùng):
+Checklist review SRS (N10-B dùng):
 - [ ] Mỗi yêu cầu chức năng là 1 câu "Hệ thống phải…", có ID, kiểm được.
 - [ ] Không chép lại nội dung BR / trạng thái / thuật ngữ, chỉ ghi ID hoặc tham chiếu.
 - [ ] Mỗi UC đủ các trường của mẫu COS. UC đơn giản được bỏ 2 trường như COS UC-5 (danh sách ở mục 2 của [01_DeCuong_SRS.md](KeHoach/01_DeCuong_SRS.md)).
@@ -183,7 +183,7 @@ Checklist review SRS (TV2 dùng):
 ### 6.1 Đã xác minh (28/10)
 - **Hạn cuối kỳ: chưa có.**
   - Test Plan §5 chỉ ghi ngày cho mốc Test planning; các mốc sau ghi "Chưa xác định".
-  - TV2 ghi điều này vào Test Plan §1.5 Ràng buộc và §1.6 Rủi ro.
+  - N10-B ghi điều này vào Test Plan §1.5 Ràng buộc và §1.6 Rủi ro.
   - Khi có hạn thì nâng Test Plan lên v1.1 và chốt hạn cho giai đoạn 2.
 - **Giảng viên không có `Template_Test Plan.doc` và `Checklist_Test plan review.xls`.** Giữ cấu trúc slide 8 và checklist tự rút từ slide 9–34 (mục 7 của [02_DeCuong_TestPlan.md](KeHoach/02_DeCuong_TestPlan.md)).
 
@@ -202,9 +202,9 @@ Chi tiết, nguồn và lý do nằm ở [KeHoach/03_ThamKhao_Shopee.md](KeHoach
 Ba điểm trên chỉ cần **xác nhận** ở buổi họp 29/10, không phải bàn lại từ đầu. Không còn việc nào phải hỏi giảng viên.
 
 ### 6.3 Rủi ro của phương án A
-- TV1 gánh toàn bộ SRS. Mốc kiểm tra 31/10 (mục 4).
-- TV2 phụ thuộc SRS. Danh sách ID gửi sớm 31/10 để giảm chờ.
-- TV3, TV4 đến giai đoạn 2 mới vào việc. Nên đọc SRS bản nháp ngày 02/11 (không bắt buộc) để không phải đọc từ đầu khi bắt đầu code.
+- N10-A gánh toàn bộ SRS. Mốc kiểm tra 31/10 (mục 4).
+- N10-B phụ thuộc SRS. Danh sách ID gửi sớm 31/10 để giảm chờ.
+- N10-C, N10-D đến giai đoạn 2 mới vào việc. Nên đọc SRS bản nháp ngày 02/11 (không bắt buộc) để không phải đọc từ đầu khi bắt đầu code.
 
 ---
 
@@ -214,17 +214,17 @@ Tiêu chí: hiệu quả và dùng được lâu dài quan trọng hơn chi phí
 
 | Nhu cầu | Đề xuất | Ai dùng | Lý do |
 |---|---|---|---|
-| Ngôn ngữ | TypeScript cho cả frontend và backend | TV3, TV4 | 1 ngôn ngữ cho cả hệ thống; kiểu tĩnh giúp bảo trì lâu dài |
-| Frontend | React (qua Next.js hoặc Vite) | TV3 | Hệ sinh thái và tài liệu lớn |
-| Backend | Node.js + NestJS (hoặc Express nếu muốn tối giản) | TV4 | NestJS chia module rõ ràng, có sẵn module WebSocket |
-| Real-time | WebSocket qua Socket.IO | TV4 (server), TV3 (client) | Đúng kiểu **theo sự kiện** (câu trả lời #3): khi Shipper xác nhận, server *đẩy* trạng thái mới xuống trình duyệt. Trình duyệt không phải hỏi lại mỗi N giây |
-| Database | PostgreSQL + Prisma | TV4 | Đơn hàng, vận chuyển, hoàn hàng, sự cố quan hệ chặt với nhau nên hợp CSDL quan hệ; mã nguồn mở |
-| Unit / Integration test | Jest (hoặc Vitest) + Supertest | TV3, TV4 | Khớp backlog A73–A79 |
-| Function / UI / Real-time test | Playwright | TV2 | Khớp A80, A83, A84. Một bài test mở được 2 phiên trình duyệt (Shipper bấm, Customer thấy) nên kiểm được real-time |
+| Ngôn ngữ | TypeScript cho cả frontend và backend | N10-C, N10-D | 1 ngôn ngữ cho cả hệ thống; kiểu tĩnh giúp bảo trì lâu dài |
+| Frontend | React (qua Next.js hoặc Vite) | N10-C | Hệ sinh thái và tài liệu lớn |
+| Backend | Node.js + NestJS (hoặc Express nếu muốn tối giản) | N10-D | NestJS chia module rõ ràng, có sẵn module WebSocket |
+| Real-time | WebSocket qua Socket.IO | N10-D (server), N10-C (client) | Đúng kiểu **theo sự kiện** (câu trả lời #3): khi Shipper xác nhận, server *đẩy* trạng thái mới xuống trình duyệt. Trình duyệt không phải hỏi lại mỗi N giây |
+| Database | PostgreSQL + Prisma | N10-D | Đơn hàng, vận chuyển, hoàn hàng, sự cố quan hệ chặt với nhau nên hợp CSDL quan hệ; mã nguồn mở |
+| Unit / Integration test | Jest (hoặc Vitest) + Supertest | N10-C, N10-D | Khớp backlog A73–A79 |
+| Function / UI / Real-time test | Playwright | N10-B | Khớp A80, A83, A84. Một bài test mở được 2 phiên trình duyệt (Shipper bấm, Customer thấy) nên kiểm được real-time |
 | Ghi lỗi + quản lý việc | GitHub Issues + Projects | Cả nhóm | Slide 26 có nhóm "công cụ ghi lỗi" trong danh sách công cụ kiểm thử; nhóm đã định dùng GitHub |
-| Review code | Pull request trên GitHub | TV3, TV4 | Cách review chéo ở mục 5 |
-| Chạy test tự động | GitHub Actions | TV2 | Chạy lại bộ test mỗi lần có thay đổi, tức là Regression (A84) |
-| Sơ đồ / Mockup | draw.io / Figma | TV1 (sơ đồ SRS), TV4 (sơ đồ thiết kế), TV3 (mockup) | draw.io miễn phí, mã nguồn mở |
+| Review code | Pull request trên GitHub | N10-C, N10-D | Cách review chéo ở mục 5 |
+| Chạy test tự động | GitHub Actions | N10-B | Chạy lại bộ test mỗi lần có thay đổi, tức là Regression (A84) |
+| Sơ đồ / Mockup | draw.io / Figma | N10-A (sơ đồ SRS), N10-D (sơ đồ thiết kế), N10-C (mockup) | draw.io miễn phí, mã nguồn mở |
 
 So với bản trước, **bỏ k6** (công cụ đo tải): SRS không còn yêu cầu nào về thời gian hay khối lượng (mục 1.2), giữ lại là YAGNI.
 

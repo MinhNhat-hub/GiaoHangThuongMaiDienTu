@@ -1,5 +1,5 @@
 # Đề cương SRS
-**Toàn bộ SRS do TV1 viết, TV2 review** (file tổng quan, mục 5).
+**Toàn bộ SRS do N10-A viết, N10-B review** (file tổng quan, mục 5).
 
 **SRS để làm gì:** mô tả yêu cầu chức năng và phi chức năng của hệ thống. Người làm web dựa vào đó để làm, người kiểm thử dựa vào đó để kiểm (COS SRS §1.1). Test Plan §2 cũng lấy yêu cầu từ SRS.
 
@@ -137,7 +137,7 @@ Track.Update: Shipper cập nhật trạng thái giao hàng.
 ---
 
 ## 4. Câu hỏi nội dung SRS phải trả lời
-Nhóm chốt câu trả lời ở buổi họp 29/10 hoặc khi TV1 viết. Câu trả lời nào là luật thì ghi thành BR. Không tự đặt ra.
+Nhóm chốt câu trả lời ở buổi họp 29/10 hoặc khi N10-A viết. Câu trả lời nào là luật thì ghi thành BR. Không tự đặt ra.
 
 ### 4.1 UC-01 Tạo đơn hàng
 - Một đơn gồm những gì? Gợi ý tối thiểu: sản phẩm chọn từ danh sách có sẵn + số lượng, thông tin người nhận, địa chỉ giao. Thanh toán ngoài phạm vi (file 03 mục 3.5).
