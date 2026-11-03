@@ -4,7 +4,7 @@ Tệp này do hệ thống đăng ký Gói 1 ghi khi tạo kho. Không sửa; PR
 
 | Mã thành viên | Tài khoản GitHub | Nhóm trưởng |
 |---|---|---|
-| TV1 | MinhNhat-hub | Có |
-| TV2 | kiezroth | — |
-| TV3 | binss-AUG | — |
-| TV4 | prime-2k12 | — |
+| N10-A | MinhNhat-hub | Có |
+| N10-B | kiezroth | — |
+| N10-C | binss-AUG | — |
+| N10-D | prime-2k12 | — |
