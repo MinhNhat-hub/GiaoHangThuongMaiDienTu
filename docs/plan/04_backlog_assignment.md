@@ -89,7 +89,7 @@
 | A87 | Final SRS Review | 2 | TV1 | Review cuối, sau A43 |
 
 ## Việc giai đoạn 1 không có trong backlog
-Backlog không có các việc sau, nhưng giai đoạn 1 phải làm. Khi tạo issue GitHub thì thêm vào.
+Backlog không có các việc sau, nhưng giai đoạn 1 phải làm.
 
 | Việc | Người |
 |---|---|

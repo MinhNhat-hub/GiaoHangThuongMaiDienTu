@@ -15,13 +15,14 @@ Hạn nộp: **Thứ Sáu 06/11/2026** (file .docx) · Chốt nội bộ: **Th�
 | [TV3_Frontend.md](TV3_Frontend.md) | TV3 | Việc của người làm frontend |
 | [TV4_Backend.md](TV4_Backend.md) | TV4 | Việc của người làm backend |
 
-Mỗi file TV chia thành các bước có đầu ra riêng. Bước của TV1, TV2 có hạn cụ thể; bước của TV3, TV4 chờ hạn cuối kỳ (mục 6.1). Sau này mỗi bước tách được thành 1 issue GitHub (bàn sau).
+Mỗi file TV chia thành các bước có đầu ra riêng. Bước của TV1, TV2 có hạn cụ thể; bước của TV3, TV4 chờ hạn cuối kỳ (mục 6.1).
 
 **Lịch sử thay đổi:**
 - v1 (28/10): bản đầu, Test Plan theo IEEE 829.
 - v2 (28/10): Test Plan theo slide giảng viên; real-time theo sự kiện; chia việc theo số liệu mẫu COS.
 - v3 (28/10): tra theo Shopee: Customer là người mua, phân biệt hoàn hàng / trả lại (file 03); web cho 1 cửa hàng; chưa có hạn cuối kỳ; giảng viên không có template.
 - v4 (29/10): chia theo vai trò: TV1 SRS, TV2 Test Plan, TV3 Frontend, TV4 Backend (phương án A). Review chéo TV1 ↔ TV2, TV3 ↔ TV4. Không phân trưởng nhóm. Use case đánh số lại UC-01 đến UC-07.
+- v5 (03/11): ai cũng review được, không chia cặp cố định; GitHub Issues chỉ dùng để ghi lỗi; Test Plan viết bằng Markdown trong repo; sơ đồ thiết kế viết bằng Mermaid theo `AGENTS.md`.
 
 ---
 
@@ -39,7 +40,7 @@ Mỗi file TV chia thành các bước có đầu ra riêng. Bước của TV1, 
 | 8 | Template / Checklist Test Plan của giảng viên | Không có | Giữ cấu trúc slide 8 + checklist tự rút từ slide (mục 6.1) |
 | 9 | Customer là ai, hoàn hàng / trả lại | Dựa theo Shopee | Customer = người mua (mục 6.2, file 03) |
 | 10 | 1 cửa hàng hay nhiều cửa hàng | 1 cửa hàng | Web của riêng một cửa hàng; Customer và Shipper không giới hạn số lượng (file 03 mục 3.2) |
-| 11 | Review | SRS ↔ Test Plan; Frontend ↔ Backend | Mục 5 |
+| 11 | Review | Ai cũng review được cho nhau, không chia cặp cố định | Mục 5 |
 
 ### 1.1 Admin, Auth, Report
 
@@ -74,8 +75,8 @@ Cách đưa vào SRS: **không viết thành tính năng riêng ở §3**, vì �
 
 ### 1.3 Làm việc trên .docx
 
-- Chỉ có **1 file `SRS.docx` + 1 file `TestPlan.docx`**, đặt trên OneDrive (thư mục đồ án đang nằm trong OneDrive).
-- `SRS.docx`: TV1 sửa, TV2 chỉ góp ý bằng **Comment**. `TestPlan.docx`: TV2 sửa, TV1 chỉ góp ý bằng Comment.
+- SRS: 1 file `SRS.docx`, đặt trên OneDrive (thư mục đồ án đang nằm trong OneDrive). TV1 sửa, người khác chỉ góp ý bằng **Comment**.
+- Test Plan: TV2 viết bằng Markdown trong `docs/test-plan/` trước, qua PR như mọi thay đổi khác; bản cuối xuất ra `TestPlan.docx` để nộp. Người khác góp ý trên PR, không sửa thẳng.
 - Dùng style Heading 1/2/3 có sẵn của Word để mục lục tự sinh. Hình chèn kèm Caption ("Hình x").
 - Sơ đồ vẽ bằng draw.io, lưu file nguồn `.drawio` cạnh file docx để sau sửa lại được (DRY: mỗi sơ đồ chỉ có 1 nguồn).
 
@@ -166,7 +167,8 @@ Ai cũng review được cho nhau, không chia cặp cố định. Mỗi thay đ
 
 | Review cái gì | Cách làm |
 |---|---|
-| SRS và Test Plan (giai đoạn 1) | Comment trong Word. SRS review theo checklist bên dưới; Test Plan review theo checklist ở mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md) |
+| SRS (giai đoạn 1) | Comment trong Word, theo checklist bên dưới |
+| Test Plan (giai đoạn 1) | Comment trên PR theo `docs/templates/review-pr.md`, theo checklist ở mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md) |
 | Code (giai đoạn 2) | Mọi thay đổi đi qua pull request trên GitHub, review theo `docs/templates/review-pr.md`; có người duyệt rồi mới gộp vào nhánh chính |
 
 Checklist review SRS:
@@ -223,10 +225,11 @@ Tiêu chí: hiệu quả và dùng được lâu dài quan trọng hơn chi phí
 | Database | PostgreSQL + Prisma | TV4 | Đơn hàng, vận chuyển, hoàn hàng, sự cố quan hệ chặt với nhau nên hợp CSDL quan hệ; mã nguồn mở |
 | Unit / Integration test | Jest (hoặc Vitest) + Supertest | TV3, TV4 | Khớp backlog A73–A79 |
 | Function / UI / Real-time test | Playwright | TV2 | Khớp A80, A83, A84. Một bài test mở được 2 phiên trình duyệt (Shipper bấm, Customer thấy) nên kiểm được real-time |
-| Ghi lỗi + quản lý việc | GitHub Issues + Projects | Cả nhóm | Slide 26 có nhóm "công cụ ghi lỗi" trong danh sách công cụ kiểm thử; nhóm đã định dùng GitHub |
+| Ghi lỗi | GitHub Issues | Cả nhóm | Slide 26 có nhóm "công cụ ghi lỗi" trong danh sách công cụ kiểm thử. Issues chỉ dùng để ghi lỗi, không dùng để giao việc (`README.md`) |
 | Review code | Pull request trên GitHub | Cả nhóm | Cách review ở mục 5 |
 | Chạy test tự động | GitHub Actions | TV2 | Chạy lại bộ test mỗi lần có thay đổi, tức là Regression (A84) |
-| Sơ đồ / Mockup | draw.io / Figma | TV1 (sơ đồ SRS), TV4 (sơ đồ thiết kế), TV3 (mockup) | draw.io miễn phí, mã nguồn mở |
+| Sơ đồ SRS / Mockup | draw.io / Figma | TV1 (sơ đồ SRS), TV3 (mockup) | draw.io miễn phí, mã nguồn mở |
+| Sơ đồ thiết kế | Mermaid trong `diagrams/` | TV4 | Theo `AGENTS.md` |
 
 So với bản trước, **bỏ k6** (công cụ đo tải): SRS không còn yêu cầu nào về thời gian hay khối lượng (mục 1.2), giữ lại là YAGNI.
 
