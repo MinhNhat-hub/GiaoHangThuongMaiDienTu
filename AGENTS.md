@@ -12,7 +12,7 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 
 ## Khi nhận việc
 
-- Đối chiếu yêu cầu trong `docs/srs/source/` (FR, BR-xx, UC-xx). Việc cần một luật chưa có trong SRS thì hỏi lại trước khi làm.
+- **Bắt buộc đọc `docs/srs/SRS.md` trước khi làm bất kỳ việc gì.** Đây là bản Markdown đầy đủ của SRS. Mọi yêu cầu (FR, BR-xx, UC-xx, NFR) đối chiếu với tệp này. Việc cần một luật chưa có trong SRS thì hỏi lại trước khi làm.
 - Không tự thêm luật, giới hạn, con số hay trạng thái mà SRS chưa có. Thấy cần thì nêu trong phần trả lời, không đưa vào mã.
 - Xong việc thì báo: đã sửa tệp nào, đã chạy gì và kết quả, chỗ nào còn chưa chắc.
 
@@ -23,7 +23,7 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 - Code và test không chứa ID SRS (`UC-`, `FR-`, `NFR-`, `BR-`…) ở bất kỳ đâu: tên biến, hàm, lớp, tệp, tên test, comment, chuỗi, log. Chỉ mô tả làm gì. Truy vết ghi trong mô tả PR.
 - Không comment trong thân hàm. Comment ngắn đặt trên hàm; header của file chỉ chứa TODO còn cần bổ sung (xem mục "Comment trong code" của `README.md`).
 - Sơ đồ thiết kế viết bằng Mermaid trong `diagrams/`.
-- Thuật ngữ dùng đúng `docs/srs/source/92_appendix_b_glossary.md`.
+- Thuật ngữ dùng đúng Phụ lục B của `docs/srs/SRS.md`.
 - Commit message theo mục "Quy ước commit" trong `README.md`. Agent chạy skill `humanizer:humanizer` trên phần mô tả trước khi commit.
 - Mô tả PR (`docs/templates/pull-request.md`), bản review PR và comment (cùng mẫu `docs/templates/review-pr.md`): agent chạy `humanizer:humanizer` trên văn bản cuối cùng trước khi đưa cho người dùng.
 
