@@ -9,7 +9,7 @@
 ## Review
 - Ai trong nhóm cũng review được SRS của bạn: bạn gửi bản nháp cho nhóm ngày 02/11, người review trả Comment chậm nhất 03/11.
 - Bạn cũng review được Test Plan và việc của người khác. Test Plan nháp có ngày 03/11, Comment trả trong 03/11 – 04/11.
-- Review theo checklist ở mục 5 của file tổng quan. SRS góp ý bằng Comment trong Word; Test Plan góp ý trên PR theo `docs/templates/review-pr.md`. Không sửa thẳng file của người kia.
+- Review theo checklist ở mục 5 của file tổng quan. SRS và Test Plan góp ý trên PR theo `docs/templates/review-pr.md`. Không sửa thẳng file của người kia.
 
 ## Đọc trước (xong trước buổi họp 29/10)
 | Tài liệu | Phần | Học gì |
@@ -27,10 +27,10 @@
 |---|---|---|---|
 | 1 | Họp cả nhóm: xác nhận 3 điểm theo Shopee, chốt các trường của đơn hàng, kênh thông báo, thuật ngữ bản đầu. Bạn ghi biên bản (dùng làm nguồn cho BR) | T5 29/10 | Biên bản + thuật ngữ v0 |
 | 2 | Vẽ sơ đồ trạng thái và sơ đồ Use Case. Lập danh sách ID khung: 7 UC, các ngoại lệ (`x.0.Ey`), các nhóm FR, các NFR. Có SRS nháp thì bổ sung đủ. **Gửi danh sách ID cho TV2** để TV2 viết Test Plan §2 song song | T7 31/10 | 2 sơ đồ `.drawio` + PNG; danh sách ID |
-| 3 | Viết SRS nháp đủ mọi mục, kể cả sơ đồ ngữ cảnh và ERD. Gửi nhóm review | T2 02/11 | `SRS.docx` bản nháp |
+| 3 | Viết SRS nháp đủ mọi mục, kể cả sơ đồ ngữ cảnh và ERD. Gửi nhóm review | T2 02/11 | `SRS.md` bản nháp, mở PR |
 | 4 | Review Test Plan nháp cùng nhóm | T3 03/11 – T4 04/11 | Comment trên PR Test Plan |
 | 5 | Sửa SRS theo Comment của TV2. Đổi ID nào thì báo TV2 ngay | T4 04/11 | Comment đã xử lý |
-| 6 | Chốt: lịch sử sửa đổi, mục lục, đánh số hình | T5 05/11 | `SRS.docx` bản cuối |
+| 6 | Chốt: lịch sử sửa đổi, mục lục, đánh số hình | T5 05/11 | `SRS.md` bản cuối, xuất `SRS.docx` |
 | 7 | Nộp SRS | T6 06/11 | Đã nộp |
 
 ## Phụ thuộc

@@ -12,7 +12,7 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 
 ## Khi nhận việc
 
-- **Bắt buộc đọc `docs/srs/SRS.md` trước khi làm bất kỳ việc gì.** Đây là bản Markdown đầy đủ của SRS. Mọi yêu cầu (FR, BR-xx, UC-xx, NFR) đối chiếu với tệp này. Việc cần một luật chưa có trong SRS thì hỏi lại trước khi làm.
+- **Bắt buộc đọc `docs/srs/SRS.md` trước khi làm bất kỳ việc gì.** Đây là bản gốc của SRS: mọi sửa SRS làm trên tệp này, qua PR. `SRS.docx` xuất từ `SRS.md` để người đọc và để nộp, không sửa trực tiếp, không dùng làm nguồn. Thêm, đổi hay bỏ ID trong `SRS.md` thì cập nhật `docs/srs/id_index.md` trong cùng PR. Mọi yêu cầu (FR, BR-xx, UC-xx, NFR) đối chiếu với tệp này. Việc cần một luật chưa có trong SRS thì hỏi lại trước khi làm.
 - Không tự thêm luật, giới hạn, con số hay trạng thái mà SRS chưa có. Thấy cần thì nêu trong phần trả lời, không đưa vào mã.
 - Xong việc thì báo: đã sửa tệp nào, đã chạy gì và kết quả, chỗ nào còn chưa chắc.
 

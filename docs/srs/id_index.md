@@ -1,6 +1,6 @@
-# Khung ID của SRS (bản 31/10/2026)
+# Khung ID của SRS (cập nhật 03/11/2026)
 
-File này là **nơi duy nhất** định nghĩa ID, trạng thái, BR và vấn đề mở của SRS. Các mục SRS chỉ viết câu cho đúng ID ở đây; không tự thêm ID, trạng thái, BR hay con số. Đây cũng là **danh sách ID gửi TV2** (mốc M1 31/10, kế hoạch mục 4).
+`docs/srs/SRS.md` là bản gốc của SRS. File này ghi **nguồn** của từng ID, trạng thái, BR và vấn đề mở trong SRS.md. Thêm, đổi hay bỏ ID trong SRS.md thì sửa file này trong cùng PR. Không tự thêm ID, trạng thái, BR hay con số khi chưa có nguồn. Bản đầu của file này là **danh sách ID gửi TV2** (mốc M1 31/10, kế hoạch mục 4).
 
 ## 0. Mã nguồn dùng trong file này
 
@@ -107,11 +107,11 @@ Mỗi UC có `PRE-1: Người dùng đã đăng nhập với vai trò …`. Ngư
 |---|---|---|---|
 | UC-01 | 1.0 Tạo đơn hàng | 1.1 Sửa đơn trước khi xác nhận | 1.0.E1 Thiếu trường bắt buộc hoặc sai định dạng · 1.0.E2 Lưu đơn thất bại |
 | UC-02 | 2.0 Phân công đơn cho Shipper | Không có | 2.0.E1 Đơn không còn ở trạng thái Chờ xác nhận (BR-01) |
-| UC-03 | 3.0 Cập nhật trạng thái giao hàng | 3.1 Giao lại sau khi giao không thành công (T6, BR-06) | 3.0.E1 Hàng bị hỏng khi giao (T9) · 3.0.E2 Giao không thành công (T5, dẫn tới trả lại) · 3.0.E3 Hàng thất lạc (T10) |
+| UC-03 | 3.0 Cập nhật trạng thái giao hàng | 3.1 Giao lại sau khi giao không thành công (T6, BR-06) · 3.2 Tiếp tục giao đơn đang giao | 3.0.E1 Hàng bị hỏng khi giao (T9) · 3.0.E2 Giao không thành công (T5, dẫn tới trả lại) · 3.0.E3 Hàng thất lạc (T10) |
 | UC-04 | 4.0 Theo dõi đơn hàng | Không có | 4.0.E1 Mất kết nối khi đang theo dõi (ROB-1) |
 | UC-05 | 5.0 Gửi yêu cầu hoàn hàng | 5.1 Xem trạng thái yêu cầu hoàn hàng | 5.0.E1 Đơn chưa ở trạng thái Đã giao (BR-02) · 5.0.E2 Quá thời hạn yêu cầu hoàn hàng (BR-03) · 5.0.E3 Chưa chọn lý do hoàn hàng (BR-04) |
 | UC-06 | 6.0 Chấp nhận yêu cầu hoàn hàng | 6.1 Từ chối yêu cầu · 6.2 Ghi nhận hoàn tất | 6.0.E1 Yêu cầu không còn ở trạng thái Chờ duyệt (BR-01) |
-| UC-07 | 7.0 Xử lý sự cố | 7.1 Admin xác nhận thất lạc (T10) · 7.2 Admin xác nhận đã nhận lại hàng (T8) | 7.0.E1 Admin yêu cầu chuyển trả lại khi chưa đạt số lần giao không thành công ở BR-06 |
+| UC-07 | 7.0 Xử lý sự cố | 7.1 Admin xác nhận thất lạc (T10) · 7.2 Admin xác nhận đã nhận lại hàng (T8) | 7.0.E1 Admin yêu cầu chuyển trả lại khi chưa đạt số lần giao không thành công ở BR-06 (Issue.Resolve.Return, Track.Update.Valid) |
 
 **Ba ngoại lệ của đề, mỗi cái đủ 4 ý** (TV1_SRS "Xong khi"):
 
@@ -185,7 +185,7 @@ Mỗi dòng con = 1 câu "Hệ thống phải…". Cột "Ý" là nội dung ph�
 | .List | Hiển thị cho Admin danh sách yêu cầu ở trạng thái `Chờ duyệt` và `Đã chấp nhận`, kèm đơn hàng và lý do | A48, A49 |
 | .Approve | Khi Admin chấp nhận, chuyển yêu cầu sang `Đã chấp nhận` (R2) | A48 |
 | .Reject | Khi Admin từ chối, chuyển yêu cầu sang `Bị từ chối` (R3). Có bắt buộc ghi lý do từ chối không: C-6 | A48 |
-| .Issue | Khi Admin chấp nhận yêu cầu có lý do thuộc BR-05, chuyển đơn sang `Hư hỏng` hoặc `Thất lạc` (T11, T12) | 03 §3.4 |
+| .OrderStatus | Khi Admin chấp nhận yêu cầu có lý do thuộc BR-05, chuyển đơn sang `Hư hỏng` hoặc `Thất lạc` (T11, T12) | 03 §3.4 |
 | .Complete | Cho Admin ghi nhận `Hoàn tất` với yêu cầu `Đã chấp nhận` (R4); không xử lý tiền (BR-07) | 03 §3.5, A49 |
 | .Valid | Từ chối mọi thao tác chuyển trạng thái yêu cầu hoàn hàng không có trên Hình A.2 và báo lý do (BR-01) | 03 §4 |
 
@@ -236,6 +236,8 @@ Mỗi dòng con = 1 câu "Hệ thống phải…". Cột "Ý" là nội dung ph�
 | SEC-5 | Chỉ Admin được tạo vận đơn và phân công đơn cho Shipper | KH 1.1 |
 | SEC-6 | Chỉ Admin được duyệt / từ chối / ghi nhận hoàn tất yêu cầu hoàn hàng | KH 1.1 |
 | SEC-7 | Chỉ Admin được xử lý sự cố (UC-07) | KH 1.1 |
+| SEC-8 | Chỉ Shipper được phân công cho đơn được cập nhật trạng thái giao hàng của đơn đó (T3, T4, T6) và báo sự cố cho đơn đó (Issue.Report) | KH 1.1, review 03/11/2026 |
+| SEC-9 | Người dùng đã đăng nhập đăng xuất được; sau khi đăng xuất phải đăng nhập lại để thao tác (SEC-1) | A21, review 03/11/2026 |
 | ROB-1 | Người xem (màn hình ở RT-1, RT-2) mất kết nối rồi kết nối lại phải thấy trạng thái mới nhất của các đơn trên màn hình, kể cả thay đổi xảy ra lúc mất kết nối | KH 1.2, COS ROB-1 |
 
 Dòng cuối §6: các thuộc tính chất lượng khác (hiệu năng, khả dụng, an toàn, dễ dùng) chưa có yêu cầu đo được ở phiên bản này. Vì vậy không có PER-x (KH 1.2).
@@ -246,13 +248,13 @@ Dòng cuối §6: các thuộc tính chất lượng khác (hiệu năng, khả 
 
 | ID | Định nghĩa | Loại | Tĩnh / Động | Nguồn | Được tham chiếu bởi |
 |---|---|---|---|---|---|
-| BR-01 | Trạng thái đơn hàng và trạng thái yêu cầu hoàn hàng chỉ được chuyển theo các bước chuyển trên Hình A.2 | Ràng buộc | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1, S2, S5 | Track.Update.Next, Track.Update.Valid, Return.Review.Valid, UC-02, UC-03, UC-06, UC-07 |
-| BR-02 | Chỉ được yêu cầu hoàn hàng cho đơn ở trạng thái `Đã giao` | Ràng buộc | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1 | Return.Request.Eligible, UC-05 |
-| BR-03 | Thời hạn yêu cầu hoàn hàng là TBD (C-4), tính từ thời điểm đơn chuyển sang `Đã giao` | Ràng buộc | Động | Quyết định nhóm ngày TBD (xem C-15) (mốc tính), tham khảo S1. Con số: TBD | Return.Request.Window, UC-05 |
-| BR-04 | Lý do hoàn hàng gồm: "Hàng lỗi / hư hỏng", "Chưa nhận được hàng", và các lý do khác TBD (C-5) | Dữ kiện | Động | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1 | Return.Request.Reason, UC-05 |
-| BR-05 | Khi yêu cầu hoàn hàng được chấp nhận: lý do "Hàng lỗi / hư hỏng" thì đơn chuyển sang `Hư hỏng`; lý do "Chưa nhận được hàng" thì đơn chuyển sang `Thất lạc` | Ràng buộc | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1 | Return.Review.Issue, UC-06 |
-| BR-06 | Đơn giao không thành công đủ TBD lần (C-3) thì chuyển sang trả lại (`Đang hoàn hàng`); chưa đủ thì được giao lại. Số lần giao không thành công = số sự cố loại "Giao không thành công" đã ghi cho đơn | Ràng buộc | Động | Quyết định nhóm ngày TBD (xem C-15), tham khảo S3. Con số: TBD (S3 không ghi con số) | Issue.Resolve.Return, Track.Update.Next, UC-03 (3.1), UC-07 |
-| BR-07 | Hệ thống không xử lý tiền (thanh toán, phí giao, phí hoàn, hoàn tiền, bồi thường); chỉ ghi nhận kết quả xử lý | Dữ kiện | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1, S3 | Return.Review.Complete, Issue.Resolve.Result, AS-4, UC-06, UC-07 |
+| BR-01 | Trạng thái đơn hàng và trạng thái yêu cầu hoàn hàng chỉ được chuyển theo các bước chuyển trên Hình A.2 | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1, S2, S5 | Track.Update.Next, Track.Update.Valid, Return.Review.Valid, UC-02, UC-03, UC-06, UC-07 |
+| BR-02 | Chỉ được yêu cầu hoàn hàng cho đơn ở trạng thái `Đã giao` | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1 | Return.Request.Eligible, UC-05 |
+| BR-03 | Thời hạn yêu cầu hoàn hàng là TBD (C-4), tính từ thời điểm đơn chuyển sang `Đã giao` | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026 (mốc tính), tham khảo S1. Con số: TBD | Return.Request.Window, UC-05 |
+| BR-04 | Lý do hoàn hàng gồm: "Hàng lỗi / hư hỏng", "Chưa nhận được hàng", và các lý do khác TBD (C-5) | Dữ kiện | Động | Quyết định nhóm ngày 31/10/2026, tham khảo S1 | Return.Request.Reason, UC-05 |
+| BR-05 | Khi yêu cầu hoàn hàng được chấp nhận: lý do "Hàng lỗi / hư hỏng" thì đơn chuyển sang `Hư hỏng`; lý do "Chưa nhận được hàng" thì đơn chuyển sang `Thất lạc` | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1 | Return.Review.OrderStatus, UC-06 |
+| BR-06 | Đơn giao không thành công đủ TBD lần (C-3) thì chuyển sang trả lại (`Đang hoàn hàng`); chưa đủ thì được giao lại. Số lần giao không thành công = số sự cố loại "Giao không thành công" đã ghi cho đơn | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026, tham khảo S3. Con số: TBD (S3 không ghi con số) | Issue.Resolve.Return, Track.Update.Next, UC-03 (3.1), UC-07 |
+| BR-07 | Hệ thống không xử lý tiền (thanh toán, phí giao, phí hoàn, hoàn tiền, bồi thường); chỉ ghi nhận kết quả xử lý | Dữ kiện | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1, S3 | Return.Review.Complete, Issue.Resolve.Result, AS-4, UC-06, UC-07 |
 
 ## 8. Dữ liệu (SRS §4) — thực thể tối thiểu theo TV1_SRS "Xong khi"; không có thực thể Cửa hàng
 
@@ -299,10 +301,9 @@ Ai chốt: **Cả nhóm**. Hạn: **04/11/2026 (M4)**, để TV2 kịp sửa Tes
 | C-9 | Ngôn ngữ giao diện (tiếng Việt?) | §2.4 | 01 §1 (2.4) chỉ nêu làm ví dụ |
 | C-10 | Thông tin tài khoản khi Customer đăng ký / đăng nhập | §4.2 (người dùng, thông tin đăng nhập) | — |
 | C-11 | Có báo sự cố được khi đơn ở trạng thái khác `Đang giao` (vd `Chờ lấy hàng`, `Đang hoàn hàng`) không | Hình A.2, Issue.Report.Type, UC-03, 3.4.1.1, Issue.Resolve.Lost, UC-07 (7.1) | — |
-| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.Issue, UC-06 | — |
+| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.OrderStatus, UC-06 | — |
 | C-13 | Lịch sử trạng thái hiển thị theo thứ tự cũ → mới hay mới → cũ | Track.View.History, UC-04 | COS COS-RPT-1 dùng mới → cũ (chỉ là mẫu) |
 | C-14 | Kết quả xử lý sự cố có bắt buộc nhập không (để trống thì hệ thống báo lỗi, hay vẫn coi sự cố đã xử lý) | Issue.Resolve.Result, UC-07 (7.0 bước 5), §4.2 | — |
-| C-15 | Ngày họp nhóm chốt các quyết định theo file 03 (ngày ghi ở cột Nguồn của BR) | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-07 (§7) | — |
 
 ## 10. Thuật ngữ (Phụ lục B) — cột: Thuật ngữ / Tiếng Anh / Từ Shopee tương ứng / Định nghĩa
 
