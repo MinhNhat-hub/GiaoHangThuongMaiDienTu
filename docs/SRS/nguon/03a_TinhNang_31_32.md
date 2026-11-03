@@ -10,7 +10,7 @@ Customer đã đăng nhập chọn sản phẩm từ danh sách sản phẩm c�
 
 ```uc
 Mã và tên: | UC-01 Tạo đơn hàng
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Customer | Tác nhân phụ: | Không có
 Mô tả: | Customer chọn sản phẩm của cửa hàng, nhập số lượng, thông tin người nhận và địa chỉ giao, xem lại thông tin rồi xác nhận để tạo đơn hàng. Đơn tạo thành công có mã đơn hàng và ở trạng thái "Chờ xác nhận" (xem Hình A.2), chờ Admin phân công cho Shipper (xem UC-02).
 Điều kiện kích hoạt: | Customer cho biết muốn tạo đơn hàng.
@@ -60,7 +60,7 @@ Admin tạo vận đơn và phân công đơn ở trạng thái "Chờ xác nh�
 
 ```uc
 Mã và tên: | UC-02 Phân công đơn cho Shipper (gồm tạo vận đơn)
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Admin | Tác nhân phụ: | Không có
 Mô tả: | Admin tạo vận đơn cho một đơn ở trạng thái "Chờ xác nhận" và phân công đơn cho một Shipper. Đơn chuyển sang trạng thái "Chờ lấy hàng" (xem Hình A.2).
 Điều kiện kích hoạt: | Admin cho biết muốn phân công một đơn cho Shipper.
@@ -76,7 +76,7 @@ Thông tin khác: | Chỉ Admin được tạo vận đơn và phân công đơn
 
 ```uc
 Mã và tên: | UC-03 Cập nhật trạng thái giao hàng
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Shipper | Tác nhân phụ: | Không có
 Mô tả: | Shipper cập nhật trạng thái của đơn được phân công cho mình khi lấy hàng và khi giao hàng. Khi hàng bị hỏng, giao không thành công hoặc hàng thất lạc, Shipper báo sự cố; hệ thống ghi sự cố, đổi trạng thái đơn và hiển thị cho Admin. Các ngoại lệ của UC này là phần báo sự cố ở 3.4.1.
 Điều kiện kích hoạt: | Shipper cho biết muốn cập nhật trạng thái của một đơn được phân công cho mình.
@@ -94,7 +94,7 @@ Giả định: | Tài khoản Shipper đã có sẵn (xem AS-2).
 
 ```uc
 Mã và tên: | UC-04 Theo dõi đơn hàng
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Customer | Tác nhân phụ: | Không có
 Mô tả: | Customer xem danh sách đơn hàng của mình, rồi xem trạng thái hiện tại và lịch sử trạng thái của một đơn.
 Điều kiện kích hoạt: | Customer cho biết muốn xem tình trạng vận chuyển của đơn hàng.

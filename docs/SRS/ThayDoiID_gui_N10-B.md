@@ -1,4 +1,4 @@
-# Gửi TV2 – Thay đổi ID của SRS so với danh sách ngày 31/10/2026
+# Gửi N10-B – Thay đổi ID của SRS so với danh sách ngày 31/10/2026
 
 Nguồn đối chiếu: `SRS/nguon/00_Khung_ID.md` bản 02/11/2026 (61 FR, C-1..C-15). Mỗi dòng dưới đây cần một dòng mới hoặc dòng sửa trong Test Plan §2.
 

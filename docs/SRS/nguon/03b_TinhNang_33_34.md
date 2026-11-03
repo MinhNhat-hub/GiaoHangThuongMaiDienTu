@@ -8,7 +8,7 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 
 ```uc
 Mã và tên: | UC-05 Yêu cầu hoàn hàng
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Customer | Tác nhân phụ: | Không có
 Mô tả: | Customer chọn một đơn hàng đã giao của mình, chọn lý do hoàn hàng và gửi yêu cầu hoàn hàng. Hệ thống lưu yêu cầu với trạng thái "Chờ duyệt" để Admin duyệt (xem UC-06). Customer xem được trạng thái các yêu cầu hoàn hàng mình đã gửi.
 Điều kiện kích hoạt: | Customer chọn gửi yêu cầu hoàn hàng cho một đơn hàng của mình, hoặc chọn xem các yêu cầu hoàn hàng đã gửi.
@@ -26,7 +26,7 @@ Giả định: | Không có
 
 ```uc
 Mã và tên: | UC-06 Duyệt / từ chối yêu cầu hoàn hàng
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Admin | Tác nhân phụ: | Không có
 Mô tả: | Admin xem các yêu cầu hoàn hàng đang chờ duyệt, chấp nhận hoặc từ chối từng yêu cầu. Với yêu cầu đã chấp nhận, Admin ghi nhận "Hoàn tất" khi việc hoàn hàng xong (xem Hình A.2). Hệ thống chỉ ghi nhận, không xử lý tiền (xem BR-07).
 Điều kiện kích hoạt: | Admin chọn xử lý yêu cầu hoàn hàng.
@@ -90,7 +90,7 @@ Admin xử lý các sự cố Shipper đã báo ở mục 3.4.1, gồm cả ngo�
 
 ```uc
 Mã và tên: | UC-07 Xử lý sự cố
-Người tạo: | TV1 | Ngày tạo: | 31/10/2026
+Người tạo: | N10-A | Ngày tạo: | 31/10/2026
 Tác nhân chính: | Admin | Tác nhân phụ: | Không có
 Mô tả: | Admin xử lý các sự cố đã được ghi khi giao hàng (xem 3.0.E1, 3.0.E2, 3.0.E3 của UC-03 và luồng 7.1). Admin chuyển đơn giao không thành công sang "Đang hoàn hàng", xác nhận hàng đã hoàn về người bán, xác nhận thất lạc và ghi kết quả xử lý (xem Hình A.2).
 Điều kiện kích hoạt: | Có sự cố chưa có kết quả xử lý; hoặc Admin phát hiện một đơn ở trạng thái "Đang giao" bị thất lạc; hoặc Admin đã nhận lại hàng của một đơn ở trạng thái "Đang hoàn hàng".
