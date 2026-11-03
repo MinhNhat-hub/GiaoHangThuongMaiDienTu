@@ -15,7 +15,7 @@ Xem `MEMBERS.md`. Phân công công việc ở `docs/plan/04_backlog_assignment.
 ## Cấu trúc kho
 
 ```
-docs/srs/         SRS: SRS.md (bản gốc), SRS.docx (xuất từ SRS.md, chỉ để đọc và nộp), nguồn của từng ID (id_index.md), sơ đồ draw.io (diagrams/)
+docs/srs/         SRS: SRS.md (bản gốc), SRS.docx (xuất từ SRS.md, chỉ để đọc và nộp), bản chia theo chương, giữ khớp với SRS.md (source/), nguồn của từng ID (source/00_id_index.md), sơ đồ draw.io (diagrams/)
 docs/plan/        kế hoạch SRS, Test Plan, phân công theo backlog
 docs/templates/   mẫu mô tả PR và mẫu review / comment
 diagrams/         sơ đồ Mermaid (.mmd) cho thiết kế

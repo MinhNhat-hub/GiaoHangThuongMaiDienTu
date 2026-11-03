@@ -1,0 +1,66 @@
+# 1 Giới thiệu
+
+## 1.1 Mục đích
+
+Tài liệu này đặc tả yêu cầu phần mềm (Software Requirements Specification, SRS) cho phiên bản 1.0 của Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử. Tài liệu mô tả các yêu cầu chức năng và phi chức năng của hệ thống.
+
+Người dùng tài liệu gồm người phát triển web, người kiểm thử và giảng viên. Người phát triển web dựa vào tài liệu để xây dựng hệ thống. Người kiểm thử dựa vào tài liệu để kiểm tra hệ thống hoạt động đúng. Test Plan §2 lấy ID yêu cầu từ tài liệu này.
+
+## 1.2 Quy ước tài liệu
+
+| Loại | Định dạng | Ví dụ |
+|---|---|---|
+| Tính năng | FE-x (như bộ mẫu COS [3]) | FE-1 |
+| Use Case | UC-xx, đánh số liên tục | UC-01 |
+| Yêu cầu chức năng | Nhóm.Việc.ChiTiết (như bộ mẫu COS [3]). Nhóm: Order (3.1), Track (3.2), Return (3.3), Issue.Report (3.4.1), Issue.Resolve (3.4.2) | Order.Create.Receiver |
+| Ngoại lệ trong UC | x.0.Ey (như bộ mẫu COS [3]) | 3.0.E2 |
+| Quy tắc nghiệp vụ | BR-xx, đánh số liên tục | BR-01 |
+| Yêu cầu phi chức năng | RT-x, SEC-x, ROB-x | RT-1 |
+| Giao diện | UI-x, SI-x, CI-x | CI-1 |
+| Môi trường / Ràng buộc / Giả định / Phụ thuộc | OE-x, CO-x, AS-x, DE-x | AS-1 |
+| Dữ liệu | DI-x | DI-1 |
+
+Luật viết:
+
+- Câu yêu cầu viết "Hệ thống phải …" (dịch từ "shall"). Mỗi câu chỉ chứa 1 yêu cầu.
+- Thuật ngữ dùng đúng Phụ lục B. Lần đầu xuất hiện có thể ghi kèm tiếng Anh trong ngoặc.
+- Tham chiếu chứ không chép lại: "(xem BR-03)", "(xem Hình A.2)".
+- Không tự đặt số liệu. Chưa có thì ghi "chưa có số liệu".
+
+Chỗ nhóm chưa chốt ghi TBD (xem C-x); mọi vấn đề này được liệt kê ở Phụ lục C.
+
+## 1.3 Phạm vi dự án và tính năng
+
+Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử là web riêng của một cửa hàng, không phải sàn có nhiều người bán. Customer (người mua) tạo đơn hàng, theo dõi tình trạng vận chuyển và yêu cầu hoàn hàng; Admin (nhân viên cửa hàng) tạo vận đơn, phân công Shipper, duyệt yêu cầu hoàn hàng và xử lý sự cố; Shipper giao hàng và cập nhật trạng thái. Trạng thái đơn hàng được cập nhật theo sự kiện (real-time) trên màn hình người dùng đang mở, không cần tải lại trang (xem RT-1).
+
+Phiên bản 1.0 gồm 4 tính năng. Cả 4 có độ ưu tiên Cao, vì đề bài [1] bắt buộc cả 4.
+
+- **FE-1:** Tạo đơn hàng (xem 3.1).
+- **FE-2:** Theo dõi tình trạng vận chuyển (xem 3.2).
+- **FE-3:** Hoàn hàng (xem 3.3).
+- **FE-4:** Xử lý ngoại lệ: hỏng, trả lại, thất lạc (xem 3.4).
+
+Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2]):
+
+- Nhiều cửa hàng (xem AS-1).
+- Báo cáo thống kê (A41, A54–A57, A70).
+- Quản lý tài khoản người dùng / Shipper (A33, A34).
+- Sửa / hủy / tìm kiếm đơn hàng đã lưu (A35–A37).
+- Thanh toán, phí, hoàn tiền, bồi thường. Hệ thống chỉ ghi nhận kết quả xử lý (xem BR-07).
+- Danh mục sản phẩm, đánh giá sản phẩm, kho trung chuyển.
+
+Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1, SEC-9 và PRE-1 của các Use Case.
+
+## 1.4 Tài liệu tham khảo
+
+1. Đề tài 20: Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử. Đề đồ án cuối kỳ, môn SE113 Kiểm chứng phần mềm, Trường Đại học Công nghệ Thông tin.
+2. Nhóm 10. Backlog dự án (BackLogPlan.xlsx), Bài tập 1, môn SE113 Kiểm chứng phần mềm, 09/2026.
+3. Wiegers, Karl. Cafeteria Ordering System, Release 1.0: Vision and Scope Document, Use Cases, Software Requirements Specification (Version 1.0 approved) và Business Rules. Process Impact, 2013. Kèm ví dụ cùng tác giả: Software Requirements Specification for PearlsFromSand.com, Version 1.1 approved, 2013.
+4. Nguyễn Thị Thanh Trúc. Test Plan, slide bài giảng môn SE113 Kiểm chứng phần mềm, Trường Đại học Công nghệ Thông tin, cập nhật 03/2014.
+5. (S1) Shopee Blog – Cách trả hàng hoàn tiền trên Shopee. https://shopee.vn/blog/cach-tra-hang-hoan-tien-tren-shopee/
+6. (S2) Shopee Blog – Kiểm tra đơn hàng Shopee. https://shopee.vn/blog/kiem-tra-don-hang-shopee/
+7. (S3) Công ty TNHH Shopee Express – Điều khoản sử dụng SPX Express. https://spx.vn/T&C.pdf
+8. (S4) VnExpress 13/3/2024 – Shopee cập nhật chính sách đổi trả hàng. https://vnexpress.net/shopee-cap-nhat-chinh-sach-doi-tra-hang-4721617.html
+9. (S5) BigSeller 16/07/2026 – SPX Express là gì? Tra cứu đơn hàng. https://www.bigseller.com/blog/articleDetails/spx-express-la-gi-tra-cuu-don-hang.4760.htm
+
+Các nguồn S1–S5 chỉ dùng để tham khảo nghiệp vụ; tài liệu không lấy nguyên con số từ các nguồn này.

@@ -1,6 +1,6 @@
 # Khung ID của SRS (cập nhật 03/11/2026)
 
-`docs/srs/SRS.md` là bản gốc của SRS. File này ghi **nguồn** của từng ID, trạng thái, BR và vấn đề mở trong SRS.md. Thêm, đổi hay bỏ ID trong SRS.md thì sửa file này trong cùng PR. Không tự thêm ID, trạng thái, BR hay con số khi chưa có nguồn. Bản đầu của file này là **danh sách ID gửi TV2** (mốc M1 31/10, kế hoạch mục 4).
+`docs/srs/SRS.md` là bản gốc của SRS. File này ghi **nguồn** của từng ID, trạng thái, BR và vấn đề mở trong SRS.md. Thêm, đổi hay bỏ ID trong SRS.md thì sửa file này và chương tương ứng trong `source/` trong cùng PR. Không tự thêm ID, trạng thái, BR hay con số khi chưa có nguồn. Bản đầu của file này là **danh sách ID gửi TV2** (mốc M1 31/10, kế hoạch mục 4).
 
 ## 0. Mã nguồn dùng trong file này
 
