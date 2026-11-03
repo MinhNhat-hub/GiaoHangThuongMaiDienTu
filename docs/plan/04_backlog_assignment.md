@@ -107,4 +107,4 @@ Backlog không có các việc sau, nhưng giai đoạn 1 phải làm. Khi tạo
 | TV3 | Frontend | 0 | 9 riêng + 36 chung với TV4 |
 | TV4 | Backend | 0 | 5 riêng + 36 chung với TV3 |
 
-Lệch tải này đã biết trước khi chọn phương án A: giai đoạn 1 dồn vào TV1, TV2; giai đoạn 2 dồn vào TV3, TV4 (số liệu ở file tổng quan, mục 3). Bù lại bằng review chéo.
+Lệch tải này đã biết trước khi chọn phương án A: giai đoạn 1 dồn vào TV1, TV2; giai đoạn 2 dồn vào TV3, TV4 (số liệu ở file tổng quan, mục 3). Bù lại bằng việc ai cũng review được cho nhau.

@@ -6,8 +6,8 @@ Hạn nộp: **Thứ Sáu 06/11/2026** (file .docx) · Chốt nội bộ: **Th�
 | File | Ai đọc | Nội dung |
 |---|---|---|
 | File này | Cả nhóm | Quyết định đã chốt, phân công, lịch, review, việc còn mở |
-| [01_srs_outline.md](01_srs_outline.md) | TV1 viết, TV2 review | Từng mục SRS: viết gì, học mẫu nào. **Quy ước ID nằm ở đây** |
-| [02_test_plan_outline.md](02_test_plan_outline.md) | TV2 viết, TV1 review | Từng mục Test Plan theo slide giảng viên |
+| [01_srs_outline.md](01_srs_outline.md) | TV1 viết, cả nhóm review | Từng mục SRS: viết gì, học mẫu nào. **Quy ước ID nằm ở đây** |
+| [02_test_plan_outline.md](02_test_plan_outline.md) | TV2 viết, cả nhóm review | Từng mục Test Plan theo slide giảng viên |
 | [03_shopee_reference.md](03_shopee_reference.md) | Cả nhóm | Quy trình Shopee/SPX có nguồn → Customer là ai, hoàn hàng / trả lại, trạng thái |
 | [04_backlog_assignment.md](04_backlog_assignment.md) | Cả nhóm | Đủ 79 task backlog: giai đoạn nào, ai làm |
 | [TV1_SRS.md](TV1_SRS.md) | TV1 | Việc của người viết SRS |
@@ -97,12 +97,12 @@ Nếu giảng viên yêu cầu khác thì người nhận task đó trong [04_ba
 
 4 người ngang nhau, không phân trưởng nhóm. Mỗi người chịu trách nhiệm đúng vai trò của mình.
 
-| Người | Vai trò | Trước 06/11 | Sau 06/11 (giai đoạn 2) | Review chéo |
-|---|---|---|---|---|
-| **TV1** | SRS | Toàn bộ SRS, gồm 4 sơ đồ (ngữ cảnh, ERD, Use Case, trạng thái) | Cập nhật SRS, hướng dẫn sử dụng, báo cáo cuối (5 task) | Với TV2 |
-| **TV2** | Test Plan | Toàn bộ Test Plan | Viết test case, chạy system / regression test (5 task: A69, A80, A81, A83, A84). Kiểm thêm chỗ nối sau khi TV3, TV4 làm xong A59, A60, A62 (mục 6 của [02_test_plan_outline.md](02_test_plan_outline.md)) | Với TV1 |
-| **TV3** | Frontend | Không có việc phải nộp | 9 mockup + phần giao diện của 36 task chung với TV4 | Với TV4 |
-| **TV4** | Backend | Không có việc phải nộp | 5 sơ đồ thiết kế + phần server của 36 task chung với TV3 | Với TV3 |
+| Người | Vai trò | Trước 06/11 | Sau 06/11 (giai đoạn 2) |
+|---|---|---|---|
+| **TV1** (@MinhNhat-hub) | SRS | Toàn bộ SRS, gồm 4 sơ đồ (ngữ cảnh, ERD, Use Case, trạng thái) | Cập nhật SRS, hướng dẫn sử dụng, báo cáo cuối (5 task) |
+| **TV2** (@kiezroth) | Test Plan | Toàn bộ Test Plan | Viết test case, chạy system / regression test (5 task: A69, A80, A81, A83, A84). Kiểm thêm chỗ nối sau khi TV3, TV4 làm xong A59, A60, A62 (mục 6 của [02_test_plan_outline.md](02_test_plan_outline.md)) |
+| **TV3** (@binss-AUG) | Frontend | Không có việc phải nộp | 9 mockup + phần giao diện của 36 task chung với TV4 |
+| **TV4** (@prime-2k12) | Backend | Không có việc phải nộp | 5 sơ đồ thiết kế + phần server của 36 task chung với TV3 |
 
 Chi tiết từng task: [04_backlog_assignment.md](04_backlog_assignment.md). Cách làm từng người: các file TV.
 
@@ -139,7 +139,7 @@ Chi tiết từng task: [04_backlog_assignment.md](04_backlog_assignment.md). C�
 Nhóm đã chọn phương án A dù biết tải lệch: trước 06/11 dồn vào TV1, TV2; sau 06/11 dồn vào TV3, TV4. Cách giảm rủi ro:
 - TV1 gửi danh sách ID cho TV2 ngày 31/10, để TV2 viết §2 song song chứ không phải chờ SRS nháp.
 - Ngày 31/10 là mốc kiểm tra: chưa có sơ đồ trạng thái và danh sách ID thì báo cả nhóm ngay.
-- Review chéo giúp bắt lỗi sớm trong cả 2 giai đoạn.
+- Ai cũng review được cho nhau, giúp bắt lỗi sớm trong cả 2 giai đoạn.
 
 ---
 
@@ -149,9 +149,9 @@ Nhóm đã chọn phương án A dù biết tải lệch: trước 06/11 dồn v
 |---|---|---|---|
 | M0 Họp nhóm | T5 29/10 | Mỗi người đọc phần "Đọc trước" trong file của mình. Họp cả nhóm: xác nhận 3 điểm ở mục 6.2, chốt các trường của đơn hàng, kênh thông báo, thuật ngữ bản đầu. TV1 ghi biên bản | Cả nhóm |
 | M1 Nền móng | T7 31/10 | TV1: sơ đồ trạng thái, sơ đồ Use Case, **danh sách ID gửi TV2**. TV2: khung Test Plan (các mục không phụ thuộc SRS) | TV1, TV2 |
-| M2 Nháp SRS | T2 02/11 | TV1: SRS nháp đủ mục, gửi TV2 review. TV2: viết §2 theo danh sách ID | TV1, TV2 |
-| M3 Nháp Test Plan | T3 03/11 | TV2: trả Comment cho SRS; Test Plan nháp đủ mục, gửi TV1 review | TV2 |
-| M4 Sửa | T4 04/11 | TV1 trả Comment cho Test Plan. Cả hai sửa theo review của nhau | TV1, TV2 |
+| M2 Nháp SRS | T2 02/11 | TV1: SRS nháp đủ mục, gửi nhóm review. TV2: viết §2 theo danh sách ID | TV1, TV2 |
+| M3 Nháp Test Plan | T3 03/11 | Người review trả Comment cho SRS. TV2: Test Plan nháp đủ mục, gửi nhóm review | TV2, người review |
+| M4 Sửa | T4 04/11 | Người review trả Comment cho Test Plan. TV1, TV2 sửa theo review | TV1, TV2, người review |
 | M5 Chốt | T5 05/11 | TV1 chốt SRS, TV2 chốt Test Plan | TV1, TV2 |
 | Nộp | T6 06/11 | Dự phòng, chỉ sửa lỗi phát sinh. TV1 nộp SRS, TV2 nộp Test Plan | TV1, TV2 |
 | Giai đoạn 2 | Sau 06/11 | TV3, TV4 bắt đầu làm web; TV1, TV2 làm task giai đoạn 2 của mình. Hạn chốt khi có hạn cuối kỳ | Cả nhóm |
@@ -162,12 +162,14 @@ Thứ tự phụ thuộc: **danh sách ID của TV1 (31/10)** là mốc quan tr�
 
 ## 5. Review
 
-| Cặp | Review cái gì | Cách làm |
-|---|---|---|
-| TV1 ↔ TV2 | SRS và Test Plan (giai đoạn 1) | Comment trong Word. TV2 review SRS theo checklist bên dưới; TV1 review Test Plan theo checklist ở mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md) |
-| TV3 ↔ TV4 | Code (giai đoạn 2) | Mọi thay đổi đi qua pull request trên GitHub; người kia duyệt rồi mới gộp vào nhánh chính. Checklist review code chốt khi bắt đầu giai đoạn 2 (YAGNI) |
+Ai cũng review được cho nhau, không chia cặp cố định. Mỗi thay đổi cần ít nhất một người không phải tác giả duyệt.
 
-Checklist review SRS (TV2 dùng):
+| Review cái gì | Cách làm |
+|---|---|
+| SRS và Test Plan (giai đoạn 1) | Comment trong Word. SRS review theo checklist bên dưới; Test Plan review theo checklist ở mục 7 của [02_test_plan_outline.md](02_test_plan_outline.md) |
+| Code (giai đoạn 2) | Mọi thay đổi đi qua pull request trên GitHub, review theo `docs/templates/review-pr.md`; có người duyệt rồi mới gộp vào nhánh chính |
+
+Checklist review SRS:
 - [ ] Mỗi yêu cầu chức năng là 1 câu "Hệ thống phải…", có ID, kiểm được.
 - [ ] Không chép lại nội dung BR / trạng thái / thuật ngữ, chỉ ghi ID hoặc tham chiếu.
 - [ ] Mỗi UC đủ các trường của mẫu COS. UC đơn giản được bỏ 2 trường như COS UC-5 (danh sách ở mục 2 của [01_srs_outline.md](01_srs_outline.md)).
@@ -222,7 +224,7 @@ Tiêu chí: hiệu quả và dùng được lâu dài quan trọng hơn chi phí
 | Unit / Integration test | Jest (hoặc Vitest) + Supertest | TV3, TV4 | Khớp backlog A73–A79 |
 | Function / UI / Real-time test | Playwright | TV2 | Khớp A80, A83, A84. Một bài test mở được 2 phiên trình duyệt (Shipper bấm, Customer thấy) nên kiểm được real-time |
 | Ghi lỗi + quản lý việc | GitHub Issues + Projects | Cả nhóm | Slide 26 có nhóm "công cụ ghi lỗi" trong danh sách công cụ kiểm thử; nhóm đã định dùng GitHub |
-| Review code | Pull request trên GitHub | TV3, TV4 | Cách review chéo ở mục 5 |
+| Review code | Pull request trên GitHub | Cả nhóm | Cách review ở mục 5 |
 | Chạy test tự động | GitHub Actions | TV2 | Chạy lại bộ test mỗi lần có thay đổi, tức là Regression (A84) |
 | Sơ đồ / Mockup | draw.io / Figma | TV1 (sơ đồ SRS), TV4 (sơ đồ thiết kế), TV3 (mockup) | draw.io miễn phí, mã nguồn mở |
 

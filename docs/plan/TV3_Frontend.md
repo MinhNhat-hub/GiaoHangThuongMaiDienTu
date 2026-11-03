@@ -1,4 +1,4 @@
-# TV3 – Frontend
+# TV3 (@binss-AUG) – Frontend
 Giao diện web cho 3 vai trò: Customer, Shipper, Admin.
 
 ## Bạn sở hữu
@@ -10,9 +10,9 @@ Giao diện web cho 3 vai trò: Customer, Shipper, Admin.
   - Tổng cộng: 9 task riêng + 36 task chung (28 task chức năng + 8 task test/sửa lỗi), khớp file 04.
 - Danh sách task đầy đủ: [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV3.
 
-## Review chéo với TV4
-- Mọi thay đổi code đi qua pull request trên GitHub. TV4 review rồi mới được gộp vào nhánh chính.
-- Bạn review pull request của TV4 theo cách tương tự.
+## Review
+- Mọi thay đổi code đi qua pull request trên GitHub. Ai trong nhóm cũng review được; có ít nhất một người không phải tác giả duyệt rồi mới gộp vào nhánh chính.
+- Bạn review pull request của bất kỳ ai, theo `docs/templates/review-pr.md`.
 
 ## Đọc trước khi vào giai đoạn 2
 | Tài liệu | Phần | Để làm gì |
@@ -31,7 +31,7 @@ Không bắt buộc: đọc SRS bản nháp ngày 02/11 để nắm sớm.
 |---|---|---|
 | 1 | Thống nhất với TV4 danh sách API và sự kiện real-time (TV4 viết, bạn góp ý) | Đặc tả API dùng chung |
 | 2 | Làm mockup theo use case | 9 mockup (A8–A16) |
-| 3 | Làm giao diện từng chức năng theo đặc tả API | Pull request, có TV4 review |
+| 3 | Làm giao diện từng chức năng theo đặc tả API | Pull request, có người review |
 
 Hạn của giai đoạn 2 chốt khi có hạn cuối kỳ (file tổng quan, mục 6.1).
 

@@ -1,4 +1,4 @@
-# TV4 – Backend
+# TV4 (@prime-2k12) – Backend
 Server, cơ sở dữ liệu, xác thực/phân quyền, real-time.
 
 ## Bạn sở hữu
@@ -10,9 +10,9 @@ Server, cơ sở dữ liệu, xác thực/phân quyền, real-time.
   - Tổng cộng: 5 task riêng + 36 task chung (28 task chức năng + 8 task test/sửa lỗi), khớp file 04.
 - Danh sách task đầy đủ: [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV4.
 
-## Review chéo với TV3
-- Mọi thay đổi code đi qua pull request trên GitHub. TV3 review rồi mới được gộp vào nhánh chính.
-- Bạn review pull request của TV3 theo cách tương tự.
+## Review
+- Mọi thay đổi code đi qua pull request trên GitHub. Ai trong nhóm cũng review được; có ít nhất một người không phải tác giả duyệt rồi mới gộp vào nhánh chính.
+- Bạn review pull request của bất kỳ ai, theo `docs/templates/review-pr.md`.
 
 ## Đọc trước khi vào giai đoạn 2
 | Tài liệu | Phần | Để làm gì |
@@ -31,7 +31,7 @@ Không bắt buộc: đọc SRS bản nháp ngày 02/11 để nắm sớm.
 |---|---|---|
 | 1 | Viết danh sách API và sự kiện real-time, thống nhất với TV3 | Đặc tả API dùng chung |
 | 2 | Vẽ class diagram và 4 sequence diagram | 5 sơ đồ (A7, A25, A28, A40, A50) |
-| 3 | Làm server từng chức năng theo đặc tả API | Pull request, có TV3 review |
+| 3 | Làm server từng chức năng theo đặc tả API | Pull request, có người review |
 
 Hạn của giai đoạn 2 chốt khi có hạn cuối kỳ (file tổng quan, mục 6.1).
 

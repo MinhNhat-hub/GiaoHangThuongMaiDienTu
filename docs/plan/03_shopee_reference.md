@@ -109,7 +109,7 @@ SRS giữ từ của đề, vì đề là thứ được chấm. Nhưng Phụ l�
 | Hỏng | Shipper báo sự cố (3.4.1) → Admin xử lý (3.4.2) | Người mua yêu cầu hoàn hàng với lý do hàng lỗi / hư hỏng (3.3). S1 có lý do "Hàng lỗi" |
 | Thất lạc | Shipper hoặc Admin xác nhận mất (3.4.1 → 3.4.2) | Người mua yêu cầu với lý do "Chưa nhận được hàng" (S1) |
 
-Hai ngả phải dẫn về cùng trạng thái trên Hình A.2. Đây là chỗ TV2 phải kiểm kỹ khi review SRS.
+Hai ngả phải dẫn về cùng trạng thái trên Hình A.2. Đây là chỗ người review SRS phải kiểm kỹ.
 
 ### 3.5 Những gì của Shopee không làm (YAGNI)
 - **Tiền:** thanh toán, phí giao, phí hoàn, mức bồi thường. Đề và backlog đều không có. Hệ thống chỉ ghi nhận kết quả xử lý (vd "đã chấp nhận hoàn tiền"), không xử lý tiền.

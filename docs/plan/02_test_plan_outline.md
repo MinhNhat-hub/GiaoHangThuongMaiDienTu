@@ -1,5 +1,5 @@
 # Đề cương Test Plan
-**Toàn bộ Test Plan do TV2 viết, TV1 review** (file tổng quan, mục 5).
+**Toàn bộ Test Plan do TV2 viết, ai trong nhóm cũng review được** (file tổng quan, mục 5).
 
 Nguồn: slide `4_Test-Plan_v1.0.pdf` của giảng viên. Cấu trúc 6 mục lấy từ **slide 8**, nội dung từng mục lấy từ slide 9–34 (số slide ghi trong ngoặc).
 
@@ -150,7 +150,7 @@ Chưa có hạn cuối kỳ (đã xác minh 28/10), nên các mốc sau Test pla
 
 ## 7. Checklist tự review Test Plan
 
-Giảng viên không có file `Checklist_Test plan review.xls` (slide 35–36; đã xác minh 28/10), nên nhóm dùng checklist rút từ slide 9–34. TV1 cũng dùng checklist này khi review:
+Giảng viên không có file `Checklist_Test plan review.xls` (slide 35–36; đã xác minh 28/10), nên nhóm dùng checklist rút từ slide 9–34. Người review Test Plan cũng dùng checklist này:
 - [ ] §1 đủ 6 ý của slide 9: mục đích, thông tin nền, tài liệu tham chiếu, phạm vi (giai đoạn, loại test, giả định, quản lý lỗi), ràng buộc, rủi ro.
 - [ ] §2 có đủ yêu cầu chức năng, phi chức năng và danh sách không kiểm thử (slide 11).
 - [ ] Mỗi loại kiểm thử đủ Mục tiêu / Kỹ thuật / Tiêu chí hoàn thành / Lưu ý đặc biệt (slide 14).

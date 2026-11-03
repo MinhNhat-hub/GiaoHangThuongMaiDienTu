@@ -1,4 +1,4 @@
-# TV1 – SRS
+# TV1 (@MinhNhat-hub) – SRS
 "Viết gì" của từng mục xem trong [01_srs_outline.md](01_srs_outline.md). File này chỉ nói: làm theo thứ tự nào, hạn nào, nộp ra cái gì, ai review.
 
 ## Bạn sở hữu
@@ -6,9 +6,9 @@
 - **4 sơ đồ:** sơ đồ ngữ cảnh (§2.1), ERD (§4.1), sơ đồ Use Case (A.1), sơ đồ trạng thái (A.2).
 - **Backlog giai đoạn 1:** A4, A5, A6, A17, A29, A30, A31. Giai đoạn 2: xem [04_backlog_assignment.md](04_backlog_assignment.md), lọc cột "Người" có TV1.
 
-## Review chéo với TV2
-- TV2 review SRS của bạn: bạn gửi bản nháp ngày 02/11, TV2 trả Comment chậm nhất 03/11.
-- Bạn review Test Plan của TV2: nhận bản nháp ngày 03/11, trả Comment trong ngày 03/11 – 04/11.
+## Review
+- Ai trong nhóm cũng review được SRS của bạn: bạn gửi bản nháp cho nhóm ngày 02/11, người review trả Comment chậm nhất 03/11.
+- Bạn cũng review được Test Plan và việc của người khác. Test Plan nháp có ngày 03/11, Comment trả trong 03/11 – 04/11.
 - Review theo checklist ở mục 5 của file tổng quan. Góp ý bằng Comment trong Word, không sửa thẳng file của người kia.
 
 ## Đọc trước (xong trước buổi họp 29/10)
@@ -27,8 +27,8 @@
 |---|---|---|---|
 | 1 | Họp cả nhóm: xác nhận 3 điểm theo Shopee, chốt các trường của đơn hàng, kênh thông báo, thuật ngữ bản đầu. Bạn ghi biên bản (dùng làm nguồn cho BR) | T5 29/10 | Biên bản + thuật ngữ v0 |
 | 2 | Vẽ sơ đồ trạng thái và sơ đồ Use Case. Lập danh sách ID khung: 7 UC, các ngoại lệ (`x.0.Ey`), các nhóm FR, các NFR. Có SRS nháp thì bổ sung đủ. **Gửi danh sách ID cho TV2** để TV2 viết Test Plan §2 song song | T7 31/10 | 2 sơ đồ `.drawio` + PNG; danh sách ID |
-| 3 | Viết SRS nháp đủ mọi mục, kể cả sơ đồ ngữ cảnh và ERD. Gửi TV2 review | T2 02/11 | `SRS.docx` bản nháp |
-| 4 | Review Test Plan nháp của TV2 | T3 03/11 – T4 04/11 | Comment trong `TestPlan.docx` |
+| 3 | Viết SRS nháp đủ mọi mục, kể cả sơ đồ ngữ cảnh và ERD. Gửi nhóm review | T2 02/11 | `SRS.docx` bản nháp |
+| 4 | Review Test Plan nháp cùng nhóm | T3 03/11 – T4 04/11 | Comment trong `TestPlan.docx` |
 | 5 | Sửa SRS theo Comment của TV2. Đổi ID nào thì báo TV2 ngay | T4 04/11 | Comment đã xử lý |
 | 6 | Chốt: lịch sử sửa đổi, mục lục, đánh số hình | T5 05/11 | `SRS.docx` bản cuối |
 | 7 | Nộp SRS | T6 06/11 | Đã nộp |

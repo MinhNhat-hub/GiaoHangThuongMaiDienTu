@@ -1,6 +1,6 @@
 # Khung ID của SRS (bản 31/10/2026)
 
-File này là **nơi duy nhất** định nghĩa ID, trạng thái, BR và vấn đề mở của SRS. Các mục SRS chỉ viết câu cho đúng ID ở đây; không tự thêm ID, trạng thái, BR hay con số. Đây cũng là **danh sách ID gửi N10-B** (mốc M1 31/10, kế hoạch mục 4).
+File này là **nơi duy nhất** định nghĩa ID, trạng thái, BR và vấn đề mở của SRS. Các mục SRS chỉ viết câu cho đúng ID ở đây; không tự thêm ID, trạng thái, BR hay con số. Đây cũng là **danh sách ID gửi TV2** (mốc M1 31/10, kế hoạch mục 4).
 
 ## 0. Mã nguồn dùng trong file này
 
@@ -85,9 +85,9 @@ Không có "Đã hủy" (hủy đơn ngoài phạm vi, 03 §4). Không có trạ
 
 Trạng thái kết thúc: `Bị từ chối`, `Hoàn tất`.
 
-## 4. Use Case (SRS §3, Phụ lục A.1) — nguồn 01 §1, §2; N10-A_SRS "Xong khi"
+## 4. Use Case (SRS §3, Phụ lục A.1) — nguồn 01 §1, §2; TV1_SRS "Xong khi"
 
-Mỗi UC có `PRE-1: Người dùng đã đăng nhập với vai trò …`. Người tạo: **N10-A**. Ngày tạo: **31/10/2026**. Độ ưu tiên: **Cao** (mục 2). Tần suất sử dụng: **Chưa có số liệu** (01 §2).
+Mỗi UC có `PRE-1: Người dùng đã đăng nhập với vai trò …`. Người tạo: **TV1**. Ngày tạo: **31/10/2026**. Độ ưu tiên: **Cao** (mục 2). Tần suất sử dụng: **Chưa có số liệu** (01 §2).
 
 | UC | Tên | Tác nhân chính | Loại | Mục | Backlog |
 |---|---|---|---|---|---|
@@ -113,7 +113,7 @@ Mỗi UC có `PRE-1: Người dùng đã đăng nhập với vai trò …`. Ngư
 | UC-06 | 6.0 Chấp nhận yêu cầu hoàn hàng | 6.1 Từ chối yêu cầu · 6.2 Ghi nhận hoàn tất | 6.0.E1 Yêu cầu không còn ở trạng thái Chờ duyệt (BR-01) |
 | UC-07 | 7.0 Xử lý sự cố | 7.1 Admin xác nhận thất lạc (T10) · 7.2 Admin xác nhận đã nhận lại hàng (T8) | 7.0.E1 Admin yêu cầu chuyển trả lại khi chưa đạt số lần giao không thành công ở BR-06 |
 
-**Ba ngoại lệ của đề, mỗi cái đủ 4 ý** (N10-A_SRS "Xong khi"):
+**Ba ngoại lệ của đề, mỗi cái đủ 4 ý** (TV1_SRS "Xong khi"):
 
 | Ngoại lệ (ĐB) | Điều kiện phát hiện | Ai phát hiện | Hệ thống làm gì | Trạng thái đơn |
 |---|---|---|---|---|
@@ -254,7 +254,7 @@ Dòng cuối §6: các thuộc tính chất lượng khác (hiệu năng, khả 
 | BR-06 | Đơn giao không thành công đủ TBD lần (C-3) thì chuyển sang trả lại (`Đang hoàn hàng`); chưa đủ thì được giao lại. Số lần giao không thành công = số sự cố loại "Giao không thành công" đã ghi cho đơn | Ràng buộc | Động | Quyết định nhóm ngày TBD (xem C-15), tham khảo S3. Con số: TBD (S3 không ghi con số) | Issue.Resolve.Return, Track.Update.Next, UC-03 (3.1), UC-07 |
 | BR-07 | Hệ thống không xử lý tiền (thanh toán, phí giao, phí hoàn, hoàn tiền, bồi thường); chỉ ghi nhận kết quả xử lý | Dữ kiện | Tĩnh | Quyết định nhóm ngày TBD (xem C-15), tham khảo S1, S3 | Return.Review.Complete, Issue.Resolve.Result, AS-4, UC-06, UC-07 |
 
-## 8. Dữ liệu (SRS §4) — thực thể tối thiểu theo N10-A_SRS "Xong khi"; không có thực thể Cửa hàng
+## 8. Dữ liệu (SRS §4) — thực thể tối thiểu theo TV1_SRS "Xong khi"; không có thực thể Cửa hàng
 
 | Phần tử | Thành phần / kiểu | Giá trị / ghi chú |
 |---|---|---|
@@ -284,7 +284,7 @@ Dòng cuối §6: các thuộc tính chất lượng khác (hiệu năng, khả 
 
 ## 9. Phụ lục C — vấn đề mở
 
-Ai chốt: **Cả nhóm**. Hạn: **04/11/2026 (M4)**, để N10-B kịp sửa Test Plan trước khi chốt ngày 05/11 (lịch ở kế hoạch mục 4; N10-A_SRS bước 5).
+Ai chốt: **Cả nhóm**. Hạn: **04/11/2026 (M4)**, để TV2 kịp sửa Test Plan trước khi chốt ngày 05/11 (lịch ở kế hoạch mục 4; TV1_SRS bước 5).
 
 | ID | Vấn đề | Ảnh hưởng tới | Gợi ý đã có (không phải quyết định) |
 |---|---|---|---|

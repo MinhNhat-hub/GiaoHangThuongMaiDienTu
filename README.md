@@ -16,12 +16,13 @@ Xem `MEMBERS.md`. Phân công công việc ở `docs/plan/04_backlog_assignment.
 
 ```
 docs/srs/         SRS: nguồn Markdown theo chương (source/), sơ đồ draw.io (diagrams/), bản SRS.docx
-docs/plan/     kế hoạch SRS, Test Plan, phân công theo backlog
+docs/plan/        kế hoạch SRS, Test Plan, phân công theo backlog
+docs/templates/   mẫu mô tả PR và mẫu review / comment
 diagrams/         sơ đồ Mermaid (.mmd) cho thiết kế
 src/              mã nguồn (giai đoạn 2)
-tests/            test
+tests/            test (giai đoạn 2)
 AGENTS.md         quy tắc cho agent lập trình
-MEMBERS.md     danh sách thành viên
+MEMBERS.md        danh sách thành viên và tài khoản GitHub
 ```
 
 ## Giai đoạn
@@ -31,7 +32,7 @@ MEMBERS.md     danh sách thành viên
 
 ## Quy trình làm việc
 
-- Mỗi việc làm trên một nhánh riêng, mở PR vào `main`. Không dùng Issues.
+- Mỗi việc làm trên một nhánh riêng, mở PR vào `main`. Không dùng Issues để giao việc.
 - Mô tả PR theo `docs/templates/pull-request.md`.
 - Ai cũng review được PR của người khác, không phân cặp cố định. PR cần ít nhất một người không phải tác giả duyệt trước khi merge. Review theo `docs/templates/review-pr.md`. Comment trên dòng mã cũng dùng mẫu này.
 - Mô tả PR, bản review và comment: chạy bản cuối qua `humanizer:humanizer` trước khi đăng.

@@ -1,5 +1,5 @@
 # Đề cương SRS
-**Toàn bộ SRS do TV1 viết, TV2 review** (file tổng quan, mục 5).
+**Toàn bộ SRS do TV1 viết, ai trong nhóm cũng review được** (file tổng quan, mục 5).
 
 **SRS để làm gì:** mô tả yêu cầu chức năng và phi chức năng của hệ thống. Người làm web dựa vào đó để làm, người kiểm thử dựa vào đó để kiểm (COS SRS §1.1). Test Plan §2 cũng lấy yêu cầu từ SRS.
 
