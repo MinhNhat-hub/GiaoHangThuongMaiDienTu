@@ -102,7 +102,7 @@ Mỗi ngoại lệ của Use Case nằm ở tính năng chứa Use Case đó (UC
 |---|---|---|---|---|---|
 | `Order.Create.Product` | Chọn sản phẩm từ danh sách | Function Testing | Phân vùng tương đương + giá trị biên cho số sản phẩm mỗi đơn | Trung bình | TBD (xem C-7) |
 | `Order.Create.Quantity` | Nhập số lượng mỗi sản phẩm | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình | TBD (xem C-1) |
-| `Order.Create.Receiver` | Nhập tên người nhận | Function Testing | Phân vùng tương đương + giá trị biên | Đơn giản |  |
+| `Order.Create.Receiver` | Nhập tên người nhận | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình | TBD (xem C-1) |
 | `Order.Create.Phone` | Nhập số điện thoại người nhận | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình | TBD (xem C-1) |
 | `Order.Create.Address` | Nhập địa chỉ giao | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình | TBD (xem C-1) |
 | `Order.Create.Required` | Kiểm trường bắt buộc | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình | TBD (xem C-1) |
@@ -125,13 +125,13 @@ Mỗi ngoại lệ của Use Case nằm ở tính năng chứa Use Case đó (UC
 | `Track.Assign.Shipment` | Tạo vận đơn có mã duy nhất | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình |  |
 | `Track.Assign.Shipper` | Chọn Shipper để phân công | Function Testing | Phân vùng tương đương + giá trị biên | Đơn giản |  |
 | `Track.Assign.Status` | Chuyển đơn sang Chờ lấy hàng | Function Testing, Business Cycle Testing | Chuyển trạng thái (T2) | Trung bình |  |
-| `Track.Update.List` | Shipper xem đơn được phân công | Function Testing, Security and Access Control Testing | Phân vùng tương đương + giá trị biên | Đơn giản | Phân quyền xem SEC-4 |
+| `Track.Update.List` | Shipper xem đơn được phân công | Function Testing, Security and Access Control Testing | Phân vùng tương đương + giá trị biên | Phức tạp | Phân quyền xem SEC-4 |
 | `Track.Update.Next` | Chỉ hiện trạng thái kế tiếp T3, T4, T6 | Function Testing, Business Cycle Testing | Chuyển trạng thái; giá trị biên: giới hạn − 1, giới hạn, TBD (xem C-3) | Phức tạp | Phụ thuộc đếm theo BR-06; TBD (xem C-3) |
 | `Track.Update.Confirm` | Yêu cầu Shipper xác nhận | Function Testing | Chuyển trạng thái | Đơn giản |  |
 | `Track.Update.Status` | Chuyển sang trạng thái Shipper chọn | Function Testing, Business Cycle Testing | Chuyển trạng thái (T3, T4, T6) | Trung bình |  |
 | `Track.Update.Valid` | Từ chối bước chuyển không có trên Hình A.2 | Function Testing, Business Cycle Testing, Security and Access Control Testing | Chuyển trạng thái (bước không hợp lệ) + gửi request trực tiếp tới server | Trung bình | Ví dụ Đã giao quay về Đang giao |
 | `Track.Update.History` | Lưu người đổi, thời điểm, trạng thái cũ và mới | Function Testing, Data and Database Integrity Testing | Chuyển trạng thái, kiểm bản ghi sau thay đổi do mỗi vai trò | Phức tạp | Bất kể ai thay đổi |
-| `Track.View.List` | Customer xem đơn của mình | Function Testing, Security and Access Control Testing | Phân vùng tương đương + giá trị biên | Đơn giản | Phân quyền xem SEC-2 |
+| `Track.View.List` | Customer xem đơn của mình | Function Testing, Security and Access Control Testing | Phân vùng tương đương + giá trị biên | Phức tạp | Phân quyền xem SEC-2 |
 | `Track.View.Current` | Xem trạng thái hiện tại của đơn | Function Testing | Chuyển trạng thái | Đơn giản |  |
 | `Track.View.History` | Xem lịch sử trạng thái theo thời gian | Function Testing | Phân vùng tương đương + giá trị biên | Đơn giản | TBD (xem C-13) |
 | `Track.Admin.List` | Admin xem đơn mọi trạng thái | Function Testing | Phân vùng tương đương + giá trị biên | Đơn giản |  |
@@ -146,7 +146,7 @@ Mỗi ngoại lệ của Use Case nằm ở tính năng chứa Use Case đó (UC
 | `Return.Request.Window` | Chỉ gửi yêu cầu khi còn thời hạn | Function Testing, Business Cycle Testing | Giá trị biên quanh mốc hết hạn, TBD (xem C-4) | Trung bình | TBD (xem C-4) |
 | `Return.Request.Reason` | Bắt buộc chọn lý do hoàn hàng | Function Testing | Phân vùng tương đương + giá trị biên | Trung bình | TBD (xem C-5) |
 | `Return.Request.Store` | Lưu yêu cầu Chờ duyệt kèm thời điểm gửi | Function Testing, Data and Database Integrity Testing | Chuyển trạng thái (R1) | Trung bình | TBD (xem C-12) |
-| `Return.View.Status` | Customer xem trạng thái yêu cầu của mình | Function Testing, Security and Access Control Testing | Phân vùng tương đương + giá trị biên | Đơn giản |  |
+| `Return.View.Status` | Customer xem trạng thái yêu cầu của mình | Function Testing, Security and Access Control Testing | Phân vùng tương đương + giá trị biên | Phức tạp |  |
 | `Return.Review.List` | Admin xem yêu cầu Chờ duyệt và Đã chấp nhận | Function Testing | Phân vùng tương đương + giá trị biên | Đơn giản |  |
 | `Return.Review.Approve` | Chấp nhận yêu cầu | Function Testing | Chuyển trạng thái (R2) | Trung bình |  |
 | `Return.Review.Reject` | Từ chối yêu cầu | Function Testing | Chuyển trạng thái (R3) | Trung bình | TBD (xem C-6) |
@@ -189,15 +189,15 @@ Mỗi ngoại lệ của Use Case nằm ở tính năng chứa Use Case đó (UC
 |---|---|---|---|---|---|
 | `RT-1` | Customer thấy trạng thái mới không tải lại | Function Testing, Business Cycle Testing | 2 phiên trình duyệt song song (Shipper xác nhận, Customer thấy trạng thái mới không tải lại trang); thêm phiên Customer khác, phải không nhận cập nhật | Phức tạp | Kèm SEC-2 |
 | `RT-2` | Admin thấy trạng thái mới không tải lại | Function Testing | 2 phiên trình duyệt song song (Shipper xác nhận, Bảng điều khiển Admin cập nhật không tải lại trang) | Phức tạp |  |
-| `SEC-1` | Đăng nhập cho mọi thao tác | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
+| `SEC-1` | Đăng nhập cho mọi thao tác | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
 | `SEC-2` | Customer chỉ tạo và xem đơn của mình | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp | Có phiên Customer thứ hai |
-| `SEC-3` | Customer chỉ hoàn hàng cho đơn của mình | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
-| `SEC-4` | Shipper chỉ xem, cập nhật đơn được phân công | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
-| `SEC-5` | Chỉ Admin tạo vận đơn, phân công | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
-| `SEC-6` | Chỉ Admin duyệt, từ chối, hoàn tất yêu cầu hoàn hàng | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
-| `SEC-7` | Chỉ Admin xử lý sự cố | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
-| `SEC-8` | Chỉ Shipper được phân công cập nhật và báo sự cố | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Trung bình |  |
-| `SEC-9` | Đăng xuất và đăng nhập lại | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Đơn giản |  |
+| `SEC-3` | Customer chỉ hoàn hàng cho đơn của mình | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
+| `SEC-4` | Shipper chỉ xem, cập nhật đơn được phân công | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
+| `SEC-5` | Chỉ Admin tạo vận đơn, phân công | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
+| `SEC-6` | Chỉ Admin duyệt, từ chối, hoàn tất yêu cầu hoàn hàng | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
+| `SEC-7` | Chỉ Admin xử lý sự cố | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
+| `SEC-8` | Chỉ Shipper được phân công cập nhật và báo sự cố | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
+| `SEC-9` | Đăng xuất và đăng nhập lại | Security and Access Control Testing | Ma trận vai trò × thao tác, mỗi ô thử qua giao diện và qua request trực tiếp | Phức tạp |  |
 | `ROB-1` | Hiển thị trạng thái mới nhất sau mất kết nối | Function Testing | Ngắt mạng phiên Customer, đổi trạng thái 2 lần, nối lại, kiểm trạng thái hiện tại và lịch sử | Phức tạp |  |
 | `UI-1` | Các màn hình của hệ thống | User Interface Testing | Đối chiếu danh sách màn hình ở SRS và mockup | Đơn giản | Bố cục chi tiết theo mockup ở giai đoạn 2 |
 | `CI-1` | Thông báo cho Customer khi trạng thái đổi | Function Testing | Đổi trạng thái đơn, kiểm Customer nhận thông báo | Trung bình | TBD (xem C-2) |
