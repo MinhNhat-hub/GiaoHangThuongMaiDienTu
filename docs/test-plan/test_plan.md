@@ -438,16 +438,16 @@ Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dự
 | Độ phức tạp | Số dòng | Công mỗi dòng (person-day) | Tổng (person-day) |
 |---|---|---|---|
 | Đơn giản | 13 | 0,25 (2 giờ) | 3,25 |
-| Trung bình | 40 | 0,75 (6 giờ) | 30 |
-| Phức tạp | 26 | 0,5 (4 giờ) | 13 |
-| Cộng | 79 | Không áp dụng | 46,25 |
+| Trung bình | 40 | 0,5 (4 giờ) | 20 |
+| Phức tạp | 26 | 1,5 (12 giờ) | 39 |
+| Cộng | 79 | Không áp dụng | 62,25 |
 
 Các mốc (slide 33):
 
 | Mốc | Công (person-day) | Bắt đầu | Kết thúc |
 |---|---|---|---|
 | Test planning | 1 | 28/10/2026 | 06/11/2026 |
-| Test design (viết test case) | 46,25 (bằng dòng Cộng ở bảng trên) | Chưa xác định | Chưa xác định |
+| Test design (viết test case) | 62,25 (bằng dòng Cộng ở bảng trên) | Chưa xác định | Chưa xác định |
 | Test execution | Chưa xác định (chưa có bản build để ước lượng số vòng chạy và số lỗi) | Chưa xác định | Chưa xác định |
 | Test evaluation (Test Report) | 1 | Chưa xác định | Chưa xác định |
 
