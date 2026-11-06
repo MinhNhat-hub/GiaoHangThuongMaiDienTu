@@ -433,23 +433,23 @@ Mỗi dòng ở §2 có ít nhất một test case. Ngoại lệ và bước chu
 
 ## 5 Mốc kiểm thử và ước lượng
 
-Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dựa vào kinh nghiệm để ước lượng công cho một dòng ở mỗi mức độ phức tạp, gồm đọc yêu cầu, viết test case và chuẩn bị dữ liệu. Số dòng lấy từ cột "Độ phức tạp" của §2 (79 dòng). Công unit test do TV3, TV4 ước lượng ở giai đoạn 2.
+Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dựa vào kinh nghiệm để ước lượng công cho một dòng ở mỗi mức độ phức tạp, gồm đọc yêu cầu, viết test case và chuẩn bị dữ liệu. Số dòng lấy từ cột "Độ phức tạp" của §2 (79 dòng). Công unit test do TV3, TV4 ước lượng ở giai đoạn 2. Một person-day tính là 8 giờ làm việc.
 
 | Độ phức tạp | Số dòng | Công mỗi dòng (person-day) | Tổng (person-day) |
 |---|---|---|---|
-| Đơn giản | 13 | chờ TV2 ước lượng | chờ TV2 ước lượng |
-| Trung bình | 40 | chờ TV2 ước lượng | chờ TV2 ước lượng |
-| Phức tạp | 26 | chờ TV2 ước lượng | chờ TV2 ước lượng |
-| Cộng | 79 | Không áp dụng | chờ TV2 ước lượng |
+| Đơn giản | 13 | 0,25 (2 giờ) | 3,25 |
+| Trung bình | 40 | 0,75 (6 giờ) | 30 |
+| Phức tạp | 26 | 0,5 (4 giờ) | 13 |
+| Cộng | 79 | Không áp dụng | 46,25 |
 
 Các mốc (slide 33):
 
 | Mốc | Công (person-day) | Bắt đầu | Kết thúc |
 |---|---|---|---|
-| Test planning | chờ TV2 ước lượng | 28/10/2026 | 06/11/2026 |
-| Test design (viết test case) | chờ TV2 ước lượng | Chưa xác định | Chưa xác định |
-| Test execution | chờ TV2 ước lượng | Chưa xác định | Chưa xác định |
-| Test evaluation (Test Report) | chờ TV2 ước lượng | Chưa xác định | Chưa xác định |
+| Test planning | 1 | 28/10/2026 | 06/11/2026 |
+| Test design (viết test case) | 46,25 (bằng dòng Cộng ở bảng trên) | Chưa xác định | Chưa xác định |
+| Test execution | Chưa xác định (chưa có bản build để ước lượng số vòng chạy và số lỗi) | Chưa xác định | Chưa xác định |
+| Test evaluation (Test Report) | 1 | Chưa xác định | Chưa xác định |
 
 Chưa có hạn cuối kỳ, nên các mốc sau Test planning chưa có ngày. Khi có hạn, Test Plan cập nhật lên v1.1.
 
