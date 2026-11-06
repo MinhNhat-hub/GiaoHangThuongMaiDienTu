@@ -223,7 +223,192 @@ Giả định AS-x và quy tắc BR-xx không có dòng riêng ở §2; BR đư�
 
 ## 3 Chiến lược kiểm thử
 
-(Viết ở bước sau.)
+Mục này nêu cách kiểm thử: các loại kiểm thử và kỹ thuật cho từng loại (§3.1), bốn giai đoạn kiểm thử (§3.2), công cụ (§3.3) và định dạng test case (§3.4). Mỗi loại kiểm thử "Có" ở §1.4 được viết đủ bốn ý theo slide Test Plan [4 trong SRS]: mục tiêu, kỹ thuật, tiêu chí hoàn thành, lưu ý đặc biệt.
+
+### 3.1 Các loại kiểm thử
+
+#### 3.1.1 Function Testing
+
+**Mục tiêu:** Bảo đảm mỗi yêu cầu chức năng ở SRS §3.1 đến §3.4 chạy đúng với dữ liệu hợp lệ, và bị từ chối kèm lý do với dữ liệu không hợp lệ hay thao tác không được phép. Loại này gồm cả kiểm cập nhật real-time (RT-1, RT-2, ROB-1) vì đó là kiểm hành vi có hay không.
+
+**Kỹ thuật:** Với mỗi dòng ở §2.1 và §2.2 thuộc loại này, TV2 viết test case cho đường chính, đường thay thế và từng ngoại lệ, dùng phân vùng tương đương và giá trị biên cho trường nhập. Mỗi ngoại lệ và mỗi bước chuyển trạng thái "chặn" có ít nhất một ca âm. Test case chạy bằng Playwright; kết quả mong đợi là trạng thái đơn, thông báo lỗi hoặc dữ liệu hiển thị đúng theo SRS. Real-time kiểm theo kiểu có/không bằng hai phiên trình duyệt chạy song song (hai browser context của Playwright): phiên Shipper xác nhận đổi trạng thái, phiên Customer chủ đơn phải thấy trạng thái mới mà không tải lại trang. Thêm phiên thứ ba là một Customer khác đang mở màn hình đơn của mình, phiên này không được nhận cập nhật của đơn kia (RT-1 cộng SEC-2). Hai phiên Admin thao tác cùng một đơn hoặc cùng một yêu cầu dùng để kiểm 2.0.E1 và 6.0.E1.
+
+**Tiêu chí hoàn thành:** Mọi test case của các dòng §2 loại Function Testing có Result `Pass`, hoặc `Fail` kèm Issue mức Thấp còn mở (mức độ ở §1.4).
+
+**Lưu ý đặc biệt:** Chỗ SRS còn TBD thì chưa viết được kết quả mong đợi; test case ghi "TBD (xem C-x)" ở cột Note và chưa tính vào tiêu chí cho tới khi nhóm chốt. Thư viện unit test do TV3, TV4 chọn ở giai đoạn 2 (§3.3); phần Function Testing của TV2 không thay unit test của họ. Trình duyệt để chạy test chưa chọn được vì C-8.
+
+#### 3.1.2 Business Cycle Testing
+
+**Mục tiêu:** Bảo đảm mỗi quy tắc nghiệp vụ BR-01 đến BR-07 được áp dụng đúng trên toàn vòng đời đơn hàng và yêu cầu hoàn hàng: chỉ chuyển trạng thái theo các bước T1 đến T12 và R1 đến R4 của Hình A.2, không có bước nào khác. Phần "chức năng chạy theo lịch định kỳ" của slide không áp dụng, vì hệ thống chạy theo sự kiện (CO-1).
+
+**Kỹ thuật:** Dùng năm công cụ dưới đây. Mã Tn, Rn lấy từ bảng ở Phụ lục A.2 của SRS. Hàng là trạng thái hiện tại, cột là trạng thái đích.
+
+(a) Ma trận chuyển trạng thái đơn 9 × 9. Số ở tiêu đề cột là thứ tự trạng thái, cùng thứ tự với cột "Từ" từ trên xuống. Ô hợp lệ ghi mã bước chuyển kèm vai trò kích hoạt; mọi ô còn lại, kể cả đường chéo (đơn "chuyển" sang chính trạng thái đang có), là "chặn". Mỗi ô "chặn" thử hai lần: qua giao diện (không có nút) và qua request gửi thẳng tới server (phải bị từ chối kèm lý do, Track.Update.Valid). T1 không có trạng thái nguồn nên ghi ở dòng "(bắt đầu)".
+
+| Từ \ Sang | 1. Chờ xác nhận | 2. Chờ lấy hàng | 3. Đang giao | 4. Đã giao | 5. Giao không thành công | 6. Đang hoàn hàng | 7. Đã hoàn về người bán | 8. Hư hỏng | 9. Thất lạc |
+|---|---|---|---|---|---|---|---|---|---|
+| (bắt đầu) | T1 (Customer) | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn |
+| Chờ xác nhận | chặn | T2 (Admin) | chặn | chặn | TBD (xem C-11) | chặn | chặn | TBD (xem C-11) | TBD (xem C-11) |
+| Chờ lấy hàng | chặn | chặn | T3 (Shipper) | chặn | TBD (xem C-11) | chặn | chặn | TBD (xem C-11) | TBD (xem C-11) |
+| Đang giao | chặn | chặn | chặn | T4 (Shipper) | T5 (Shipper) | chặn | chặn | T9 (Shipper) | T10 (Shipper hoặc Admin) |
+| Đã giao | chặn | chặn | chặn | chặn | TBD (xem C-11) | chặn | chặn | T11 (Admin) | T12 (Admin) |
+| Giao không thành công | chặn | chặn | T6 (Shipper) | chặn | chặn | T7 (Admin) | chặn | TBD (xem C-11) | TBD (xem C-11) |
+| Đang hoàn hàng | chặn | chặn | chặn | chặn | TBD (xem C-11) | chặn | T8 (Admin) | TBD (xem C-11) | TBD (xem C-11) |
+| Đã hoàn về người bán | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn |
+| Hư hỏng | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn |
+| Thất lạc | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn |
+
+Ghi chú về C-11: SRS chưa nói có báo sự cố được khi đơn không ở "Đang giao" hay không. Các ô "TBD (xem C-11)" là ô đích "Giao không thành công", "Hư hỏng", "Thất lạc" xuất phát từ trạng thái khác "Đang giao" mà không có bước chuyển nào trên Hình A.2: ba hàng "Chờ xác nhận", "Chờ lấy hàng", "Đang hoàn hàng", cùng ô "Đã giao" sang "Giao không thành công" và hai ô "Giao không thành công" sang "Hư hỏng", "Thất lạc". Chưa có kết quả mong đợi cho các ô này. Ba hàng trạng thái kết thúc ("Đã hoàn về người bán", "Hư hỏng", "Thất lạc") ghi "chặn" vì SRS gọi là trạng thái kết thúc.
+
+(b) Ma trận yêu cầu hoàn hàng 4 × 4, cùng quy ước. Trạng thái yêu cầu: 1. "Chờ duyệt", 2. "Đã chấp nhận", 3. "Bị từ chối", 4. "Hoàn tất".
+
+| Từ \ Sang | 1. Chờ duyệt | 2. Đã chấp nhận | 3. Bị từ chối | 4. Hoàn tất |
+|---|---|---|---|---|
+| (bắt đầu) | R1 (Customer) | chặn | chặn | chặn |
+| Chờ duyệt | chặn | R2 (Admin) | R3 (Admin) | chặn |
+| Đã chấp nhận | chặn | chặn | chặn | R4 (Admin) |
+| Bị từ chối | chặn | chặn | chặn | chặn |
+| Hoàn tất | chặn | chặn | chặn | chặn |
+
+Mỗi ô "chặn" cũng thử qua giao diện và qua request trực tiếp (Return.Review.Valid). Hai Admin cùng duyệt một yêu cầu: người thứ hai bị từ chối (6.0.E1). Số yêu cầu mà một đơn được gửi: TBD (xem C-12).
+
+(c) Hai bảng quyết định. Bảng thứ nhất là UC-06, chỉ dùng điều kiện và kết quả SRS đã nêu (BR-05, UC-06).
+
+| Lý do hoàn hàng | Hành động của Admin | Trạng thái yêu cầu sau đó | Trạng thái đơn sau đó |
+|---|---|---|---|
+| "Hàng lỗi / hư hỏng" | Chấp nhận (yêu cầu "Chờ duyệt") | "Đã chấp nhận" (R2) | "Đã giao" sang "Hư hỏng" (T11) |
+| "Chưa nhận được hàng" | Chấp nhận (yêu cầu "Chờ duyệt") | "Đã chấp nhận" (R2) | "Đã giao" sang "Thất lạc" (T12) |
+| Lý do khác | Chấp nhận (yêu cầu "Chờ duyệt") | "Đã chấp nhận" (R2) | TBD (xem C-5): SRS chỉ nêu đổi trạng thái đơn khi lý do thuộc BR-05 |
+| Bất kỳ lý do | Từ chối (yêu cầu "Chờ duyệt") | "Bị từ chối" (R3) | Không đổi ("Đã giao") |
+| Bất kỳ lý do | Ghi nhận hoàn tất (yêu cầu "Đã chấp nhận") | "Hoàn tất" (R4) | Không đổi |
+| Bất kỳ lý do | Chấp nhận, từ chối hoặc hoàn tất khi yêu cầu không ở trạng thái tương ứng | Không đổi, báo lý do (6.0.E1) | Không đổi |
+
+Bảng thứ hai là bước 3 của UC-07: loại sự cố, trạng thái đơn và việc số lần giao không thành công đã đạt giới hạn (BR-06; giới hạn là TBD, xem C-3) quyết định đi bước 4, bước 5 hay ngoại lệ 7.0.E1.
+
+| Loại sự cố | Trạng thái đơn | Số lần giao không thành công | Kết quả |
+|---|---|---|---|
+| "Giao không thành công" | "Giao không thành công" | Đạt giới hạn (TBD, xem C-3) | Bước 4: Admin chuyển đơn sang "Đang hoàn hàng" (T7) rồi ghi kết quả |
+| "Giao không thành công" | "Giao không thành công" | Chưa đạt giới hạn (TBD, xem C-3) | Bước 5: ghi kết quả; Admin yêu cầu chuyển trả lại thì 7.0.E1 từ chối |
+| "Giao không thành công" | Không còn là "Giao không thành công" (ví dụ đã giao lại, T6) | Bất kỳ | Bước 5: ghi kết quả |
+| "Hàng hỏng" hoặc "Thất lạc" | Bất kỳ | Bất kỳ | Bước 5: ghi kết quả |
+
+Giá trị biên của BR-06 (giới hạn là TBD, xem C-3): đơn giao không thành công ở lần thứ giới hạn − 1 (T6 hợp lệ, Admin chuyển trả lại bị 7.0.E1 từ chối), ở lần thứ giới hạn (T6 bị từ chối, T7 hợp lệ), và thử gửi thẳng T6 khi đã quá giới hạn (phải bị từ chối). Số lần đếm bằng số sự cố loại "Giao không thành công" đã ghi cho đơn. Biên thời hạn hoàn hàng ở BR-03 (hạn là TBD, xem C-4, gồm cả việc mốc hết hạn có được tính hay không) kiểm trong vòng đời hoàn hàng bên dưới.
+
+(d) Năm vòng đời đầu-cuối, mỗi vòng chạy từ đầu tới trạng thái kết thúc và kiểm lịch sử trạng thái ở mỗi bước:
+
+1. Giao thành công: T1, T2, T3, T4.
+2. Giao lại rồi thành công: T1, T2, T3, T5, T6, T4, với số lần giao không thành công thấp hơn giới hạn.
+3. Trả lại: T1, T2, T3, T5 lặp tới khi đạt giới hạn (có T6 giữa các lần), rồi T7 và T8.
+4. Hỏng hoặc thất lạc khi giao: T3 rồi T9 do Shipper; T3 rồi T10 do Shipper; T3 rồi T10 do Admin xác nhận thất lạc.
+5. Hoàn hàng: đơn tới "Đã giao" (T4), Customer gửi yêu cầu (R1), Admin chấp nhận (R2) với từng lý do của BR-05 (lý do "Hàng lỗi / hư hỏng" đi T11, lý do "Chưa nhận được hàng" đi T12), rồi ghi nhận hoàn tất (R4). Nhánh khác: Admin từ chối (R3). Thử gửi yêu cầu ngay trước và ngay sau mốc hết hạn (BR-03).
+
+(e) Quy tắc nghiệp vụ và nơi kiểm:
+
+| Quy tắc | Kiểm ở đâu |
+|---|---|
+| BR-01 | Hai ma trận (a), (b): mọi ô "chặn"; mọi vòng đời |
+| BR-02 | Vòng đời 5; thử gửi yêu cầu hoàn hàng với đơn ở 8 trạng thái còn lại (ma trận a, hàng khác "Đã giao") |
+| BR-03 | Vòng đời 5, biên hạn hoàn hàng; TBD (xem C-4) |
+| BR-04 | Vòng đời 5, hai lý do bắt buộc; gửi không chọn lý do; lý do khác TBD (xem C-5) |
+| BR-05 | Bảng quyết định UC-06; vòng đời 5 |
+| BR-06 | Bảng quyết định UC-07 và giá trị biên; vòng đời 2 và 3; TBD (xem C-3) |
+| BR-07 | Mọi vòng đời: không có thao tác hay trường nào xử lý tiền, chỉ ghi nhận kết quả xử lý (vòng đời 3, 4, 5) |
+
+**Tiêu chí hoàn thành:** Mọi ô của hai ma trận có kết quả đúng ma trận (ô hợp lệ chạy được, ô "chặn" bị từ chối cả qua giao diện lẫn request trực tiếp); cả hai bảng quyết định có ít nhất một ca cho mỗi dòng; năm vòng đời chạy `Pass`; mỗi quy tắc BR-01 đến BR-07 có ít nhất một test case `Pass`. Ô và dòng ghi TBD không tính cho tới khi nhóm chốt vấn đề tương ứng.
+
+**Lưu ý đặc biệt:** Phụ thuộc vào kết quả chốt C-3 (giới hạn BR-06), C-4 (hạn BR-03), C-5 (lý do khác), C-11 (báo sự cố ngoài "Đang giao") và C-12. Vòng đời 3 cần đưa đơn qua nhiều lần giao không thành công nên dùng dữ liệu seed hoặc script dựng sẵn trạng thái. Vòng đời dùng tài khoản của cả ba vai trò, nên chỉ chạy đủ được sau khi TV3, TV4 xong A59, A60, A62.
+
+#### 3.1.3 User Interface Testing
+
+**Mục tiêu:** Bảo đảm giao diện đúng với mockup đã duyệt và dùng được cho từng vai trò: điều hướng giữa các màn hình, nhập liệu, hiển thị trạng thái, thông báo lỗi.
+
+**Kỹ thuật:** Đối chiếu từng màn hình ở UI-1 với mockup của TV3: Đăng nhập (A8), Đăng ký (A9), Bảng điều khiển Admin (A10), Trang chủ Customer (A11), Tạo đơn hàng (A12), Chi tiết đơn hàng (A13), Yêu cầu hoàn hàng (A14), Theo dõi vận chuyển (A15), Màn hình giao hàng của Shipper (A16). Với mỗi màn hình, TV2 mở màn hình bằng đúng vai trò, so bố cục, nhãn, trường nhập và nút với mockup, rồi thử điều hướng sang màn hình kế. Việc so mockup làm bằng tay (§3.3); test Playwright chỉ kiểm sự có mặt và hoạt động của các phần tử chính.
+
+**Tiêu chí hoàn thành:** Mọi màn hình ở UI-1 khớp mockup tương ứng. Chỗ lệch được ghi Issue mức Thấp hoặc Trung bình (§1.4) và chỉ chấp nhận được khi Issue còn mở có mức Thấp.
+
+**Lưu ý đặc biệt:** Mockup làm ở giai đoạn 2 (A8 đến A16), nên test giao diện chi tiết viết sau khi TV3 có mockup. Ngôn ngữ giao diện là TBD (xem C-9) và trình duyệt hỗ trợ là TBD (xem C-8); hai chỗ này ảnh hưởng nhãn cần so và nơi chạy test.
+
+#### 3.1.4 Data and Database Integrity Testing
+
+**Mục tiêu:** Bảo đảm dữ liệu đơn hàng, yêu cầu hoàn hàng, sự cố và lịch sử trạng thái được lưu đúng, không mất, không bị sửa, và giao dịch tạo đơn hoàn tác đủ khi lỗi.
+
+**Kỹ thuật:** Sau mỗi thao tác đổi trạng thái, đọc lại cơ sở dữ liệu và kiểm bản ghi lịch sử: người đổi, thời điểm, trạng thái cũ, trạng thái mới (Track.Update.History); bản ghi đầu của đơn có trạng thái cũ để trống (T1). Kiểm mã đơn hàng, mã vận đơn, mã yêu cầu hoàn hàng và mã sự cố là duy nhất khi tạo nhiều bản ghi liên tiếp. Ép lỗi giữa chừng khi lưu đơn và kiểm rollback: không còn đơn, không còn bản ghi lịch sử, Customer nhận lý do (Order.Done.Failure, Order.Done.Reason). Gửi request sửa hoặc xóa bản ghi lịch sử, phải bị từ chối và cơ sở dữ liệu không đổi (DI-1).
+
+**Tiêu chí hoàn thành:** Mọi thao tác đổi trạng thái ở vòng đời 1 đến 5 (§3.1.2) để lại đúng một bản ghi lịch sử với bốn trường đúng; không có mã trùng; rollback không để lại dữ liệu; DI-1 bị từ chối ở mọi lần thử.
+
+**Lưu ý đặc biệt:** Công nghệ cơ sở dữ liệu chưa chốt (§1.5), nên cách đọc dữ liệu ghi ở giai đoạn 2 khi biết công nghệ. Ép lỗi giữa chừng cần cách giả lỗi do TV4 cung cấp. Chiều sắp xếp khi hiển thị lịch sử là TBD (xem C-13); kiểm lưu trữ không phụ thuộc điều đó.
+
+#### 3.1.5 Security and Access Control Testing
+
+**Mục tiêu:** Bảo đảm mỗi vai trò chỉ làm được thao tác được phép và chỉ thấy dữ liệu của mình (SEC-1 đến SEC-9), kể cả khi gửi request thẳng tới server mà không qua giao diện.
+
+**Kỹ thuật:** Lập ma trận vai trò × thao tác. Vai trò: Chưa đăng nhập, Customer chủ đơn, Customer khác, Shipper được phân công, Shipper khác, Admin. Thao tác: các thao tác của SEC-1 đến SEC-9 (đăng nhập và đăng ký, tạo và xem đơn, gửi yêu cầu hoàn hàng, xem và cập nhật đơn giao, tạo vận đơn và phân công, duyệt, từ chối và hoàn tất yêu cầu hoàn hàng, báo và xử lý sự cố, đăng xuất). Mỗi ô thử hai cách: qua giao diện (nút có hiện hay không) và qua request trực tiếp (server phải từ chối hoặc cho phép đúng). Với ô cho phép, kiểm kết quả đúng; với ô cấm, kiểm dữ liệu không đổi. Thêm kiểm sau đăng xuất: quay lại trang cũ phải bị chuyển về đăng nhập (SEC-9). Kiểm cập nhật real-time không lọt sang Customer khác ở §3.1.1.
+
+**Tiêu chí hoàn thành:** Mọi ô của ma trận có kết quả đúng ở cả hai cách thử. Không còn Issue mức Nghiêm trọng về phân quyền.
+
+**Lưu ý đặc biệt:** Mọi sai phân quyền là mức Nghiêm trọng (§1.4), nên gặp một ô sai thì TV2 báo ngay cho TV4, không chờ hết bộ test. Cách đăng nhập và thông tin tài khoản là TBD (xem C-10), nên cách dựng phiên đăng nhập trong test chốt sau.
+
+#### 3.1.6 Regression Testing
+
+**Mục tiêu:** Bảo đảm thay đổi mới (sửa lỗi, tích hợp thêm) không làm hỏng chỗ đã chạy đúng.
+
+**Kỹ thuật:** Toàn bộ bộ test Playwright chạy lại trên GitHub Actions ở mỗi PR vào `main` và một lần trước buổi demo (task A84). TV2 so kết quả với lần chạy trước và với cột Result của test case; ca nào trước đó `Pass` nay `Fail` thì mở Issue mới, gắn nhãn `bug`, ghi số vào Bug#.
+
+**Tiêu chí hoàn thành:** Không có ca nào trước đó `Pass` chuyển sang `Fail` ở lần chạy cuối trước demo.
+
+**Lưu ý đặc biệt:** Chỉ chạy lại được phần đã viết thành test tự động; phần so mockup làm bằng tay (§3.1.3) nên TV2 chạy lại bằng tay trước demo. Chưa có hạn cuối kỳ (§1.5), nên ngày chạy cuối chưa xác định.
+
+### 3.2 Giai đoạn kiểm thử
+
+Bốn giai đoạn theo slide, chọn theo task trong backlog (`docs/plan/04_backlog_assignment.md`).
+
+| Giai đoạn | Task backlog | Ai làm | Cách thực hiện |
+|---|---|---|---|
+| Unit test | A73, A74, A76, A77, A79 | TV3, TV4, mỗi người test code của mình | Test từng hàm và module bằng thư viện unit test nhóm chọn ở giai đoạn 2 (§3.3). TV2 không làm giai đoạn này |
+| Integration test | A59, A60, A62 (các task "Integrate …") | TV2 | TV2 kiểm chỗ nối sau khi TV3, TV4 xong A59, A60, A62: Admin với đơn hàng, Admin với sự cố giao hàng, quản lý đơn với quản lý hoàn hàng |
+| System test | A80, A81, A83 | TV2 | Chạy trọn các loại ở §3.1 trên hệ thống đã ghép: real-time (A80), Shipper và ngoại lệ (A81), toàn hệ thống (A83), bằng Playwright |
+| Acceptance test | Không có trong backlog | Cả nhóm | Nhóm không có khách hàng thật, nên buổi demo với giảng viên được coi là nghiệm thu (giả định ở §1.4) |
+
+Test case cho giai đoạn system do TV2 chuẩn bị ở task A69. Regression Testing (A84) chạy lại bộ test của giai đoạn system.
+
+### 3.3 Công cụ kiểm thử
+
+Xếp theo các nhóm công cụ của slide.
+
+| Nhóm công cụ | Dùng gì |
+|---|---|
+| Ghi lỗi | GitHub Issues, nhãn `bug` |
+| Unit test | Jest hoặc Vitest; thư viện nhóm chốt ở giai đoạn 2 |
+| Function test | Playwright |
+| Real-time | Playwright, 2 browser context (hai phiên song song, thêm phiên thứ ba cho Customer khác) |
+| Chạy lại bộ test | GitHub Actions |
+| Load / Performance test | Không dùng (lý do ở §1.4) |
+| Sinh dữ liệu test | Script seed dữ liệu của dự án |
+| Kiểm giao diện | So với mockup bằng tay |
+
+### 3.4 Định dạng test case
+
+Test case viết trong `docs/templates/test-case.xlsx` (mẫu từ `testcase.xlsx`, bản sao đặt vào repo ở giai đoạn 2), mỗi sheet một module, giữ nguyên cột của mẫu. Module Code và tiền tố ID:
+
+| Module Code | Phạm vi | ID |
+|---|---|---|
+| ORD | FE-1 Tạo đơn hàng | `TC-ORD-001` … |
+| TRK | FE-2 Theo dõi vận chuyển | `TC-TRK-001` … |
+| RET | FE-3 Hoàn hàng | `TC-RET-001` … |
+| ISS | FE-4 Xử lý ngoại lệ | `TC-ISS-001` … |
+| NFR | RT, SEC, ROB, UI, CI, DI, OE, CO | `TC-NFR-001` … |
+
+Quy ước cột:
+
+- **Test Case Description:** ghi hành vi và ID SRS được kiểm. Truy vết nằm ở tài liệu test, không nằm trong mã test.
+- **Pre-Condition:** ghi vai trò đăng nhập và trạng thái đơn ban đầu.
+- **Test Case Procedure:** đánh số từng bước.
+- **Expected Output:** dùng đúng tên trạng thái ở Hình A.2.
+- **Result:** chỉ một trong `Pass`, `Fail`, `Untest`, `N/A`.
+- **Bug#:** số GitHub Issue.
+- **Note:** ghi "TBD (xem C-x)" khi chưa viết được kết quả mong đợi.
+
+Mỗi dòng ở §2 có ít nhất một test case. Ngoại lệ và bước chuyển "chặn" có ít nhất một ca âm. Tên test Playwright mô tả hành vi và không chứa ID SRS (theo `AGENTS.md`); ID SRS chỉ nằm ở cột Test Case Description của file Excel.
 
 ## 4 Tài nguyên
 
