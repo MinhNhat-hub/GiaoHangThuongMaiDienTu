@@ -412,12 +412,51 @@ Mỗi dòng ở §2 có ít nhất một test case. Ngoại lệ và bước chu
 
 ## 4 Tài nguyên
 
-(Viết ở bước sau.)
+### 4.1 Nhân lực
+
+| Vai trò | Người | Trách nhiệm |
+|---|---|---|
+| Test Leader, Tester | TV2 | Viết Test Plan; viết test case hệ thống (A69); chạy Real-time, Shipper và ngoại lệ, System, Regression test (A80, A81, A83, A84); kiểm chỗ nối sau khi TV3, TV4 xong A59, A60, A62 |
+| Unit test và sửa lỗi | TV3, TV4 | Unit test phần code mình viết (A73 đến A79); sửa lỗi Authentication, Admin, Order, Return và Delivery do TV2 báo (A75, A78, A82) |
+| Cập nhật SRS | TV1 | Sửa SRS khi lỗi do yêu cầu sai hoặc SRS lệch code (A43, A71) |
+
+### 4.2 Hệ thống
+
+| Thành phần | Cấu hình |
+|---|---|
+| Server | Chưa chốt công nghệ, cập nhật ở giai đoạn 2 |
+| Client | Chưa chốt công nghệ, cập nhật ở giai đoạn 2. Trình duyệt hỗ trợ là TBD (xem C-8) |
+| Database server | Chưa chốt công nghệ, cập nhật ở giai đoạn 2 |
+| Môi trường CI | GitHub Actions, chạy lại bộ test (§3.3) |
 
 ## 5 Mốc kiểm thử và ước lượng
 
-(Viết ở bước sau.)
+Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dựa vào kinh nghiệm để ước lượng công cho một dòng ở mỗi mức độ phức tạp, gồm đọc yêu cầu, viết test case và chuẩn bị dữ liệu. Số dòng lấy từ cột "Độ phức tạp" của §2 (79 dòng). Công unit test do TV3, TV4 ước lượng ở giai đoạn 2.
+
+| Độ phức tạp | Số dòng | Công mỗi dòng (person-day) | Tổng (person-day) |
+|---|---|---|---|
+| Đơn giản | 13 | chờ TV2 ước lượng | chờ TV2 ước lượng |
+| Trung bình | 40 | chờ TV2 ước lượng | chờ TV2 ước lượng |
+| Phức tạp | 26 | chờ TV2 ước lượng | chờ TV2 ước lượng |
+| Cộng | 79 | Không áp dụng | chờ TV2 ước lượng |
+
+Các mốc (slide 33):
+
+| Mốc | Công (person-day) | Bắt đầu | Kết thúc |
+|---|---|---|---|
+| Test planning | chờ TV2 ước lượng | 28/10/2026 | 06/11/2026 |
+| Test design (viết test case) | chờ TV2 ước lượng | Chưa xác định | Chưa xác định |
+| Test execution | chờ TV2 ước lượng | Chưa xác định | Chưa xác định |
+| Test evaluation (Test Report) | chờ TV2 ước lượng | Chưa xác định | Chưa xác định |
+
+Chưa có hạn cuối kỳ, nên các mốc sau Test planning chưa có ngày. Khi có hạn, Test Plan cập nhật lên v1.1.
 
 ## 6 Sản phẩm bàn giao
 
-(Viết ở bước sau.)
+| Sản phẩm | Ngày | Người giao | Người nhận |
+|---|---|---|---|
+| Test Plan | 06/11/2026 | TV2 | Giảng viên |
+| Test Cases (theo `docs/templates/test-case.xlsx`) | Chưa xác định | TV2 | Giảng viên |
+| Test Report | Chưa xác định | TV2 | Giảng viên |
+
+Lưu ý về mẫu `test-case.xlsx`: công thức đếm của mẫu lệch một dòng. Test case đầu tiên (`TC001`) nằm ở dòng 6, nhưng các ô đếm Pass, Fail, Untested, N/A dùng vùng `$F$7:$F$942` nên bỏ sót dòng 6; ô "Number of cases" đếm từ `$A$6`, còn "Percent Complete" đếm từ `$A$7`. "Percent Complete" chia số Pass cho (số ca × 5 trừ số N/A), tức coi mỗi ca có 5 lần chạy. Tệp trong repo giữ nguyên bản gốc. Nhóm cần thống nhất cách sửa công thức, hoặc đối chiếu bằng cách đếm tay, trước khi dùng số liệu này trong Test Report.
