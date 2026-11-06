@@ -246,7 +246,7 @@ Mục này nêu cách kiểm thử: các loại kiểm thử và kỹ thuật ch
 
 (a) Ma trận chuyển trạng thái đơn 9 × 9. Số ở tiêu đề cột là thứ tự trạng thái, cùng thứ tự với cột "Từ" từ trên xuống. Ô hợp lệ ghi mã bước chuyển kèm vai trò kích hoạt; mọi ô còn lại, kể cả đường chéo (đơn "chuyển" sang chính trạng thái đang có), là "chặn". Mỗi ô "chặn" thử hai lần: qua giao diện (không có nút) và qua request gửi thẳng tới server (phải bị từ chối kèm lý do, Track.Update.Valid). T1 không có trạng thái nguồn nên ghi ở dòng "(bắt đầu)".
 
-| Từ \ Sang | 1. Chờ xác nhận | 2. Chờ lấy hàng | 3. Đang giao | 4. Đã giao | 5. Giao không thành công | 6. Đang hoàn hàng | 7. Đã hoàn về người bán | 8. Hư hỏng | 9. Thất lạc |
+| Từ \\ Sang | 1. Chờ xác nhận | 2. Chờ lấy hàng | 3. Đang giao | 4. Đã giao | 5. Giao không thành công | 6. Đang hoàn hàng | 7. Đã hoàn về người bán | 8. Hư hỏng | 9. Thất lạc |
 |---|---|---|---|---|---|---|---|---|---|
 | (bắt đầu) | T1 (Customer) | chặn | chặn | chặn | chặn | chặn | chặn | chặn | chặn |
 | Chờ xác nhận | chặn | T2 (Admin) | chặn | chặn | TBD (xem C-11) | chặn | chặn | TBD (xem C-11) | TBD (xem C-11) |
@@ -263,7 +263,7 @@ Ghi chú về C-11: SRS chưa nói có báo sự cố được khi đơn không 
 
 (b) Ma trận yêu cầu hoàn hàng 4 × 4, cùng quy ước. Trạng thái yêu cầu: 1. "Chờ duyệt", 2. "Đã chấp nhận", 3. "Bị từ chối", 4. "Hoàn tất".
 
-| Từ \ Sang | 1. Chờ duyệt | 2. Đã chấp nhận | 3. Bị từ chối | 4. Hoàn tất |
+| Từ \\ Sang | 1. Chờ duyệt | 2. Đã chấp nhận | 3. Bị từ chối | 4. Hoàn tất |
 |---|---|---|---|---|
 | (bắt đầu) | R1 (Customer) | chặn | chặn | chặn |
 | Chờ duyệt | chặn | R2 (Admin) | R3 (Admin) | chặn |
