@@ -388,7 +388,7 @@ Xếp theo các nhóm công cụ của slide.
 
 ### 3.4 Định dạng test case
 
-Test case viết trong `docs/templates/test-case.xlsx` (mẫu từ `testcase.xlsx`, bản sao đặt vào repo ở giai đoạn 2), mỗi sheet một module, giữ nguyên cột của mẫu. Module Code và tiền tố ID:
+Test case viết trong `docs/templates/test-case.xlsx` (bản sao nguyên vẹn của `testcase.xlsx`, liệt kê là sản phẩm bàn giao ở §6), mỗi sheet một module, giữ nguyên cột của mẫu. Module Code và tiền tố ID:
 
 | Module Code | Phạm vi | ID |
 |---|---|---|
