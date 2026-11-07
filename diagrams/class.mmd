@@ -1,0 +1,156 @@
+classDiagram
+  direction TB
+
+  class User {
+    +String id
+    +String fullName
+    +String email
+    +String phoneNumber
+    +String role
+    +verifyPassword(plainPassword) bool
+    +hasRole(requiredRole) bool
+  }
+
+  class Customer {
+    +createOrder(recipientName, recipientPhone, deliveryAddress, items) Order
+    +requestReturn(orderId, reason, notes) ReturnRequest
+  }
+
+  class Shipper {
+    +confirmPickup(shipmentId) bool
+    +confirmDelivered(shipmentId) bool
+    +reportDeliveryIssue(orderId, issueType, notes) DeliveryIssue
+  }
+
+  class Admin {
+    +createShipmentAndAssign(orderId, shipperId) Shipment
+    +approveReturnRequest(requestId) bool
+    +rejectReturnRequest(requestId, reason) bool
+    +resolveDeliveryIssue(issueId, resolutionNotes) bool
+  }
+
+  class Product {
+    +String id
+    +String name
+    +double price
+    +String description
+  }
+
+  class OrderItem {
+    +String id
+    +String orderId
+    +String productId
+    +int quantity
+    +double unitPrice
+    +getSubtotal() double
+  }
+
+  class Order {
+    +String id
+    +String customerId
+    +String recipientName
+    +String recipientPhone
+    +String deliveryAddress
+    +String status
+    +String createdAt
+    +canBeAssigned() bool
+    +canStartDelivery() bool
+    +canConfirmDelivered() bool
+    +canRequestReturn() bool
+    +updateStatus(newStatus, changedById) OrderStatusHistory
+  }
+
+  class Shipment {
+    +String id
+    +String trackingNumber
+    +String orderId
+    +String shipperId
+    +String createdAt
+    +String pickupTime
+    +String deliveryTime
+    +int failedAttempts
+    +startDelivery()
+    +confirmDelivered()
+    +recordFailedAttempt(maxAttempts) bool
+  }
+
+  class OrderStatusHistory {
+    +String id
+    +String orderId
+    +String oldStatus
+    +String newStatus
+    +String changedById
+    +String changedAt
+  }
+
+  class ReturnRequest {
+    +String id
+    +String orderId
+    +String reason
+    +String status
+    +String submittedAt
+    +String rejectionReason
+    +approve()
+    +reject(rejectionReason)
+    +complete()
+  }
+
+  class DeliveryIssue {
+    +String id
+    +String orderId
+    +String reportedById
+    +String issueType
+    +String reportedAt
+    +String resolutionNotes
+    +resolve(resolutionNotes)
+  }
+
+  class OrderService {
+    +createOrder(customerId, recipientName, recipientPhone, deliveryAddress, items) Order
+    +getOrderById(orderId) Order
+    +listOrdersByCustomer(customerId) List~Order~
+    +listAllOrders(statusFilter) List~Order~
+  }
+
+  class ShipmentService {
+    +createShipment(orderId, shipperId) Shipment
+    +startDelivery(shipmentId, shipperId) bool
+    +confirmDelivery(shipmentId, shipperId) bool
+    +recordFailedDelivery(shipmentId, shipperId, notes) bool
+    +getTrackingDetails(trackingNumber) Shipment
+  }
+
+  class ReturnService {
+    +submitReturn(orderId, customerId, reason, notes) ReturnRequest
+    +approveReturn(requestId, adminId) bool
+    +rejectReturn(requestId, adminId, reason) bool
+    +completeReturn(requestId, adminId) bool
+  }
+
+  class NotificationService {
+    +publishOrderStatusChanged(orderId, oldStatus, newStatus)
+    +notifyShipperAssigned(shipperId, shipmentId)
+    +notifyReturnStatusChanged(requestId, status)
+  }
+
+  User <|-- Customer
+  User <|-- Shipper
+  User <|-- Admin
+
+  Customer "1" --> "*" Order : places
+  Order "1" *-- "1..*" OrderItem : contains
+  OrderItem "*" --> "1" Product : references
+  Order "1" o-- "0..1" Shipment : assigned through
+  Shipment "*" --> "1" Shipper : assigned to
+  Order "1" *-- "1..*" OrderStatusHistory : tracks
+  Order "1" o-- "0..1" ReturnRequest : requests return
+  Order "1" o-- "*" DeliveryIssue : has incident
+
+  OrderService ..> Order : manages
+  OrderService ..> NotificationService : emits events
+  ShipmentService ..> Shipment : manages
+  ShipmentService ..> Order : updates status
+  ShipmentService ..> NotificationService : emits events
+  ReturnService ..> ReturnRequest : manages
+  ReturnService ..> Order : updates status
+  ReturnService ..> NotificationService : emits events

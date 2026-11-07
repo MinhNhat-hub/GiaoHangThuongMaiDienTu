@@ -1,0 +1,52 @@
+sequenceDiagram
+  actor Customer
+  actor Admin
+  participant ReturnService
+  participant Order
+  participant ReturnRequest
+  participant NotificationService
+
+  Note over Customer: Step 1: Customer submits return request for a delivered order
+
+  Customer->>ReturnService: submitReturn(orderId, customerId, reason, notes)
+  Note over ReturnService: Verify order is DELIVERED and within valid return window
+  ReturnService->>Order: canRequestReturn()
+  Order-->>ReturnService: true
+
+  ReturnService->>ReturnRequest: new ReturnRequest(requestId, orderId, reason, notes)
+  Note over ReturnRequest: Initial status set to PENDING_APPROVAL
+  ReturnService->>NotificationService: notifyReturnStatusChanged(requestId, "PENDING_APPROVAL")
+  ReturnService-->>Customer: returnRequestEntity
+
+  Note over Admin: Step 2: Admin reviews return request on dashboard
+
+  alt Admin approves return request
+    Admin->>ReturnService: approveReturn(requestId, adminId)
+    ReturnService->>ReturnRequest: approve()
+    Note over ReturnRequest: Status updated to ACCEPTED
+
+    alt Reason is damaged goods
+      ReturnService->>Order: updateStatus("DAMAGED", adminId)
+      ReturnService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERED", "DAMAGED")
+    else Reason is lost package / item not received
+      ReturnService->>Order: updateStatus("LOST", adminId)
+      ReturnService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERED", "LOST")
+    end
+
+    ReturnService->>NotificationService: notifyReturnStatusChanged(requestId, "ACCEPTED")
+    ReturnService-->>Admin: true
+
+    Note over Admin: Step 3: Admin confirms physical return completion
+    Admin->>ReturnService: completeReturn(requestId, adminId)
+    ReturnService->>ReturnRequest: complete()
+    Note over ReturnRequest: Status updated to COMPLETED
+    ReturnService->>NotificationService: notifyReturnStatusChanged(requestId, "COMPLETED")
+    ReturnService-->>Admin: true
+
+  else Admin rejects return request
+    Admin->>ReturnService: rejectReturn(requestId, adminId, rejectionReason)
+    ReturnService->>ReturnRequest: reject(rejectionReason)
+    Note over ReturnRequest: Status updated to REJECTED (order remains DELIVERED)
+    ReturnService->>NotificationService: notifyReturnStatusChanged(requestId, "REJECTED")
+    ReturnService-->>Admin: true
+  end

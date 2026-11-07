@@ -1,0 +1,47 @@
+sequenceDiagram
+  actor Shipper
+  participant ShipmentService
+  participant Shipment
+  participant Order
+  participant NotificationService
+
+  Note over Shipper: Shipper operates on delivery mobile/web screen
+
+  alt Action: Start Delivery (Pickup)
+    Shipper->>ShipmentService: startDelivery(shipmentId, shipperId)
+    Note over ShipmentService: Verify shipper assignment and order status WAITING_PICKUP
+    ShipmentService->>Order: canStartDelivery()
+    Order-->>ShipmentService: true
+    ShipmentService->>Shipment: startDelivery()
+    ShipmentService->>Order: updateStatus("DELIVERING", shipperId)
+    ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "WAITING_PICKUP", "DELIVERING")
+    ShipmentService-->>Shipper: true
+
+  else Action: Confirm Delivered
+    Shipper->>ShipmentService: confirmDelivery(shipmentId, shipperId)
+    Note over ShipmentService: Verify order status is currently DELIVERING
+    ShipmentService->>Order: canConfirmDelivered()
+    Order-->>ShipmentService: true
+    ShipmentService->>Shipment: confirmDelivered()
+    ShipmentService->>Order: updateStatus("DELIVERED", shipperId)
+    ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "DELIVERED")
+    ShipmentService-->>Shipper: true
+
+  else Action: Record Failed Delivery
+    Shipper->>ShipmentService: recordFailedDelivery(shipmentId, shipperId, notes)
+    Note over ShipmentService: Verify order status is DELIVERING
+    ShipmentService->>Shipment: recordFailedAttempt(3)
+    alt Under maximum failed attempts limit
+      Shipment-->>ShipmentService: false
+      ShipmentService->>Order: updateStatus("FAILED_DELIVERY", shipperId)
+      ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "FAILED_DELIVERY")
+      Note over NotificationService: Notify for redelivery attempt
+      ShipmentService-->>Shipper: true
+    else Maximum failed attempts reached
+      Shipment-->>ShipmentService: true
+      ShipmentService->>Order: updateStatus("RETURNING", shipperId)
+      ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "RETURNING")
+      Note over NotificationService: Alert Admin that order is returning to seller
+      ShipmentService-->>Shipper: true
+    end
+  end

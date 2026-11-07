@@ -1,0 +1,32 @@
+sequenceDiagram
+  actor Customer
+  participant OrderService
+  participant Order
+  participant OrderItem
+  participant NotificationService
+
+  Note over Customer: Customer selects products and submits order information
+
+  Customer->>OrderService: createOrder(customerId, recipientName, recipientPhone, deliveryAddress, items)
+
+  alt Invalid input data (empty recipient or empty items)
+    Note over OrderService: Validate required fields and product quantities
+    OrderService-->>Customer: throw Error("Recipient and items cannot be empty")
+  else Valid input data
+    Note over OrderService: Instantiate Order and child OrderItems
+    OrderService->>Order: new Order(orderId, customerId, recipientName, recipientPhone, deliveryAddress)
+    loop For each item in request
+      OrderService->>OrderItem: new OrderItem(itemId, orderId, productId, quantity, unitPrice)
+    end
+
+    Note over OrderService: Record initial status history
+    OrderService->>Order: updateStatus("PENDING_CONFIRMATION", customerId)
+
+    Note over OrderService: Persist order and order items in database
+
+    OrderService->>NotificationService: publishOrderStatusChanged(orderId, "", "PENDING_CONFIRMATION")
+    Note over NotificationService: Broadcast real-time event to Admin dashboard
+
+    OrderService-->>Customer: Order entity (status: PENDING_CONFIRMATION)
+    Note over Customer: View newly created order confirmation on screen
+  end
