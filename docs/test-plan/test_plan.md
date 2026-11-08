@@ -29,7 +29,7 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 ### 1.3 Tài liệu tham chiếu
 
 1. Nhóm 10. Đặc tả yêu cầu phần mềm (SRS) v1.0, `docs/srs/SRS.md`. Nguồn của mọi ID ở §2.
-2. Nguyễn Thị Thanh Trúc. Test Plan, slide bài giảng môn SE113 (`4_Test-Plan_v1.0.pdf`), cập nhật 03/2014. Đây là tài liệu [4] của SRS và là nguồn của cấu trúc sáu mục.
+2. Giảng viên. Test Plan, slide bài giảng môn SE113 (`4_Test-Plan_v1.0.pdf`), cập nhật 03/2014. Đây là tài liệu [4] của SRS và là nguồn của cấu trúc sáu mục.
 3. Nhóm 10. Backlog dự án (`BackLogPlan.xlsx`) và bản phân công theo backlog, `docs/plan/04_backlog_assignment.md`.
 4. Mẫu test case `testcase.xlsx`, dùng cho test case ở giai đoạn 2.
 
