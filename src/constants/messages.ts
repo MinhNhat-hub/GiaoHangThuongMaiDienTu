@@ -25,6 +25,84 @@ export const MESSAGES = {
       en: 'Account registered successfully',
     },
   },
+  AUTH_PAGE: {
+    BRAND_TITLE: {
+      vi: 'Giao Hàng TMĐT',
+      en: 'E-Commerce Delivery',
+    },
+    BRAND_SUBTITLE: {
+      vi: 'Dịch vụ Giao hàng & Vận chuyển Thông minh',
+      en: 'Smart Logistics & Delivery Service',
+    },
+    HERO_TITLE: {
+      vi: 'Giao nhận nhanh chóng, tận tâm đến từng chặng đường',
+      en: 'Fast, dedicated delivery across every mile',
+    },
+    HERO_DESCRIPTION: {
+      vi: 'Hệ thống quản lý dịch vụ giao hàng thông minh, cập nhật tình trạng lộ trình tức thời và hỗ trợ xử lý sự cố chuẩn xác.',
+      en: 'Smart shipping platform providing real-time tracking updates and precise exception handling.',
+    },
+    LOGIN_TITLE: {
+      vi: 'Đăng nhập tài khoản',
+      en: 'Sign in to Account',
+    },
+    LOGIN_SUBTITLE: {
+      vi: 'Nhập thông tin xác thực để truy cập bảng điều khiển vận hành',
+      en: 'Enter your credentials to access the operational dashboard',
+    },
+    IDENTIFIER_LABEL: {
+      vi: 'Tài khoản (Email, SĐT hoặc Tên đăng nhập)',
+      en: 'Account (Email, Phone or Username)',
+    },
+    IDENTIFIER_PLACEHOLDER: {
+      vi: 'name@example.com hoặc số điện thoại...',
+      en: 'name@example.com or phone number...',
+    },
+    PASSWORD_LABEL: {
+      vi: 'Mật khẩu',
+      en: 'Password',
+    },
+    PASSWORD_PLACEHOLDER: {
+      vi: 'Nhập mật khẩu...',
+      en: 'Enter your password...',
+    },
+    SUBMIT_BUTTON: {
+      vi: 'Đăng nhập',
+      en: 'Sign in',
+    },
+    SUBMITTING: {
+      vi: 'Đang xác thực...',
+      en: 'Authenticating...',
+    },
+    TEST_ACCOUNTS_LABEL: {
+      vi: 'Tài khoản kiểm thử vai trò',
+      en: 'Quick Role Presets',
+    },
+    NO_ACCOUNT_PROMPT: {
+      vi: 'Chưa có tài khoản?',
+      en: "Don't have an account?",
+    },
+    REGISTER_LINK: {
+      vi: 'Đăng ký tài khoản Khách hàng',
+      en: 'Register Customer Account',
+    },
+    FOOTER_COPYRIGHT: {
+      vi: '© 2026 Hệ thống Quản lý Dịch vụ Giao hàng TMĐT. Tiêu chuẩn Neobank Mint.',
+      en: '© 2026 E-Commerce Delivery Management System. Neobank Mint Standard.',
+    },
+    FOOTER_HELP: {
+      vi: 'Hỗ trợ kỹ thuật',
+      en: 'Technical Support',
+    },
+    FOOTER_TERMS: {
+      vi: 'Điều khoản dịch vụ',
+      en: 'Terms of Service',
+    },
+    FOOTER_PRIVACY: {
+      vi: 'Bảo mật thông tin',
+      en: 'Privacy Policy',
+    },
+  },
   ORDER: {
     CREATE_SUCCESS: {
       vi: 'Tạo đơn hàng thành công',
