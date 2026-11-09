@@ -54,7 +54,7 @@ Font: **Manrope** (weights 300 to 800) + **JetBrains Mono** (IDs, codes). Comple
 
 ## 03 · Buttons
 
-Base class: `.btn` (inline-flex, gap 8px, padding 11px 20px, radius 12px, font 0.88rem, font-weight 600, min-height 44px).
+Base class: `.btn` (inline-flex, gap 8px, padding 12px 20px, radius 12px, font 0.88rem, font-weight 600, min-height 44px).
 Micro-interaction: `transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease; :active { transform: scale(0.98); }`
 
 | Variant | Class | Background | Color | Border | Usage |
@@ -140,7 +140,7 @@ Rounded rect tags (`border-radius: 6px`, padding `2px 8px`, font `0.70rem`, font
    - Name & Role: Bold title + `.muted` role description.
    - Dual Actions: `.btn.btn-ghost.btn-sm` (`Message`) + `.btn.btn-primary.btn-sm` (`Follow`).
 4. **Structural Card Variants:**
-   - Base: `.card` (Background `#FFFFFF`, radius `20px`, padding `32px`, border `1px solid rgba(107, 134, 121, 0.133)`).
+   - Base: `.card` (Background `#FFFFFF`, radius `20px`, padding `24px` (mobile) to `32px` (desktop), border `1px solid rgba(107, 134, 121, 0.133)`).
    - Padless: `.card-padless` (Padding `0`, overflow `hidden` — for data tables).
    - Flat: `.card-flat` (Background `transparent`, border `1px solid rgba(107, 134, 121, 0.20)`).
 
@@ -210,21 +210,23 @@ Table component enclosed in `.card.card-padless`.
 
 ---
 
-## 11 · Patterns (Pricing tiers)
+## 11 · Patterns (Order & Shipping Summaries)
 
-3-column card comparison (`.responsive-3`):
+> **Monetary Compliance:** In strict adherence to BR-07 and SRS §1.3, this system contains NO prices, fees, monetary tiers, or payment mechanisms. The patterns below govern delivery cards and shipment status summaries.
 
-1. **Standard Tier (`Starter`, `Team`):**
+2-column responsive layout (`.responsive-2`) or structural cards:
+
+1. **Shipment Summary Card:**
    - Surface: White card (`.card`).
-   - Overline: `.t-label.muted`. Price: `.t-h1` (`2.25rem`) + `/mo`.
-   - Features checklist: Items prefixed by `✓` in `#28C76F`.
-   - CTA Button: `.btn.btn-outline` full width (`width: 100%`).
-2. **Highlighted Popular Tier (`Pro`):**
-   - Surface: Inverted dark card (`background: #0D3B2E; color: #FFFFFF; border-color: #0D3B2E;`).
-   - Overline: Text with `opacity: 0.7`.
-   - Popular Badge: `.badge.badge-accent` (`Popular`) placed top-right.
-   - Features checklist: `✓` in `#28C76F` + white text.
-   - CTA Button: `.btn.btn-primary` full width (`width: 100%`).
+   - Overline: `.t-label.muted` (`Mã đơn hàng`). Code: `.font-mono` (`ORD-20261109-001`).
+   - Recipient & Destination: Receiver name, masked phone (`0912***678`), delivery address.
+   - Status Badge: Displayed using semantic `.badge` components.
+   - Primary Action: Exactly ONE CTA per screen (`.btn-primary` e.g., "Xác nhận tạo đơn" or "Cập nhật giao hàng").
+
+2. **Highlighted Active Order Card:**
+   - Surface: Structural card with crisp hairline border (`border: 1px solid rgba(107, 134, 121, 0.25)`).
+   - Live Tracking Pill: `.chip.chip-accent` with live dot indicator.
+   - Timeline Events: Chronological progression sorted newest-to-oldest (C-13).
 
 ---
 
