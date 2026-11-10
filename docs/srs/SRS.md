@@ -1,12 +1,12 @@
 # Đặc tả yêu cầu phần mềm cho Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử, phiên bản 1.0
 
-Phiên bản 1.0 nháp 3
+Phiên bản 1.0 nháp 4
 
 Soạn bởi TV1
 
 Nhóm 10 – SE113 Kiểm chứng phần mềm
 
-03/11/2026
+10/11/2026
 
 ## Lịch sử sửa đổi
 
@@ -15,6 +15,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 | TV1 | 31/10/2026 | Bản nháp đầu tiên, gửi TV2 review | 1.0 nháp 1 |
 | TV1 | 02/11/2026 | Sửa theo review: tách, thêm và đổi nội dung một số ID (xem srs_id_changes.md) | 1.0 nháp 2 |
 | TV2 | 03/11/2026 | Sửa theo review: đóng C-15, thêm luồng 3.2 của UC-03, SEC-8, SEC-9; tách bước 3 của luồng 7.0; đổi Return.Review.Issue thành Return.Review.OrderStatus; SRS.md thành bản gốc | 1.0 nháp 3 |
+| TV1 | 10/11/2026 | Chốt C-1 đến C-14: điền các chỗ TBD; thêm CO-2, ngoại lệ 5.0.E4 của UC-05; thêm phần tử dữ liệu email, mật khẩu, số điện thoại, mô tả lý do; thêm mục 2.6 Tài liệu người dùng, mục 3.5 Tài khoản, SEC-10, SEC-11; chốt độ dài và định dạng ngày giờ ở §4.2; thêm thuật ngữ Tài khoản, giả định AS-5; thêm tài liệu tham khảo S6–S13 | 1.0 nháp 4 |
 
 ## 1 Giới thiệu
 
@@ -30,13 +31,15 @@ Người dùng tài liệu gồm người phát triển web, người kiểm th�
 |---|---|---|
 | Tính năng | FE-x (như bộ mẫu COS [3]) | FE-1 |
 | Use Case | UC-xx, đánh số liên tục | UC-01 |
-| Yêu cầu chức năng | Nhóm.Việc.ChiTiết (như bộ mẫu COS [3]). Nhóm: Order (3.1), Track (3.2), Return (3.3), Issue.Report (3.4.1), Issue.Resolve (3.4.2) | Order.Create.Receiver |
+| Yêu cầu chức năng | Nhóm.Việc.ChiTiết (như bộ mẫu COS [3]). Nhóm: Order (3.1), Track (3.2), Return (3.3), Issue.Report (3.4.1), Issue.Resolve (3.4.2), Account (3.5) | Order.Create.Receiver |
 | Ngoại lệ trong UC | x.0.Ey (như bộ mẫu COS [3]) | 3.0.E2 |
 | Quy tắc nghiệp vụ | BR-xx, đánh số liên tục | BR-01 |
 | Yêu cầu phi chức năng | RT-x, SEC-x, ROB-x | RT-1 |
 | Giao diện | UI-x, SI-x, CI-x | CI-1 |
 | Môi trường / Ràng buộc / Giả định / Phụ thuộc | OE-x, CO-x, AS-x, DE-x | AS-1 |
 | Dữ liệu | DI-x | DI-1 |
+
+Yêu cầu chức năng là các mã dạng Nhóm.Việc.ChiTiết ở mục 3. Yêu cầu phi chức năng gồm các mã OE, CO, UI, SI, CI, DI, RT, SEC, ROB. Mã AS, DE là giả định và phụ thuộc, không phải yêu cầu.
 
 Luật viết:
 
@@ -45,7 +48,7 @@ Luật viết:
 - Tham chiếu chứ không chép lại: "(xem BR-03)", "(xem Hình A.2)".
 - Không tự đặt số liệu. Chưa có thì ghi "chưa có số liệu".
 
-Chỗ nhóm chưa chốt ghi TBD (xem C-x); mọi vấn đề này được liệt kê ở Phụ lục C.
+Chỗ nhóm chưa chốt ghi TBD (xem C-x); mọi vấn đề này được liệt kê ở Phụ lục C. Phiên bản này không còn chỗ TBD.
 
 ### 1.3 Phạm vi dự án và tính năng
 
@@ -69,8 +72,10 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 - Sửa / hủy / tìm kiếm đơn hàng đã lưu (A35–A37).
 - Thanh toán, phí, hoàn tiền, bồi thường. Hệ thống chỉ ghi nhận kết quả xử lý (xem BR-07).
 - Danh mục sản phẩm, đánh giá sản phẩm, kho trung chuyển.
+- Hoàn hàng hoặc báo sự cố cho từng sản phẩm trong đơn hàng. Yêu cầu hoàn hàng và sự cố áp dụng cho cả đơn hàng.
+- Báo sự cố khi đơn hàng không ở trạng thái "Đang giao", ví dụ hàng hỏng hoặc thất lạc lúc đơn ở "Đang hoàn hàng" (xem Hình A.2).
 
-Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1, SEC-9 và PRE-1 của các Use Case.
+Đăng ký, đăng nhập, đăng xuất không thuộc 4 tính năng của đề bài. Yêu cầu của chúng nằm ở mục 3.5 (Tài khoản), SEC-1, SEC-9 đến SEC-11 và PRE-1 của các Use Case.
 
 ### 1.4 Tài liệu tham khảo
 
@@ -83,14 +88,22 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 7. (S3) Công ty TNHH Shopee Express – Điều khoản sử dụng SPX Express. https://spx.vn/T&C.pdf
 8. (S4) VnExpress 13/3/2024 – Shopee cập nhật chính sách đổi trả hàng. https://vnexpress.net/shopee-cap-nhat-chinh-sach-doi-tra-hang-4721617.html
 9. (S5) BigSeller 16/07/2026 – SPX Express là gì? Tra cứu đơn hàng. https://www.bigseller.com/blog/articleDetails/spx-express-la-gi-tra-cuu-don-hang.4760.htm
+10. (S6) GHN – Chính sách bồi thường của GHN (Mới), áp dụng cho đơn hàng tạo từ 20/05/2026. https://ghn.vn/pages/chinh-sach-boi-thuong-cua-ghn-moi
+11. (S7) GHTK Blog 13/10/2025 – Đơn hàng giao lại tối đa mấy lần? Chi tiết chính sách giao lại tại GHTK. https://ghtk.vn/blog/giao-lai/
+12. (S8) LuatVietnam 04/06/2018 – Đã cập nhật Quyết định chuyển thuê bao 11 số sang 10 số (Quyết định 798/QĐ-BTTTT). https://luatvietnam.vn/tin-van-ban-moi/da-cap-nhat-quyet-dinh-chuyen-thue-bao-11-so-sang-10-so-186-16629-article.html
+13. (S9) WHATWG – HTML Living Standard, mục 4.10.5 The input element (định nghĩa valid e-mail address). https://html.spec.whatwg.org/multipage/input.html
+14. (S10) OWASP Cheat Sheet Series – Authentication Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+15. (S11) OWASP Cheat Sheet Series – Password Storage Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+16. (S12) IETF – RFC 5321 Simple Mail Transfer Protocol, mục 4.5.3.1.3 (độ dài đường dẫn 256 octet), và errata 1690 của RFC 3696 (địa chỉ email tối đa 254 ký tự). https://www.rfc-editor.org/rfc/rfc5321 ; https://www.rfc-editor.org/errata/eid1690
+17. (S13) Quốc hội – Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, hiệu lực từ 01/01/2026. https://chinhphu.vn/?pageid=27160&docid=214590&classid=1&typegroupid=3
 
-Các nguồn S1–S5 chỉ dùng để tham khảo nghiệp vụ; tài liệu không lấy nguyên con số từ các nguồn này.
+Các nguồn S1–S13 chỉ dùng để tham khảo nghiệp vụ và kỹ thuật. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).
 
 ## 2 Mô tả tổng quan
 
 ### 2.1 Bối cảnh sản phẩm
 
-Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử là một hệ thống phần mềm mới. Hệ thống là web riêng của một cửa hàng, không phải sàn có nhiều người bán (xem AS-1). Ba lớp người dùng làm việc với hệ thống: Customer, Admin và Shipper (xem 2.2). Sơ đồ ngữ cảnh ở Hình 1 thể hiện các lớp người dùng và dữ liệu trao đổi giữa từng lớp với hệ thống. Phiên bản này không kết nối với hệ thống bên ngoài nào (xem 5.2, C-2).
+Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử là một hệ thống phần mềm mới. Hệ thống là web riêng của một cửa hàng, không phải sàn có nhiều người bán (xem AS-1). Ba lớp người dùng làm việc với hệ thống: Customer, Admin và Shipper (xem 2.2). Sơ đồ ngữ cảnh ở Hình 1 thể hiện các lớp người dùng và dữ liệu trao đổi giữa từng lớp với hệ thống. Phiên bản này không kết nối với hệ thống bên ngoài nào (xem 5.2).
 
 ![Hình 1. Sơ đồ ngữ cảnh của hệ thống](diagrams/context.png)
 
@@ -108,13 +121,13 @@ Các nguồn S1–S5 chỉ dùng để tham khảo nghiệp vụ; tài liệu kh
 
 **OE-1:** Hệ thống phải là một ứng dụng web mà người dùng truy cập qua trình duyệt.
 
-**OE-2:** Hệ thống phải hoạt động đúng trên các trình duyệt sau: TBD (xem C-8).
+**OE-2:** Hệ thống phải hoạt động đúng trên Google Chrome dành cho máy tính, bản ổn định mới nhất tại thời điểm kiểm thử.
 
 ### 2.4 Ràng buộc thiết kế và cài đặt
 
 **CO-1:** Hệ thống phải cập nhật trạng thái theo sự kiện, không dùng cơ chế tự tải lại theo chu kỳ (xem RT-1, RT-2).
 
-Ngôn ngữ giao diện: TBD (xem C-9).
+**CO-2:** Hệ thống phải hiển thị giao diện bằng tiếng Việt, dùng đúng tên trạng thái, lý do hoàn hàng, loại sự cố và tên màn hình trong tài liệu này (xem Hình A.2, BR-04, Issue.Report.Type, UI-1).
 
 ### 2.5 Giả định và phụ thuộc
 
@@ -126,7 +139,13 @@ Ngôn ngữ giao diện: TBD (xem C-9).
 
 **AS-4:** Thanh toán nằm ngoài hệ thống (xem BR-07).
 
-Chưa xác định phụ thuộc bên ngoài nào ở phiên bản này (xem C-2).
+**AS-5:** Cửa hàng chịu trách nhiệm đặt thời hạn lưu và việc xóa dữ liệu cá nhân của người dùng (họ tên, email, số điện thoại, địa chỉ giao) theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 (xem S13 ở mục 1.4). Phiên bản 1.0 không có chức năng xóa dữ liệu cá nhân.
+
+Phiên bản này không có phụ thuộc bên ngoài (xem 5.2).
+
+### 2.6 Tài liệu người dùng
+
+Phiên bản 1.0 kèm hướng dẫn sử dụng cho các Use Case ở mục 3; hướng dẫn được viết ở giai đoạn 2 (dòng A85 của backlog [2]).
 
 ## 3 Tính năng hệ thống
 
@@ -148,23 +167,23 @@ Customer đã đăng nhập chọn sản phẩm từ danh sách sản phẩm c�
 | **Hậu điều kiện:** | POST-1. Đơn hàng được lưu với mã đơn hàng duy nhất và trạng thái "Chờ xác nhận" (xem Hình A.2).<br>POST-2. Lịch sử trạng thái của đơn có bản ghi đầu tiên (xem Track.Update.History). |  |  |
 | **Luồng chính:** | **1.0 Tạo đơn hàng**<br>1. Customer yêu cầu tạo đơn hàng.<br>2. Hệ thống hiển thị danh sách sản phẩm của cửa hàng.<br>3. Customer chọn sản phẩm và nhập số lượng cho mỗi sản phẩm đã chọn.<br>4. Customer nhập thông tin người nhận và địa chỉ giao.<br>5. Customer cho biết đã nhập xong.<br>6. Hệ thống kiểm tra các trường bắt buộc và định dạng từng trường (xem 1.0.E1).<br>7. Hệ thống hiển thị lại sản phẩm, số lượng, người nhận và địa chỉ giao.<br>8. Customer xác nhận đơn (tiếp tục luồng chính), yêu cầu sửa đơn (xem 1.1), hoặc hủy thao tác tạo đơn (hệ thống kết thúc UC, đơn không được lưu).<br>9. Hệ thống gán mã đơn hàng duy nhất, lưu đơn với trạng thái "Chờ xác nhận" (xem Hình A.2) và ghi bản ghi đầu tiên vào lịch sử trạng thái (xem 1.0.E2).<br>10. Hệ thống hiển thị thông báo tạo đơn thành công kèm mã đơn hàng. |  |  |
 | **Luồng thay thế:** | **1.1 Sửa đơn trước khi xác nhận**<br>1. Ở bước 8 của luồng chính, Customer yêu cầu sửa đơn.<br>2. Hệ thống hiển thị thông tin đơn đã nhập để Customer sửa.<br>3. Customer sửa sản phẩm, số lượng, thông tin người nhận hoặc địa chỉ giao.<br>4. Quay lại bước 5 của luồng chính. |  |  |
-| **Ngoại lệ:** | **1.0.E1 Thiếu trường bắt buộc hoặc sai định dạng**<br>1. Hệ thống chỉ ra trường bắt buộc còn thiếu hoặc trường sai định dạng, kể cả số lượng sai ràng buộc (xem Order.Create.Quantity). Danh sách trường bắt buộc và quy tắc định dạng: TBD (xem C-1).<br>2a. Nếu Customer bổ sung hoặc sửa các trường đó, thì quay lại bước 6 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác tạo đơn, thì hệ thống kết thúc UC.<br>**1.0.E2 Lưu đơn thất bại**<br>1. Hệ thống hoàn tác (rollback) mọi bước đã làm khi lưu đơn (xem Order.Done.Failure).<br>2. Hệ thống báo Customer tạo đơn không thành công kèm lý do (xem Order.Done.Reason).<br>3. Hệ thống kết thúc UC; đơn không được lưu. |  |  |
+| **Ngoại lệ:** | **1.0.E1 Thiếu trường bắt buộc hoặc sai định dạng**<br>1. Hệ thống chỉ ra trường bắt buộc còn thiếu hoặc trường sai định dạng, kể cả số lượng sai ràng buộc (xem Order.Create.Quantity). Danh sách trường bắt buộc và quy tắc định dạng: xem Order.Create.Required, Order.Create.Format.<br>2a. Nếu Customer bổ sung hoặc sửa các trường đó, thì quay lại bước 6 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác tạo đơn, thì hệ thống kết thúc UC.<br>**1.0.E2 Lưu đơn thất bại**<br>1. Hệ thống hoàn tác (rollback) mọi bước đã làm khi lưu đơn (xem Order.Done.Failure).<br>2. Hệ thống báo Customer tạo đơn không thành công kèm lý do (xem Order.Done.Reason).<br>3. Hệ thống kết thúc UC; đơn không được lưu. |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
 | **Tần suất sử dụng:** | Chưa có số liệu |  |  |
 | **Quy tắc nghiệp vụ:** | Không có |  |  |
-| **Thông tin khác:** | Customer có thể hủy thao tác tạo đơn trước khi xác nhận đơn (xem Order.Confirm.Prompt).<br>Số sản phẩm trong mỗi đơn: TBD (xem C-7). |  |  |
+| **Thông tin khác:** | Customer có thể hủy thao tác tạo đơn trước khi xác nhận đơn (xem Order.Confirm.Prompt).<br>Một đơn có một hoặc nhiều sản phẩm, mỗi sản phẩm một dòng (xem Order.Create.Product).<br>Yêu cầu hoàn hàng và sự cố áp dụng cho cả đơn, không cho từng sản phẩm (xem 1.3). |  |  |
 | **Giả định:** | Danh sách sản phẩm có sẵn dưới dạng dữ liệu mẫu (xem AS-3). |  |  |
 
 #### 3.1.3 Yêu cầu chức năng
 
 **Order.Create: Customer tạo đơn hàng**
-- **.Product:** Hệ thống phải cho Customer chọn sản phẩm từ danh sách sản phẩm của cửa hàng (xem AS-3), với số sản phẩm mỗi đơn là TBD (xem C-7).
-- **.Quantity:** Hệ thống phải cho Customer nhập số lượng cho mỗi sản phẩm đã chọn, với ràng buộc TBD (xem C-1).
+- **.Product:** Hệ thống phải cho Customer chọn một hoặc nhiều sản phẩm từ danh sách sản phẩm của cửa hàng (xem AS-3), mỗi sản phẩm một dòng và không có hai dòng cùng một sản phẩm.
+- **.Quantity:** Hệ thống phải cho Customer nhập số lượng cho mỗi sản phẩm đã chọn, là số nguyên lớn hơn hoặc bằng 1.
 - **.Receiver:** Hệ thống phải cho Customer nhập tên người nhận.
-- **.Phone:** Hệ thống phải cho Customer nhập số điện thoại người nhận, với định dạng TBD (xem C-1).
-- **.Address:** Hệ thống phải cho Customer nhập địa chỉ giao, với định dạng TBD (xem C-1).
-- **.Required:** Hệ thống phải kiểm tra Customer đã nhập đủ các trường bắt buộc, với danh sách TBD (xem C-1), và chỉ ra trường còn thiếu.
-- **.Format:** Hệ thống phải kiểm tra định dạng từng trường theo quy tắc TBD (xem C-1) và chỉ ra trường sai định dạng.
+- **.Phone:** Hệ thống phải cho Customer nhập số điện thoại người nhận, gồm đúng 10 chữ số và bắt đầu bằng chữ số 0.
+- **.Address:** Hệ thống phải cho Customer nhập địa chỉ giao dưới dạng một chuỗi văn bản tự do.
+- **.Required:** Hệ thống phải kiểm tra Customer đã nhập đủ các trường bắt buộc (ít nhất một dòng sản phẩm, số lượng của mỗi dòng, tên người nhận, số điện thoại người nhận, địa chỉ giao) và chỉ ra trường còn thiếu; trường chỉ gồm khoảng trắng được coi là còn thiếu.
+- **.Format:** Hệ thống phải kiểm tra định dạng của số lượng và số điện thoại người nhận theo Order.Create.Quantity, Order.Create.Phone và chỉ ra trường sai định dạng.
 
 **Order.Confirm: Xác nhận đơn**
 - **.Display:** Hệ thống phải hiển thị lại sản phẩm, số lượng, người nhận và địa chỉ giao trước khi lưu đơn.
@@ -214,7 +233,7 @@ Admin tạo vận đơn và phân công đơn ở trạng thái "Chờ xác nh�
 | **Độ ưu tiên:** | Cao |  |  |
 | **Tần suất sử dụng:** | Chưa có số liệu |  |  |
 | **Quy tắc nghiệp vụ:** | BR-01, BR-06 |  |  |
-| **Thông tin khác:** | Shipper chỉ xem và cập nhật được đơn được phân công cho chính mình (xem SEC-4, SEC-8).<br>Hệ thống từ chối mọi bước chuyển không có trên Hình A.2 và báo lý do (xem Track.Update.Valid).<br>Các bước chuyển T5, T9, T10 chỉ thực hiện qua báo sự cố (xem Issue.Report), không chọn qua Track.Update.Next.<br>Mỗi lần trạng thái đơn thay đổi, màn hình đang mở của Customer và Admin hiển thị trạng thái mới mà không cần tải lại trang (xem RT-1, RT-2); Customer được thông báo theo CI-1, kênh TBD (xem C-2).<br>Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao"; báo sự cố ở trạng thái khác: TBD (xem C-11).<br>Hàng hỏng hoặc thất lạc do Customer báo sau khi đơn "Đã giao" được xử lý qua yêu cầu hoàn hàng (xem UC-05, UC-06). |  |  |
+| **Thông tin khác:** | Shipper chỉ xem và cập nhật được đơn được phân công cho chính mình (xem SEC-4, SEC-8).<br>Hệ thống từ chối mọi bước chuyển không có trên Hình A.2 và báo lý do (xem Track.Update.Valid).<br>Các bước chuyển T5, T9, T10 chỉ thực hiện qua báo sự cố (xem Issue.Report), không chọn qua Track.Update.Next.<br>Mỗi lần trạng thái đơn thay đổi, màn hình đang mở của Customer và Admin hiển thị trạng thái mới mà không cần tải lại trang (xem RT-1, RT-2); Customer được thông báo trong ứng dụng (xem CI-1).<br>Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao"; báo sự cố ở trạng thái khác nằm ngoài phạm vi phiên bản này (xem 1.3).<br>Hàng hỏng hoặc thất lạc do Customer báo sau khi đơn "Đã giao" được xử lý qua yêu cầu hoàn hàng (xem UC-05, UC-06). |  |  |
 | **Giả định:** | Tài khoản Shipper đã có sẵn (xem AS-2). |  |  |
 
 | **Mã và tên:** | UC-04 Theo dõi đơn hàng |  |  |
@@ -225,7 +244,7 @@ Admin tạo vận đơn và phân công đơn ở trạng thái "Chờ xác nh�
 | **Điều kiện kích hoạt:** | Customer cho biết muốn xem tình trạng vận chuyển của đơn hàng. |  |  |
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Customer. |  |  |
 | **Hậu điều kiện:** | POST-1. Trạng thái hiện tại và lịch sử trạng thái của đơn được chọn hiển thị cho Customer. |  |  |
-| **Luồng chính:** | **4.0 Theo dõi đơn hàng**<br>1. Customer mở danh sách đơn hàng.<br>2. Hệ thống hiển thị danh sách đơn của chính Customer đó.<br>3. Customer chọn một đơn.<br>4. Hệ thống hiển thị trạng thái hiện tại của đơn và lịch sử trạng thái theo thứ tự thời gian, chiều sắp xếp TBD (xem C-13) (xem 4.0.E1). |  |  |
+| **Luồng chính:** | **4.0 Theo dõi đơn hàng**<br>1. Customer mở danh sách đơn hàng.<br>2. Hệ thống hiển thị danh sách đơn của chính Customer đó.<br>3. Customer chọn một đơn.<br>4. Hệ thống hiển thị trạng thái hiện tại của đơn và lịch sử trạng thái theo thứ tự thời gian, từ cũ đến mới (xem 4.0.E1). |  |  |
 | **Luồng thay thế:** | Không có |  |  |
 | **Ngoại lệ:** | **4.0.E1 Mất kết nối khi đang theo dõi (xem ROB-1)** |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
@@ -251,7 +270,7 @@ Admin tạo vận đơn và phân công đơn ở trạng thái "Chờ xác nh�
 **Track.View: Customer theo dõi đơn hàng (UC-04)**
 - **.List:** Hệ thống phải hiển thị cho Customer danh sách đơn của chính Customer đó.
 - **.Current:** Hệ thống phải hiển thị trạng thái hiện tại của đơn được chọn.
-- **.History:** Hệ thống phải hiển thị lịch sử trạng thái của đơn được chọn theo thứ tự thời gian, chiều sắp xếp TBD (xem C-13).
+- **.History:** Hệ thống phải hiển thị lịch sử trạng thái của đơn được chọn theo thứ tự thời gian, từ cũ đến mới.
 
 **Track.Admin: Admin theo dõi đơn hàng (dùng ở UC-07 luồng 7.1, 7.2; xem RT-2)**
 - **.List:** Hệ thống phải hiển thị cho Admin danh sách đơn hàng ở mọi trạng thái, kèm trạng thái hiện tại của mỗi đơn.
@@ -272,13 +291,13 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 | **Điều kiện kích hoạt:** | Customer chọn gửi yêu cầu hoàn hàng cho một đơn hàng của mình, hoặc chọn xem các yêu cầu hoàn hàng đã gửi. |  |  |
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Customer. |  |  |
 | **Hậu điều kiện:** | POST-1. Yêu cầu hoàn hàng được lưu với trạng thái "Chờ duyệt" và thời điểm gửi (xem Hình A.2).<br>POST-2. Trạng thái đơn hàng không đổi (xem Hình A.2). |  |  |
-| **Luồng chính:** | **5.0 Gửi yêu cầu hoàn hàng**<br>1. Customer chọn một đơn hàng do chính mình tạo và chọn gửi yêu cầu hoàn hàng (xem SEC-3, 5.1).<br>2. Hệ thống kiểm tra đơn đang ở trạng thái "Đã giao" (xem 5.0.E1) và còn trong thời hạn yêu cầu hoàn hàng (xem 5.0.E2).<br>3. Hệ thống hiển thị danh sách lý do hoàn hàng (xem BR-04).<br>4. Customer chọn một lý do và gửi yêu cầu (xem 5.0.E3).<br>5. Hệ thống lưu yêu cầu hoàn hàng với trạng thái "Chờ duyệt" và thời điểm gửi (R1, xem Hình A.2). |  |  |
-| **Luồng thay thế:** | **5.1 Xem trạng thái yêu cầu hoàn hàng**<br>1. Thay vì bước 1 của luồng chính, Customer chọn xem các yêu cầu hoàn hàng đã gửi.<br>2. Hệ thống hiển thị trạng thái hiện tại của các yêu cầu hoàn hàng do chính Customer gửi (xem SEC-2, Hình A.2).<br>3. Hệ thống kết thúc UC. |  |  |
-| **Ngoại lệ:** | **5.0.E1 Đơn chưa ở trạng thái "Đã giao"**<br>1. Hệ thống báo Customer chỉ được yêu cầu hoàn hàng cho đơn ở trạng thái "Đã giao" (xem BR-02).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E2 Quá thời hạn yêu cầu hoàn hàng**<br>1. Hệ thống báo Customer đơn đã quá thời hạn yêu cầu hoàn hàng (xem BR-03); thời hạn là TBD (xem C-4).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E3 Chưa chọn lý do hoàn hàng**<br>1. Hệ thống báo Customer phải chọn một lý do hoàn hàng (xem BR-04).<br>2a. Nếu Customer chọn một lý do, thì quay lại bước 4 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC. |  |  |
+| **Luồng chính:** | **5.0 Gửi yêu cầu hoàn hàng**<br>1. Customer chọn một đơn hàng do chính mình tạo và chọn gửi yêu cầu hoàn hàng (xem SEC-3, 5.1).<br>2. Hệ thống kiểm tra đơn đang ở trạng thái "Đã giao" (xem 5.0.E1), còn trong thời hạn yêu cầu hoàn hàng (xem 5.0.E2) và chưa có yêu cầu hoàn hàng nào (xem 5.0.E4).<br>3. Hệ thống hiển thị danh sách lý do hoàn hàng (xem BR-04).<br>4. Customer chọn một lý do, nhập mô tả nếu chọn lý do "Khác", rồi gửi yêu cầu (xem 5.0.E3).<br>5. Hệ thống lưu yêu cầu hoàn hàng với trạng thái "Chờ duyệt" và thời điểm gửi (R1, xem Hình A.2). |  |  |
+| **Luồng thay thế:** | **5.1 Xem trạng thái yêu cầu hoàn hàng**<br>1. Thay vì bước 1 của luồng chính, Customer chọn xem các yêu cầu hoàn hàng đã gửi.<br>2. Hệ thống hiển thị trạng thái hiện tại của các yêu cầu hoàn hàng do chính Customer gửi, kèm lý do từ chối với yêu cầu ở trạng thái "Bị từ chối" (xem SEC-2, Hình A.2).<br>3. Hệ thống kết thúc UC. |  |  |
+| **Ngoại lệ:** | **5.0.E1 Đơn chưa ở trạng thái "Đã giao"**<br>1. Hệ thống báo Customer chỉ được yêu cầu hoàn hàng cho đơn ở trạng thái "Đã giao" (xem BR-02).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E2 Quá thời hạn yêu cầu hoàn hàng**<br>1. Hệ thống báo Customer đơn đã quá thời hạn yêu cầu hoàn hàng (xem BR-03).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E3 Chưa chọn lý do hoàn hàng, hoặc chọn "Khác" mà chưa nhập mô tả**<br>1. Hệ thống báo Customer phải chọn một lý do hoàn hàng, và phải nhập mô tả nếu chọn lý do "Khác" (xem BR-04, Return.Request.Reason).<br>2a. Nếu Customer chọn lý do hoặc nhập mô tả, thì quay lại bước 4 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC.<br>**5.0.E4 Đơn đã có yêu cầu hoàn hàng**<br>1. Hệ thống báo Customer mỗi đơn hàng chỉ được gửi một yêu cầu hoàn hàng (xem Return.Request.Eligible).<br>2a. Nếu Customer chọn đơn hàng khác, thì quay lại bước 2 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác, thì hệ thống kết thúc UC. |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
 | **Tần suất sử dụng:** | Chưa có số liệu |  |  |
 | **Quy tắc nghiệp vụ:** | BR-02, BR-03, BR-04 |  |  |
-| **Thông tin khác:** | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng: TBD (xem C-12).<br>Hệ thống không xử lý tiền (xem BR-07).<br>Khi Admin chấp nhận yêu cầu có lý do thuộc BR-05, trạng thái đơn đổi theo UC-06 (xem Hình A.2). |  |  |
+| **Thông tin khác:** | Mỗi đơn hàng chỉ được gửi tối đa một yêu cầu hoàn hàng (xem 5.0.E4).<br>Hệ thống không xử lý tiền (xem BR-07).<br>Khi Admin chấp nhận yêu cầu có lý do thuộc BR-05, trạng thái đơn đổi theo UC-06 (xem Hình A.2). |  |  |
 | **Giả định:** | Không có |  |  |
 
 | **Mã và tên:** | UC-06 Duyệt / từ chối yêu cầu hoàn hàng |  |  |
@@ -290,7 +309,7 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Admin. |  |  |
 | **Hậu điều kiện:** | POST-1. Yêu cầu hoàn hàng ở trạng thái "Đã chấp nhận", "Bị từ chối" hoặc "Hoàn tất" (xem Hình A.2).<br>POST-2. Nếu yêu cầu được chấp nhận với lý do thuộc BR-05, đơn hàng ở trạng thái "Hư hỏng" hoặc "Thất lạc" (xem Hình A.2). |  |  |
 | **Luồng chính:** | **6.0 Chấp nhận yêu cầu hoàn hàng**<br>1. Hệ thống hiển thị danh sách yêu cầu ở trạng thái "Chờ duyệt" và "Đã chấp nhận", kèm đơn hàng và lý do hoàn hàng (xem Return.Review.List).<br>2. Admin chọn một yêu cầu ở trạng thái "Chờ duyệt" và chấp nhận yêu cầu đó (xem 6.1, 6.0.E1).<br>3. Hệ thống chuyển yêu cầu sang "Đã chấp nhận" (R2, xem Hình A.2).<br>4. Nếu lý do hoàn hàng thuộc BR-05, hệ thống chuyển đơn hàng từ "Đã giao" sang "Hư hỏng" (T11) hoặc "Thất lạc" (T12) theo BR-05 (xem Hình A.2). |  |  |
-| **Luồng thay thế:** | **6.1 Từ chối yêu cầu**<br>1. Tại bước 2 của luồng chính, Admin chọn từ chối yêu cầu.<br>2. Hệ thống chuyển yêu cầu sang "Bị từ chối" (R3, xem Hình A.2); bắt buộc ghi lý do từ chối hay không là TBD (xem C-6).<br>3. Trạng thái đơn hàng không đổi (xem Hình A.2).<br>**6.2 Ghi nhận hoàn tất**<br>1. Tại bước 2 của luồng chính, Admin chọn một yêu cầu ở trạng thái "Đã chấp nhận" và ghi nhận hoàn tất.<br>2. Hệ thống chuyển yêu cầu sang "Hoàn tất" (R4, xem Hình A.2), không xử lý tiền (xem BR-07). |  |  |
+| **Luồng thay thế:** | **6.1 Từ chối yêu cầu**<br>1. Tại bước 2 của luồng chính, Admin chọn từ chối yêu cầu và nhập lý do từ chối.<br>2. Hệ thống chuyển yêu cầu sang "Bị từ chối" (R3, xem Hình A.2) và lưu lý do từ chối (xem Return.Review.Reject).<br>3. Trạng thái đơn hàng không đổi (xem Hình A.2).<br>**6.2 Ghi nhận hoàn tất**<br>1. Tại bước 2 của luồng chính, Admin chọn một yêu cầu ở trạng thái "Đã chấp nhận" và ghi nhận hoàn tất.<br>2. Hệ thống chuyển yêu cầu sang "Hoàn tất" (R4, xem Hình A.2), không xử lý tiền (xem BR-07). |  |  |
 | **Ngoại lệ:** | **6.0.E1 Yêu cầu không còn ở trạng thái "Chờ duyệt" (xem BR-01, Return.Review.Valid)** |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
 | **Quy tắc nghiệp vụ:** | BR-01, BR-05, BR-07 |  |  |
@@ -299,18 +318,18 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 #### 3.3.3 Yêu cầu chức năng
 
 **Return.Request: Customer gửi yêu cầu hoàn hàng (UC-05; quyền: xem SEC-3)**
-- **.Eligible:** Hệ thống phải chỉ cho Customer gửi yêu cầu hoàn hàng với đơn đang ở trạng thái "Đã giao" (xem BR-02).
+- **.Eligible:** Hệ thống phải chỉ cho Customer gửi yêu cầu hoàn hàng với đơn đang ở trạng thái "Đã giao" (xem BR-02) và chưa có yêu cầu hoàn hàng nào.
 - **.Window:** Hệ thống phải chỉ cho Customer gửi yêu cầu hoàn hàng khi còn trong thời hạn yêu cầu hoàn hàng (xem BR-03).
-- **.Reason:** Hệ thống phải bắt buộc Customer chọn một lý do hoàn hàng từ danh sách ở BR-04 trước khi gửi yêu cầu.
+- **.Reason:** Hệ thống phải bắt buộc Customer chọn một lý do hoàn hàng từ danh sách ở BR-04, và nhập mô tả lý do khi chọn lý do "Khác", trước khi gửi yêu cầu.
 - **.Store:** Hệ thống phải lưu yêu cầu hoàn hàng với trạng thái "Chờ duyệt" và thời điểm gửi (R1, xem Hình A.2).
 
 **Return.View: Customer xem yêu cầu hoàn hàng (UC-05, luồng 5.1)**
-- **.Status:** Hệ thống phải hiển thị cho Customer trạng thái hiện tại của các yêu cầu hoàn hàng do chính Customer đó gửi.
+- **.Status:** Hệ thống phải hiển thị cho Customer trạng thái hiện tại của các yêu cầu hoàn hàng do chính Customer đó gửi, kèm lý do từ chối với yêu cầu ở trạng thái "Bị từ chối".
 
 **Return.Review: Admin duyệt / từ chối yêu cầu hoàn hàng (UC-06)**
 - **.List:** Hệ thống phải hiển thị cho Admin danh sách yêu cầu hoàn hàng ở trạng thái "Chờ duyệt" và "Đã chấp nhận", kèm đơn hàng và lý do hoàn hàng của mỗi yêu cầu.
 - **.Approve:** Hệ thống phải chuyển yêu cầu sang trạng thái "Đã chấp nhận" khi Admin chấp nhận yêu cầu đó (R2, xem Hình A.2).
-- **.Reject:** Hệ thống phải chuyển yêu cầu sang trạng thái "Bị từ chối" khi Admin từ chối yêu cầu đó (R3, xem Hình A.2); việc có bắt buộc ghi lý do từ chối hay không là TBD (xem C-6).
+- **.Reject:** Hệ thống phải chuyển yêu cầu sang trạng thái "Bị từ chối" khi Admin từ chối yêu cầu đó (R3, xem Hình A.2), chỉ khi Admin đã nhập lý do từ chối.
 - **.OrderStatus:** Hệ thống phải chuyển đơn hàng sang trạng thái "Hư hỏng" (T11) hoặc "Thất lạc" (T12) theo BR-05 khi Admin chấp nhận yêu cầu có lý do thuộc BR-05 (xem Hình A.2).
 - **.Complete:** Hệ thống phải cho Admin ghi nhận "Hoàn tất" cho yêu cầu ở trạng thái "Đã chấp nhận" (R4, xem Hình A.2) mà không xử lý tiền (xem BR-07).
 - **.Valid:** Hệ thống phải từ chối mọi thao tác chuyển trạng thái yêu cầu hoàn hàng không có trên Hình A.2 và báo lý do (xem BR-01).
@@ -323,7 +342,7 @@ Mục này mô tả chức năng "Hoàn hàng" theo Phụ lục B, khác với "
 
 ##### 3.4.1.1 Mô tả và độ ưu tiên
 
-Shipper báo sự cố khi đơn đang ở trạng thái "Đang giao" (xem Hình A.2). Các bước báo sự cố nằm ở ngoại lệ của UC-03 (mục 3.2.2): 3.0.E1 Hàng bị hỏng khi giao, 3.0.E2 Giao không thành công, 3.0.E3 Hàng thất lạc; mục này không viết lại. Báo sự cố khi đơn ở trạng thái khác: TBD (xem C-11). Độ ưu tiên = Cao.
+Shipper báo sự cố khi đơn đang ở trạng thái "Đang giao" (xem Hình A.2). Các bước báo sự cố nằm ở ngoại lệ của UC-03 (mục 3.2.2): 3.0.E1 Hàng bị hỏng khi giao, 3.0.E2 Giao không thành công, 3.0.E3 Hàng thất lạc; mục này không viết lại. Báo sự cố khi đơn ở trạng thái khác nằm ngoài phạm vi phiên bản này (xem 1.3). Độ ưu tiên = Cao.
 
 ##### 3.4.1.2 Yêu cầu chức năng
 
@@ -348,7 +367,7 @@ Admin xử lý các sự cố Shipper đã báo ở mục 3.4.1, gồm cả ngo�
 | **Điều kiện kích hoạt:** | Có sự cố chưa có kết quả xử lý; hoặc Admin phát hiện một đơn ở trạng thái "Đang giao" bị thất lạc; hoặc Admin đã nhận lại hàng của một đơn ở trạng thái "Đang hoàn hàng". |  |  |
 | **Tiền điều kiện:** | PRE-1. Người dùng đã đăng nhập với vai trò Admin. |  |  |
 | **Hậu điều kiện:** | POST-1. Sự cố có kết quả xử lý (xem BR-07).<br>POST-2. Đơn trả lại ở trạng thái "Đang hoàn hàng" hoặc "Đã hoàn về người bán"; đơn được Admin xác nhận thất lạc ở trạng thái "Thất lạc" (xem Hình A.2). |  |  |
-| **Luồng chính:** | **7.0 Xử lý sự cố**<br>1. Hệ thống hiển thị cho Admin danh sách sự cố chưa có kết quả xử lý (xem Issue.Resolve.List).<br>2. Admin chọn một sự cố.<br>3. Hệ thống kiểm tra loại sự cố, trạng thái đơn và số lần giao không thành công của đơn (xem BR-06; số lần là TBD, xem C-3).<br>3a. Nếu sự cố thuộc loại "Giao không thành công" (xem 3.0.E2), đơn đang ở trạng thái "Giao không thành công" và số lần giao không thành công đã đạt giới hạn ở BR-06, thì sang bước 4.<br>3b. Ngược lại (chưa đạt giới hạn, sự cố khác loại, hoặc đơn không còn ở "Giao không thành công"), thì sang bước 5. Admin yêu cầu chuyển trả lại khi chưa đạt giới hạn: xem 7.0.E1.<br>4. Khi đã đạt giới hạn, Admin phải chuyển đơn sang trả lại trước khi ghi kết quả (xem BR-06, Issue.Resolve.Result); hệ thống chuyển đơn sang "Đang hoàn hàng" (T7, xem Hình A.2).<br>5. Admin ghi kết quả xử lý của sự cố; hệ thống lưu kết quả, chỉ ghi nhận, không xử lý tiền (xem BR-07). Sự cố không còn trong danh sách ở bước 1. |  |  |
+| **Luồng chính:** | **7.0 Xử lý sự cố**<br>1. Hệ thống hiển thị cho Admin danh sách sự cố chưa có kết quả xử lý (xem Issue.Resolve.List).<br>2. Admin chọn một sự cố.<br>3. Hệ thống kiểm tra loại sự cố, trạng thái đơn và số lần giao không thành công của đơn (xem BR-06).<br>3a. Nếu sự cố thuộc loại "Giao không thành công" (xem 3.0.E2), đơn đang ở trạng thái "Giao không thành công" và số lần giao không thành công đã đạt giới hạn ở BR-06, thì sang bước 4.<br>3b. Ngược lại (chưa đạt giới hạn, sự cố khác loại, hoặc đơn không còn ở "Giao không thành công"), thì sang bước 5. Admin yêu cầu chuyển trả lại khi chưa đạt giới hạn: xem 7.0.E1.<br>4. Khi đã đạt giới hạn, Admin phải chuyển đơn sang trả lại trước khi ghi kết quả (xem BR-06, Issue.Resolve.Result); hệ thống chuyển đơn sang "Đang hoàn hàng" (T7, xem Hình A.2).<br>5. Admin ghi kết quả xử lý của sự cố (bắt buộc, xem Issue.Resolve.Result); hệ thống lưu kết quả, chỉ ghi nhận, không xử lý tiền (xem BR-07). Sự cố không còn trong danh sách ở bước 1. |  |  |
 | **Luồng thay thế:** | **7.1 Admin xác nhận thất lạc**<br>1. Thay vì bước 2 của luồng chính, Admin chọn một đơn ở trạng thái "Đang giao" trong danh sách đơn hàng (xem Track.Admin.List) và xác nhận thất lạc.<br>2. Hệ thống ghi sự cố loại "Thất lạc" với người báo là Admin.<br>3. Hệ thống chuyển đơn sang "Thất lạc" (T10, xem Hình A.2).<br>4. Quay lại bước 1 của luồng chính.<br>**7.2 Admin xác nhận đã nhận lại hàng**<br>1. Thay vì bước 1 của luồng chính, Admin chọn một đơn ở trạng thái "Đang hoàn hàng" trong danh sách đơn hàng (xem Track.Admin.List).<br>2. Khi đã nhận lại hàng, Admin xác nhận.<br>3. Hệ thống chuyển đơn sang "Đã hoàn về người bán" (T8, xem Hình A.2).<br>4. Hệ thống kết thúc UC. |  |  |
 | **Ngoại lệ:** | **7.0.E1 Admin yêu cầu chuyển trả lại khi chưa đạt số lần giao không thành công ở BR-06 (xem Issue.Resolve.Return, Track.Update.Valid)** |  |  |
 | **Độ ưu tiên:** | Cao |  |  |
@@ -359,12 +378,33 @@ Admin xử lý các sự cố Shipper đã báo ở mục 3.4.1, gồm cả ngo�
 
 **Issue.Resolve: Admin xử lý sự cố (UC-07)**
 - **.List:** Hệ thống phải hiển thị cho Admin danh sách sự cố chưa có kết quả xử lý.
-- **.Return:** Hệ thống phải cho Admin chuyển đơn từ trạng thái "Giao không thành công" sang "Đang hoàn hàng" (T7, xem Hình A.2) chỉ khi số lần giao không thành công của đơn đạt giới hạn ở BR-06, với số lần là TBD (xem C-3).
+- **.Return:** Hệ thống phải cho Admin chuyển đơn từ trạng thái "Giao không thành công" sang "Đang hoàn hàng" (T7, xem Hình A.2) chỉ khi số lần giao không thành công của đơn đạt giới hạn ở BR-06.
 - **.Returned:** Hệ thống phải cho Admin xác nhận đã nhận lại hàng và chuyển đơn từ trạng thái "Đang hoàn hàng" sang "Đã hoàn về người bán" (T8, xem Hình A.2).
 - **.Lost:** Hệ thống phải cho Admin xác nhận thất lạc một đơn ở trạng thái "Đang giao".
 - **.LostStore:** Hệ thống phải ghi sự cố loại "Thất lạc" với người báo là Admin khi Admin xác nhận thất lạc.
 - **.LostStatus:** Hệ thống phải chuyển đơn sang "Thất lạc" (T10, xem Hình A.2) khi Admin xác nhận thất lạc.
-- **.Result:** Hệ thống phải cho Admin ghi kết quả xử lý của một sự cố, trừ sự cố "Giao không thành công" của đơn đã đạt giới hạn ở BR-06 mà đơn chưa sang "Đang hoàn hàng"; kết quả bắt buộc nhập hay không: TBD (xem C-14); kết quả chỉ được ghi nhận, không xử lý tiền (xem BR-07).
+- **.Result:** Hệ thống phải cho Admin ghi kết quả xử lý của một sự cố, trừ sự cố "Giao không thành công" của đơn đã đạt giới hạn ở BR-06 mà đơn chưa sang "Đang hoàn hàng"; kết quả bắt buộc nhập và không được rỗng; kết quả chỉ được ghi nhận, không xử lý tiền (xem BR-07).
+
+### 3.5 Tài khoản
+
+#### 3.5.1 Mô tả và độ ưu tiên
+
+Customer tự đăng ký tài khoản (xem AS-2); mọi người dùng đăng nhập trước khi thực hiện các Use Case (xem PRE-1, SEC-1). Mục này không phải một tính năng của đề bài (xem 1.3) mà là phần mọi tính năng đều cần; mục tương ứng các dòng A19, A20, A21 của backlog [2]. Đăng xuất là SEC-9. Độ ưu tiên = Cao.
+
+#### 3.5.2 Yêu cầu chức năng
+
+**Account.Register: Customer đăng ký tài khoản**
+- **.Fields:** Hệ thống phải cho người chưa có tài khoản đăng ký tài khoản Customer bằng họ tên, email, mật khẩu và số điện thoại.
+- **.Required:** Hệ thống phải kiểm tra đủ bốn trường và chỉ ra trường còn thiếu; trường chỉ gồm khoảng trắng được coi là còn thiếu.
+- **.Email:** Hệ thống phải kiểm tra email theo định nghĩa "valid e-mail address" của chuẩn HTML (xem S9 ở mục 1.4).
+- **.Unique:** Hệ thống phải từ chối đăng ký khi email đã thuộc một tài khoản khác và báo lý do; email được so khớp sau khi bỏ khoảng trắng hai đầu và không phân biệt chữ hoa, chữ thường.
+- **.Password:** Hệ thống phải kiểm tra mật khẩu dài từ 8 đến 64 ký tự và chỉ ra khi mật khẩu sai độ dài.
+- **.Phone:** Hệ thống phải kiểm tra số điện thoại theo quy tắc ở Order.Create.Phone.
+- **.Role:** Hệ thống phải gán vai trò Customer cho mọi tài khoản được tạo qua đăng ký (xem AS-2).
+
+**Account.Login: Người dùng đăng nhập**
+- **.Credentials:** Hệ thống phải cho người dùng đăng nhập bằng email và mật khẩu; email được so khớp như ở Account.Register.Unique.
+- **.Fail:** Hệ thống phải báo đăng nhập không thành công theo SEC-11 khi email hoặc mật khẩu không đúng.
 
 ## 4 Yêu cầu dữ liệu
 
@@ -376,7 +416,7 @@ Hình 2 thể hiện các thực thể dữ liệu của hệ thống và quan h
 
 *Hình 2. Mô hình dữ liệu logic của hệ thống*
 
-Hình 2 vẽ bội số theo trường hợp tổng quát. Bội số ĐƠN HÀNG – DÒNG ĐƠN HÀNG: TBD (xem C-7); ĐƠN HÀNG – YÊU CẦU HOÀN HÀNG: TBD (xem C-12).
+Một đơn hàng có một hoặc nhiều dòng đơn hàng (xem Order.Create.Product) và có tối đa một yêu cầu hoàn hàng (xem Return.Request.Eligible).
 
 ### 4.2 Từ điển dữ liệu
 
@@ -384,45 +424,49 @@ Hình 2 vẽ bội số theo trường hợp tổng quát. Bội số ĐƠN HÀN
 |---|---|---|---|---|
 | Customer đặt | Customer đã tạo đơn hàng | mã người dùng |  | Người dùng có vai trò Customer |
 | dòng đơn hàng | một sản phẩm trong đơn hàng, kèm số lượng đặt | sản phẩm<br>+ số lượng |  |  |
-| địa chỉ giao | nơi giao đơn hàng cho người nhận | chuỗi | Chưa có số liệu | Định dạng: TBD (xem C-1) |
-| đơn hàng | thông tin về một đơn hàng do Customer tạo | mã đơn hàng<br>+ Customer đặt<br>+ thời điểm tạo<br>+ 1:m{dòng đơn hàng}<br>+ người nhận<br>+ địa chỉ giao<br>+ trạng thái đơn hàng<br>+ 0:1{vận đơn} |  | Một đơn hàng có một hay nhiều dòng đơn hàng: TBD (xem C-7) |
-| họ tên | họ tên của người dùng | chuỗi | Chưa có số liệu |  |
-| kết quả xử lý | kết quả Admin ghi cho một sự cố | chuỗi, do Admin nhập | Chưa có số liệu | Bắt buộc nhập hay không: TBD (xem C-14). Chỉ ghi nhận, không xử lý tiền (xem BR-07) |
+| địa chỉ giao | nơi giao đơn hàng cho người nhận | chuỗi | 255 | Bắt buộc. Chuỗi tự do, không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Order.Create.Address) |
+| đơn hàng | thông tin về một đơn hàng do Customer tạo | mã đơn hàng<br>+ Customer đặt<br>+ thời điểm tạo<br>+ 1:m{dòng đơn hàng}<br>+ người nhận<br>+ địa chỉ giao<br>+ trạng thái đơn hàng<br>+ 0:1{vận đơn} |  | Có ít nhất một dòng đơn hàng; không có hai dòng cùng một sản phẩm (xem Order.Create.Product) |
+| email | địa chỉ email người dùng dùng để đăng nhập | chuỗi | 254 | Duy nhất (xem Account.Register.Unique). Bắt buộc khi Customer đăng ký; định dạng theo Account.Register.Email; tối đa 254 ký tự (tham khảo S12); so khớp không phân biệt chữ hoa, chữ thường. |
+| họ tên | họ tên của người dùng | chuỗi | 100 |  |
+| kết quả xử lý | kết quả Admin ghi cho một sự cố | chuỗi, do Admin nhập | 500 | Bắt buộc, không được rỗng sau khi bỏ khoảng trắng hai đầu. Chỉ ghi nhận, không xử lý tiền (xem BR-07) |
 | lịch sử trạng thái | bản ghi một lần thay đổi trạng thái của đơn hàng | đơn hàng<br>+ người đổi<br>+ thời điểm<br>+ trạng thái cũ<br>+ trạng thái mới |  | Chỉ được thêm (xem DI-1). Bản ghi đầu tiên: trạng thái cũ để trống |
-| loại sự cố | loại sự cố được báo cho một đơn hàng | chuỗi | Chưa có số liệu | "Hàng hỏng", "Giao không thành công", "Thất lạc" |
-| lý do hoàn hàng | lý do Customer chọn khi gửi yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | Xem BR-04. Các lý do ngoài hai lý do bắt buộc: TBD (xem C-5) |
-| lý do từ chối | lý do Admin ghi khi từ chối một yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | Bắt buộc hay không: TBD (xem C-6) |
-| mã đơn hàng | mã hệ thống gán cho mỗi đơn hàng khi lưu đơn | chuỗi | Chưa có số liệu | Duy nhất |
-| mã người dùng | mã hệ thống gán cho mỗi người dùng | chuỗi | Chưa có số liệu | Duy nhất |
-| mã sản phẩm | mã của một sản phẩm trong dữ liệu mẫu | chuỗi | Chưa có số liệu | Duy nhất |
-| mã sự cố | mã hệ thống gán cho mỗi sự cố | chuỗi | Chưa có số liệu | Duy nhất |
-| mã vận đơn | mã hệ thống gán cho mỗi vận đơn | chuỗi | Chưa có số liệu | Duy nhất (xem Track.Assign.Shipment) |
-| mã yêu cầu | mã hệ thống gán cho mỗi yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | Duy nhất |
+| loại sự cố | loại sự cố được báo cho một đơn hàng | chuỗi | Không áp dụng | "Hàng hỏng", "Giao không thành công", "Thất lạc" |
+| lý do hoàn hàng | lý do Customer chọn khi gửi yêu cầu hoàn hàng | chuỗi | Không áp dụng | Một trong các lý do ở BR-04 |
+| lý do từ chối | lý do Admin ghi khi từ chối một yêu cầu hoàn hàng | chuỗi | 500 | Bắt buộc khi yêu cầu bị từ chối; không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Return.Review.Reject) |
+| mã đơn hàng | mã hệ thống gán cho mỗi đơn hàng khi lưu đơn | chuỗi | Không áp dụng | Duy nhất |
+| mã người dùng | mã hệ thống gán cho mỗi người dùng | chuỗi | Không áp dụng | Duy nhất |
+| mã sản phẩm | mã của một sản phẩm trong dữ liệu mẫu | chuỗi | Không áp dụng | Duy nhất |
+| mã sự cố | mã hệ thống gán cho mỗi sự cố | chuỗi | Không áp dụng | Duy nhất |
+| mã vận đơn | mã hệ thống gán cho mỗi vận đơn | chuỗi | Không áp dụng | Duy nhất (xem Track.Assign.Shipment) |
+| mã yêu cầu | mã hệ thống gán cho mỗi yêu cầu hoàn hàng | chuỗi | Không áp dụng | Duy nhất |
+| mật khẩu | mật khẩu người dùng dùng để đăng nhập | chuỗi | 64 | Bắt buộc khi Customer đăng ký; lưu theo SEC-10. Tối thiểu 8 ký tự; cho phép mọi ký tự, không bắt buộc chữ hoa, số hay ký tự đặc biệt (xem Account.Register.Password; quyết định nhóm 10/11/2026, tham khảo S10) |
+| mô tả lý do | mô tả Customer nhập khi chọn lý do hoàn hàng "Khác" | chuỗi | 500 | Bắt buộc khi lý do hoàn hàng là "Khác"; không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Return.Request.Reason) |
 | người báo | người dùng đã báo một sự cố | mã người dùng |  | Shipper được phân công cho đơn hàng, hoặc Admin (xem Issue.Resolve.Lost) |
-| người dùng | người có tài khoản trong hệ thống | mã người dùng<br>+ họ tên<br>+ vai trò<br>+ thông tin đăng nhập |  | Các trường đăng ký / đăng nhập: TBD (xem C-10) |
+| người dùng | người có tài khoản trong hệ thống | mã người dùng<br>+ họ tên<br>+ số điện thoại<br>+ vai trò<br>+ thông tin đăng nhập |  | Customer đăng ký bằng họ tên, số điện thoại, email và mật khẩu (xem AS-2) |
 | người đổi | người dùng đã làm trạng thái đơn hàng thay đổi | mã người dùng |  |  |
-| người nhận | người nhận hàng của đơn hàng | tên người nhận<br>+ số điện thoại người nhận |  | Thành phần, trường bắt buộc và định dạng: TBD (xem C-1) |
+| người nhận | người nhận hàng của đơn hàng | tên người nhận<br>+ số điện thoại người nhận |  | Cả hai thành phần bắt buộc (xem Order.Create.Required) |
 | sản phẩm | sản phẩm của cửa hàng mà Customer chọn khi tạo đơn hàng | mã sản phẩm<br>+ tên sản phẩm |  | Dữ liệu mẫu (xem AS-3) |
 | Shipper được phân công | Shipper được Admin phân công giao đơn hàng | mã người dùng |  | Người dùng có vai trò Shipper |
-| số điện thoại người nhận | số điện thoại của người nhận hàng | chuỗi | Chưa có số liệu | Định dạng: TBD (xem C-1) |
-| số lần giao không thành công | dùng để quyết định giao lại hay trả lại một đơn hàng | số nguyên, tính ra, không lưu | Chưa có số liệu | Tính theo BR-06 |
-| số lượng | số đơn vị của một sản phẩm trong một dòng đơn hàng | số nguyên | Chưa có số liệu | Ràng buộc giá trị: TBD (xem C-1) |
+| số điện thoại | số điện thoại của người dùng | chuỗi | 10 | Bắt buộc khi Customer đăng ký. Cùng quy tắc với số điện thoại người nhận (xem Account.Register.Phone) |
+| số điện thoại người nhận | số điện thoại của người nhận hàng | chuỗi | 10 | Bắt buộc. Đúng 10 chữ số, bắt đầu bằng chữ số 0, tức số thuê bao di động (xem Order.Create.Phone, tham khảo S8) |
+| số lần giao không thành công | dùng để quyết định giao lại hay trả lại một đơn hàng | số nguyên, tính ra, không lưu | Không áp dụng | Tính theo BR-06 |
+| số lượng | số đơn vị của một sản phẩm trong một dòng đơn hàng | số nguyên | Không áp dụng | Số nguyên lớn hơn hoặc bằng 1, không có giới hạn trên (xem Order.Create.Quantity) |
 | sự cố | sự cố khi giao hàng được báo cho một đơn hàng | mã sự cố<br>+ đơn hàng<br>+ loại sự cố<br>+ người báo<br>+ thời điểm báo<br>+ kết quả xử lý |  |  |
-| tên người nhận | tên của người nhận hàng | chuỗi | Chưa có số liệu | Bắt buộc hay không: TBD (xem C-1) |
-| tên sản phẩm | tên của một sản phẩm | chuỗi | Chưa có số liệu | Dữ liệu mẫu (xem AS-3) |
-| thời điểm | ngày giờ trạng thái đơn hàng thay đổi, trong một bản ghi lịch sử trạng thái | ngày giờ | Chưa có số liệu |  |
-| thời điểm báo | ngày giờ một sự cố được báo | ngày giờ | Chưa có số liệu |  |
-| thời điểm gửi | ngày giờ Customer gửi yêu cầu hoàn hàng | ngày giờ | Chưa có số liệu |  |
-| thời điểm tạo | ngày giờ đơn hàng được lưu | ngày giờ | Chưa có số liệu |  |
-| thời điểm tạo vận đơn | ngày giờ Admin tạo vận đơn | ngày giờ | Chưa có số liệu |  |
-| thông tin đăng nhập | thông tin người dùng dùng để đăng nhập | TBD (xem C-10) |  |  |
+| tên người nhận | tên của người nhận hàng | chuỗi | 100 | Bắt buộc, không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Order.Create.Required) |
+| tên sản phẩm | tên của một sản phẩm | chuỗi | Không áp dụng | Dữ liệu mẫu (xem AS-3) |
+| thời điểm | ngày giờ trạng thái đơn hàng thay đổi, trong một bản ghi lịch sử trạng thái | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm báo | ngày giờ một sự cố được báo | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm gửi | ngày giờ Customer gửi yêu cầu hoàn hàng | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm tạo | ngày giờ đơn hàng được lưu | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm tạo vận đơn | ngày giờ Admin tạo vận đơn | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thông tin đăng nhập | thông tin người dùng dùng để đăng nhập | email<br>+ mật khẩu |  | Mỗi email chỉ thuộc một tài khoản |
 | trạng thái cũ | trạng thái đơn hàng trước một lần thay đổi | trạng thái đơn hàng |  | Để trống ở bản ghi lịch sử đầu tiên |
-| trạng thái đơn hàng | trạng thái hiện tại của một đơn hàng | chuỗi | Chưa có số liệu | "Chờ xác nhận", "Chờ lấy hàng", "Đang giao", "Đã giao", "Giao không thành công", "Đang hoàn hàng", "Đã hoàn về người bán", "Hư hỏng", "Thất lạc" (xem Hình A.2) |
+| trạng thái đơn hàng | trạng thái hiện tại của một đơn hàng | chuỗi | Không áp dụng | "Chờ xác nhận", "Chờ lấy hàng", "Đang giao", "Đã giao", "Giao không thành công", "Đang hoàn hàng", "Đã hoàn về người bán", "Hư hỏng", "Thất lạc" (xem Hình A.2) |
 | trạng thái mới | trạng thái đơn hàng sau một lần thay đổi | trạng thái đơn hàng |  |  |
-| trạng thái yêu cầu hoàn hàng | trạng thái hiện tại của một yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | "Chờ duyệt", "Đã chấp nhận", "Bị từ chối", "Hoàn tất" (xem Hình A.2) |
-| vai trò | vai trò của người dùng, quyết định thao tác được phép (xem mục 6.2) | chuỗi | Chưa có số liệu | Customer, Shipper, Admin |
+| trạng thái yêu cầu hoàn hàng | trạng thái hiện tại của một yêu cầu hoàn hàng | chuỗi | Không áp dụng | "Chờ duyệt", "Đã chấp nhận", "Bị từ chối", "Hoàn tất" (xem Hình A.2) |
+| vai trò | vai trò của người dùng, quyết định thao tác được phép (xem mục 6.2) | chuỗi | Không áp dụng | Customer, Shipper, Admin |
 | vận đơn | thông tin Admin tạo cho một đơn hàng khi phân công Shipper | mã vận đơn<br>+ Shipper được phân công<br>+ thời điểm tạo vận đơn |  |  |
-| yêu cầu hoàn hàng | yêu cầu Customer gửi để hoàn hàng cho một đơn hàng đã giao | mã yêu cầu<br>+ đơn hàng<br>+ lý do hoàn hàng<br>+ trạng thái yêu cầu hoàn hàng<br>+ thời điểm gửi<br>+ lý do từ chối |  | Lý do từ chối có bắt buộc không: TBD (xem C-6). Một đơn hàng có một hay nhiều yêu cầu: TBD (xem C-12) |
+| yêu cầu hoàn hàng | yêu cầu Customer gửi để hoàn hàng cho một đơn hàng đã giao | mã yêu cầu<br>+ đơn hàng<br>+ lý do hoàn hàng<br>+ mô tả lý do<br>+ trạng thái yêu cầu hoàn hàng<br>+ thời điểm gửi<br>+ lý do từ chối |  | Mỗi đơn hàng có tối đa một yêu cầu hoàn hàng (xem Return.Request.Eligible) |
 
 ### 4.3 Báo cáo
 
@@ -434,7 +478,7 @@ Không thuộc phiên bản này. Đề bài không yêu cầu báo cáo thống
 
 Việc ghi lịch sử mỗi khi trạng thái đơn hàng thay đổi là yêu cầu Track.Update.History ở mục 3.2, mục này không viết lại.
 
-Thời hạn lưu dữ liệu: chưa có số liệu.
+Thời hạn lưu dữ liệu: xem AS-5.
 
 ## 5 Yêu cầu giao tiếp bên ngoài
 
@@ -448,7 +492,7 @@ Thời hạn lưu dữ liệu: chưa có số liệu.
 
 Không có.
 
-> [Ghi chú: Hệ thống không kết nối với hệ thống phần mềm bên ngoài. Nếu C-2 chốt kênh thông báo là email thì bổ sung yêu cầu SI cho dịch vụ gửi email (xem C-2).]
+> [Ghi chú: Hệ thống không kết nối với hệ thống phần mềm bên ngoài. Thông báo cho Customer nằm trong ứng dụng (xem CI-1).]
 
 ### 5.3 Giao diện phần cứng
 
@@ -456,7 +500,9 @@ Không có.
 
 ### 5.4 Giao diện truyền thông
 
-**CI-1:** Hệ thống phải gửi thông báo cho Customer mỗi khi trạng thái một đơn hàng của Customer đó thay đổi, qua kênh TBD (xem C-2).
+**CI-1:** Hệ thống phải hiển thị thông báo trong ứng dụng cho Customer đang đăng nhập, ở bất kỳ màn hình nào, mỗi khi trạng thái một đơn hàng của Customer đó thay đổi.
+
+> [Ghi chú: Thông báo không được lưu thành danh sách. Customer không đăng nhập lúc trạng thái thay đổi thì xem trạng thái mới ở Track.View.]
 
 ## 6 Thuộc tính chất lượng
 
@@ -488,6 +534,10 @@ Trạng thái được cập nhật theo sự kiện (xem CO-1), nên các yêu 
 
 **SEC-9:** Hệ thống phải cho người dùng đã đăng nhập đăng xuất; sau khi đăng xuất, người dùng phải đăng nhập lại để thực hiện các thao tác ở SEC-1.
 
+**SEC-10:** Hệ thống phải lưu mật khẩu dưới dạng băm bằng thuật toán băm mật khẩu thích ứng, không lưu ở dạng đọc lại được, và không cắt bớt mật khẩu dài tới 64 ký tự (xem S10, S11 ở mục 1.4).
+
+**SEC-11:** Khi đăng nhập không thành công, hệ thống phải báo cùng một thông báo chung, không cho biết sai email hay sai mật khẩu, hay tài khoản có tồn tại hay không (xem S10 ở mục 1.4).
+
 ### 6.3 Độ bền vững
 
 **ROB-1:** Khi người dùng đang mở một màn hình hiển thị trạng thái đơn hàng (xem RT-1, RT-2) thì mất kết nối rồi kết nối lại, hệ thống phải hiển thị trạng thái mới nhất của các đơn hàng trên màn hình đó, kể cả thay đổi xảy ra trong lúc mất kết nối.
@@ -496,16 +546,16 @@ Các thuộc tính chất lượng khác (hiệu năng, khả dụng, an toàn, 
 
 ## 7 Quy tắc nghiệp vụ
 
-Cột Nguồn chỉ ghi "Đề bài" (tài liệu [1], mục 1.4) hoặc "Quyết định nhóm ngày …", kèm mã nguồn Shopee/SPX (xem mục 1.4) nếu quy tắc lấy ý từ đó.
+Cột Nguồn chỉ ghi "Đề bài" (tài liệu [1], mục 1.4) hoặc "Quyết định nhóm ngày …", kèm mã nguồn tham khảo (xem mục 1.4) nếu quy tắc lấy ý từ đó.
 
 | **Mã** | **Định nghĩa** | **Loại** | **Tĩnh hay động** | **Nguồn** |
 |---|---|---|---|---|
 | BR-01 | Trạng thái đơn hàng và trạng thái yêu cầu hoàn hàng chỉ được chuyển theo các bước chuyển trên Hình A.2. | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1, S2, S5 |
 | BR-02 | Chỉ được yêu cầu hoàn hàng cho đơn hàng ở trạng thái "Đã giao". | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1 |
-| BR-03 | Thời hạn yêu cầu hoàn hàng là TBD (xem C-4), tính từ thời điểm đơn hàng chuyển sang trạng thái "Đã giao". | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026 (mốc tính), tham khảo S1. Con số: TBD (xem C-4) |
-| BR-04 | Lý do hoàn hàng gồm: "Hàng lỗi / hư hỏng", "Chưa nhận được hàng" và các lý do khác TBD (xem C-5). | Dữ kiện | Động | Quyết định nhóm ngày 31/10/2026, tham khảo S1 |
+| BR-03 | Thời hạn yêu cầu hoàn hàng là 15 ngày (15 × 24 giờ), tính từ thời điểm đơn hàng chuyển sang trạng thái "Đã giao"; yêu cầu gửi đúng tại thời điểm hết hạn vẫn hợp lệ. | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026 (mốc tính) và 10/11/2026 (con số), tham khảo S1 |
+| BR-04 | Lý do hoàn hàng gồm: "Hàng lỗi / hư hỏng", "Chưa nhận được hàng" và "Khác"; lý do "Khác" phải kèm mô tả. | Dữ kiện | Động | Quyết định nhóm ngày 31/10/2026 và 10/11/2026, tham khảo S1 |
 | BR-05 | Khi yêu cầu hoàn hàng được chấp nhận: lý do "Hàng lỗi / hư hỏng" thì đơn hàng chuyển sang "Hư hỏng"; lý do "Chưa nhận được hàng" thì đơn hàng chuyển sang "Thất lạc". | Ràng buộc | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1 |
-| BR-06 | Đơn hàng giao không thành công đủ TBD lần (xem C-3) thì chuyển sang trả lại ("Đang hoàn hàng"); chưa đủ thì được giao lại. Số lần giao không thành công bằng số sự cố loại "Giao không thành công" đã ghi cho đơn hàng. | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026, tham khảo S3. Con số: TBD (xem C-3); S3 không ghi con số |
+| BR-06 | Đơn hàng giao không thành công đủ 3 lần thì chuyển sang trả lại ("Đang hoàn hàng"); chưa đủ thì được giao lại. Số lần giao không thành công bằng số sự cố loại "Giao không thành công" đã ghi cho đơn hàng. | Ràng buộc | Động | Quyết định nhóm ngày 31/10/2026 (quy tắc) và 10/11/2026 (con số), tham khảo S3, S6, S7 |
 | BR-07 | Hệ thống không xử lý tiền (thanh toán, phí giao, phí hoàn, hoàn tiền, bồi thường); hệ thống chỉ ghi nhận kết quả xử lý. | Dữ kiện | Tĩnh | Quyết định nhóm ngày 31/10/2026, tham khảo S1, S3 |
 
 ## Phụ lục A Mô hình phân tích
@@ -551,7 +601,7 @@ Trạng thái kết thúc của đơn hàng là "Đã hoàn về người bán",
 
 Hàng hỏng và hàng thất lạc đều có hai ngả phát hiện nhưng về cùng một trạng thái: hỏng qua T9 (Shipper) hoặc T11 (người mua); thất lạc qua T10 (Shipper hoặc Admin) hoặc T12 (người mua).
 
-Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, T10). Báo sự cố ở trạng thái khác: TBD (xem C-11).
+Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, T10). Báo sự cố ở trạng thái khác nằm ngoài phạm vi phiên bản này (xem 1.3).
 
 ## Phụ lục B Thuật ngữ
 
@@ -569,7 +619,8 @@ Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, 
 | Người bán | — | Người bán (S4) | Bên bán hàng trên Shopee. Trong hệ thống, vai trò người bán do Admin đảm nhận (xem Admin, AS-1); dùng trong tên trạng thái "Đã hoàn về người bán". |
 | Shipper | — | Nhân viên SPX | Nhân viên giao hàng. Shipper lấy hàng, giao hàng, cập nhật trạng thái và báo sự cố (xem 2.2). |
 | Sự cố | Delivery Issue | — | Vấn đề ghi nhận trong lúc giao hàng, gồm 3 loại: "Hàng hỏng", "Giao không thành công", "Thất lạc". Shipper báo sự cố (Admin cũng ghi được sự cố "Thất lạc"); Admin xử lý (xem 3.4). |
-| TBD | To Be Determined | — | Nhóm chưa chốt, không có nguồn. Mỗi TBD trỏ tới 1 dòng ở Phụ lục C. |
+| Tài khoản | Account | — | Thông tin để một người dùng đăng nhập vào hệ thống (email và mật khẩu), gắn với một vai trò Customer, Admin hoặc Shipper. Customer tự tạo tài khoản; tài khoản Admin và Shipper có sẵn (xem 3.5, AS-2). |
+| TBD | To Be Determined | — | Nhóm chưa chốt, không có nguồn. Mỗi TBD trỏ tới 1 dòng ở Phụ lục C. Phiên bản này không còn chỗ TBD. |
 | Thất lạc | Lost Order | Mất hàng, thất lạc (S3) | Trạng thái kết thúc của đơn hàng khi không tìm thấy hàng. Phát hiện qua 2 ngả: Shipper hoặc Admin xác nhận khi giao, hoặc qua yêu cầu hoàn hàng (xem BR-05, Hình A.2). |
 | TMĐT | E-commerce | — | Viết tắt của "thương mại điện tử", dùng trong tên hệ thống ở Hình 1 và Hình A.1. |
 | Trả lại | Returned Order | "Giao hàng không thành công" → "Đang hoàn hàng" (S5); "hoàn trả hàng" (S3) | Ngoại lệ (xem 3.4): giao không thành công, hàng quay về người bán. Shipper báo, Admin xử lý. Đơn chuyển qua "Đang hoàn hàng" rồi "Đã hoàn về người bán" (xem BR-06, Hình A.2). |
@@ -578,21 +629,4 @@ Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, 
 
 ## Phụ lục C Danh sách vấn đề mở
 
-Các vấn đề dưới đây nhóm chưa chốt; mỗi chỗ ghi TBD trong tài liệu trỏ tới một dòng của bảng.
-
-| **Mã** | **Vấn đề** | **Ảnh hưởng tới** | **Ai chốt** | **Hạn** |
-|---|---|---|---|---|
-| C-1 | Ngoài tên và số điện thoại người nhận, còn trường nào; trường nào bắt buộc; định dạng số điện thoại, địa chỉ; ràng buộc số lượng | Order.Create.Receiver, .Phone, .Address, .Quantity, .Required, .Format, 1.0.E1, §4.2 | Cả nhóm | 04/11/2026 |
-| C-2 | Kênh thông báo cho Customer: trong ứng dụng hay email | CI-1, SI, UC-03, §2.1, §2.5 | Cả nhóm | 04/11/2026 |
-| C-3 | Giao không thành công bao nhiêu lần thì chuyển trả lại | BR-06, T6, T7, UC-03 (3.1, 3.0.E2), UC-07, Issue.Resolve.Return, Track.Update.Next | Cả nhóm | 04/11/2026 |
-| C-4 | Thời hạn yêu cầu hoàn hàng; mốc hết hạn có tính vào thời hạn không | BR-03, 5.0.E2, Return.Request.Window | Cả nhóm | 04/11/2026 |
-| C-5 | Ngoài 2 lý do bắt buộc, còn lý do hoàn hàng nào | BR-04, §4.2, Return.Request.Reason | Cả nhóm | 04/11/2026 |
-| C-6 | Từ chối yêu cầu hoàn hàng có bắt buộc ghi lý do không | Return.Review.Reject, UC-06 (6.1), §4.2 | Cả nhóm | 04/11/2026 |
-| C-7 | Một đơn được chứa một hay nhiều sản phẩm | Order.Create.Product, UC-01, §4.1, §4.2 | Cả nhóm | 04/11/2026 |
-| C-8 | Trình duyệt hỗ trợ | OE-2 | Cả nhóm | 04/11/2026 |
-| C-9 | Ngôn ngữ giao diện (tiếng Việt?) | §2.4 | Cả nhóm | 04/11/2026 |
-| C-10 | Thông tin tài khoản khi Customer đăng ký / đăng nhập | §4.2 (người dùng, thông tin đăng nhập) | Cả nhóm | 04/11/2026 |
-| C-11 | Có báo sự cố được khi đơn ở trạng thái khác "Đang giao" (vd "Chờ lấy hàng", "Đang hoàn hàng") không | Hình A.2, Issue.Report.Type, UC-03, 3.4.1.1, Issue.Resolve.Lost, UC-07 (7.1) | Cả nhóm | 04/11/2026 |
-| C-12 | Một đơn được gửi một hay nhiều yêu cầu hoàn hàng | Return.Request, UC-05, §4.1, §4.2, Return.Review.OrderStatus, UC-06 | Cả nhóm | 04/11/2026 |
-| C-13 | Lịch sử trạng thái hiển thị theo thứ tự cũ → mới hay mới → cũ | Track.View.History, UC-04 | Cả nhóm | 04/11/2026 |
-| C-14 | Kết quả xử lý sự cố có bắt buộc nhập không (để trống thì hệ thống báo lỗi, hay vẫn coi sự cố đã xử lý) | Issue.Resolve.Result, UC-07 (7.0 bước 5), §4.2 | Cả nhóm | 04/11/2026 |
+Phiên bản này không còn vấn đề mở. Nhóm đã chốt C-1 đến C-14 ngày 10/11/2026 (C-15 đã đóng ở bản 1.0 nháp 3); kết quả đã ghi vào các mục liên quan (xem Lịch sử sửa đổi).

@@ -10,7 +10,7 @@
 
 Không có.
 
-> [Ghi chú: Hệ thống không kết nối với hệ thống phần mềm bên ngoài. Nếu C-2 chốt kênh thông báo là email thì bổ sung yêu cầu SI cho dịch vụ gửi email (xem C-2).]
+> [Ghi chú: Hệ thống không kết nối với hệ thống phần mềm bên ngoài. Thông báo cho Customer nằm trong ứng dụng (xem CI-1).]
 
 ## 5.3 Giao diện phần cứng
 
@@ -18,4 +18,6 @@ Không có.
 
 ## 5.4 Giao diện truyền thông
 
-- **CI-1:** Hệ thống phải gửi thông báo cho Customer mỗi khi trạng thái một đơn hàng của Customer đó thay đổi, qua kênh TBD (xem C-2).
+- **CI-1:** Hệ thống phải hiển thị thông báo trong ứng dụng cho Customer đang đăng nhập, ở bất kỳ màn hình nào, mỗi khi trạng thái một đơn hàng của Customer đó thay đổi.
+
+> [Ghi chú: Thông báo không được lưu thành danh sách. Customer không đăng nhập lúc trạng thái thay đổi thì xem trạng thái mới ở Track.View.]
