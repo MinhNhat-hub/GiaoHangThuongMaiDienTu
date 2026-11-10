@@ -73,5 +73,6 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 14. (S10) OWASP Cheat Sheet Series – Authentication Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 15. (S11) OWASP Cheat Sheet Series – Password Storage Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 16. (S12) IETF – RFC 5321 Simple Mail Transfer Protocol, mục 4.5.3.1.3 (độ dài đường dẫn 256 octet), và errata 1690 của RFC 3696 (địa chỉ email tối đa 254 ký tự). https://www.rfc-editor.org/rfc/rfc5321 ; https://www.rfc-editor.org/errata/eid1690
+17. (S13) Quốc hội – Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, hiệu lực từ 01/01/2026. https://chinhphu.vn/?pageid=27160&docid=214590&classid=1&typegroupid=3
 
-Các nguồn S1–S12 chỉ dùng để tham khảo nghiệp vụ và kỹ thuật. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).
+Các nguồn S1–S13 chỉ dùng để tham khảo nghiệp vụ và kỹ thuật. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).

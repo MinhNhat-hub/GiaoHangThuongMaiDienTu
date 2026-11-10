@@ -31,6 +31,7 @@
 - **AS-2:** Tài khoản Admin và Shipper đã có sẵn; Customer tự đăng ký tài khoản.
 - **AS-3:** Danh sách sản phẩm có sẵn dưới dạng dữ liệu mẫu.
 - **AS-4:** Thanh toán nằm ngoài hệ thống (xem BR-07).
+- **AS-5:** Cửa hàng chịu trách nhiệm đặt thời hạn lưu và việc xóa dữ liệu cá nhân của người dùng (họ tên, email, số điện thoại, địa chỉ giao) theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 (xem S13 ở mục 1.4). Phiên bản 1.0 không có chức năng xóa dữ liệu cá nhân.
 
 Phiên bản này không có phụ thuộc bên ngoài (xem 5.2).
 

@@ -15,7 +15,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 | TV1 | 31/10/2026 | Bản nháp đầu tiên, gửi TV2 review | 1.0 nháp 1 |
 | TV1 | 02/11/2026 | Sửa theo review: tách, thêm và đổi nội dung một số ID (xem srs_id_changes.md) | 1.0 nháp 2 |
 | TV2 | 03/11/2026 | Sửa theo review: đóng C-15, thêm luồng 3.2 của UC-03, SEC-8, SEC-9; tách bước 3 của luồng 7.0; đổi Return.Review.Issue thành Return.Review.OrderStatus; SRS.md thành bản gốc | 1.0 nháp 3 |
-| TV1 | 10/11/2026 | Chốt C-1 đến C-14: điền các chỗ TBD; thêm CO-2, ngoại lệ 5.0.E4 của UC-05; thêm phần tử dữ liệu email, mật khẩu, số điện thoại, mô tả lý do; thêm mục 2.6 Tài liệu người dùng, mục 3.5 Tài khoản, SEC-10, SEC-11; chốt độ dài và định dạng ngày giờ ở §4.2; thêm tài liệu tham khảo S6–S12 | 1.0 nháp 4 |
+| TV1 | 10/11/2026 | Chốt C-1 đến C-14: điền các chỗ TBD; thêm CO-2, ngoại lệ 5.0.E4 của UC-05; thêm phần tử dữ liệu email, mật khẩu, số điện thoại, mô tả lý do; thêm mục 2.6 Tài liệu người dùng, mục 3.5 Tài khoản, SEC-10, SEC-11; chốt độ dài và định dạng ngày giờ ở §4.2; thêm thuật ngữ Tài khoản, giả định AS-5; thêm tài liệu tham khảo S6–S13 | 1.0 nháp 4 |
 
 ## 1 Giới thiệu
 
@@ -95,8 +95,9 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 14. (S10) OWASP Cheat Sheet Series – Authentication Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 15. (S11) OWASP Cheat Sheet Series – Password Storage Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 16. (S12) IETF – RFC 5321 Simple Mail Transfer Protocol, mục 4.5.3.1.3 (độ dài đường dẫn 256 octet), và errata 1690 của RFC 3696 (địa chỉ email tối đa 254 ký tự). https://www.rfc-editor.org/rfc/rfc5321 ; https://www.rfc-editor.org/errata/eid1690
+17. (S13) Quốc hội – Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, hiệu lực từ 01/01/2026. https://chinhphu.vn/?pageid=27160&docid=214590&classid=1&typegroupid=3
 
-Các nguồn S1–S12 chỉ dùng để tham khảo nghiệp vụ và kỹ thuật. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).
+Các nguồn S1–S13 chỉ dùng để tham khảo nghiệp vụ và kỹ thuật. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).
 
 ## 2 Mô tả tổng quan
 
@@ -137,6 +138,8 @@ Các nguồn S1–S12 chỉ dùng để tham khảo nghiệp vụ và kỹ thu�
 **AS-3:** Danh sách sản phẩm có sẵn dưới dạng dữ liệu mẫu.
 
 **AS-4:** Thanh toán nằm ngoài hệ thống (xem BR-07).
+
+**AS-5:** Cửa hàng chịu trách nhiệm đặt thời hạn lưu và việc xóa dữ liệu cá nhân của người dùng (họ tên, email, số điện thoại, địa chỉ giao) theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 (xem S13 ở mục 1.4). Phiên bản 1.0 không có chức năng xóa dữ liệu cá nhân.
 
 Phiên bản này không có phụ thuộc bên ngoài (xem 5.2).
 
@@ -475,7 +478,7 @@ Không thuộc phiên bản này. Đề bài không yêu cầu báo cáo thống
 
 Việc ghi lịch sử mỗi khi trạng thái đơn hàng thay đổi là yêu cầu Track.Update.History ở mục 3.2, mục này không viết lại.
 
-Thời hạn lưu dữ liệu: chưa có số liệu.
+Thời hạn lưu dữ liệu: xem AS-5.
 
 ## 5 Yêu cầu giao tiếp bên ngoài
 
@@ -616,6 +619,7 @@ Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, 
 | Người bán | — | Người bán (S4) | Bên bán hàng trên Shopee. Trong hệ thống, vai trò người bán do Admin đảm nhận (xem Admin, AS-1); dùng trong tên trạng thái "Đã hoàn về người bán". |
 | Shipper | — | Nhân viên SPX | Nhân viên giao hàng. Shipper lấy hàng, giao hàng, cập nhật trạng thái và báo sự cố (xem 2.2). |
 | Sự cố | Delivery Issue | — | Vấn đề ghi nhận trong lúc giao hàng, gồm 3 loại: "Hàng hỏng", "Giao không thành công", "Thất lạc". Shipper báo sự cố (Admin cũng ghi được sự cố "Thất lạc"); Admin xử lý (xem 3.4). |
+| Tài khoản | Account | — | Thông tin để một người dùng đăng nhập vào hệ thống (email và mật khẩu), gắn với một vai trò Customer, Admin hoặc Shipper. Customer tự tạo tài khoản; tài khoản Admin và Shipper có sẵn (xem 3.5, AS-2). |
 | TBD | To Be Determined | — | Nhóm chưa chốt, không có nguồn. Mỗi TBD trỏ tới 1 dòng ở Phụ lục C. Phiên bản này không còn chỗ TBD. |
 | Thất lạc | Lost Order | Mất hàng, thất lạc (S3) | Trạng thái kết thúc của đơn hàng khi không tìm thấy hàng. Phát hiện qua 2 ngả: Shipper hoặc Admin xác nhận khi giao, hoặc qua yêu cầu hoàn hàng (xem BR-05, Hình A.2). |
 | TMĐT | E-commerce | — | Viết tắt của "thương mại điện tử", dùng trong tên hệ thống ở Hình 1 và Hình A.1. |

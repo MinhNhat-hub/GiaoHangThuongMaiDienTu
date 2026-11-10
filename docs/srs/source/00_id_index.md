@@ -11,7 +11,7 @@
 | 01 | `docs/plan/01_srs_outline.md`, số sau là mục |
 | 03 | `docs/plan/03_shopee_reference.md`, số sau là mục. Nhóm đã chốt mục 3–4 của file này (xác nhận 31/10/2026). Riêng "1 cửa hàng" chốt ngày 28/10/2026 (03 §3.2) |
 | A-xx | Dòng backlog `BackLogPlan.xlsx`, ánh xạ ở `docs/plan/04_backlog_assignment.md` |
-| S1–S12 | Nguồn tham khảo bên ngoài. S1–S5: Shopee/SPX, danh sách ở 03 §1. S6–S12: thêm ngày 10/11/2026 (GHN, GHTK, Quyết định 798/QĐ-BTTTT, WHATWG HTML, OWASP Authentication, OWASP Password Storage, RFC 5321), danh sách ở SRS §1.4 |
+| S1–S13 | Nguồn tham khảo bên ngoài. S1–S5: Shopee/SPX, danh sách ở 03 §1. S6–S13: thêm ngày 10/11/2026 (GHN, GHTK, Quyết định 798/QĐ-BTTTT, WHATWG HTML, OWASP Authentication, OWASP Password Storage, RFC 5321, Luật 91/2025/QH15), danh sách ở SRS §1.4 |
 | COS | Bộ mẫu `COS_Document_Example` (học format, không phải nguồn nghiệp vụ) |
 | PL-C | Quyết định nhóm ngày 10/11/2026 khi chốt Phụ lục C; mã C-x sau PL-C là vấn đề được chốt, kết quả và nguồn tham khảo ở mục 9 |
 
@@ -240,6 +240,7 @@ Mỗi dòng con = 1 câu "Hệ thống phải…". Cột "Ý" là nội dung ph�
 | AS-2 | Tài khoản Admin và Shipper đã có sẵn; Customer tự đăng ký | KH 1.1 |
 | AS-3 | Danh sách sản phẩm có sẵn dưới dạng dữ liệu mẫu | 03 §3.5, 01 §1 (2.5) |
 | AS-4 | Thanh toán nằm ngoài hệ thống (xem BR-07) | 03 §3.5 |
+| AS-5 | Cửa hàng đặt thời hạn lưu và xóa dữ liệu cá nhân theo Luật 91/2025/QH15; phiên bản 1.0 không có chức năng xóa dữ liệu cá nhân | S13, quyết định nhóm 11/11/2026 |
 | DI-1 | Bản ghi lịch sử trạng thái chỉ được thêm, không được sửa hay xóa. Thời hạn lưu: chưa có số liệu | 01 §1 (4.4) |
 | UI-1 | Có các màn hình: Đăng nhập, Đăng ký, Trang chủ Customer, Tạo đơn hàng, Chi tiết đơn hàng, Yêu cầu hoàn hàng, Theo dõi vận chuyển, Bảng điều khiển Admin, Màn hình giao hàng của Shipper. Bố cục chi tiết theo mockup ở giai đoạn 2 | A8–A16, KH 1.4 |
 | SI | Không có (không kết nối hệ thống ngoài; thông báo nằm trong ứng dụng, xem CI-1) | 01 §1 (5.2); PL-C (C-2) |
@@ -330,7 +331,7 @@ Nhóm chốt C-1 đến C-14 ngày 10/11/2026 (mã PL-C ở mục 0). C-15 (ngà
 
 ## 10. Thuật ngữ (Phụ lục B) — cột: Thuật ngữ / Tiếng Anh / Từ Shopee tương ứng / Định nghĩa
 
-Bắt buộc: Customer, Admin, Shipper, Đơn hàng, Vận đơn, **Hoàn hàng**, **Trả lại**, Yêu cầu hoàn hàng, Sự cố, Hư hỏng, Thất lạc, Giao không thành công, Lịch sử trạng thái, Cửa hàng, Cập nhật theo sự kiện (real-time), TBD.
+Bắt buộc: Customer, Admin, Shipper, Đơn hàng, Vận đơn, **Hoàn hàng**, **Trả lại**, Yêu cầu hoàn hàng, Sự cố, Hư hỏng, Thất lạc, Giao không thành công, Lịch sử trạng thái, Cửa hàng, Cập nhật theo sự kiện (real-time), Tài khoản, TBD.
 
 - **Hoàn hàng** (chức năng, 3.3): Customer yêu cầu trả hàng / hoàn tiền cho đơn ở `Đã giao` (BR-02, BR-04). Shopee: "Trả hàng / Hoàn tiền" (S1). Customer kích hoạt. Định nghĩa theo trạng thái đơn, vì 03 §3.3 ghi "đã nhận hàng" nhưng 03 §3.4 cho lý do "Chưa nhận được hàng".
 - **Trả lại** (ngoại lệ, 3.4): giao không thành công, hàng quay về người bán. SPX: "Giao hàng không thành công" → "Đang hoàn hàng" (S5); "hoàn trả hàng" (S3). Shipper báo, Admin xử lý.

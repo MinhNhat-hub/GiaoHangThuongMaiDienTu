@@ -68,4 +68,4 @@ Không thuộc phiên bản này. Đề bài không yêu cầu báo cáo thống
 
 Việc ghi lịch sử mỗi khi trạng thái đơn hàng thay đổi là yêu cầu Track.Update.History ở mục 3.2, mục này không viết lại.
 
-Thời hạn lưu dữ liệu: chưa có số liệu.
+Thời hạn lưu dữ liệu: xem AS-5.
