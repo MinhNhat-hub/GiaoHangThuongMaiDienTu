@@ -15,7 +15,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 | TV1 | 31/10/2026 | Bản nháp đầu tiên, gửi TV2 review | 1.0 nháp 1 |
 | TV1 | 02/11/2026 | Sửa theo review: tách, thêm và đổi nội dung một số ID (xem srs_id_changes.md) | 1.0 nháp 2 |
 | TV2 | 03/11/2026 | Sửa theo review: đóng C-15, thêm luồng 3.2 của UC-03, SEC-8, SEC-9; tách bước 3 của luồng 7.0; đổi Return.Review.Issue thành Return.Review.OrderStatus; SRS.md thành bản gốc | 1.0 nháp 3 |
-| TV1 | 10/11/2026 | Chốt C-1 đến C-14: điền các chỗ TBD; thêm CO-2, ngoại lệ 5.0.E4 của UC-05; thêm phần tử dữ liệu email, mật khẩu, số điện thoại, mô tả lý do; thêm tài liệu tham khảo S6–S8 | 1.0 nháp 4 |
+| TV1 | 10/11/2026 | Chốt C-1 đến C-14: điền các chỗ TBD; thêm CO-2, ngoại lệ 5.0.E4 của UC-05; thêm phần tử dữ liệu email, mật khẩu, số điện thoại, mô tả lý do; thêm mục 2.6 Tài liệu người dùng, mục 3.5 Tài khoản, SEC-10, SEC-11; chốt độ dài và định dạng ngày giờ ở §4.2; thêm tài liệu tham khảo S6–S12 | 1.0 nháp 4 |
 
 ## 1 Giới thiệu
 
@@ -31,13 +31,15 @@ Người dùng tài liệu gồm người phát triển web, người kiểm th�
 |---|---|---|
 | Tính năng | FE-x (như bộ mẫu COS [3]) | FE-1 |
 | Use Case | UC-xx, đánh số liên tục | UC-01 |
-| Yêu cầu chức năng | Nhóm.Việc.ChiTiết (như bộ mẫu COS [3]). Nhóm: Order (3.1), Track (3.2), Return (3.3), Issue.Report (3.4.1), Issue.Resolve (3.4.2) | Order.Create.Receiver |
+| Yêu cầu chức năng | Nhóm.Việc.ChiTiết (như bộ mẫu COS [3]). Nhóm: Order (3.1), Track (3.2), Return (3.3), Issue.Report (3.4.1), Issue.Resolve (3.4.2), Account (3.5) | Order.Create.Receiver |
 | Ngoại lệ trong UC | x.0.Ey (như bộ mẫu COS [3]) | 3.0.E2 |
 | Quy tắc nghiệp vụ | BR-xx, đánh số liên tục | BR-01 |
 | Yêu cầu phi chức năng | RT-x, SEC-x, ROB-x | RT-1 |
 | Giao diện | UI-x, SI-x, CI-x | CI-1 |
 | Môi trường / Ràng buộc / Giả định / Phụ thuộc | OE-x, CO-x, AS-x, DE-x | AS-1 |
 | Dữ liệu | DI-x | DI-1 |
+
+Yêu cầu chức năng là các mã dạng Nhóm.Việc.ChiTiết ở mục 3. Yêu cầu phi chức năng gồm các mã OE, CO, UI, SI, CI, DI, RT, SEC, ROB. Mã AS, DE là giả định và phụ thuộc, không phải yêu cầu.
 
 Luật viết:
 
@@ -73,7 +75,7 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 - Hoàn hàng hoặc báo sự cố cho từng sản phẩm trong đơn hàng. Yêu cầu hoàn hàng và sự cố áp dụng cho cả đơn hàng.
 - Báo sự cố khi đơn hàng không ở trạng thái "Đang giao", ví dụ hàng hỏng hoặc thất lạc lúc đơn ở "Đang hoàn hàng" (xem Hình A.2).
 
-Đăng ký, đăng nhập, đăng xuất không phải tính năng riêng ở §3; chúng chỉ xuất hiện ở SEC-1, SEC-9 và PRE-1 của các Use Case.
+Đăng ký, đăng nhập, đăng xuất không thuộc 4 tính năng của đề bài. Yêu cầu của chúng nằm ở mục 3.5 (Tài khoản), SEC-1, SEC-9 đến SEC-11 và PRE-1 của các Use Case.
 
 ### 1.4 Tài liệu tham khảo
 
@@ -89,8 +91,12 @@ Ngoài phạm vi phiên bản 1.0 (mã trong ngoặc là dòng backlog, xem [2])
 10. (S6) GHN – Chính sách bồi thường của GHN (Mới), áp dụng cho đơn hàng tạo từ 20/05/2026. https://ghn.vn/pages/chinh-sach-boi-thuong-cua-ghn-moi
 11. (S7) GHTK Blog 13/10/2025 – Đơn hàng giao lại tối đa mấy lần? Chi tiết chính sách giao lại tại GHTK. https://ghtk.vn/blog/giao-lai/
 12. (S8) LuatVietnam 04/06/2018 – Đã cập nhật Quyết định chuyển thuê bao 11 số sang 10 số (Quyết định 798/QĐ-BTTTT). https://luatvietnam.vn/tin-van-ban-moi/da-cap-nhat-quyet-dinh-chuyen-thue-bao-11-so-sang-10-so-186-16629-article.html
+13. (S9) WHATWG – HTML Living Standard, mục 4.10.5 The input element (định nghĩa valid e-mail address). https://html.spec.whatwg.org/multipage/input.html
+14. (S10) OWASP Cheat Sheet Series – Authentication Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+15. (S11) OWASP Cheat Sheet Series – Password Storage Cheat Sheet. https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+16. (S12) IETF – RFC 5321 Simple Mail Transfer Protocol, mục 4.5.3.1.3 (độ dài đường dẫn 256 octet), và errata 1690 của RFC 3696 (địa chỉ email tối đa 254 ký tự). https://www.rfc-editor.org/rfc/rfc5321 ; https://www.rfc-editor.org/errata/eid1690
 
-Các nguồn S1–S8 chỉ dùng để tham khảo nghiệp vụ. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).
+Các nguồn S1–S12 chỉ dùng để tham khảo nghiệp vụ và kỹ thuật. Mọi con số trong tài liệu là quyết định của nhóm; nguồn tham khảo của con số ghi ở cột Nguồn của quy tắc nghiệp vụ (xem mục 7) hoặc ở từ điển dữ liệu (xem mục 4.2).
 
 ## 2 Mô tả tổng quan
 
@@ -133,6 +139,10 @@ Các nguồn S1–S8 chỉ dùng để tham khảo nghiệp vụ. Mọi con số
 **AS-4:** Thanh toán nằm ngoài hệ thống (xem BR-07).
 
 Phiên bản này không có phụ thuộc bên ngoài (xem 5.2).
+
+### 2.6 Tài liệu người dùng
+
+Phiên bản 1.0 kèm hướng dẫn sử dụng cho các Use Case ở mục 3; hướng dẫn được viết ở giai đoạn 2 (dòng A85 của backlog [2]).
 
 ## 3 Tính năng hệ thống
 
@@ -372,6 +382,27 @@ Admin xử lý các sự cố Shipper đã báo ở mục 3.4.1, gồm cả ngo�
 - **.LostStatus:** Hệ thống phải chuyển đơn sang "Thất lạc" (T10, xem Hình A.2) khi Admin xác nhận thất lạc.
 - **.Result:** Hệ thống phải cho Admin ghi kết quả xử lý của một sự cố, trừ sự cố "Giao không thành công" của đơn đã đạt giới hạn ở BR-06 mà đơn chưa sang "Đang hoàn hàng"; kết quả bắt buộc nhập và không được rỗng; kết quả chỉ được ghi nhận, không xử lý tiền (xem BR-07).
 
+### 3.5 Tài khoản
+
+#### 3.5.1 Mô tả và độ ưu tiên
+
+Customer tự đăng ký tài khoản (xem AS-2); mọi người dùng đăng nhập trước khi thực hiện các Use Case (xem PRE-1, SEC-1). Mục này không phải một tính năng của đề bài (xem 1.3) mà là phần mọi tính năng đều cần; mục tương ứng các dòng A19, A20, A21 của backlog [2]. Đăng xuất là SEC-9. Độ ưu tiên = Cao.
+
+#### 3.5.2 Yêu cầu chức năng
+
+**Account.Register: Customer đăng ký tài khoản**
+- **.Fields:** Hệ thống phải cho người chưa có tài khoản đăng ký tài khoản Customer bằng họ tên, email, mật khẩu và số điện thoại.
+- **.Required:** Hệ thống phải kiểm tra đủ bốn trường và chỉ ra trường còn thiếu; trường chỉ gồm khoảng trắng được coi là còn thiếu.
+- **.Email:** Hệ thống phải kiểm tra email theo định nghĩa "valid e-mail address" của chuẩn HTML (xem S9 ở mục 1.4).
+- **.Unique:** Hệ thống phải từ chối đăng ký khi email đã thuộc một tài khoản khác và báo lý do; email được so khớp sau khi bỏ khoảng trắng hai đầu và không phân biệt chữ hoa, chữ thường.
+- **.Password:** Hệ thống phải kiểm tra mật khẩu dài từ 8 đến 64 ký tự và chỉ ra khi mật khẩu sai độ dài.
+- **.Phone:** Hệ thống phải kiểm tra số điện thoại theo quy tắc ở Order.Create.Phone.
+- **.Role:** Hệ thống phải gán vai trò Customer cho mọi tài khoản được tạo qua đăng ký (xem AS-2).
+
+**Account.Login: Người dùng đăng nhập**
+- **.Credentials:** Hệ thống phải cho người dùng đăng nhập bằng email và mật khẩu; email được so khớp như ở Account.Register.Unique.
+- **.Fail:** Hệ thống phải báo đăng nhập không thành công theo SEC-11 khi email hoặc mật khẩu không đúng.
+
 ## 4 Yêu cầu dữ liệu
 
 ### 4.1 Mô hình dữ liệu logic
@@ -390,47 +421,47 @@ Một đơn hàng có một hoặc nhiều dòng đơn hàng (xem Order.Create.P
 |---|---|---|---|---|
 | Customer đặt | Customer đã tạo đơn hàng | mã người dùng |  | Người dùng có vai trò Customer |
 | dòng đơn hàng | một sản phẩm trong đơn hàng, kèm số lượng đặt | sản phẩm<br>+ số lượng |  |  |
-| địa chỉ giao | nơi giao đơn hàng cho người nhận | chuỗi | Chưa có số liệu | Bắt buộc. Chuỗi tự do, không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Order.Create.Address) |
+| địa chỉ giao | nơi giao đơn hàng cho người nhận | chuỗi | 255 | Bắt buộc. Chuỗi tự do, không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Order.Create.Address) |
 | đơn hàng | thông tin về một đơn hàng do Customer tạo | mã đơn hàng<br>+ Customer đặt<br>+ thời điểm tạo<br>+ 1:m{dòng đơn hàng}<br>+ người nhận<br>+ địa chỉ giao<br>+ trạng thái đơn hàng<br>+ 0:1{vận đơn} |  | Có ít nhất một dòng đơn hàng; không có hai dòng cùng một sản phẩm (xem Order.Create.Product) |
-| email | địa chỉ email người dùng dùng để đăng nhập | chuỗi | Chưa có số liệu | Duy nhất. Bắt buộc khi Customer đăng ký |
-| họ tên | họ tên của người dùng | chuỗi | Chưa có số liệu |  |
-| kết quả xử lý | kết quả Admin ghi cho một sự cố | chuỗi, do Admin nhập | Chưa có số liệu | Bắt buộc, không được rỗng sau khi bỏ khoảng trắng hai đầu. Chỉ ghi nhận, không xử lý tiền (xem BR-07) |
+| email | địa chỉ email người dùng dùng để đăng nhập | chuỗi | 254 | Duy nhất (xem Account.Register.Unique). Bắt buộc khi Customer đăng ký; định dạng theo Account.Register.Email; tối đa 254 ký tự (tham khảo S12); so khớp không phân biệt chữ hoa, chữ thường. |
+| họ tên | họ tên của người dùng | chuỗi | 100 |  |
+| kết quả xử lý | kết quả Admin ghi cho một sự cố | chuỗi, do Admin nhập | 500 | Bắt buộc, không được rỗng sau khi bỏ khoảng trắng hai đầu. Chỉ ghi nhận, không xử lý tiền (xem BR-07) |
 | lịch sử trạng thái | bản ghi một lần thay đổi trạng thái của đơn hàng | đơn hàng<br>+ người đổi<br>+ thời điểm<br>+ trạng thái cũ<br>+ trạng thái mới |  | Chỉ được thêm (xem DI-1). Bản ghi đầu tiên: trạng thái cũ để trống |
-| loại sự cố | loại sự cố được báo cho một đơn hàng | chuỗi | Chưa có số liệu | "Hàng hỏng", "Giao không thành công", "Thất lạc" |
-| lý do hoàn hàng | lý do Customer chọn khi gửi yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | Một trong các lý do ở BR-04 |
-| lý do từ chối | lý do Admin ghi khi từ chối một yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | Bắt buộc khi yêu cầu bị từ chối; không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Return.Review.Reject) |
-| mã đơn hàng | mã hệ thống gán cho mỗi đơn hàng khi lưu đơn | chuỗi | Chưa có số liệu | Duy nhất |
-| mã người dùng | mã hệ thống gán cho mỗi người dùng | chuỗi | Chưa có số liệu | Duy nhất |
-| mã sản phẩm | mã của một sản phẩm trong dữ liệu mẫu | chuỗi | Chưa có số liệu | Duy nhất |
-| mã sự cố | mã hệ thống gán cho mỗi sự cố | chuỗi | Chưa có số liệu | Duy nhất |
-| mã vận đơn | mã hệ thống gán cho mỗi vận đơn | chuỗi | Chưa có số liệu | Duy nhất (xem Track.Assign.Shipment) |
-| mã yêu cầu | mã hệ thống gán cho mỗi yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | Duy nhất |
-| mật khẩu | mật khẩu người dùng dùng để đăng nhập | chuỗi | Chưa có số liệu | Bắt buộc khi Customer đăng ký |
-| mô tả lý do | mô tả Customer nhập khi chọn lý do hoàn hàng "Khác" | chuỗi | Chưa có số liệu | Bắt buộc khi lý do hoàn hàng là "Khác"; không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Return.Request.Reason) |
+| loại sự cố | loại sự cố được báo cho một đơn hàng | chuỗi | Không áp dụng | "Hàng hỏng", "Giao không thành công", "Thất lạc" |
+| lý do hoàn hàng | lý do Customer chọn khi gửi yêu cầu hoàn hàng | chuỗi | Không áp dụng | Một trong các lý do ở BR-04 |
+| lý do từ chối | lý do Admin ghi khi từ chối một yêu cầu hoàn hàng | chuỗi | 500 | Bắt buộc khi yêu cầu bị từ chối; không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Return.Review.Reject) |
+| mã đơn hàng | mã hệ thống gán cho mỗi đơn hàng khi lưu đơn | chuỗi | Không áp dụng | Duy nhất |
+| mã người dùng | mã hệ thống gán cho mỗi người dùng | chuỗi | Không áp dụng | Duy nhất |
+| mã sản phẩm | mã của một sản phẩm trong dữ liệu mẫu | chuỗi | Không áp dụng | Duy nhất |
+| mã sự cố | mã hệ thống gán cho mỗi sự cố | chuỗi | Không áp dụng | Duy nhất |
+| mã vận đơn | mã hệ thống gán cho mỗi vận đơn | chuỗi | Không áp dụng | Duy nhất (xem Track.Assign.Shipment) |
+| mã yêu cầu | mã hệ thống gán cho mỗi yêu cầu hoàn hàng | chuỗi | Không áp dụng | Duy nhất |
+| mật khẩu | mật khẩu người dùng dùng để đăng nhập | chuỗi | 64 | Bắt buộc khi Customer đăng ký; lưu theo SEC-10. Tối thiểu 8 ký tự; cho phép mọi ký tự, không bắt buộc chữ hoa, số hay ký tự đặc biệt (xem Account.Register.Password; quyết định nhóm 10/11/2026, tham khảo S10) |
+| mô tả lý do | mô tả Customer nhập khi chọn lý do hoàn hàng "Khác" | chuỗi | 500 | Bắt buộc khi lý do hoàn hàng là "Khác"; không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Return.Request.Reason) |
 | người báo | người dùng đã báo một sự cố | mã người dùng |  | Shipper được phân công cho đơn hàng, hoặc Admin (xem Issue.Resolve.Lost) |
 | người dùng | người có tài khoản trong hệ thống | mã người dùng<br>+ họ tên<br>+ số điện thoại<br>+ vai trò<br>+ thông tin đăng nhập |  | Customer đăng ký bằng họ tên, số điện thoại, email và mật khẩu (xem AS-2) |
 | người đổi | người dùng đã làm trạng thái đơn hàng thay đổi | mã người dùng |  |  |
 | người nhận | người nhận hàng của đơn hàng | tên người nhận<br>+ số điện thoại người nhận |  | Cả hai thành phần bắt buộc (xem Order.Create.Required) |
 | sản phẩm | sản phẩm của cửa hàng mà Customer chọn khi tạo đơn hàng | mã sản phẩm<br>+ tên sản phẩm |  | Dữ liệu mẫu (xem AS-3) |
 | Shipper được phân công | Shipper được Admin phân công giao đơn hàng | mã người dùng |  | Người dùng có vai trò Shipper |
-| số điện thoại | số điện thoại của người dùng | chuỗi | Chưa có số liệu | Bắt buộc khi Customer đăng ký. Cùng quy tắc với số điện thoại người nhận |
-| số điện thoại người nhận | số điện thoại của người nhận hàng | chuỗi | Chưa có số liệu | Bắt buộc. Đúng 10 chữ số, bắt đầu bằng chữ số 0, tức số thuê bao di động (xem Order.Create.Phone, tham khảo S8) |
-| số lần giao không thành công | dùng để quyết định giao lại hay trả lại một đơn hàng | số nguyên, tính ra, không lưu | Chưa có số liệu | Tính theo BR-06 |
-| số lượng | số đơn vị của một sản phẩm trong một dòng đơn hàng | số nguyên | Chưa có số liệu | Số nguyên lớn hơn hoặc bằng 1, không có giới hạn trên (xem Order.Create.Quantity) |
+| số điện thoại | số điện thoại của người dùng | chuỗi | 10 | Bắt buộc khi Customer đăng ký. Cùng quy tắc với số điện thoại người nhận (xem Account.Register.Phone) |
+| số điện thoại người nhận | số điện thoại của người nhận hàng | chuỗi | 10 | Bắt buộc. Đúng 10 chữ số, bắt đầu bằng chữ số 0, tức số thuê bao di động (xem Order.Create.Phone, tham khảo S8) |
+| số lần giao không thành công | dùng để quyết định giao lại hay trả lại một đơn hàng | số nguyên, tính ra, không lưu | Không áp dụng | Tính theo BR-06 |
+| số lượng | số đơn vị của một sản phẩm trong một dòng đơn hàng | số nguyên | Không áp dụng | Số nguyên lớn hơn hoặc bằng 1, không có giới hạn trên (xem Order.Create.Quantity) |
 | sự cố | sự cố khi giao hàng được báo cho một đơn hàng | mã sự cố<br>+ đơn hàng<br>+ loại sự cố<br>+ người báo<br>+ thời điểm báo<br>+ kết quả xử lý |  |  |
-| tên người nhận | tên của người nhận hàng | chuỗi | Chưa có số liệu | Bắt buộc, không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Order.Create.Required) |
-| tên sản phẩm | tên của một sản phẩm | chuỗi | Chưa có số liệu | Dữ liệu mẫu (xem AS-3) |
-| thời điểm | ngày giờ trạng thái đơn hàng thay đổi, trong một bản ghi lịch sử trạng thái | ngày giờ | Chưa có số liệu |  |
-| thời điểm báo | ngày giờ một sự cố được báo | ngày giờ | Chưa có số liệu |  |
-| thời điểm gửi | ngày giờ Customer gửi yêu cầu hoàn hàng | ngày giờ | Chưa có số liệu |  |
-| thời điểm tạo | ngày giờ đơn hàng được lưu | ngày giờ | Chưa có số liệu |  |
-| thời điểm tạo vận đơn | ngày giờ Admin tạo vận đơn | ngày giờ | Chưa có số liệu |  |
+| tên người nhận | tên của người nhận hàng | chuỗi | 100 | Bắt buộc, không được rỗng sau khi bỏ khoảng trắng hai đầu (xem Order.Create.Required) |
+| tên sản phẩm | tên của một sản phẩm | chuỗi | Không áp dụng | Dữ liệu mẫu (xem AS-3) |
+| thời điểm | ngày giờ trạng thái đơn hàng thay đổi, trong một bản ghi lịch sử trạng thái | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm báo | ngày giờ một sự cố được báo | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm gửi | ngày giờ Customer gửi yêu cầu hoàn hàng | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm tạo | ngày giờ đơn hàng được lưu | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
+| thời điểm tạo vận đơn | ngày giờ Admin tạo vận đơn | ngày giờ, hiển thị dạng dd/MM/yyyy HH:mm theo giờ Việt Nam (UTC+7) | 16 |  |
 | thông tin đăng nhập | thông tin người dùng dùng để đăng nhập | email<br>+ mật khẩu |  | Mỗi email chỉ thuộc một tài khoản |
 | trạng thái cũ | trạng thái đơn hàng trước một lần thay đổi | trạng thái đơn hàng |  | Để trống ở bản ghi lịch sử đầu tiên |
-| trạng thái đơn hàng | trạng thái hiện tại của một đơn hàng | chuỗi | Chưa có số liệu | "Chờ xác nhận", "Chờ lấy hàng", "Đang giao", "Đã giao", "Giao không thành công", "Đang hoàn hàng", "Đã hoàn về người bán", "Hư hỏng", "Thất lạc" (xem Hình A.2) |
+| trạng thái đơn hàng | trạng thái hiện tại của một đơn hàng | chuỗi | Không áp dụng | "Chờ xác nhận", "Chờ lấy hàng", "Đang giao", "Đã giao", "Giao không thành công", "Đang hoàn hàng", "Đã hoàn về người bán", "Hư hỏng", "Thất lạc" (xem Hình A.2) |
 | trạng thái mới | trạng thái đơn hàng sau một lần thay đổi | trạng thái đơn hàng |  |  |
-| trạng thái yêu cầu hoàn hàng | trạng thái hiện tại của một yêu cầu hoàn hàng | chuỗi | Chưa có số liệu | "Chờ duyệt", "Đã chấp nhận", "Bị từ chối", "Hoàn tất" (xem Hình A.2) |
-| vai trò | vai trò của người dùng, quyết định thao tác được phép (xem mục 6.2) | chuỗi | Chưa có số liệu | Customer, Shipper, Admin |
+| trạng thái yêu cầu hoàn hàng | trạng thái hiện tại của một yêu cầu hoàn hàng | chuỗi | Không áp dụng | "Chờ duyệt", "Đã chấp nhận", "Bị từ chối", "Hoàn tất" (xem Hình A.2) |
+| vai trò | vai trò của người dùng, quyết định thao tác được phép (xem mục 6.2) | chuỗi | Không áp dụng | Customer, Shipper, Admin |
 | vận đơn | thông tin Admin tạo cho một đơn hàng khi phân công Shipper | mã vận đơn<br>+ Shipper được phân công<br>+ thời điểm tạo vận đơn |  |  |
 | yêu cầu hoàn hàng | yêu cầu Customer gửi để hoàn hàng cho một đơn hàng đã giao | mã yêu cầu<br>+ đơn hàng<br>+ lý do hoàn hàng<br>+ mô tả lý do<br>+ trạng thái yêu cầu hoàn hàng<br>+ thời điểm gửi<br>+ lý do từ chối |  | Mỗi đơn hàng có tối đa một yêu cầu hoàn hàng (xem Return.Request.Eligible) |
 
@@ -499,6 +530,10 @@ Trạng thái được cập nhật theo sự kiện (xem CO-1), nên các yêu 
 **SEC-8:** Hệ thống phải chỉ cho phép Shipper được phân công cho một đơn hàng cập nhật trạng thái giao hàng của đơn đó (T3, T4, T6, xem Hình A.2) và báo sự cố cho đơn đó (xem Issue.Report).
 
 **SEC-9:** Hệ thống phải cho người dùng đã đăng nhập đăng xuất; sau khi đăng xuất, người dùng phải đăng nhập lại để thực hiện các thao tác ở SEC-1.
+
+**SEC-10:** Hệ thống phải lưu mật khẩu dưới dạng băm bằng thuật toán băm mật khẩu thích ứng, không lưu ở dạng đọc lại được, và không cắt bớt mật khẩu dài tới 64 ký tự (xem S10, S11 ở mục 1.4).
+
+**SEC-11:** Khi đăng nhập không thành công, hệ thống phải báo cùng một thông báo chung, không cho biết sai email hay sai mật khẩu, hay tài khoản có tồn tại hay không (xem S10 ở mục 1.4).
 
 ### 6.3 Độ bền vững
 

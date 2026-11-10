@@ -11,7 +11,7 @@
 | 01 | `docs/plan/01_srs_outline.md`, số sau là mục |
 | 03 | `docs/plan/03_shopee_reference.md`, số sau là mục. Nhóm đã chốt mục 3–4 của file này (xác nhận 31/10/2026). Riêng "1 cửa hàng" chốt ngày 28/10/2026 (03 §3.2) |
 | A-xx | Dòng backlog `BackLogPlan.xlsx`, ánh xạ ở `docs/plan/04_backlog_assignment.md` |
-| S1–S8 | Nguồn tham khảo bên ngoài. S1–S5: Shopee/SPX, danh sách ở 03 §1. S6–S8: thêm ngày 10/11/2026 (GHN, GHTK, Quyết định 798/QĐ-BTTTT), danh sách ở SRS §1.4 |
+| S1–S12 | Nguồn tham khảo bên ngoài. S1–S5: Shopee/SPX, danh sách ở 03 §1. S6–S12: thêm ngày 10/11/2026 (GHN, GHTK, Quyết định 798/QĐ-BTTTT, WHATWG HTML, OWASP Authentication, OWASP Password Storage, RFC 5321), danh sách ở SRS §1.4 |
 | COS | Bộ mẫu `COS_Document_Example` (học format, không phải nguồn nghiệp vụ) |
 | PL-C | Quyết định nhóm ngày 10/11/2026 khi chốt Phụ lục C; mã C-x sau PL-C là vấn đề được chốt, kết quả và nguồn tham khảo ở mục 9 |
 
@@ -42,7 +42,7 @@ Số lượng người dùng: chưa có số liệu. Customer và Shipper không
 
 Độ ưu tiên: cả 4 là **Cao**, vì đề bài bắt buộc cả 4.
 
-**Ngoài phạm vi** (01 §1, KH 1.1, 1.4, 03 §3.5): nhiều cửa hàng; báo cáo thống kê (A41, A54–A57, A70); quản lý tài khoản người dùng / Shipper (A33, A34); sửa / hủy / tìm kiếm đơn đã lưu (A35–A37); thanh toán, phí, hoàn tiền, bồi thường (chỉ ghi nhận kết quả, xem BR-07); danh mục sản phẩm, đánh giá sản phẩm, kho trung chuyển; hoàn hàng hoặc báo sự cố cho từng sản phẩm trong đơn (PL-C, C-7); báo sự cố khi đơn không ở `Đang giao` (PL-C, C-11). Đăng ký / đăng nhập / đăng xuất không viết thành tính năng ở §3, chỉ xuất hiện ở SEC-1 và PRE-1 của UC (KH 1.1).
+**Ngoài phạm vi** (01 §1, KH 1.1, 1.4, 03 §3.5): nhiều cửa hàng; báo cáo thống kê (A41, A54–A57, A70); quản lý tài khoản người dùng / Shipper (A33, A34); sửa / hủy / tìm kiếm đơn đã lưu (A35–A37); thanh toán, phí, hoàn tiền, bồi thường (chỉ ghi nhận kết quả, xem BR-07); danh mục sản phẩm, đánh giá sản phẩm, kho trung chuyển; hoàn hàng hoặc báo sự cố cho từng sản phẩm trong đơn (PL-C, C-7); báo sự cố khi đơn không ở `Đang giao` (PL-C, C-11). Đăng ký / đăng nhập không thuộc 4 tính năng của đề bài; từ 10/11/2026 yêu cầu của chúng nằm ở SRS §3.5 (Account.*), SEC-1, SEC-9 đến SEC-11 và PRE-1 của UC. Quyết định này thay cách làm ở KH 1.1.
 
 ## 3. Trạng thái (SRS Phụ lục A.2, Hình A.2) — nguồn 03 §4, §3.3, §3.4; KH 1.1, 1.2
 
@@ -212,6 +212,22 @@ Mỗi dòng con = 1 câu "Hệ thống phải…". Cột "Ý" là nội dung ph�
 | .LostStatus | Khi Admin xác nhận thất lạc: chuyển đơn sang `Thất lạc` (T10) | 03 §3.4, A67 |
 | .Result | Cho Admin ghi kết quả xử lý của một sự cố, trừ sự cố "Giao không thành công" của đơn đã đạt giới hạn BR-06 mà đơn chưa sang `Đang hoàn hàng`; bắt buộc nhập, không được rỗng; chỉ ghi nhận, không xử lý tiền (BR-07) | 03 §3.5, A66–A68; PL-C (C-14) |
 
+### 3.5 Tài khoản — A19, A20, A21 (không thuộc FE nào)
+
+| ID | Ý | Nguồn |
+|---|---|---|
+| Account.Register | Customer đăng ký tài khoản | A19, AS-2 |
+| .Fields | Đăng ký tài khoản Customer bằng họ tên, email, mật khẩu, số điện thoại | PL-C (C-10) |
+| .Required | Kiểm đủ bốn trường, chỉ ra trường thiếu; chỉ có khoảng trắng coi là thiếu | PL-C (C-1, C-10) |
+| .Email | Kiểm email theo định nghĩa valid e-mail address của chuẩn HTML | S9 |
+| .Unique | Từ chối email đã thuộc tài khoản khác, báo lý do; so khớp sau khi bỏ khoảng trắng, không phân biệt hoa thường | PL-C (C-10), quyết định nhóm 10/11/2026 |
+| .Password | Kiểm mật khẩu dài 8–64 ký tự, không bắt buộc loại ký tự | PL-C (quyết định nhóm 10/11/2026), S10 |
+| .Phone | Kiểm số điện thoại theo Order.Create.Phone | PL-C (C-1, C-10) |
+| .Role | Gán vai trò Customer cho mọi tài khoản tạo qua đăng ký | AS-2 |
+| Account.Login | Người dùng đăng nhập | A20, SEC-1 |
+| .Credentials | Đăng nhập bằng email và mật khẩu; email so khớp như .Unique | PL-C (C-10) |
+| .Fail | Báo đăng nhập không thành công theo SEC-11 | S10 |
+
 ## 6. Yêu cầu phi chức năng và yêu cầu khác (SRS §2, §4, §5, §6)
 
 | ID | Ý | Nguồn |
@@ -240,6 +256,8 @@ Mỗi dòng con = 1 câu "Hệ thống phải…". Cột "Ý" là nội dung ph�
 | SEC-7 | Chỉ Admin được xử lý sự cố (UC-07) | KH 1.1 |
 | SEC-8 | Chỉ Shipper được phân công cho đơn được cập nhật trạng thái giao hàng của đơn đó (T3, T4, T6) và báo sự cố cho đơn đó (Issue.Report) | KH 1.1, review 03/11/2026 |
 | SEC-9 | Người dùng đã đăng nhập đăng xuất được; sau khi đăng xuất phải đăng nhập lại để thao tác (SEC-1) | A21, review 03/11/2026 |
+| SEC-10 | Lưu mật khẩu dạng băm bằng thuật toán băm mật khẩu thích ứng, không lưu dạng đọc lại được, không cắt bớt mật khẩu dài tới 64 ký tự | S10, S11 |
+| SEC-11 | Đăng nhập không thành công: một thông báo chung, không lộ sai email hay mật khẩu, hay tài khoản có tồn tại | S10 |
 | ROB-1 | Người xem (màn hình ở RT-1, RT-2) mất kết nối rồi kết nối lại phải thấy trạng thái mới nhất của các đơn trên màn hình, kể cả thay đổi xảy ra lúc mất kết nối | KH 1.2, COS ROB-1 |
 
 Dòng cuối §6: các thuộc tính chất lượng khác (hiệu năng, khả dụng, an toàn, dễ dùng) chưa có yêu cầu đo được ở phiên bản này. Vì vậy không có PER-x (KH 1.2).
@@ -285,7 +303,7 @@ Dòng cuối §6: các thuộc tính chất lượng khác (hiệu năng, khả 
 | kết quả xử lý | chuỗi do Admin nhập | BR-07. Bắt buộc, không rỗng (PL-C, C-14) |
 | số lần giao không thành công | số nguyên, tính ra, không lưu | Theo BR-06 |
 
-Độ dài các phần tử: **chưa có số liệu** (01 §0: không tự đặt số liệu).
+Độ dài các phần tử (PL-C, quyết định nhóm 10/11/2026): email 254 (S12); họ tên, tên người nhận 100; địa chỉ giao 255; mô tả lý do, lý do từ chối, kết quả xử lý 500; số điện thoại 10; ngày giờ hiển thị dd/MM/yyyy HH:mm theo giờ Việt Nam UTC+7 (16 ký tự); mã, trạng thái, vai trò, loại, lý do hoàn hàng, số lượng: không áp dụng. Mật khẩu 8–64 ký tự (OWASP S10 chỉ coi 8 là đủ khi có MFA; hệ thống không có MFA, nhóm vẫn chọn 8).
 
 **Quan hệ ERD:** NGƯỜI DÙNG (Customer) 1 — 0..n ĐƠN HÀNG (đặt) · NGƯỜI DÙNG (Shipper) 0..1 — 0..n ĐƠN HÀNG (được phân công, thuộc vận đơn) · ĐƠN HÀNG 1 — 1..n DÒNG ĐƠN HÀNG · SẢN PHẨM 1 — 0..n DÒNG ĐƠN HÀNG · ĐƠN HÀNG 1 — 1..n LỊCH SỬ TRẠNG THÁI · NGƯỜI DÙNG 1 — 0..n LỊCH SỬ TRẠNG THÁI (người đổi) · ĐƠN HÀNG 1 — 0..1 YÊU CẦU HOÀN HÀNG · ĐƠN HÀNG 1 — 0..n SỰ CỐ · NGƯỜI DÙNG 1 — 0..n SỰ CỐ (người báo).
 

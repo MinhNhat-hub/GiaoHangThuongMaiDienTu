@@ -116,3 +116,26 @@ Issue.Resolve: Admin xử lý sự cố (UC-07)
 .LostStatus: Hệ thống phải chuyển đơn sang "Thất lạc" (T10, xem Hình A.2) khi Admin xác nhận thất lạc.
 .Result: Hệ thống phải cho Admin ghi kết quả xử lý của một sự cố, trừ sự cố "Giao không thành công" của đơn đã đạt giới hạn ở BR-06 mà đơn chưa sang "Đang hoàn hàng"; kết quả bắt buộc nhập và không được rỗng; kết quả chỉ được ghi nhận, không xử lý tiền (xem BR-07).
 ```
+
+## 3.5 Tài khoản
+
+### 3.5.1 Mô tả và độ ưu tiên
+
+Customer tự đăng ký tài khoản (xem AS-2); mọi người dùng đăng nhập trước khi thực hiện các Use Case (xem PRE-1, SEC-1). Mục này không phải một tính năng của đề bài (xem 1.3) mà là phần mọi tính năng đều cần; mục tương ứng các dòng A19, A20, A21 của backlog [2]. Đăng xuất là SEC-9. Độ ưu tiên = Cao.
+
+### 3.5.2 Yêu cầu chức năng
+
+```fr
+Account.Register: Customer đăng ký tài khoản
+.Fields: Hệ thống phải cho người chưa có tài khoản đăng ký tài khoản Customer bằng họ tên, email, mật khẩu và số điện thoại.
+.Required: Hệ thống phải kiểm tra đủ bốn trường và chỉ ra trường còn thiếu; trường chỉ gồm khoảng trắng được coi là còn thiếu.
+.Email: Hệ thống phải kiểm tra email theo định nghĩa "valid e-mail address" của chuẩn HTML (xem S9 ở mục 1.4).
+.Unique: Hệ thống phải từ chối đăng ký khi email đã thuộc một tài khoản khác và báo lý do; email được so khớp sau khi bỏ khoảng trắng hai đầu và không phân biệt chữ hoa, chữ thường.
+.Password: Hệ thống phải kiểm tra mật khẩu dài từ 8 đến 64 ký tự và chỉ ra khi mật khẩu sai độ dài.
+.Phone: Hệ thống phải kiểm tra số điện thoại theo quy tắc ở Order.Create.Phone.
+.Role: Hệ thống phải gán vai trò Customer cho mọi tài khoản được tạo qua đăng ký (xem AS-2).
+
+Account.Login: Người dùng đăng nhập
+.Credentials: Hệ thống phải cho người dùng đăng nhập bằng email và mật khẩu; email được so khớp như ở Account.Register.Unique.
+.Fail: Hệ thống phải báo đăng nhập không thành công theo SEC-11 khi email hoặc mật khẩu không đúng.
+```

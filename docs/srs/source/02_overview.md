@@ -33,3 +33,7 @@
 - **AS-4:** Thanh toán nằm ngoài hệ thống (xem BR-07).
 
 Phiên bản này không có phụ thuộc bên ngoài (xem 5.2).
+
+## 2.6 Tài liệu người dùng
+
+Phiên bản 1.0 kèm hướng dẫn sử dụng cho các Use Case ở mục 3; hướng dẫn được viết ở giai đoạn 2 (dòng A85 của backlog [2]).
