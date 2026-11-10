@@ -18,11 +18,11 @@ Tiền điều kiện: | PRE-1. Người dùng đã đăng nhập với vai trò
 Hậu điều kiện: | POST-1. Đơn hàng được lưu với mã đơn hàng duy nhất và trạng thái "Chờ xác nhận" (xem Hình A.2).<br>POST-2. Lịch sử trạng thái của đơn có bản ghi đầu tiên (xem Track.Update.History).
 Luồng chính: | 1.0 Tạo đơn hàng<br>1. Customer yêu cầu tạo đơn hàng.<br>2. Hệ thống hiển thị danh sách sản phẩm của cửa hàng.<br>3. Customer chọn sản phẩm và nhập số lượng cho mỗi sản phẩm đã chọn.<br>4. Customer nhập thông tin người nhận và địa chỉ giao.<br>5. Customer cho biết đã nhập xong.<br>6. Hệ thống kiểm tra các trường bắt buộc và định dạng từng trường (xem 1.0.E1).<br>7. Hệ thống hiển thị lại sản phẩm, số lượng, người nhận và địa chỉ giao.<br>8. Customer xác nhận đơn (tiếp tục luồng chính), yêu cầu sửa đơn (xem 1.1), hoặc hủy thao tác tạo đơn (hệ thống kết thúc UC, đơn không được lưu).<br>9. Hệ thống gán mã đơn hàng duy nhất, lưu đơn với trạng thái "Chờ xác nhận" (xem Hình A.2) và ghi bản ghi đầu tiên vào lịch sử trạng thái (xem 1.0.E2).<br>10. Hệ thống hiển thị thông báo tạo đơn thành công kèm mã đơn hàng.
 Luồng thay thế: | 1.1 Sửa đơn trước khi xác nhận<br>1. Ở bước 8 của luồng chính, Customer yêu cầu sửa đơn.<br>2. Hệ thống hiển thị thông tin đơn đã nhập để Customer sửa.<br>3. Customer sửa sản phẩm, số lượng, thông tin người nhận hoặc địa chỉ giao.<br>4. Quay lại bước 5 của luồng chính.
-Ngoại lệ: | 1.0.E1 Thiếu trường bắt buộc hoặc sai định dạng<br>1. Hệ thống chỉ ra trường bắt buộc còn thiếu hoặc trường sai định dạng, kể cả số lượng sai ràng buộc (xem Order.Create.Quantity). Danh sách trường bắt buộc và quy tắc định dạng: TBD (xem C-1).<br>2a. Nếu Customer bổ sung hoặc sửa các trường đó, thì quay lại bước 6 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác tạo đơn, thì hệ thống kết thúc UC.<br>1.0.E2 Lưu đơn thất bại<br>1. Hệ thống hoàn tác (rollback) mọi bước đã làm khi lưu đơn (xem Order.Done.Failure).<br>2. Hệ thống báo Customer tạo đơn không thành công kèm lý do (xem Order.Done.Reason).<br>3. Hệ thống kết thúc UC; đơn không được lưu.
+Ngoại lệ: | 1.0.E1 Thiếu trường bắt buộc hoặc sai định dạng<br>1. Hệ thống chỉ ra trường bắt buộc còn thiếu hoặc trường sai định dạng, kể cả số lượng sai ràng buộc (xem Order.Create.Quantity). Danh sách trường bắt buộc và quy tắc định dạng: xem Order.Create.Required, Order.Create.Format.<br>2a. Nếu Customer bổ sung hoặc sửa các trường đó, thì quay lại bước 6 của luồng chính.<br>2b. Ngược lại, nếu Customer hủy thao tác tạo đơn, thì hệ thống kết thúc UC.<br>1.0.E2 Lưu đơn thất bại<br>1. Hệ thống hoàn tác (rollback) mọi bước đã làm khi lưu đơn (xem Order.Done.Failure).<br>2. Hệ thống báo Customer tạo đơn không thành công kèm lý do (xem Order.Done.Reason).<br>3. Hệ thống kết thúc UC; đơn không được lưu.
 Độ ưu tiên: | Cao
 Tần suất sử dụng: | Chưa có số liệu
 Quy tắc nghiệp vụ: | Không có
-Thông tin khác: | Customer có thể hủy thao tác tạo đơn trước khi xác nhận đơn (xem Order.Confirm.Prompt).<br>Số sản phẩm trong mỗi đơn: TBD (xem C-7).
+Thông tin khác: | Customer có thể hủy thao tác tạo đơn trước khi xác nhận đơn (xem Order.Confirm.Prompt).<br>Một đơn có một hoặc nhiều sản phẩm, mỗi sản phẩm một dòng (xem Order.Create.Product).<br>Yêu cầu hoàn hàng và sự cố áp dụng cho cả đơn, không cho từng sản phẩm (xem 1.3).
 Giả định: | Danh sách sản phẩm có sẵn dưới dạng dữ liệu mẫu (xem AS-3).
 ```
 
@@ -30,13 +30,13 @@ Giả định: | Danh sách sản phẩm có sẵn dưới dạng dữ liệu m�
 
 ```fr
 Order.Create: Customer tạo đơn hàng
-.Product: Hệ thống phải cho Customer chọn sản phẩm từ danh sách sản phẩm của cửa hàng (xem AS-3), với số sản phẩm mỗi đơn là TBD (xem C-7).
-.Quantity: Hệ thống phải cho Customer nhập số lượng cho mỗi sản phẩm đã chọn, với ràng buộc TBD (xem C-1).
+.Product: Hệ thống phải cho Customer chọn một hoặc nhiều sản phẩm từ danh sách sản phẩm của cửa hàng (xem AS-3), mỗi sản phẩm một dòng và không có hai dòng cùng một sản phẩm.
+.Quantity: Hệ thống phải cho Customer nhập số lượng cho mỗi sản phẩm đã chọn, là số nguyên lớn hơn hoặc bằng 1.
 .Receiver: Hệ thống phải cho Customer nhập tên người nhận.
-.Phone: Hệ thống phải cho Customer nhập số điện thoại người nhận, với định dạng TBD (xem C-1).
-.Address: Hệ thống phải cho Customer nhập địa chỉ giao, với định dạng TBD (xem C-1).
-.Required: Hệ thống phải kiểm tra Customer đã nhập đủ các trường bắt buộc, với danh sách TBD (xem C-1), và chỉ ra trường còn thiếu.
-.Format: Hệ thống phải kiểm tra định dạng từng trường theo quy tắc TBD (xem C-1) và chỉ ra trường sai định dạng.
+.Phone: Hệ thống phải cho Customer nhập số điện thoại người nhận, gồm đúng 10 chữ số và bắt đầu bằng chữ số 0.
+.Address: Hệ thống phải cho Customer nhập địa chỉ giao dưới dạng một chuỗi văn bản tự do.
+.Required: Hệ thống phải kiểm tra Customer đã nhập đủ các trường bắt buộc (ít nhất một dòng sản phẩm, số lượng của mỗi dòng, tên người nhận, số điện thoại người nhận, địa chỉ giao) và chỉ ra trường còn thiếu; trường chỉ gồm khoảng trắng được coi là còn thiếu.
+.Format: Hệ thống phải kiểm tra định dạng của số lượng và số điện thoại người nhận theo Order.Create.Quantity, Order.Create.Phone và chỉ ra trường sai định dạng.
 
 Order.Confirm: Xác nhận đơn
 .Display: Hệ thống phải hiển thị lại sản phẩm, số lượng, người nhận và địa chỉ giao trước khi lưu đơn.
@@ -88,7 +88,7 @@ Ngoại lệ: | 3.0.E1 Hàng bị hỏng khi giao<br>1. Shipper phát hiện hà
 Độ ưu tiên: | Cao
 Tần suất sử dụng: | Chưa có số liệu
 Quy tắc nghiệp vụ: | BR-01, BR-06
-Thông tin khác: | Shipper chỉ xem và cập nhật được đơn được phân công cho chính mình (xem SEC-4, SEC-8).<br>Hệ thống từ chối mọi bước chuyển không có trên Hình A.2 và báo lý do (xem Track.Update.Valid).<br>Các bước chuyển T5, T9, T10 chỉ thực hiện qua báo sự cố (xem Issue.Report), không chọn qua Track.Update.Next.<br>Mỗi lần trạng thái đơn thay đổi, màn hình đang mở của Customer và Admin hiển thị trạng thái mới mà không cần tải lại trang (xem RT-1, RT-2); Customer được thông báo theo CI-1, kênh TBD (xem C-2).<br>Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao"; báo sự cố ở trạng thái khác: TBD (xem C-11).<br>Hàng hỏng hoặc thất lạc do Customer báo sau khi đơn "Đã giao" được xử lý qua yêu cầu hoàn hàng (xem UC-05, UC-06).
+Thông tin khác: | Shipper chỉ xem và cập nhật được đơn được phân công cho chính mình (xem SEC-4, SEC-8).<br>Hệ thống từ chối mọi bước chuyển không có trên Hình A.2 và báo lý do (xem Track.Update.Valid).<br>Các bước chuyển T5, T9, T10 chỉ thực hiện qua báo sự cố (xem Issue.Report), không chọn qua Track.Update.Next.<br>Mỗi lần trạng thái đơn thay đổi, màn hình đang mở của Customer và Admin hiển thị trạng thái mới mà không cần tải lại trang (xem RT-1, RT-2); Customer được thông báo trong ứng dụng (xem CI-1).<br>Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao"; báo sự cố ở trạng thái khác nằm ngoài phạm vi phiên bản này (xem 1.3).<br>Hàng hỏng hoặc thất lạc do Customer báo sau khi đơn "Đã giao" được xử lý qua yêu cầu hoàn hàng (xem UC-05, UC-06).
 Giả định: | Tài khoản Shipper đã có sẵn (xem AS-2).
 ```
 
@@ -100,7 +100,7 @@ Mô tả: | Customer xem danh sách đơn hàng của mình, rồi xem trạng t
 Điều kiện kích hoạt: | Customer cho biết muốn xem tình trạng vận chuyển của đơn hàng.
 Tiền điều kiện: | PRE-1. Người dùng đã đăng nhập với vai trò Customer.
 Hậu điều kiện: | POST-1. Trạng thái hiện tại và lịch sử trạng thái của đơn được chọn hiển thị cho Customer.
-Luồng chính: | 4.0 Theo dõi đơn hàng<br>1. Customer mở danh sách đơn hàng.<br>2. Hệ thống hiển thị danh sách đơn của chính Customer đó.<br>3. Customer chọn một đơn.<br>4. Hệ thống hiển thị trạng thái hiện tại của đơn và lịch sử trạng thái theo thứ tự thời gian, chiều sắp xếp TBD (xem C-13) (xem 4.0.E1).
+Luồng chính: | 4.0 Theo dõi đơn hàng<br>1. Customer mở danh sách đơn hàng.<br>2. Hệ thống hiển thị danh sách đơn của chính Customer đó.<br>3. Customer chọn một đơn.<br>4. Hệ thống hiển thị trạng thái hiện tại của đơn và lịch sử trạng thái theo thứ tự thời gian, từ cũ đến mới (xem 4.0.E1).
 Luồng thay thế: | Không có
 Ngoại lệ: | 4.0.E1 Mất kết nối khi đang theo dõi (xem ROB-1)
 Độ ưu tiên: | Cao
@@ -128,7 +128,7 @@ Track.Update: Shipper cập nhật trạng thái giao hàng (UC-03)
 Track.View: Customer theo dõi đơn hàng (UC-04)
 .List: Hệ thống phải hiển thị cho Customer danh sách đơn của chính Customer đó.
 .Current: Hệ thống phải hiển thị trạng thái hiện tại của đơn được chọn.
-.History: Hệ thống phải hiển thị lịch sử trạng thái của đơn được chọn theo thứ tự thời gian, chiều sắp xếp TBD (xem C-13).
+.History: Hệ thống phải hiển thị lịch sử trạng thái của đơn được chọn theo thứ tự thời gian, từ cũ đến mới.
 
 Track.Admin: Admin theo dõi đơn hàng (dùng ở UC-07 luồng 7.1, 7.2; xem RT-2)
 .List: Hệ thống phải hiển thị cho Admin danh sách đơn hàng ở mọi trạng thái, kèm trạng thái hiện tại của mỗi đơn.

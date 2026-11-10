@@ -37,4 +37,4 @@ Trạng thái kết thúc của đơn hàng là "Đã hoàn về người bán",
 
 Hàng hỏng và hàng thất lạc đều có hai ngả phát hiện nhưng về cùng một trạng thái: hỏng qua T9 (Shipper) hoặc T11 (người mua); thất lạc qua T10 (Shipper hoặc Admin) hoặc T12 (người mua).
 
-Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, T10). Báo sự cố ở trạng thái khác: TBD (xem C-11).
+Sự cố chỉ báo được khi đơn ở trạng thái "Đang giao" (T5, T9, T10). Báo sự cố ở trạng thái khác nằm ngoài phạm vi phiên bản này (xem 1.3).
