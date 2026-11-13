@@ -16,3 +16,7 @@ mutants/
 .hypothesis/
 .stryker-tmp/
 reports/mutation/
+
+# Playwright
+playwright-report/
+test-results/
