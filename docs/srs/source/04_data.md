@@ -65,6 +65,7 @@ Không thuộc phiên bản này. Đề bài không yêu cầu báo cáo thống
 ## 4.4 Toàn vẹn, lưu giữ và hủy dữ liệu
 
 - **DI-1:** Hệ thống phải chỉ cho phép thêm bản ghi lịch sử trạng thái, không cho phép sửa hay xóa bản ghi đã có.
+- **DI-2:** Hệ thống phải từ chối lưu chuỗi do người dùng nhập dài hơn giá trị ở cột Độ dài của mục 4.2 và chỉ ra trường vượt độ dài.
 
 Việc ghi lịch sử mỗi khi trạng thái đơn hàng thay đổi là yêu cầu Track.Update.History ở mục 3.2, mục này không viết lại.
 
