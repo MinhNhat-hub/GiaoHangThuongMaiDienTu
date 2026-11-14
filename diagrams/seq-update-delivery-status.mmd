@@ -27,21 +27,13 @@ sequenceDiagram
     ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "DELIVERED")
     ShipmentService-->>Shipper: true
 
-  else Action: Record Failed Delivery
-    Shipper->>ShipmentService: recordFailedDelivery(shipmentId, shipperId, notes)
-    Note over ShipmentService: Verify order status is DELIVERING
-    ShipmentService->>Shipment: recordFailedAttempt(3)
-    alt Under maximum failed attempts limit
-      Shipment-->>ShipmentService: false
-      ShipmentService->>Order: updateStatus("FAILED_DELIVERY", shipperId)
-      ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "FAILED_DELIVERY")
-      Note over NotificationService: Notify for redelivery attempt
-      ShipmentService-->>Shipper: true
-    else Maximum failed attempts reached
-      Shipment-->>ShipmentService: true
-      ShipmentService->>Order: updateStatus("RETURNING", shipperId)
-      ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "RETURNING")
-      Note over NotificationService: Alert Admin that order is returning to seller
-      ShipmentService-->>Shipper: true
-    end
+  else Action: Report Delivery Issue (e.g. Failed Delivery, Damaged)
+    Shipper->>ShipmentService: reportDeliveryIssue(orderId, "FAILED_DELIVERY", notes)
+    Note over ShipmentService: Verify order status is DELIVERING (Issue.Report.Status)
+    ShipmentService->>ShipmentService: storeIssueAndCountFailedAttempts(orderId)
+    ShipmentService->>Order: updateStatus("DELIVERY_FAILED", shipperId)
+    ShipmentService->>NotificationService: publishOrderStatusChanged(orderId, "DELIVERING", "DELIVERY_FAILED")
+    ShipmentService->>NotificationService: publishIssueReported(issueId, orderId, "FAILED_DELIVERY")
+    Note over NotificationService: Always transitions to DELIVERY_FAILED (T5). Admin handles T7 (RETURNING) when failed attempts reach limit (BR-06, UC-07).
+    ShipmentService-->>Shipper: issueId
   end

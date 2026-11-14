@@ -44,10 +44,10 @@ This document defines the RESTful API endpoints and real-time event interfaces s
     "email": "customer@example.com",
     "password": "StrongPassword123",
     "fullName": "Nguyen Van A",
-    "phoneNumber": "0901234567",
-    "role": "Customer"
+    "phoneNumber": "0901234567"
   }
   ```
+  *(Note: The server automatically assigns the role `Customer` per requirement Account.Register.Role).*
 - **Response**: `201 Created` with token and user profile.
 
 ### 2.2 Login
@@ -102,7 +102,7 @@ This document defines the RESTful API endpoints and real-time event interfaces s
 
 ### 3.3 Get Order Detail
 - **GET** `/orders/:id`
-- **Access**: Authenticated (Customer owns order, assigned Shipper, or Admin)
+- **Access**: Authenticated (Customer owns order, assigned Shipper, or Admin per SEC-1, SEC-2)
 - **Response Body**:
   ```json
   {
@@ -118,8 +118,7 @@ This document defines the RESTful API endpoints and real-time event interfaces s
         "id": "item_01",
         "productId": "prod_01",
         "productName": "Wireless Mouse",
-        "quantity": 2,
-        "price": 250000
+        "quantity": 2
       }
     ],
     "shipment": {
@@ -177,23 +176,47 @@ This document defines the RESTful API endpoints and real-time event interfaces s
 
 ### 4.3 Update Shipment Delivery Status
 - **PATCH** `/shipments/:id/status`
-- **Access**: Shipper
+- **Access**: Shipper (assigned shipper only)
 - **Request Body**:
   ```json
   {
-    "action": "START_DELIVERY" | "CONFIRM_DELIVERED" | "REPORT_FAILED_DELIVERY",
-    "notes": "Recipient was not available at address"
+    "action": "START_DELIVERY" | "CONFIRM_DELIVERED",
+    "notes": "Picked up / delivered successfully"
   }
   ```
-  - `START_DELIVERY`: Transitions order from `WAITING_PICKUP` to `DELIVERING`.
-  - `CONFIRM_DELIVERED`: Transitions order from `DELIVERING` to `DELIVERED`.
-  - `REPORT_FAILED_DELIVERY`: Increments failed attempts counter. If limit is not reached, sets status to `FAILED_DELIVERY` (for redelivery). If limit is reached, Admin initiates return to seller (`RETURNING`).
+  - `START_DELIVERY`: Transitions order from `WAITING_PICKUP` to `DELIVERING` (T3).
+  - `CONFIRM_DELIVERED`: Transitions order from `DELIVERING` to `DELIVERED` (T4).
+  *(Note: Reporting failed delivery or transit incidents is handled exclusively via `POST /issues` per Section 6.1, which records the incident and transitions the order to `DELIVERY_FAILED` (T5) without automatically transitioning to `RETURNING`).*
 - **Response**: `200 OK` with updated status.
 
 ### 4.4 Track Shipment
-- **GET** `/shipments/:id/tracking` (or by tracking number `GET /shipments/track/:trackingNumber`)
-- **Access**: Public / Customer / Admin
+- **GET** `/shipments/track/:trackingNumber` (or `GET /shipments/:id/tracking`)
+- **Access**: Authenticated (Customer owns order, assigned Shipper, or Admin per SEC-1, SEC-2)
 - **Response**: Current status, timeline of historical status changes, shipper details, and recipient destination.
+
+### 4.5 Process Return Shipment (Admin)
+- **POST** `/shipments/:id/return`
+- **Access**: Admin (Issue.Resolve.Return, UC-07 step 4)
+- **Description**: Transitions an order currently in `DELIVERY_FAILED` status whose failed delivery attempts reached the BR-06 threshold to `RETURNING` (T7).
+- **Request Body**:
+  ```json
+  {
+    "notes": "Order reached max failed delivery attempts, initiating return to seller"
+  }
+  ```
+- **Response**: `200 OK` with updated order status (`RETURNING`).
+
+### 4.6 Confirm Return Received (Admin / Warehouse)
+- **POST** `/shipments/:id/confirm-returned`
+- **Access**: Admin (Issue.Resolve.Returned, UC-07 alt 7.2)
+- **Description**: Confirms the returned package has arrived back at the seller/warehouse and transitions order from `RETURNING` to `RETURNED_TO_SELLER` (T8).
+- **Request Body**:
+  ```json
+  {
+    "notes": "Package inspected and received at warehouse"
+  }
+  ```
+- **Response**: `200 OK` with updated order status (`RETURNED_TO_SELLER`).
 
 ---
 
@@ -251,35 +274,72 @@ This document defines the RESTful API endpoints and real-time event interfaces s
     "notes": "Package was lost during transit."
   }
   ```
-- **Response**: `201 Created`. Order transitions to `DAMAGED`, `LOST`, or `FAILED_DELIVERY` accordingly.
+  *(Note: For `FAILED_DELIVERY`, `failedAttempts` is calculated dynamically by counting stored delivery issue records per BR-06 and SRS 4.2; order transitions to `DELIVERY_FAILED` (T5)).*
+- **Response**: `201 Created`. Order transitions to `DAMAGED`, `LOST`, or `DELIVERY_FAILED` accordingly.
 
-### 6.2 Resolve Delivery Issue
+### 6.2 List Unresolved Delivery Issues
+- **GET** `/issues?resolved=false`
+- **Access**: Admin (Issue.Resolve.List)
+- **Query Parameters**:
+  - `resolved` (boolean, optional): Filter by resolution status (e.g., `false` for unresolved issues).
+  - `page` (number, optional): Page number.
+  - `limit` (number, optional): Items per page.
+- **Response**: `200 OK` with list of delivery issues.
+
+### 6.3 Resolve Delivery Issue
 - **PATCH** `/issues/:id/resolve`
-- **Access**: Admin
+- **Access**: Admin (Issue.Resolve.Result)
 - **Request Body**:
   ```json
   {
     "resolutionNotes": "Verified loss with shipping depot. Initiated order closure."
   }
   ```
+  *(Note: `resolutionNotes` is required, non-empty, max 500 characters per SRS 4.2. Resolving a failed delivery issue whose order reached max attempts requires the order to first be transitioned to `RETURNING` via `POST /shipments/:id/return` per Issue.Resolve.Result).*
+- **Response**: `200 OK` with resolved issue details.
 
 ---
 
-## 7. Real-Time Event Specifications
+## 7. User & Shipper Management Endpoints
+
+### 7.1 List Shippers
+- **GET** `/users?role=Shipper` (or `GET /shippers`)
+- **Access**: Admin
+- **Description**: Retrieves a list of active Shippers to populate the shipper assignment selector in the Admin operations dashboard (UC-02, Track.Assign.Shipper).
+- **Response**: `200 OK` with array of shipper profiles:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": "shipper_01",
+        "fullName": "Le Van Shipper",
+        "phoneNumber": "0987654321",
+        "email": "shipper01@example.com"
+      }
+    ],
+    "error": null
+  }
+  ```
+
+---
+
+## 8. Real-Time Event Specifications
 
 The system supports event-driven real-time updates without polling, delivered via WebSockets or Server-Sent Events (SSE).
 
-### 7.1 Channel Subscriptions
+### 8.1 Channel Subscriptions
+- **Customer Channel**: `customers:{customerId}` (subscribed by customer app; server enforces SEC-2 so customers can only subscribe to their own channel).
 - **Order Channel**: `orders:{orderId}` (subscribed by customer viewing order tracking screen).
 - **Shipper Channel**: `shippers:{shipperId}` (subscribed by shipper app).
 - **Admin Channel**: `admin:dashboard` (subscribed by store admin dashboard).
 
-### 7.2 Event Catalog
+### 8.2 Event Catalog
 
 | Event Name | Channel | Payload | Description |
 |---|---|---|---|
 | `order.created` | `admin:dashboard` | `{ orderId, customerName, totalItems, createdAt }` | Notifies Admin of a new incoming customer order. |
-| `order.status_changed` | `orders:{orderId}`, `admin:dashboard` | `{ orderId, oldStatus, newStatus, changedAt, changedBy }` | Broadcasts order status changes so client UI updates instantly. |
+| `order.status_changed` | `customers:{customerId}`, `orders:{orderId}`, `admin:dashboard` | `{ orderId, oldStatus, newStatus, changedAt, changedBy }` | Broadcasts order status changes so client UI updates instantly. |
 | `shipment.assigned` | `shippers:{shipperId}` | `{ shipmentId, orderId, trackingNumber, address }` | Alerts the assigned shipper that an order is ready for pickup. |
 | `issue.reported` | `admin:dashboard` | `{ issueId, orderId, issueType, reportedBy, notes }` | Alerts Admin when a delivery issue or damaged/lost incident occurs. |
-| `return.status_changed` | `orders:{orderId}`, `admin:dashboard` | `{ requestId, orderId, newStatus, rejectionReason }` | Informs customer and admin of return approval/rejection. |
+| `return.status_changed` | `customers:{customerId}`, `orders:{orderId}`, `admin:dashboard` | `{ requestId, orderId, newStatus, rejectionReason }` | Informs customer and admin of return approval/rejection. |
