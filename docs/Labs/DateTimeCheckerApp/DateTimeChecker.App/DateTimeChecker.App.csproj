@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AssemblyName>DateTimeChecker.App</AssemblyName>
+    <RootNamespace>DateTimeChecker.App</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DateTimeChecker\DateTimeChecker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\logo.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- AssemblyName DateTimeChecker would clash with the core library, so the build copies the apphost to DateTimeChecker.exe. -->
+  <Target Name="CopyAppHostAsDateTimeChecker" AfterTargets="Build" Condition="Exists('$(OutDir)DateTimeChecker.App.exe')">
+    <Copy SourceFiles="$(OutDir)DateTimeChecker.App.exe" DestinationFiles="$(OutDir)DateTimeChecker.exe" />
+  </Target>
+
+  <!-- Publish renames DateTimeChecker.App.exe to DateTimeChecker.exe, overwriting an older copy. -->
+  <Target Name="RenamePublishedExe" AfterTargets="Publish" Condition="Exists('$(PublishDir)DateTimeChecker.App.exe')">
+    <Move SourceFiles="$(PublishDir)DateTimeChecker.App.exe" DestinationFiles="$(PublishDir)DateTimeChecker.exe" OverwriteReadOnlyFiles="true" />
+  </Target>
+
+</Project>

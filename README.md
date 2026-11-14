@@ -17,7 +17,8 @@ Xem `MEMBERS.md`. Phân công công việc ở `docs/plan/04_backlog_assignment.
 ```
 docs/srs/         SRS: SRS.md (bản gốc), SRS.docx (xuất từ SRS.md, chỉ để đọc và nộp), bản chia theo chương, giữ khớp với SRS.md (source/), nguồn của từng ID (source/00_id_index.md), sơ đồ draw.io (diagrams/)
 docs/plan/        kế hoạch SRS, Test Plan, phân công theo backlog
-docs/templates/   mẫu mô tả PR và mẫu review / comment
+docs/test-plan/   Test Plan: test_plan.md (bản gốc), TestPlan.docx (xuất từ test_plan.md, chỉ để đọc và nộp)
+docs/templates/   mẫu mô tả PR, mẫu review / comment và mẫu test case
 diagrams/         sơ đồ Mermaid (.mmd) cho thiết kế
 src/              mã nguồn (giai đoạn 2)
 tests/            test (giai đoạn 2)
