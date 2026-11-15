@@ -1,4 +1,4 @@
-# Khung ID của SRS (cập nhật 10/11/2026)
+# Khung ID của SRS (cập nhật 13/11/2026)
 
 `docs/srs/SRS.md` là bản gốc của SRS. File này ghi **nguồn** của từng ID, trạng thái, BR và vấn đề mở trong SRS.md. Thêm, đổi hay bỏ ID trong SRS.md thì sửa file này và chương tương ứng trong `source/` trong cùng PR. Không tự thêm ID, trạng thái, BR hay con số khi chưa có nguồn. Bản đầu của file này là **danh sách ID gửi TV2** (mốc M1 31/10, kế hoạch mục 4).
 
@@ -242,6 +242,7 @@ Mỗi dòng con = 1 câu "Hệ thống phải…". Cột "Ý" là nội dung ph�
 | AS-4 | Thanh toán nằm ngoài hệ thống (xem BR-07) | 03 §3.5 |
 | AS-5 | Cửa hàng đặt thời hạn lưu và xóa dữ liệu cá nhân theo Luật 91/2025/QH15; phiên bản 1.0 không có chức năng xóa dữ liệu cá nhân | S13, quyết định nhóm 11/11/2026 |
 | DI-1 | Bản ghi lịch sử trạng thái chỉ được thêm, không được sửa hay xóa. Thời hạn lưu: chưa có số liệu | 01 §1 (4.4) |
+| DI-2 | Hệ thống từ chối lưu chuỗi do người dùng nhập dài hơn độ dài ở 4.2 và chỉ ra trường vượt độ dài | Quyết định ngày 13/11/2026 (TV1); nhóm xác nhận qua review PR |
 | UI-1 | Có các màn hình: Đăng nhập, Đăng ký, Trang chủ Customer, Tạo đơn hàng, Chi tiết đơn hàng, Yêu cầu hoàn hàng, Theo dõi vận chuyển, Bảng điều khiển Admin, Màn hình giao hàng của Shipper. Bố cục chi tiết theo mockup ở giai đoạn 2 | A8–A16, KH 1.4 |
 | SI | Không có (không kết nối hệ thống ngoài; thông báo nằm trong ứng dụng, xem CI-1) | 01 §1 (5.2); PL-C (C-2) |
 | (5.3) | Không có giao diện phần cứng | 01 §1 (5.3) |

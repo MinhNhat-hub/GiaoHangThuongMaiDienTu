@@ -1,12 +1,12 @@
 # Đặc tả yêu cầu phần mềm cho Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử, phiên bản 1.0
 
-Phiên bản 1.0 nháp 4
+Phiên bản 1.0
 
 Soạn bởi TV1
 
 Nhóm 10 – SE113 Kiểm chứng phần mềm
 
-10/11/2026
+13/11/2026
 
 ## Lịch sử sửa đổi
 
@@ -16,6 +16,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 | TV1 | 02/11/2026 | Sửa theo review: tách, thêm và đổi nội dung một số ID (xem srs_id_changes.md) | 1.0 nháp 2 |
 | TV2 | 03/11/2026 | Sửa theo review: đóng C-15, thêm luồng 3.2 của UC-03, SEC-8, SEC-9; tách bước 3 của luồng 7.0; đổi Return.Review.Issue thành Return.Review.OrderStatus; SRS.md thành bản gốc | 1.0 nháp 3 |
 | TV1 | 10/11/2026 | Chốt C-1 đến C-14: điền các chỗ TBD; thêm CO-2, ngoại lệ 5.0.E4 của UC-05; thêm phần tử dữ liệu email, mật khẩu, số điện thoại, mô tả lý do; thêm mục 2.6 Tài liệu người dùng, mục 3.5 Tài khoản, SEC-10, SEC-11; chốt độ dài và định dạng ngày giờ ở §4.2; thêm thuật ngữ Tài khoản, giả định AS-5; thêm tài liệu tham khảo S6–S13 | 1.0 nháp 4 |
+| TV1 | 13/11/2026 | Thêm DI-2 (từ chối chuỗi vượt độ dài ở 4.2); xuất lại Hình 1, Hình 2 và SRS.docx; bản chính thức | 1.0 |
 
 ## 1 Giới thiệu
 
@@ -475,6 +476,8 @@ Không thuộc phiên bản này. Đề bài không yêu cầu báo cáo thống
 ### 4.4 Toàn vẹn, lưu giữ và hủy dữ liệu
 
 **DI-1:** Hệ thống phải chỉ cho phép thêm bản ghi lịch sử trạng thái, không cho phép sửa hay xóa bản ghi đã có.
+
+**DI-2:** Hệ thống phải từ chối lưu chuỗi do người dùng nhập dài hơn giá trị ở cột Độ dài của mục 4.2 và chỉ ra trường vượt độ dài.
 
 Việc ghi lịch sử mỗi khi trạng thái đơn hàng thay đổi là yêu cầu Track.Update.History ở mục 3.2, mục này không viết lại.
 
