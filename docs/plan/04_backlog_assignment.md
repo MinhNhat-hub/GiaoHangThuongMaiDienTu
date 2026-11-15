@@ -79,8 +79,8 @@
 | A77 | Unit Test – Return Management | 2 | TV3, TV4 |  |
 | A78 | Fix Order / Return Bugs | 2 | TV3, TV4 | Ai viết code phần nào sửa phần đó |
 | A79 | Unit Test – Shipment Management | 2 | TV3, TV4 |  |
-| A80 | Test Real-time Tracking | 2 | TV2 |  |
-| A81 | Test Shipper & Exception Handling | 2 | TV2 |  |
+| A80 | Test Real-time Tracking | 2 | TV1 | Theo module, Test Plan §4.1 |
+| A81 | Test Shipper & Exception Handling | 2 | TV2, TV4 | TV2 phần luồng Shipper (TRK), TV4 phần sự cố (ISS); Test Plan §4.1 |
 | A82 | Fix Delivery-related Bugs | 2 | TV3, TV4 |  |
 | A83 | System Testing | 2 | TV2 |  |
 | A84 | Regression Testing | 2 | TV2 |  |
@@ -102,9 +102,9 @@ Backlog không có các việc sau, nhưng giai đoạn 1 phải làm.
 
 | Người | Vai trò | Giai đoạn 1 (task backlog) | Giai đoạn 2 (task backlog) |
 |---|---|---|---|
-| TV1 | SRS | 7 + 3 việc ngoài backlog | 5 |
-| TV2 | Test Plan | 1 + viết Test Plan | 5 |
+| TV1 | SRS | 7 + 3 việc ngoài backlog | 6 |
+| TV2 | Test Plan | 1 + viết Test Plan | 3 riêng + 1 chung với TV4 |
 | TV3 | Frontend | 0 | 9 riêng + 36 chung với TV4 |
-| TV4 | Backend | 0 | 5 riêng + 36 chung với TV3 |
+| TV4 | Backend | 0 | 5 riêng + 36 chung với TV3 + 1 chung với TV2 |
 
 Lệch tải này đã biết trước khi chọn phương án A: giai đoạn 1 dồn vào TV1, TV2; giai đoạn 2 dồn vào TV3, TV4 (số liệu ở file tổng quan, mục 3). Bù lại bằng việc ai cũng review được cho nhau.
