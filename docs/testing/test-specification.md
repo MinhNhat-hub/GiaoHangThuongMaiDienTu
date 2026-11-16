@@ -22,11 +22,11 @@ Người đọc gồm các thành viên nhóm (TV1 đến TV4) và giảng viên
 
 ### 1.2 Phạm vi
 
-Tài liệu phủ 93 ID của SRS 1.0: 58 yêu cầu chức năng, 13 ngoại lệ và 22 yêu cầu phi chức năng hoặc ràng buộc, đúng danh sách ở mục 2 của Test Plan. Mọi điều kiện, dữ liệu và kết quả mong đợi lấy từ SRS, không lấy từ mã nguồn. Khi SRS không nêu một kết quả, dòng test chỉ ghi phần SRS đã nêu và không đặt thêm quy tắc.
+Tài liệu phủ 93 ID của SRS 1.0: 58 yêu cầu chức năng, 13 ngoại lệ và 22 yêu cầu phi chức năng hoặc ràng buộc, đúng danh sách ở mục 2 của Test Plan. Mọi điều kiện, dữ liệu và kết quả mong đợi lấy từ SRS, không lấy từ mã nguồn. Khi SRS không nêu một kết quả, dòng test chỉ ghi phần SRS đã nêu và không đặt thêm quy tắc. Các chỗ đó và TC bị ảnh hưởng: xem mục 5.
 
 ### 1.3 Tài liệu tham chiếu
 
-1. Nhóm 10. Đặc tả yêu cầu phần mềm (SRS) phiên bản 1.0, `docs/srs/SRS.md`. Nguồn của ID, tên trạng thái (Hình A.2), quy tắc BR-01 đến BR-07 và độ dài ở mục 4.2.
+1. Nhóm 10. Đặc tả yêu cầu phần mềm (SRS) phiên bản 1.0.1, `docs/srs/SRS.md`. Nguồn của ID, tên trạng thái (Hình A.2), quy tắc BR-01 đến BR-07, độ dài ở mục 4.2 và các chỗ SRS chưa rõ ở Phụ lục C.
 2. Nhóm 10. Kế hoạch kiểm thử (Test Plan) phiên bản 1.1, `docs/test-plan/test_plan.md`. Nguồn của danh sách yêu cầu (mục 2), ma trận và bảng quyết định (mục 3.1.2), ma trận vai trò (mục 3.1.5), mã module và định dạng mã TC (mục 3.4).
 
 ### 1.4 Cách đọc
@@ -773,3 +773,32 @@ Số TC theo module: ORD 55; TRK 48; RET 100; ISS 70; ACC 50; NFR 66; BCT 34; t�
 | `OE-2` | TC-NFR-058 |
 | `CO-1` | TC-NFR-059, TC-NFR-060 |
 | `CO-2` | TC-NFR-061 đến TC-NFR-066 |
+
+## 5 Chỗ SRS chưa rõ và TC bị ảnh hưởng
+
+Phụ lục C của SRS 1.0.1 liệt kê các chỗ SRS chưa nêu kết quả, mã C-16 đến C-37, kèm hướng xử lý và trạng thái. Cột TC bị ảnh hưởng ghi các TC có kết quả mong đợi phụ thuộc vào mã đó; các TC này chỉ kiểm phần SRS đã nêu. "Chưa có" nghĩa là chưa có TC nào kiểm đúng trường hợp của mã đó. Khi SRS 1.1 chốt một mã, TC tương ứng được sửa hoặc thêm theo.
+
+| Mã | TC bị ảnh hưởng |
+|---|---|
+| C-16 | TC-ORD-004 |
+| C-17 | Chưa có: thiếu nhiều trường bắt buộc cùng lúc |
+| C-18 | Chưa có: lưu phân công khi chưa chọn Shipper |
+| C-19 | TC-TRK-038 đến TC-TRK-040 |
+| C-20 | TC-TRK-020, TC-ISS-016, TC-ISS-022, TC-ISS-026, TC-ISS-039 |
+| C-21 | TC-TRK-046 đến TC-TRK-048, TC-NFR-036, TC-NFR-037 |
+| C-22 | TC-ACC-012 |
+| C-23 | TC-ACC-021 |
+| C-24 | Chưa có: đăng nhập bằng mật khẩu khác chữ hoa, chữ thường; đăng nhập khi để trống email hoặc mật khẩu |
+| C-25 | Chưa có: yêu cầu hoàn hàng sai nhiều điều kiện cùng lúc |
+| C-26 | Chưa có: có mô tả kèm một lý do khác "Khác" |
+| C-27 | TC-RET-003 đến TC-RET-005, TC-RET-077 đến TC-RET-079 |
+| C-28 | TC-ISS-061 đến TC-ISS-066 |
+| C-29 | TC-ACC-038, TC-ACC-039 |
+| C-30 | TC-NFR-035 |
+| C-31 | TC-NFR-051 đến TC-NFR-053 |
+| C-32 | Chưa có: nhiều trường cùng vượt độ dài trong một lần gửi (TC-NFR-055 gửi mỗi lần một trường) |
+| C-33 | TC-BCT-002 |
+| C-34 | TC-ORD-028, TC-ORD-052, TC-ACC-034 |
+| C-35 | TC-ORD-045 |
+| C-36 | TC-ORD-009, TC-ORD-010, TC-ORD-014, TC-ORD-015, TC-ORD-032, TC-RET-011, TC-RET-012, TC-RET-015, TC-RET-022, TC-RET-040, TC-RET-043, TC-ISS-054, TC-ISS-057, TC-ACC-001 đến TC-ACC-003, TC-ACC-005, TC-ACC-006, TC-ACC-012, TC-ACC-016, TC-ACC-017, TC-ACC-026 đến TC-ACC-030, TC-ACC-040, TC-ACC-041, TC-NFR-034, TC-NFR-055, TC-NFR-056 |
+| C-37 | TC-BCT-022 |
