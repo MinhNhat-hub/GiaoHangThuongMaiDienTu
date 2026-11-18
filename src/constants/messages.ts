@@ -93,6 +93,72 @@ export const MESSAGES = {
       en: 'Privacy Policy',
     },
   },
+  REGISTER_PAGE: {
+    HERO_TITLE: {
+      vi: 'Trải nghiệm dịch vụ giao hàng thông minh và tận tâm',
+      en: 'Experience smart and dedicated delivery services',
+    },
+    HERO_DESCRIPTION: {
+      vi: 'Đăng ký tài khoản Customer để tạo đơn hàng nhanh chóng, theo dõi lộ trình vận chuyển tức thời và quản lý yêu cầu hoàn hàng tiện lợi.',
+      en: 'Register a Customer account to create orders quickly, track live delivery progression, and manage returns seamlessly.',
+    },
+    TITLE: {
+      vi: 'Đăng ký',
+      en: 'Register',
+    },
+    SUBTITLE: {
+      vi: 'Điền thông tin để tạo tài khoản Customer',
+      en: 'Fill in your details to create a Customer account',
+    },
+    FULLNAME_LABEL: {
+      vi: 'Họ và Tên',
+      en: 'Full Name',
+    },
+    FULLNAME_PLACEHOLDER: {
+      vi: 'Ví dụ: Nguyễn Văn An',
+      en: 'E.g., John Doe',
+    },
+    PHONE_LABEL: {
+      vi: 'Số điện thoại',
+      en: 'Phone Number',
+    },
+    PHONE_PLACEHOLDER: {
+      vi: 'Ví dụ: 0912345678',
+      en: 'E.g., 0912345678',
+    },
+    EMAIL_LABEL: {
+      vi: 'Địa chỉ Email',
+      en: 'Email Address',
+    },
+    EMAIL_PLACEHOLDER: {
+      vi: 'name@example.com',
+      en: 'name@example.com',
+    },
+    PASSWORD_LABEL: {
+      vi: 'Mật khẩu',
+      en: 'Password',
+    },
+    PASSWORD_PLACEHOLDER: {
+      vi: 'Từ 8 đến 64 ký tự...',
+      en: '8 to 64 characters...',
+    },
+    SUBMIT_BUTTON: {
+      vi: 'Đăng ký',
+      en: 'Register',
+    },
+    SUBMITTING: {
+      vi: 'Đang khởi tạo tài khoản...',
+      en: 'Creating account...',
+    },
+    HAS_ACCOUNT_PROMPT: {
+      vi: 'Đã có tài khoản?',
+      en: 'Already have an account?',
+    },
+    LOGIN_LINK: {
+      vi: 'Đăng nhập',
+      en: 'Sign in',
+    },
+  },
   ORDER: {
     CREATE_SUCCESS: {
       vi: 'Tạo đơn hàng thành công',
