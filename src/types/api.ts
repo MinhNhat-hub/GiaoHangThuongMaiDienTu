@@ -99,6 +99,7 @@ export interface DeliveryIssue {
   reportedByName?: string;
   reportedByEmail?: string;
   reportedAt: string;
+  notes?: string;
   resolved: boolean;
   resolutionResult?: string;
   resolutionNotes?: string;
