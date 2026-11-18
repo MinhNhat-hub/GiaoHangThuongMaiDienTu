@@ -5,9 +5,8 @@ import { LoginPage, RegisterPage } from '@/features/auth';
 import { AdminDashboardPage } from '@/features/admin';
 import { CreateOrderPage, CustomerHomePage, OrderDetailPage } from '@/features/orders';
 import { CustomerReturnsPage, ReturnRequestPage } from '@/features/returns';
-import { ShipmentTrackingPage } from '@/features/shipments';
-import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
-import { TEST_IDS } from '@/constants/test-ids';
+import { ShipmentTrackingPage, ShipperDeliveryPage } from '@/features/shipments';
+import { APP_PATHS } from '@/constants/routes';
 import App from '@/App';
 
 const RootEntry: React.FC = () => {
@@ -123,17 +122,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
           children: [
             {
               path: APP_PATHS.shipperDeliveries,
-              element: (
-                <div className="bg-card rounded-2xl border border-mint-secondary/20 p-8 shadow-sm">
-                  <h1
-                    data-testid={TEST_IDS.COMMON.SCREEN_TITLE}
-                    className="text-xl font-bold text-mint-primary mb-2"
-                  >
-                    {SCREEN_NAMES.SHIPPER_DELIVERY}
-                  </h1>
-                  <div data-testid={TEST_IDS.SHIPPER.ASSIGNED_LIST} />
-                </div>
-              ),
+              element: <ShipperDeliveryPage />,
             },
           ],
         },
