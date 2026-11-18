@@ -4,6 +4,9 @@ import type { UserProfile, UserRole } from '@/types/api';
 import { AUTH_CHANGE_EVENT, apiClient } from '@/api/client';
 import { APP_PATHS } from '@/constants/routes';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { RealtimeNotificationBar } from '@/components/layout/RealtimeNotificationBar';
+import { OfflineBanner } from '@/components/common/OfflineBanner';
+import { realtimeClient, useConnectionStatus } from '@/realtime/event-client';
 
 interface AuthSessionState {
   token: string | null;
@@ -38,6 +41,8 @@ export function useAuthSession(): AuthSessionState {
 
 export const ProtectedLayout: React.FC = () => {
   const { token, user } = useAuthSession();
+  const connectionStatus = useConnectionStatus();
+
   if (!token || !user) {
     return <Navigate to={APP_PATHS.login} replace />;
   }
@@ -45,6 +50,12 @@ export const ProtectedLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-canvas text-mint-primary flex flex-col">
       <AppHeader />
+      <OfflineBanner
+        isOffline={connectionStatus.isOffline}
+        isReconnecting={connectionStatus.isReconnecting}
+        onReconnect={realtimeClient.reconnect}
+      />
+      <RealtimeNotificationBar token={token} user={user} />
       <main className="flex-1 w-full max-w-7xl mx-auto p-6">
         <Outlet />
       </main>

@@ -2,6 +2,9 @@ import React from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { ProtectedLayout, RoleRoute, useAuthSession } from './guards';
 import { LoginPage, RegisterPage } from '@/features/auth';
+import { CreateOrderPage, CustomerHomePage, OrderDetailPage } from '@/features/orders';
+import { CustomerReturnsPage, ReturnRequestPage } from '@/features/returns';
+import { ShipmentTrackingPage } from '@/features/shipments';
 import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
 import { TEST_IDS } from '@/constants/test-ids';
 import App from '@/App';
@@ -59,27 +62,39 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
           children: [
             {
               path: APP_PATHS.orderList,
-              element: <App />,
+              element: <CustomerHomePage />,
             },
             {
               path: APP_PATHS.orderCreation,
-              element: <div className="p-8">{SCREEN_NAMES.ORDER_CREATION}</div>,
-            },
-            {
-              path: '/orders/:id',
-              element: <div className="p-8">{SCREEN_NAMES.ORDER_DETAILS}</div>,
-            },
-            {
-              path: '/orders/:id/tracking',
-              element: <div className="p-8">{SCREEN_NAMES.TRACKING}</div>,
+              element: <CreateOrderPage />,
             },
             {
               path: '/orders/:id/return',
-              element: <div className="p-8">{SCREEN_NAMES.RETURN_REQUEST}</div>,
+              element: <ReturnRequestPage />,
             },
             {
               path: APP_PATHS.returnList,
-              element: <div className="p-8">Yêu cầu hoàn hàng đã gửi</div>,
+              element: <CustomerReturnsPage />,
+            },
+          ],
+        },
+        {
+          element: <RoleRoute allowedRoles={['Customer', 'Admin']} userRole={currentUserRole} />,
+          children: [
+            {
+              path: '/orders/:id/tracking',
+              element: <ShipmentTrackingPage />,
+            },
+          ],
+        },
+        {
+          element: (
+            <RoleRoute allowedRoles={['Customer', 'Admin', 'Shipper']} userRole={currentUserRole} />
+          ),
+          children: [
+            {
+              path: '/orders/:id',
+              element: <OrderDetailPage />,
             },
           ],
         },
