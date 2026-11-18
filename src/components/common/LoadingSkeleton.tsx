@@ -1,4 +1,3 @@
-// Loading skeleton placeholder animating structural cards and table rows.
 import React from 'react';
 import { TEST_IDS } from '@/constants/test-ids';
 

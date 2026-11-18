@@ -1,9 +1,3 @@
-/**
- * Centralized Bilingual Localization Dictionary (i18n)
- * Single Source of Truth for user-facing feedback, alerts, dialogs and errors.
- * No monetary or payment messages included (system scope compliance).
- */
-
 export type Locale = 'vi' | 'en';
 
 export const MESSAGES = {
@@ -13,8 +7,8 @@ export const MESSAGES = {
       en: 'Logged in successfully',
     },
     LOGIN_FAILED: {
-      vi: 'Sai tài khoản hoặc mật khẩu. Vui lòng thử lại.',
-      en: 'Invalid credentials. Please try again.',
+      vi: 'Email hoặc mật khẩu không đúng.',
+      en: 'Invalid email or password.',
     },
     LOGOUT_SUCCESS: {
       vi: 'Đã đăng xuất khỏi hệ thống',
@@ -43,20 +37,20 @@ export const MESSAGES = {
       en: 'Smart shipping platform providing real-time tracking updates and precise exception handling.',
     },
     LOGIN_TITLE: {
-      vi: 'Đăng nhập tài khoản',
-      en: 'Sign in to Account',
+      vi: 'Đăng nhập',
+      en: 'Sign in',
     },
     LOGIN_SUBTITLE: {
-      vi: 'Nhập thông tin xác thực để truy cập bảng điều khiển vận hành',
-      en: 'Enter your credentials to access the operational dashboard',
+      vi: 'Nhập email và mật khẩu để truy cập hệ thống',
+      en: 'Enter your email and password to access the system',
     },
     IDENTIFIER_LABEL: {
-      vi: 'Tài khoản (Email, SĐT hoặc Tên đăng nhập)',
-      en: 'Account (Email, Phone or Username)',
+      vi: 'Email',
+      en: 'Email',
     },
     IDENTIFIER_PLACEHOLDER: {
-      vi: 'name@example.com hoặc số điện thoại...',
-      en: 'name@example.com or phone number...',
+      vi: 'name@example.com',
+      en: 'name@example.com',
     },
     PASSWORD_LABEL: {
       vi: 'Mật khẩu',
@@ -74,21 +68,17 @@ export const MESSAGES = {
       vi: 'Đang xác thực...',
       en: 'Authenticating...',
     },
-    TEST_ACCOUNTS_LABEL: {
-      vi: 'Tài khoản kiểm thử vai trò',
-      en: 'Quick Role Presets',
-    },
     NO_ACCOUNT_PROMPT: {
       vi: 'Chưa có tài khoản?',
       en: "Don't have an account?",
     },
     REGISTER_LINK: {
-      vi: 'Đăng ký tài khoản Khách hàng',
-      en: 'Register Customer Account',
+      vi: 'Đăng ký',
+      en: 'Register',
     },
     FOOTER_COPYRIGHT: {
-      vi: '© 2026 Hệ thống Quản lý Dịch vụ Giao hàng TMĐT. Tiêu chuẩn Neobank Mint.',
-      en: '© 2026 E-Commerce Delivery Management System. Neobank Mint Standard.',
+      vi: '© 2026 Hệ thống Quản lý Dịch vụ Giao hàng TMĐT.',
+      en: '© 2026 E-Commerce Delivery Management System.',
     },
     FOOTER_HELP: {
       vi: 'Hỗ trợ kỹ thuật',
@@ -185,6 +175,7 @@ export const MESSAGES = {
 
 export const DEFAULT_LOCALE: Locale = 'vi';
 
+// Resolves a localized message entry for the active locale.
 export function getMessage(
   entry: { vi: string; en: string },
   locale: Locale = DEFAULT_LOCALE

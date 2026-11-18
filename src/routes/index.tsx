@@ -1,33 +1,65 @@
-// Central application route tree defining access boundaries for Customer, Shipper, and Admin roles.
-import { createBrowserRouter } from 'react-router-dom';
-import { ProtectedLayout, RoleRoute } from './guards';
+import React from 'react';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { ProtectedLayout, RoleRoute, useAuthSession } from './guards';
 import { LoginPage } from '@/features/auth/LoginPage';
+import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
+import { TEST_IDS } from '@/constants/test-ids';
 import App from '@/App';
 
-// Root router tree configured for role-based navigation.
+const RootEntry: React.FC = () => {
+  const { token, user } = useAuthSession();
+  if (!token || !user) {
+    return <LoginPage />;
+  }
+  if (user.role === 'Admin') {
+    return <Navigate to={APP_PATHS.adminDashboard} replace />;
+  }
+  if (user.role === 'Shipper') {
+    return <Navigate to={APP_PATHS.shipperDeliveries} replace />;
+  }
+  return <ProtectedLayout />;
+};
+
+const PublicOnlyLoginRoute: React.FC = () => {
+  const { token, user } = useAuthSession();
+  if (token && user) {
+    if (user.role === 'Admin') return <Navigate to={APP_PATHS.adminDashboard} replace />;
+    if (user.role === 'Shipper') return <Navigate to={APP_PATHS.shipperDeliveries} replace />;
+    return <Navigate to={APP_PATHS.customerHome} replace />;
+  }
+  return <LoginPage />;
+};
+
+// Builds the central route configuration for all roles and authentication screens.
 export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admin' | null) =>
   createBrowserRouter([
     {
-      path: '/',
-      element: <App />,
+      path: APP_PATHS.login,
+      element: <RootEntry />,
+      children: [
+        {
+          index: true,
+          element: <App />,
+        },
+      ],
     },
-    // Authentication
     {
       path: '/login',
-      element: <LoginPage />,
+      element: <PublicOnlyLoginRoute />,
     },
     {
-      path: '/register',
+      path: APP_PATHS.register,
       element: (
         <div className="min-h-screen w-full bg-canvas flex items-center justify-center p-6">
           <div className="bg-card rounded-2xl border border-mint-secondary/25 p-8 max-w-md w-full text-center shadow-sm">
-            <h1 className="text-xl font-bold text-mint-primary mb-2">Đăng ký tài khoản</h1>
-            <p className="text-xs text-mint-secondary">Tính năng đang được phát triển ở nhánh riêng.</p>
+            <h1 data-testid={TEST_IDS.COMMON.SCREEN_TITLE} className="text-xl font-bold text-mint-primary mb-2">
+              {SCREEN_NAMES.REGISTER}
+            </h1>
+            <p className="text-xs text-mint-secondary">Màn hình đăng ký tài khoản Customer.</p>
           </div>
         </div>
       ),
     },
-    // Customer boundary
     {
       element: <ProtectedLayout />,
       children: [
@@ -35,67 +67,74 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
           element: <RoleRoute allowedRoles={['Customer']} userRole={currentUserRole} />,
           children: [
             {
-              path: '/customer',
-              element: (
-                <div className="bg-card rounded-2xl border border-mint-secondary/20 p-8 shadow-sm">
-                  <h2 className="text-xl font-bold text-mint-primary mb-2">Trang chủ Khách hàng</h2>
-                  <p className="text-sm text-mint-secondary">Bạn đang đăng nhập với vai trò Khách hàng (Customer).</p>
-                </div>
-              ),
+              path: APP_PATHS.orderList,
+              element: <App />,
             },
             {
-              path: '/customer/orders/create',
-              element: <div className="p-8">Tạo đơn hàng 3 bước (Sản phẩm, Người nhận, Xác nhận)</div>,
+              path: APP_PATHS.orderCreation,
+              element: <div className="p-8">{SCREEN_NAMES.ORDER_CREATION}</div>,
             },
             {
-              path: '/customer/orders/:id',
-              element: <div className="p-8">Chi tiết đơn hàng (Tab Chi tiết)</div>,
+              path: '/orders/:id',
+              element: <div className="p-8">{SCREEN_NAMES.ORDER_DETAILS}</div>,
             },
             {
-              path: '/customer/orders/:id/track',
-              element: <div className="p-8">Theo dõi vận chuyển (Tab Vận chuyển)</div>,
+              path: '/orders/:id/tracking',
+              element: <div className="p-8">{SCREEN_NAMES.TRACKING}</div>,
             },
             {
-              path: '/customer/orders/:id/return',
-              element: <div className="p-8">Gửi yêu cầu hoàn hàng</div>,
+              path: '/orders/:id/return',
+              element: <div className="p-8">{SCREEN_NAMES.RETURN_REQUEST}</div>,
             },
-          ],
-        },
-      ],
-    },
-    // Admin boundary
-    {
-      element: <ProtectedLayout />,
-      children: [
-        {
-          element: <RoleRoute allowedRoles={['Admin']} userRole={currentUserRole} redirectTo="/login" />,
-          children: [
             {
-              path: '/admin',
-              element: (
-                <div className="bg-card rounded-2xl border border-mint-secondary/20 p-8 shadow-sm">
-                  <h2 className="text-xl font-bold text-mint-primary mb-2">Bảng điều khiển Quản trị viên (Admin)</h2>
-                  <p className="text-sm text-mint-secondary">Quản lý phân công Shipper, sự cố giao hàng và duyệt hoàn hàng.</p>
-                </div>
-              ),
+              path: APP_PATHS.returnList,
+              element: <div className="p-8">Yêu cầu hoàn hàng đã gửi</div>,
             },
           ],
         },
       ],
     },
-    // Shipper boundary
     {
       element: <ProtectedLayout />,
       children: [
         {
-          element: <RoleRoute allowedRoles={['Shipper']} userRole={currentUserRole} redirectTo="/login" />,
+          element: <RoleRoute allowedRoles={['Admin']} userRole={currentUserRole} />,
           children: [
             {
-              path: '/shipper',
+              path: APP_PATHS.adminDashboard,
               element: (
                 <div className="bg-card rounded-2xl border border-mint-secondary/20 p-8 shadow-sm">
-                  <h2 className="text-xl font-bold text-mint-primary mb-2">Giao diện Giao hàng Shipper (Mobile-first)</h2>
-                  <p className="text-sm text-mint-secondary">Xem danh sách đơn được phân công và cập nhật trạng thái.</p>
+                  <h1
+                    data-testid={TEST_IDS.COMMON.SCREEN_TITLE}
+                    className="text-xl font-bold text-mint-primary mb-2"
+                  >
+                    {SCREEN_NAMES.ADMIN_DASHBOARD}
+                  </h1>
+                  <div data-testid={TEST_IDS.ADMIN.DASHBOARD_TABLE} />
+                </div>
+              ),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      element: <ProtectedLayout />,
+      children: [
+        {
+          element: <RoleRoute allowedRoles={['Shipper']} userRole={currentUserRole} />,
+          children: [
+            {
+              path: APP_PATHS.shipperDeliveries,
+              element: (
+                <div className="bg-card rounded-2xl border border-mint-secondary/20 p-8 shadow-sm">
+                  <h1
+                    data-testid={TEST_IDS.COMMON.SCREEN_TITLE}
+                    className="text-xl font-bold text-mint-primary mb-2"
+                  >
+                    {SCREEN_NAMES.SHIPPER_DELIVERY}
+                  </h1>
+                  <div data-testid={TEST_IDS.SHIPPER.ASSIGNED_LIST} />
                 </div>
               ),
             },

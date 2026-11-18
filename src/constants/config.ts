@@ -1,24 +1,28 @@
-// Centralized business configuration and temporary boundary thresholds.
-
 export const APP_CONFIG = {
   API_BASE_URL: '/api/v1',
-  SOCKET_URL: 'http://localhost:3000',
+  EVENTS_URL: '/api/v1/events',
   DEFAULT_LOCALE: 'vi',
-  
+
   VALIDATION: {
-    PHONE_REGEX: /^(0[35789])[0-9]{8}$/,
-    ADDRESS_MIN_LENGTH: 5,
+    PHONE_REGEX: /^0\d{9}$/,
+    HTML_EMAIL_REGEX:
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+    FULL_NAME_MAX_LENGTH: 100,
+    RECIPIENT_NAME_MAX_LENGTH: 100,
+    EMAIL_MAX_LENGTH: 254,
     ADDRESS_MAX_LENGTH: 255,
+    FREE_TEXT_MAX_LENGTH: 500,
+    PASSWORD_MIN_LENGTH: 8,
+    PASSWORD_MAX_LENGTH: 64,
     MIN_ITEM_QUANTITY: 1,
-    MAX_ITEM_QUANTITY: 99,
-    MAX_ITEMS_PER_ORDER: 50,
   },
 
   DELIVERY_RULES: {
     MAX_FAILED_DELIVERY_ATTEMPTS: 3,
-    RETURN_WINDOW_DAYS: 7,
+    RETURN_WINDOW_DAYS: 15,
+    RETURN_WINDOW_MINUTES: 15 * 24 * 60,
     ACTIVE_RETURN_REQUEST_LIMIT_PER_ORDER: 1,
-    STATUS_HISTORY_ORDER: 'DESC' as const, // newest to oldest on presentation
+    STATUS_HISTORY_ORDER: 'ASC' as const,
   },
 
   PAGINATION: {
@@ -27,4 +31,3 @@ export const APP_CONFIG = {
     ADMIN_ISSUES_LIMIT: 10,
   },
 } as const;
-
