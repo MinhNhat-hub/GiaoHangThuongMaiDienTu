@@ -42,6 +42,7 @@ export class ApiClientError extends Error {
 
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
+export const AUTH_STORAGE_KEYS: readonly string[] = [TOKEN_KEY, USER_KEY];
 export const AUTH_CHANGE_EVENT = 'auth-change';
 
 // Generates a lightweight trace identifier for outgoing requests.

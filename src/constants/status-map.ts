@@ -1,5 +1,6 @@
 export type StatusGroup = 'pending' | 'processing' | 'completed' | 'issue';
 export type StatusTone = 'default' | 'info' | 'success' | 'warning' | 'danger';
+export type ReturnReasonCode = 'DAMAGED_OR_DEFECTIVE' | 'ITEM_NOT_RECEIVED' | 'OTHER';
 
 export type OrderStatusCode =
   | 'PENDING_CONFIRMATION'
@@ -191,6 +192,17 @@ export function getStatusMeta(code: AnyStatusCode): StatusMeta {
 
 export function getAllStatusMetas(): StatusMeta[] {
   return Object.values(ALL_STATUS_MAP);
+}
+
+export const RETURN_REASON_LABELS: Record<ReturnReasonCode, string> = {
+  DAMAGED_OR_DEFECTIVE: 'Hàng lỗi / hư hỏng',
+  ITEM_NOT_RECEIVED: 'Chưa nhận được hàng',
+  OTHER: 'Khác',
+};
+
+// Resolves a return reason code into its Vietnamese label.
+export function getReturnReasonLabel(reason: ReturnReasonCode): string {
+  return RETURN_REASON_LABELS[reason] ?? reason;
 }
 
 /**
