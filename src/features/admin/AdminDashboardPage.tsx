@@ -262,24 +262,30 @@ export const AdminDashboardPage: React.FC = () => {
       return;
     }
     setError(null);
-    const associatedOrder = findAssociatedOrder(issue);
-    const failedAttempts = associatedOrder?.shipment?.failedAttempts ?? 0;
-
-    if (
-      associatedOrder &&
-      (associatedOrder.status !== 'FAILED_DELIVERY' ||
-        failedAttempts < APP_CONFIG.DELIVERY_RULES.MAX_FAILED_DELIVERY_ATTEMPTS)
-    ) {
-      setError({
-        message:
-          'Chỉ có thể chuyển sang trạng thái Đang hoàn hàng khi đơn hàng đã đạt đủ 3 lần giao không thành công.',
-      });
-      return;
-    }
-
     setBusyIssueId(issue.id);
     try {
-      await apiClient.processReturnShipment(associatedOrder?.shipment?.id ?? issue.orderId);
+      const associatedOrder =
+        findAssociatedOrder(issue) ?? (await apiClient.getOrderDetail(issue.orderId));
+      const failedAttempts = associatedOrder.shipment?.failedAttempts ?? 0;
+
+      if (
+        associatedOrder.status !== 'FAILED_DELIVERY' ||
+        failedAttempts < APP_CONFIG.DELIVERY_RULES.MAX_FAILED_DELIVERY_ATTEMPTS
+      ) {
+        setError({
+          message:
+            'Chỉ có thể chuyển sang trạng thái Đang hoàn hàng khi đơn hàng đã đạt đủ 3 lần giao không thành công.',
+        });
+        return;
+      }
+
+      const shipmentId = associatedOrder.shipment?.id;
+      if (!shipmentId) {
+        setError({ message: 'Đơn hàng chưa có vận đơn nên không chuyển sang hoàn hàng được.' });
+        return;
+      }
+
+      await apiClient.processReturnShipment(shipmentId);
       await loadIssues();
     } catch (err) {
       captureError(err, 'Không thể chuyển đơn hàng sang trạng thái hoàn hàng.');

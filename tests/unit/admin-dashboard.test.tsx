@@ -354,4 +354,54 @@ describe('admin dashboard workflows', () => {
       expect(within(returnsList).getByTestId(TEST_IDS.COMMON.EMPTY_STATE)).toBeVisible();
     });
   });
+
+  it('test_loads_order_detail_before_returning_when_issue_order_is_not_in_list', async () => {
+    const user = userEvent.setup();
+    const unlistedOrder = makeOrder({
+      id: 'ord_off',
+      code: 'DH-OFF',
+      status: 'FAILED_DELIVERY',
+      shipment: {
+        id: 's_off',
+        trackingNumber: 'VD-OFF',
+        shipperId: 'shp_1',
+        failedAttempts: 3,
+        assignedAt: '2026-06-10T01:00:00.000Z',
+      },
+    });
+    const issue: DeliveryIssue = {
+      id: 'iss_off',
+      code: 'SC-09',
+      orderId: 'ord_off',
+      orderCode: 'DH-OFF',
+      issueType: 'FAILED_DELIVERY',
+      reportedBy: 'shp_1',
+      reportedByEmail: 'shipper1@store.vn',
+      reportedAt: '2026-06-10T05:00:00.000Z',
+      resolved: false,
+    };
+
+    vi.spyOn(apiClient, 'listOrders').mockResolvedValue([]);
+    vi.spyOn(apiClient, 'listIssues').mockResolvedValue([issue]);
+    const detailSpy = vi.spyOn(apiClient, 'getOrderDetail').mockResolvedValue(unlistedOrder);
+    const returnSpy = vi
+      .spyOn(apiClient, 'processReturnShipment')
+      .mockResolvedValue({ ...unlistedOrder, status: 'RETURNING' });
+
+    render(
+      <MemoryRouter initialEntries={['/admin']}>
+        <AdminDashboardPage />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByTestId(TEST_IDS.ADMIN.ISSUES_TAB));
+    const list = await screen.findByTestId(TEST_IDS.ADMIN.ISSUES_LIST);
+    const [item] = await within(list).findAllByTestId(TEST_IDS.ADMIN.ISSUE_ITEM);
+    await user.click(within(item).getByTestId(TEST_IDS.ADMIN.ISSUE_RETURN_BUTTON));
+
+    await waitFor(() => {
+      expect(returnSpy).toHaveBeenCalledWith('s_off');
+    });
+    expect(detailSpy).toHaveBeenCalledWith('ord_off');
+  });
 });
