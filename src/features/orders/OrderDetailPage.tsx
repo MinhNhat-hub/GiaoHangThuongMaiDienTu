@@ -2,11 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Package, RotateCcw, Truck } from 'lucide-react';
 import { ApiClientError, apiClient } from '@/api/client';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { CopyButton } from '@/components/common/CopyButton';
 import { ErrorBanner } from '@/components/common/ErrorBanner';
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton';
 import { OrderStatusTimeline } from '@/components/common/OrderStatusTimeline';
 import { StatusBadge } from '@/components/common/StatusBadge';
+import { MESSAGES, getMessage } from '@/constants/messages';
 import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
 import { TEST_IDS } from '@/constants/test-ids';
 import { realtimeClient } from '@/realtime/event-client';
@@ -16,6 +18,7 @@ import { formatDateTimeVi } from '@/utils/date';
 import { getOrderCode, rememberOrder } from '@/utils/order';
 
 type DetailTab = 'details' | 'tracking';
+type PendingAdminAction = 'lost' | 'returned' | null;
 
 // Displays order items, recipient information, status timeline, and role actions.
 export const OrderDetailPage: React.FC = () => {
@@ -26,6 +29,7 @@ export const OrderDetailPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<DetailTab>('details');
   const [loading, setLoading] = useState(true);
   const [submittingAction, setSubmittingAction] = useState(false);
+  const [pendingAction, setPendingAction] = useState<PendingAdminAction>(null);
   const [error, setError] = useState<{ message: string; code?: string; traceId?: string } | null>(
     null
   );
@@ -121,7 +125,7 @@ export const OrderDetailPage: React.FC = () => {
     try {
       await apiClient.reportIssue(order.id, {
         issueType: 'LOST',
-        notes: 'Admin xác nhận hàng hóa bị thất lạc.',
+        notes: getMessage(MESSAGES.ISSUE.ADMIN_CONFIRMED_LOST_NOTE),
       });
       await loadOrder();
     } catch (err) {
@@ -132,6 +136,7 @@ export const OrderDetailPage: React.FC = () => {
       }
     } finally {
       setSubmittingAction(false);
+      setPendingAction(null);
     }
   };
 
@@ -152,6 +157,7 @@ export const OrderDetailPage: React.FC = () => {
       }
     } finally {
       setSubmittingAction(false);
+      setPendingAction(null);
     }
   };
 
@@ -237,7 +243,7 @@ export const OrderDetailPage: React.FC = () => {
                   type="button"
                   data-testid={TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON}
                   disabled={submittingAction}
-                  onClick={handleConfirmLost}
+                  onClick={() => setPendingAction('lost')}
                   className="px-4 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors disabled:opacity-50"
                 >
                   Xác nhận thất lạc
@@ -249,7 +255,7 @@ export const OrderDetailPage: React.FC = () => {
                   type="button"
                   data-testid={TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON}
                   disabled={submittingAction}
-                  onClick={handleConfirmReturned}
+                  onClick={() => setPendingAction('returned')}
                   className="px-4 py-2 text-xs font-semibold rounded-lg bg-mint-tertiary text-white hover:bg-mint-tertiary-hover transition-colors disabled:opacity-50"
                 >
                   Xác nhận đã nhận lại hàng hoàn
@@ -404,6 +410,29 @@ export const OrderDetailPage: React.FC = () => {
           )}
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={pendingAction === 'lost'}
+        title="Xác nhận kiện hàng thất lạc"
+        message={`Xác nhận đơn hàng ${orderCode} bị thất lạc? Đơn sẽ chuyển sang "Thất lạc" và không đổi lại được.`}
+        confirmLabel="Xác nhận thất lạc"
+        cancelLabel="Hủy"
+        variant="danger"
+        isLoading={submittingAction}
+        onConfirm={handleConfirmLost}
+        onCancel={() => setPendingAction(null)}
+      />
+
+      <ConfirmDialog
+        isOpen={pendingAction === 'returned'}
+        title="Xác nhận đã nhận lại hàng hoàn"
+        message={`Xác nhận đã nhận lại hàng của đơn ${orderCode}? Đơn sẽ chuyển sang "Đã hoàn về người bán" và không đổi lại được.`}
+        confirmLabel="Xác nhận đã nhận lại"
+        cancelLabel="Hủy"
+        isLoading={submittingAction}
+        onConfirm={handleConfirmReturned}
+        onCancel={() => setPendingAction(null)}
+      />
     </div>
   );
 };
