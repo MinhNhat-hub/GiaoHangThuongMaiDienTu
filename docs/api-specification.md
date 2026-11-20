@@ -60,7 +60,7 @@ This document defines the RESTful API endpoints and real-time event interfaces s
     "password": "Password123"
   }
   ```
-- **Response**: `200 OK` with token, user profile, and assigned role.
+- **Response**: `200 OK` with token, user profile, and assigned role. The server also sets the session cookie that the real-time stream uses (see 8.1).
 
 ### 2.3 Logout
 - **POST** `/auth/logout`
@@ -329,13 +329,19 @@ This document defines the RESTful API endpoints and real-time event interfaces s
 
 The system supports event-driven real-time updates without polling, delivered via WebSockets or Server-Sent Events (SSE).
 
-### 8.1 Channel Subscriptions
+### 8.1 Connection and Authentication
+- **Endpoint**: **GET** `/events` (Server-Sent Events, `text/event-stream`). The frontend opens it as `/api/v1/events`.
+- **Authentication**: session cookie only. The browser `EventSource` API cannot send an `Authorization` header, so this endpoint must accept the session cookie set at login (`HttpOnly`, `Secure`, `SameSite`). The client opens the stream with `withCredentials: true`.
+- **Token in URL**: not allowed. A token in the query string ends up in server and proxy logs.
+- **Status**: waiting for the backend owner (TV4) to confirm. If the backend accepts only Bearer tokens, the frontend receives no events.
+
+### 8.2 Channel Subscriptions
 - **Customer Channel**: `customers:{customerId}` (subscribed by customer app; server enforces SEC-2 so customers can only subscribe to their own channel).
 - **Order Channel**: `orders:{orderId}` (subscribed by customer viewing order tracking screen).
 - **Shipper Channel**: `shippers:{shipperId}` (subscribed by shipper app).
 - **Admin Channel**: `admin:dashboard` (subscribed by store admin dashboard).
 
-### 8.2 Event Catalog
+### 8.3 Event Catalog
 
 | Event Name | Channel | Payload | Description |
 |---|---|---|---|
