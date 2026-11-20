@@ -185,10 +185,13 @@ This document defines the RESTful API endpoints and real-time event interfaces s
     "notes": "Picked up / delivered successfully"
   }
   ```
-  - `START_DELIVERY`: Transitions order from `WAITING_PICKUP` to `DELIVERING` (T3).
+  - `START_DELIVERY`: Transitions order from `WAITING_PICKUP` to `DELIVERING` (T3), or from `DELIVERY_FAILED` back to `DELIVERING` (T6) only while its failed delivery attempts are below the BR-06 threshold.
   - `CONFIRM_DELIVERED`: Transitions order from `DELIVERING` to `DELIVERED` (T4).
   *(Note: Reporting failed delivery or transit incidents is handled exclusively via `POST /issues` per Section 6.1, which records the incident and transitions the order to `DELIVERY_FAILED` (T5) without automatically transitioning to `RETURNING`).*
 - **Response**: `200 OK` with updated status.
+- **Errors**: the server checks every transition itself; the buttons shown by the client are only a hint.
+  - `403 Forbidden` when the caller is not the Shipper assigned to this shipment.
+  - `409 Conflict` with `error.code` = `INVALID_TRANSITION` when the order is not in a state that allows the action, including a retry after the BR-06 threshold is reached. The order status does not change.
 
 ### 4.4 Track Shipment
 - **GET** `/shipments/track/:trackingNumber` (or `GET /shipments/:id/tracking`)
