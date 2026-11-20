@@ -1,20 +1,3 @@
-/**
- * Authoritative Status Mapping for Order and Return Request Lifecycles
- * Conforms 100% to SRS Appendix A.2 (State Transition Graph, T1-T12 & R1-R4)
- * Theme: Neobank Mint (Pure Neobank Badge System, Zero Pastel Carnival)
- *
- * 13 states strictly categorized into semantic visual badge styles:
- * - Pending (.badge-pending: outline, secondary-dark ink)
- * - Processing (.badge-processing: mint neutral bg, primary ink, no dot)
- * - Completed (.badge-completed: Tertiary accent bg, white ink)
- * - Outlined Warning (.badge-warning: transparent bg, amber border and amber ink)
- * - Outlined Danger (.badge-danger: transparent bg, crimson border and crimson ink)
- * - Outlined Accepted (.badge-accepted: transparent bg, Tertiary border and Tertiary ink)
- *
- * All badgeClasses reference Neobank Mint badge tokens:
- * Single Source of Truth for colors and contrast ratios (WCAG 2.1 AA >= 4.5:1).
- */
-
 export type StatusGroup = 'pending' | 'processing' | 'completed' | 'issue';
 export type StatusTone = 'default' | 'info' | 'success' | 'warning' | 'danger';
 
@@ -48,9 +31,7 @@ export interface StatusMeta {
   descriptionVi: string;
 }
 
-/**
- * 9 Order Statuses defined in SRS Appendix A.2
- */
+// Order statuses across the delivery lifecycle.
 export const ORDER_STATUS_MAP: Record<OrderStatusCode, StatusMeta> = {
   PENDING_CONFIRMATION: {
     code: 'PENDING_CONFIRMATION',
@@ -144,9 +125,7 @@ export const ORDER_STATUS_MAP: Record<OrderStatusCode, StatusMeta> = {
   },
 };
 
-/**
- * 4 Return Request Statuses defined in SRS Appendix A.2
- */
+// Return request statuses across the approval lifecycle.
 export const RETURN_STATUS_MAP: Record<ReturnStatusCode, StatusMeta> = {
   PENDING_APPROVAL: {
     code: 'PENDING_APPROVAL',

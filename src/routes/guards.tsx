@@ -1,15 +1,47 @@
-// Role-based route guard protecting access across Customer, Shipper, and Admin spaces.
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import type { UserRole } from '@/types/api';
-import { apiClient } from '@/api/client';
+import type { UserProfile, UserRole } from '@/types/api';
+import { AUTH_CHANGE_EVENT, apiClient } from '@/api/client';
+import { APP_PATHS } from '@/constants/routes';
 import { AppHeader } from '@/components/layout/AppHeader';
 
+interface AuthSessionState {
+  token: string | null;
+  user: UserProfile | null;
+}
+
+// Subscribes to authentication state updates across the active window.
+export function useAuthSession(): AuthSessionState {
+  const [session, setSession] = useState<AuthSessionState>(() => ({
+    token: apiClient.getToken(),
+    user: apiClient.getUser(),
+  }));
+
+  useEffect(() => {
+    const syncSession = () => {
+      setSession({
+        token: apiClient.getToken(),
+        user: apiClient.getUser(),
+      });
+    };
+
+    window.addEventListener(AUTH_CHANGE_EVENT, syncSession);
+    window.addEventListener('storage', syncSession);
+    return () => {
+      window.removeEventListener(AUTH_CHANGE_EVENT, syncSession);
+      window.removeEventListener('storage', syncSession);
+    };
+  }, []);
+
+  return session;
+}
+
 export const ProtectedLayout: React.FC = () => {
-  const token = apiClient.getToken();
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  const { token, user } = useAuthSession();
+  if (!token || !user) {
+    return <Navigate to={APP_PATHS.login} replace />;
   }
+
   return (
     <div className="min-h-screen bg-canvas text-mint-primary flex flex-col">
       <AppHeader />
@@ -27,10 +59,10 @@ interface RoleRouteProps {
 }
 
 export const ProtectedRoute: React.FC<{ redirectTo?: string }> = ({
-  redirectTo = '/login',
+  redirectTo = APP_PATHS.login,
 }) => {
-  const token = apiClient.getToken();
-  if (!token) {
+  const { token, user } = useAuthSession();
+  if (!token || !user) {
     return <Navigate to={redirectTo} replace />;
   }
   return <Outlet />;
@@ -39,12 +71,25 @@ export const ProtectedRoute: React.FC<{ redirectTo?: string }> = ({
 export const RoleRoute: React.FC<RoleRouteProps> = ({
   allowedRoles,
   userRole,
-  redirectTo = '/login',
+  redirectTo = APP_PATHS.login,
 }) => {
-  const effectiveRole = userRole || apiClient.getUser()?.role;
-  if (!effectiveRole || !allowedRoles.includes(effectiveRole)) {
+  const { token, user } = useAuthSession();
+  const effectiveRole = userRole || user?.role;
+
+  if (!token || !effectiveRole) {
     return <Navigate to={redirectTo} replace />;
   }
+
+  if (!allowedRoles.includes(effectiveRole)) {
+    return (
+      <div className="bg-card rounded-2xl border border-red-200 p-8 shadow-sm text-center space-y-2">
+        <h1 className="text-xl font-bold text-red-700">Không có quyền truy cập</h1>
+        <p className="text-xs text-mint-secondary">
+          Tài khoản hiện tại không được phép truy cập màn hình này.
+        </p>
+      </div>
+    );
+  }
+
   return <Outlet />;
 };
-

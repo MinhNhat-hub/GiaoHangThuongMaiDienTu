@@ -1,4 +1,3 @@
-// Modal dialog requesting user confirmation before proceeding with irreversible actions.
 import React from 'react';
 import { TEST_IDS } from '@/constants/test-ids';
 
@@ -9,6 +8,7 @@ interface ConfirmDialogProps {
   confirmLabel?: string;
   cancelLabel?: string;
   isDestructive?: boolean;
+  variant?: 'danger' | 'primary' | 'warning';
   isLoading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
@@ -21,11 +21,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   confirmLabel = 'Xác nhận',
   cancelLabel = 'Hủy bỏ',
   isDestructive = false,
+  variant,
   isLoading = false,
   onConfirm,
   onCancel,
 }) => {
   if (!isOpen) return null;
+
+  const isDanger = isDestructive || variant === 'danger';
 
   return (
     <div
@@ -53,7 +56,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             disabled={isLoading}
             onClick={onConfirm}
             className={`px-4 py-2 text-sm font-semibold rounded-md text-white transition-colors disabled:opacity-50 ${
-              isDestructive
+              isDanger
                 ? 'bg-red-600 hover:bg-red-700'
                 : 'bg-mint-tertiary hover:bg-mint-tertiary-hover active:bg-mint-tertiary-active'
             }`}
@@ -65,4 +68,3 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     </div>
   );
 };
-
