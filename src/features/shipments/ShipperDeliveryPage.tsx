@@ -210,6 +210,7 @@ export const ShipperDeliveryPage: React.FC = () => {
       await loadShipments();
     } catch (err) {
       setPendingConfirm(null);
+      await loadShipments();
       if (err instanceof ApiClientError) {
         setError({ message: err.message, code: err.code, traceId: err.traceId });
       } else {

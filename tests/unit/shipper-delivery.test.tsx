@@ -2,7 +2,7 @@ import { act, cleanup, render, screen, waitFor, within } from '@testing-library/
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { apiClient } from '@/api/client';
+import { ApiClientError, apiClient } from '@/api/client';
 import { TEST_IDS } from '@/constants/test-ids';
 import { ShipperDeliveryPage } from '@/features/shipments/ShipperDeliveryPage';
 import { realtimeClient } from '@/realtime/event-client';
@@ -213,5 +213,36 @@ describe('shipper delivery management workflows', () => {
     expect(within(timeline).getAllByTestId(TEST_IDS.ORDER.TIMELINE_ENTRY)).toHaveLength(2);
     expect(timeline).toHaveTextContent('Chờ xác nhận');
     expect(timeline).toHaveTextContent('Chờ lấy hàng');
+  });
+
+  it('test_reloads_shipments_after_server_rejects_redelivery', async () => {
+    const user = userEvent.setup();
+    const staleOrder = makeAssignedOrder('o9', 'DH-RETRY', 'FAILED_DELIVERY', 2);
+    const serverOrder = makeAssignedOrder('o9', 'DH-RETRY', 'FAILED_DELIVERY', 3);
+
+    const listSpy = vi
+      .spyOn(apiClient, 'listAssignedShipments')
+      .mockResolvedValueOnce([staleOrder])
+      .mockResolvedValue([serverOrder]);
+    vi.spyOn(apiClient, 'updateShipmentStatus').mockRejectedValue(
+      new ApiClientError('Đơn đã đủ số lần giao không thành công.', 'INVALID_TRANSITION', 'tr_1', 409)
+    );
+
+    render(
+      <MemoryRouter initialEntries={['/shipper']}>
+        <ShipperDeliveryPage />
+      </MemoryRouter>
+    );
+
+    const [card] = await screen.findAllByTestId(TEST_IDS.SHIPPER.SHIPMENT_CARD);
+    await user.click(within(card).getByTestId(TEST_IDS.SHIPPER.PICKUP_BUTTON));
+    await user.click(screen.getByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG_CONFIRM));
+
+    await waitFor(() => {
+      expect(listSpy).toHaveBeenCalledTimes(2);
+    });
+    expect(screen.getByTestId(TEST_IDS.COMMON.ERROR_BANNER)).toBeVisible();
+    const [reloadedCard] = await screen.findAllByTestId(TEST_IDS.SHIPPER.SHIPMENT_CARD);
+    expect(within(reloadedCard).queryByTestId(TEST_IDS.SHIPPER.PICKUP_BUTTON)).not.toBeInTheDocument();
   });
 });
