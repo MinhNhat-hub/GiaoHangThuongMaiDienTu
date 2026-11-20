@@ -84,10 +84,6 @@ export const RegisterPage: React.FC = () => {
         <div className="w-full lg:w-1/2 relative bg-mint-primary overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 min-h-[300px] lg:min-h-0 flex-shrink-0">
           <img
             src="/images/delivery-hero.jpg"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                'https://images.pexels.com/photos/6667682/pexels-photo-6667682.jpeg?auto=compress&cs=tinysrgb&w=1600';
-            }}
             alt="Shipper giao hàng tận tay khách hàng với nụ cười thân thiện"
             className="absolute inset-0 w-full h-full object-cover object-center opacity-[0.67]"
           />
