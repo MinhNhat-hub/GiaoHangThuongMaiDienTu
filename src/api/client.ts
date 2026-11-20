@@ -177,12 +177,11 @@ export const apiClient = {
           password: payload.password,
         }),
       });
-      if (res.data.token) {
-        localStorage.setItem(TOKEN_KEY, res.data.token);
+      if (!res.data.token || !res.data.user) {
+        throw new ApiClientError(MESSAGES.AUTH.LOGIN_FAILED.vi, 'INVALID_AUTH_RESPONSE', res.traceId);
       }
-      if (res.data.user) {
-        localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
-      }
+      localStorage.setItem(TOKEN_KEY, res.data.token);
+      localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
       notifyAuthChange();
       return res.data;
     } catch (err) {
@@ -198,14 +197,10 @@ export const apiClient = {
     }
   },
 
+  // Signs out on the server, ignores request failures, and always clears the local session.
   async logout(): Promise<void> {
-    try {
-      await executeRequest<void>('/auth/logout', { method: 'POST' });
-    } catch {
-      void 0;
-    } finally {
-      this.clearToken();
-    }
+    await executeRequest<void>('/auth/logout', { method: 'POST' }).catch(() => undefined);
+    this.clearToken();
   },
 
   async getMe(): Promise<UserProfile> {

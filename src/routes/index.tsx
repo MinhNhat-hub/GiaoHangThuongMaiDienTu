@@ -5,7 +5,7 @@ import { LoginPage, RegisterPage } from '@/features/auth';
 import { CreateOrderPage, CustomerHomePage, OrderDetailPage } from '@/features/orders';
 import { CustomerReturnsPage, ReturnRequestPage } from '@/features/returns';
 import { ShipmentTrackingPage } from '@/features/shipments';
-import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
+import { APP_PATHS, ROUTE_PATTERNS, SCREEN_NAMES } from '@/constants/routes';
 import { TEST_IDS } from '@/constants/test-ids';
 import App from '@/App';
 
@@ -47,7 +47,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
       ],
     },
     {
-      path: '/login',
+      path: APP_PATHS.loginAlias,
       element: <PublicOnlyLoginRoute />,
     },
     {
@@ -69,7 +69,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
               element: <CreateOrderPage />,
             },
             {
-              path: '/orders/:id/return',
+              path: ROUTE_PATTERNS.returnRequest,
               element: <ReturnRequestPage />,
             },
             {
@@ -82,7 +82,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
           element: <RoleRoute allowedRoles={['Customer', 'Admin']} userRole={currentUserRole} />,
           children: [
             {
-              path: '/orders/:id/tracking',
+              path: ROUTE_PATTERNS.tracking,
               element: <ShipmentTrackingPage />,
             },
           ],
@@ -93,7 +93,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
           ),
           children: [
             {
-              path: '/orders/:id',
+              path: ROUTE_PATTERNS.orderDetails,
               element: <OrderDetailPage />,
             },
           ],

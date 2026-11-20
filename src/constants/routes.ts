@@ -1,5 +1,6 @@
 export const APP_PATHS = {
   login: '/',
+  loginAlias: '/login',
   register: '/register',
   customerHome: '/',
   orderList: '/orders',
@@ -10,6 +11,13 @@ export const APP_PATHS = {
   orderDetails: (code: string): string => `/orders/${code}`,
   returnRequest: (code: string): string => `/orders/${code}/return`,
   tracking: (code: string): string => `/orders/${code}/tracking`,
+} as const;
+
+// Route patterns matched by the router for screens that take an order code.
+export const ROUTE_PATTERNS = {
+  orderDetails: APP_PATHS.orderDetails(':id'),
+  returnRequest: APP_PATHS.returnRequest(':id'),
+  tracking: APP_PATHS.tracking(':id'),
 } as const;
 
 export const SCREEN_NAMES = {
