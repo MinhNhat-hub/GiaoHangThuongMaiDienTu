@@ -35,4 +35,5 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 
 - Tên test mô tả hành vi, không chứa ID SRS, ví dụ `test_cannot_cancel_delivered_order`.
 - Xong việc thì chạy toàn bộ test.
+- Test hệ thống tự động: `npm run test:e2e` (Playwright, chạy khi đã có server, tên biến môi trường ở mục "Chạy và kiểm thử" của `README.md`).
 <!-- Ghi lệnh chạy test của nhóm khi đã chọn công nghệ. -->

@@ -1,4 +1,3 @@
-// Reusable badge component rendering delivery and return lifecycle statuses.
 import React from 'react';
 import { getStatusMeta, type AnyStatusCode } from '@/constants/status-map';
 import { TEST_IDS } from '@/constants/test-ids';

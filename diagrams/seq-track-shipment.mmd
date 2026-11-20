@@ -1,0 +1,25 @@
+sequenceDiagram
+  actor Customer
+  participant ShipmentService
+  participant OrderService
+  participant Order
+  participant Shipment
+
+  Note over Customer: Customer opens shipment tracking screen and inputs tracking number or order ID
+
+  Customer->>ShipmentService: getTrackingDetails(trackingNumber)
+
+  alt Shipment not found
+    Note over ShipmentService: Query database for shipment by tracking number
+    ShipmentService-->>Customer: throw Error("Shipment not found")
+  else Shipment found
+    Note over ShipmentService: Fetch associated Order and status timeline
+    ShipmentService->>OrderService: getOrderById(orderId)
+    OrderService-->>ShipmentService: orderEntity
+
+    Note over ShipmentService, Order: Read status history records from order
+    Note over ShipmentService, Shipment: Read current delivery progress and failed attempts count
+
+    ShipmentService-->>Customer: Shipment tracking summary (current status, history timeline, shipper details)
+    Note over Customer: View real-time tracking timeline and current status
+  end

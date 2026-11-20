@@ -1,5 +1,5 @@
-// Centralized RESTful API client module enforcing envelope compliance and trace propagation.
 import { APP_CONFIG } from '@/constants/config';
+import { MESSAGES } from '@/constants/messages';
 import type {
   ApiResponse,
   AuthResponse,
@@ -40,40 +40,24 @@ export class ApiClientError extends Error {
   }
 }
 
-// Generates a lightweight random trace ID for client requests.
+const TOKEN_KEY = 'auth_token';
+const USER_KEY = 'auth_user';
+export const AUTH_STORAGE_KEYS: readonly string[] = [TOKEN_KEY, USER_KEY];
+export const AUTH_CHANGE_EVENT = 'auth-change';
+
+// Generates a lightweight trace identifier for outgoing requests.
 function generateTraceId(): string {
   return 'trace_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
 }
 
-const TOKEN_KEY = 'auth_token';
-const USER_KEY = 'auth_user';
+// Notifies listeners in the current tab when auth state changes.
+function notifyAuthChange(): void {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
+  }
+}
 
-// Seed demo profiles for local frontend preview before backend server boot.
-const SEED_USERS: Record<string, UserProfile> = {
-  'admin@store.vn': {
-    id: 'usr_admin_01',
-    email: 'admin@store.vn',
-    fullName: 'Quản trị viên Cửa hàng',
-    phoneNumber: '0901234567',
-    role: 'Admin',
-  },
-  'shipper.nam@store.vn': {
-    id: 'usr_shipper_01',
-    email: 'shipper.nam@store.vn',
-    fullName: 'Nguyễn Văn Nam (Shipper)',
-    phoneNumber: '0912345678',
-    role: 'Shipper',
-  },
-  'customer.an@gmail.com': {
-    id: 'usr_cust_01',
-    email: 'customer.an@gmail.com',
-    fullName: 'Trần Thị An (Khách hàng)',
-    phoneNumber: '0987654321',
-    role: 'Customer',
-  },
-};
-
-// Central API execution helper handling token injection and envelope unwrapping.
+// Executes a JSON request against the backend API with auth token propagation.
 async function executeRequest<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -94,7 +78,7 @@ async function executeRequest<T>(
   let response: Response;
   try {
     response = await fetch(url, { ...options, headers });
-  } catch (networkError) {
+  } catch {
     throw new ApiClientError(
       'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng.',
       'NETWORK_DISCONNECTED',
@@ -106,7 +90,7 @@ async function executeRequest<T>(
   let json: ApiResponse<T>;
   try {
     json = await response.json();
-  } catch (parseError) {
+  } catch {
     throw new ApiClientError(
       'Dữ liệu phản hồi từ máy chủ không hợp lệ.',
       'INVALID_RESPONSE_FORMAT',
@@ -133,141 +117,105 @@ async function executeRequest<T>(
 }
 
 export const apiClient = {
-  // Token and session user management
   setToken(token: string): void {
     localStorage.setItem(TOKEN_KEY, token);
+    notifyAuthChange();
   },
+
   getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
   },
+
   setUser(user: UserProfile): void {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
+    notifyAuthChange();
   },
+
   getUser(): UserProfile | null {
     const raw = localStorage.getItem(USER_KEY);
+    if (!raw) {
+      return null;
+    }
     try {
-      return raw ? JSON.parse(raw) : null;
+      return JSON.parse(raw) as UserProfile;
     } catch {
       return null;
     }
   },
+
   clearToken(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    notifyAuthChange();
   },
 
-  // Authentication
   async register(payload: {
     email: string;
     password: string;
     fullName: string;
-    phoneNumber?: string;
+    phoneNumber: string;
   }): Promise<AuthResponse> {
-    try {
-      const res = await executeRequest<AuthResponse>('/auth/register', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-      if (res.data.token) {
-        this.setToken(res.data.token);
-        this.setUser(res.data.user);
-      }
-      return res.data;
-    } catch (err) {
-      if (err instanceof ApiClientError && err.code === 'NETWORK_DISCONNECTED') {
-        const mockUser: UserProfile = {
-          id: 'usr_' + Date.now().toString(36),
-          email: payload.email,
-          fullName: payload.fullName,
-          phoneNumber: payload.phoneNumber,
-          role: 'Customer',
-        };
-        const mockAuth: AuthResponse = {
-          token: 'mock_jwt_customer_' + Date.now(),
-          user: mockUser,
-        };
-        this.setToken(mockAuth.token);
-        this.setUser(mockAuth.user);
-        return mockAuth;
-      }
-      throw err;
-    }
+    const res = await executeRequest<AuthResponse>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        fullName: payload.fullName.trim(),
+        email: payload.email.trim().toLowerCase(),
+        password: payload.password,
+        phoneNumber: payload.phoneNumber.trim(),
+      }),
+    });
+    return res.data;
   },
 
-  async login(payload: { email?: string; identifier?: string; password: string }): Promise<AuthResponse> {
-    const rawIdentifier = (payload.identifier || payload.email || '').trim().toLowerCase();
+  async login(payload: { email: string; password: string }): Promise<AuthResponse> {
+    const normalizedEmail = payload.email.trim().toLowerCase();
     try {
       const res = await executeRequest<AuthResponse>('/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          identifier: rawIdentifier,
-          email: rawIdentifier,
+          email: normalizedEmail,
           password: payload.password,
         }),
       });
-      if (res.data.token) {
-        this.setToken(res.data.token);
-        this.setUser(res.data.user);
+      if (!res.data.token || !res.data.user) {
+        throw new ApiClientError(MESSAGES.AUTH.LOGIN_FAILED.vi, 'INVALID_AUTH_RESPONSE', res.traceId);
       }
+      localStorage.setItem(TOKEN_KEY, res.data.token);
+      localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
+      notifyAuthChange();
       return res.data;
     } catch (err) {
-      if (err instanceof ApiClientError && err.code === 'NETWORK_DISCONNECTED') {
-        // Match seed users by email, phone number, or simple username
-        const seed = Object.values(SEED_USERS).find((user) => {
-          const emailMatch = user.email.toLowerCase() === rawIdentifier;
-          const phoneMatch = user.phoneNumber === rawIdentifier;
-          const usernameMatch =
-            (user.role === 'Admin' && rawIdentifier === 'admin') ||
-            (user.role === 'Shipper' && (rawIdentifier === 'shipper' || rawIdentifier === 'shipper.nam')) ||
-            (user.role === 'Customer' && (rawIdentifier === 'customer' || rawIdentifier === 'customer.an'));
-          return emailMatch || phoneMatch || usernameMatch;
-        });
-
-        if (seed && payload.password) {
-          const mockAuth: AuthResponse = {
-            token: 'mock_jwt_' + seed.role.toLowerCase() + '_' + Date.now(),
-            user: seed,
-          };
-          this.setToken(mockAuth.token);
-          this.setUser(mockAuth.user);
-          return mockAuth;
-        }
+      if (err instanceof ApiClientError && [400, 401, 403, 404].includes(err.status)) {
+        throw new ApiClientError(
+          MESSAGES.AUTH.LOGIN_FAILED.vi,
+          'INVALID_CREDENTIALS',
+          err.traceId,
+          err.status
+        );
       }
       throw err;
     }
   },
 
+  // Signs out on the server, ignores request failures, and always clears the local session.
   async logout(): Promise<void> {
-    try {
-      await executeRequest<void>('/auth/logout', { method: 'POST' });
-    } catch {
-      // Ignore network disconnect during logout
-    } finally {
-      this.clearToken();
-    }
+    await executeRequest<void>('/auth/logout', { method: 'POST' }).catch(() => undefined);
+    this.clearToken();
   },
 
   async getMe(): Promise<UserProfile> {
-    try {
-      const res = await executeRequest<UserProfile>('/auth/me');
-      if (res.data) {
-        this.setUser(res.data);
-      }
-      return res.data;
-    } catch (err) {
-      const cached = this.getUser();
-      if (cached) return cached;
-      throw err;
+    const res = await executeRequest<UserProfile>('/auth/me');
+    if (res.data) {
+      this.setUser(res.data);
     }
+    return res.data;
   },
 
-  // Products
   async getProducts(): Promise<Product[]> {
     const res = await executeRequest<Product[]>('/products');
     return res.data;
   },
 
-  // Orders
   async createOrder(payload: CreateOrderPayload): Promise<Order> {
     const res = await executeRequest<Order>('/orders', {
       method: 'POST',
@@ -292,7 +240,6 @@ export const apiClient = {
     return res.data;
   },
 
-  // Shipments
   async createShipment(payload: CreateShipmentPayload): Promise<ShipmentSummary> {
     const res = await executeRequest<ShipmentSummary>('/shipments', {
       method: 'POST',
@@ -319,7 +266,20 @@ export const apiClient = {
     return res.data;
   },
 
-  // Delivery Issues
+  async processReturnShipment(shipmentOrOrderId: string): Promise<Order> {
+    const res = await executeRequest<Order>(`/shipments/${shipmentOrOrderId}/return`, {
+      method: 'POST',
+    });
+    return res.data;
+  },
+
+  async confirmReturnReceived(shipmentOrOrderId: string): Promise<Order> {
+    const res = await executeRequest<Order>(`/shipments/${shipmentOrOrderId}/confirm-returned`, {
+      method: 'POST',
+    });
+    return res.data;
+  },
+
   async listIssues(params?: { resolved?: boolean; page?: number; limit?: number }): Promise<DeliveryIssue[]> {
     const query = new URLSearchParams();
     if (typeof params?.resolved === 'boolean') query.set('resolved', String(params.resolved));
@@ -332,22 +292,26 @@ export const apiClient = {
   },
 
   async reportIssue(orderId: string, payload: ReportIssuePayload): Promise<DeliveryIssue> {
-    const res = await executeRequest<DeliveryIssue>(`/orders/${orderId}/issues`, {
+    const res = await executeRequest<DeliveryIssue>('/issues', {
       method: 'POST',
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        orderId,
+        issueType: payload.issueType,
+        notes: payload.notes,
+      }),
     });
     return res.data;
   },
 
   async resolveIssue(issueId: string, payload: ResolveIssuePayload): Promise<DeliveryIssue> {
+    const resolutionNotes = payload.resolutionNotes ?? payload.resolutionResult ?? '';
     const res = await executeRequest<DeliveryIssue>(`/issues/${issueId}/resolve`, {
       method: 'PATCH',
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ resolutionNotes }),
     });
     return res.data;
   },
 
-  // Returns
   async submitReturn(payload: SubmitReturnPayload): Promise<ReturnRequest> {
     const res = await executeRequest<ReturnRequest>('/returns', {
       method: 'POST',
@@ -379,10 +343,10 @@ export const apiClient = {
     return res.data;
   },
 
-  // Users (for Admin shipment assignment)
-  async listShippers(): Promise<Array<{ id: string; fullName: string }>> {
-    const res = await executeRequest<Array<{ id: string; fullName: string }>>('/users?role=Shipper');
+  async listShippers(): Promise<Array<{ id: string; fullName: string; email?: string; phoneNumber?: string }>> {
+    const res = await executeRequest<Array<{ id: string; fullName: string; email?: string; phoneNumber?: string }>>(
+      '/users?role=Shipper'
+    );
     return res.data;
   },
 };
-

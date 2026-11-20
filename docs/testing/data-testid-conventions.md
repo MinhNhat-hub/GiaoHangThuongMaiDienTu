@@ -6,7 +6,7 @@ Tài liệu này chuẩn hóa toàn bộ các thuộc tính `data-testid` trên 
 
 ## 1. Nguyên tắc chung
 
-- **Không chứa mã ID SRS**: Tuyệt đối không chứa `UC-`, `BR-`, `UI-`, `SEC-` trong `data-testid` để tránh phụ thuộc vào mã tài liệu.
+- **Không chứa mã ID đặc tả**: Tuyệt đối không chứa mã định danh yêu cầu hay quy tắc nghiệp vụ trong `data-testid` để tránh phụ thuộc vào mã tài liệu.
 - **Cấu trúc phân cấp**: `<module>-<submodule_or_context>-<action_or_element>` (ví dụ: `auth-login-submit-btn`, `order-create-btn`).
 - **Thành phần dùng chung**: Tiền tố `common-` (ví dụ: `common-status-badge`, `common-confirm-dialog`).
 - **Nguồn sự thật trong mã nguồn**: Được quản lý tập trung tại `src/constants/test-ids.ts`.
@@ -27,6 +27,13 @@ Tài liệu này chuẩn hóa toàn bộ các thuộc tính `data-testid` trên 
 | `common-error-banner-trace` | Dòng hiển thị mã lỗi và mã truy vết `trace_id` | Dưới banner lỗi |
 | `common-offline-banner` | Banner cảnh báo mất kết nối thời gian thực | Đầu trang khi mất kết nối |
 | `common-offline-reconnect-btn` | Nút bấm kết nối lại thủ công | Trên banner mất kết nối |
+| `common-account-fullname` | Họ tên tài khoản đang đăng nhập trên thanh đầu trang | Thanh đầu trang |
+| `common-account-email` | Địa chỉ email tài khoản đang đăng nhập | Thanh đầu trang |
+| `common-account-phone` | Số điện thoại tài khoản đang đăng nhập | Thanh đầu trang |
+| `common-nav-order-list-link` | Liên kết tới danh sách đơn hàng của Customer | Thanh đầu trang |
+| `common-nav-return-list-link` | Liên kết tới danh sách yêu cầu hoàn hàng của Customer | Thanh đầu trang |
+| `common-notification` | Thông báo trong ứng dụng khi trạng thái đơn thay đổi | Toàn bộ màn hình Customer |
+| `common-screen-title` | Tiêu đề chính của màn hình hiện tại | Đầu mỗi màn hình |
 | `common-loading-skeleton` | Khung xương tải dữ liệu | Khi đang chờ API trả về |
 | `common-empty-state` | Khung hiển thị khi danh sách không có dữ liệu | Khi bảng hoặc danh sách rỗng |
 
@@ -61,7 +68,7 @@ Tài liệu này chuẩn hóa toàn bộ các thuộc tính `data-testid` trên 
 | `order-cancel-creation-btn` | Nút hủy bỏ quá trình tạo đơn hàng |
 | `order-list-item` | Thẻ hoặc dòng đại diện cho một đơn hàng trong danh sách |
 | `order-details-container` | Khung hiển thị chi tiết đơn hàng |
-| `order-status-timeline` | Danh sách lịch sử thay đổi trạng thái (mới nhất lên đầu) |
+| `order-status-timeline` | Danh sách lịch sử thay đổi trạng thái (từ cũ đến mới) |
 | `order-tab-details` | Tab chuyển sang Chi tiết đơn hàng |
 | `order-tab-tracking` | Tab chuyển sang Theo dõi vận chuyển |
 

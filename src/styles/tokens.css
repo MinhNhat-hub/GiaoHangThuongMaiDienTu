@@ -421,7 +421,7 @@ a {
   border: 1px solid var(--primitive-mint-primary);
 }
 
-/* ─── Operational Lifecycle Status Badges (SRS Appendix A.2) ─── */
+/* ─── Operational Lifecycle Status Badges ─── */
 .badge-pending {
   background: var(--status-pending-bg);
   color: var(--status-pending-fg);
