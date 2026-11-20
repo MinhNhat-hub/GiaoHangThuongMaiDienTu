@@ -8,7 +8,7 @@ This document defines the RESTful API endpoints and real-time event interfaces s
 
 - **Base URL**: `/api/v1`
 - **Data Format**: `application/json; charset=utf-8`
-- **Authentication**: Bearer Token (JWT in `Authorization: Bearer <token>` header) or secure session cookie.
+- **Authentication**: REST endpoints accept only a Bearer token (JWT in the `Authorization: Bearer <token>` header). They never authenticate from a cookie, so a request forged from another site cannot act as a signed-in user. The real-time stream is the only exception and uses its own cookie (see 8.1).
 - **Roles**: `Customer`, `Shipper`, `Admin`.
 - **Response Format**:
   - Success response:
@@ -60,11 +60,12 @@ This document defines the RESTful API endpoints and real-time event interfaces s
     "password": "Password123"
   }
   ```
-- **Response**: `200 OK` with token, user profile, and assigned role. The server also sets the session cookie that the real-time stream uses (see 8.1).
+- **Response**: `200 OK` with token, user profile, and assigned role. The server also sets the events cookie described in 8.1, with the same lifetime as the token.
 
 ### 2.3 Logout
 - **POST** `/auth/logout`
 - **Access**: Authenticated
+- **Effect**: invalidates the token and the events cookie, clears the events cookie in the response, and closes any open event stream of that session.
 
 ### 2.4 Get Current User Profile
 - **GET** `/auth/me`
@@ -331,9 +332,15 @@ The system supports event-driven real-time updates without polling, delivered vi
 
 ### 8.1 Connection and Authentication
 - **Endpoint**: **GET** `/events` (Server-Sent Events, `text/event-stream`). The frontend opens it as `/api/v1/events`.
-- **Authentication**: session cookie only. The browser `EventSource` API cannot send an `Authorization` header, so this endpoint must accept the session cookie set at login (`HttpOnly`, `Secure`, `SameSite`). The client opens the stream with `withCredentials: true`.
+- **Authentication**: the events cookie only. The browser `EventSource` API cannot send an `Authorization` header, so login sets a separate cookie for this endpoint:
+  - attributes `HttpOnly`, `Secure`, `SameSite=Strict`, `Path=/api/v1/events`, so the browser sends it to no other endpoint and page scripts cannot read it;
+  - tied to the same session as the token, expires with it, and stops working after logout.
 - **Token in URL**: not allowed. A token in the query string ends up in server and proxy logs.
-- **Status**: waiting for the backend owner (TV4) to confirm. If the backend accepts only Bearer tokens, the frontend receives no events.
+- **Origin check**: the server rejects the connection when the `Origin` header is not the frontend origin. If the frontend runs on another origin, CORS answers with that exact origin and `Access-Control-Allow-Credentials: true`, never `*`.
+- **Read only**: the stream only sends events. Every change still goes through the REST endpoints with a Bearer token.
+- **Event scope**: the server decides the channels from the session, not from client input, and sends only events of orders the user may view (SEC-2 and the other SEC rules on who may view an order). The client never filters events for security.
+- **Session end**: when the session expires or is revoked, the server closes the stream. The client closes its stream on sign out and opens a new one when another account signs in.
+- **Client**: opens the stream with `withCredentials: true`.
 
 ### 8.2 Channel Subscriptions
 - **Customer Channel**: `customers:{customerId}` (subscribed by customer app; server enforces SEC-2 so customers can only subscribe to their own channel).
