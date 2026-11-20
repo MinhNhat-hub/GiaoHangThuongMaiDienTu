@@ -8,6 +8,7 @@ import { ErrorBanner } from '@/components/common/ErrorBanner';
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton';
 import { OrderStatusTimeline } from '@/components/common/OrderStatusTimeline';
 import { StatusBadge } from '@/components/common/StatusBadge';
+import { MESSAGES, getMessage } from '@/constants/messages';
 import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
 import { TEST_IDS } from '@/constants/test-ids';
 import { realtimeClient } from '@/realtime/event-client';
@@ -124,7 +125,7 @@ export const OrderDetailPage: React.FC = () => {
     try {
       await apiClient.reportIssue(order.id, {
         issueType: 'LOST',
-        notes: 'Admin xác nhận hàng hóa bị thất lạc.',
+        notes: getMessage(MESSAGES.ISSUE.ADMIN_CONFIRMED_LOST_NOTE),
       });
       await loadOrder();
     } catch (err) {

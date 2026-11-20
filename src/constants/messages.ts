@@ -226,6 +226,10 @@ export const MESSAGES = {
       vi: 'Đã ghi kết quả xử lý sự cố',
       en: 'Delivery issue resolved',
     },
+    ADMIN_CONFIRMED_LOST_NOTE: {
+      vi: 'Admin xác nhận hàng hóa bị thất lạc.',
+      en: 'Admin confirmed the goods were lost.',
+    },
   },
   NETWORK: {
     DISCONNECTED: {
