@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertTriangle, ClipboardList, RotateCcw, Truck } from 'lucide-react';
 import { ApiClientError, apiClient } from '@/api/client';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { EmptyState } from '@/components/common/EmptyState';
 import { ErrorBanner } from '@/components/common/ErrorBanner';
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton';
@@ -57,6 +58,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [issueDrafts, setIssueDrafts] = useState<Record<string, string>>({});
   const [issueErrors, setIssueErrors] = useState<Record<string, string>>({});
   const [busyIssueId, setBusyIssueId] = useState<string | null>(null);
+  const [returningIssue, setReturningIssue] = useState<DeliveryIssue | null>(null);
 
   const [rejectingReturnId, setRejectingReturnId] = useState<string | null>(null);
   const [rejectReasonDraft, setRejectReasonDraft] = useState('');
@@ -257,6 +259,24 @@ export const AdminDashboardPage: React.FC = () => {
     return orderLookup.get(issue.orderId) ?? (issue.orderCode ? orderLookup.get(issue.orderCode) : undefined);
   };
 
+  const canMoveToReturning = (order: Order): boolean => {
+    const failedAttempts = order.shipment?.failedAttempts ?? 0;
+    return (
+      order.status === 'FAILED_DELIVERY' &&
+      failedAttempts >= APP_CONFIG.DELIVERY_RULES.MAX_FAILED_DELIVERY_ATTEMPTS
+    );
+  };
+
+  const handleRequestMoveToReturning = (issue: DeliveryIssue) => {
+    setError(null);
+    const associatedOrder = findAssociatedOrder(issue);
+    if (associatedOrder && !canMoveToReturning(associatedOrder)) {
+      setError({ message: 'Chỉ có thể chuyển sang trạng thái Đang hoàn hàng khi đơn hàng đã đạt đủ 3 lần giao không thành công.' });
+      return;
+    }
+    setReturningIssue(issue);
+  };
+
   const handleMoveIssueToReturning = async (issue: DeliveryIssue) => {
     if (busyIssueId) {
       return;
@@ -266,16 +286,9 @@ export const AdminDashboardPage: React.FC = () => {
     try {
       const associatedOrder =
         findAssociatedOrder(issue) ?? (await apiClient.getOrderDetail(issue.orderId));
-      const failedAttempts = associatedOrder.shipment?.failedAttempts ?? 0;
 
-      if (
-        associatedOrder.status !== 'FAILED_DELIVERY' ||
-        failedAttempts < APP_CONFIG.DELIVERY_RULES.MAX_FAILED_DELIVERY_ATTEMPTS
-      ) {
-        setError({
-          message:
-            'Chỉ có thể chuyển sang trạng thái Đang hoàn hàng khi đơn hàng đã đạt đủ 3 lần giao không thành công.',
-        });
+      if (!canMoveToReturning(associatedOrder)) {
+        setError({ message: 'Chỉ có thể chuyển sang trạng thái Đang hoàn hàng khi đơn hàng đã đạt đủ 3 lần giao không thành công.' });
         return;
       }
 
@@ -291,6 +304,7 @@ export const AdminDashboardPage: React.FC = () => {
       captureError(err, 'Không thể chuyển đơn hàng sang trạng thái hoàn hàng.');
     } finally {
       setBusyIssueId(null);
+      setReturningIssue(null);
     }
   };
 
@@ -725,7 +739,7 @@ export const AdminDashboardPage: React.FC = () => {
                             type="button"
                             data-testid={TEST_IDS.ADMIN.ISSUE_RETURN_BUTTON}
                             disabled={busyIssueId === issue.id}
-                            onClick={() => void handleMoveIssueToReturning(issue)}
+                            onClick={() => handleRequestMoveToReturning(issue)}
                             className="px-3.5 py-2 text-xs font-semibold rounded-lg border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 transition-colors disabled:opacity-50"
                           >
                             Chuyển hoàn hàng
@@ -973,6 +987,22 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={!!returningIssue}
+        title="Chuyển đơn sang hoàn hàng"
+        message={`Chuyển đơn ${returningIssue?.orderCode ?? returningIssue?.orderId ?? ''} sang "Đang hoàn hàng"? Shipper sẽ không giao lại đơn này nữa.`}
+        confirmLabel="Chuyển hoàn hàng"
+        cancelLabel="Hủy"
+        variant="warning"
+        isLoading={!!busyIssueId}
+        onConfirm={() => {
+          if (returningIssue) {
+            void handleMoveIssueToReturning(returningIssue);
+          }
+        }}
+        onCancel={() => setReturningIssue(null)}
+      />
     </div>
   );
 };
