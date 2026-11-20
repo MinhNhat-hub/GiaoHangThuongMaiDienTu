@@ -282,6 +282,68 @@ describe('customer order list, creation, and details workflows', () => {
     await screen.findByTestId(TEST_IDS.ORDER.ORDER_DETAILS_CONTAINER);
     expect(screen.queryByTestId(TEST_IDS.ORDER.REQUEST_RETURN_BUTTON)).not.toBeInTheDocument();
     await user.click(screen.getByTestId(TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON));
+    expect(screen.getByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG)).toBeVisible();
+    expect(reportSpy).not.toHaveBeenCalled();
+    await user.click(screen.getByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG_CONFIRM));
     expect(reportSpy).toHaveBeenCalledWith('ord_1', expect.objectContaining({ issueType: 'LOST' }));
+  });
+
+  it('test_admin_cancelling_lost_confirmation_sends_nothing', async () => {
+    const user = userEvent.setup();
+    vi.spyOn(apiClient, 'getOrderDetail').mockResolvedValue(SAMPLE_ORDERS[0]);
+    const reportSpy = vi.spyOn(apiClient, 'reportIssue');
+    apiClient.setUser({
+      id: 'adm_1',
+      email: 'admin@store.vn',
+      fullName: 'Store Admin',
+      role: 'Admin',
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/orders/DH-2026-0001']}>
+        <Routes>
+          <Route path="/orders/:id" element={<OrderDetailPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await screen.findByTestId(TEST_IDS.ORDER.ORDER_DETAILS_CONTAINER);
+    await user.click(screen.getByTestId(TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON));
+    await user.click(screen.getByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG_CANCEL));
+
+    expect(screen.queryByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG)).not.toBeInTheDocument();
+    expect(reportSpy).not.toHaveBeenCalled();
+  });
+
+  it('test_admin_confirms_returned_goods_only_after_dialog_confirmation', async () => {
+    const user = userEvent.setup();
+    const returningOrder: Order = { ...SAMPLE_ORDERS[0], status: 'RETURNING' };
+    vi.spyOn(apiClient, 'getOrderDetail').mockResolvedValue(returningOrder);
+    const confirmSpy = vi
+      .spyOn(apiClient, 'confirmReturnReceived')
+      .mockResolvedValue({ ...returningOrder, status: 'RETURNED_TO_SELLER' });
+    apiClient.setUser({
+      id: 'adm_1',
+      email: 'admin@store.vn',
+      fullName: 'Store Admin',
+      role: 'Admin',
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/orders/DH-2026-0001']}>
+        <Routes>
+          <Route path="/orders/:id" element={<OrderDetailPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await screen.findByTestId(TEST_IDS.ORDER.ORDER_DETAILS_CONTAINER);
+    await user.click(screen.getByTestId(TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON));
+    await user.click(screen.getByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG_CANCEL));
+    expect(confirmSpy).not.toHaveBeenCalled();
+
+    await user.click(screen.getByTestId(TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON));
+    await user.click(screen.getByTestId(TEST_IDS.COMMON.CONFIRM_DIALOG_CONFIRM));
+    expect(confirmSpy).toHaveBeenCalledWith('ship_1');
   });
 });
