@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { ProtectedLayout, RoleRoute, useAuthSession } from './guards';
-import { LoginPage } from '@/features/auth/LoginPage';
+import { LoginPage, RegisterPage } from '@/features/auth';
 import { APP_PATHS, ROUTE_PATTERNS, SCREEN_NAMES } from '@/constants/routes';
 import { TEST_IDS } from '@/constants/test-ids';
 import App from '@/App';
@@ -49,16 +49,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
     },
     {
       path: APP_PATHS.register,
-      element: (
-        <div className="min-h-screen w-full bg-canvas flex items-center justify-center p-6">
-          <div className="bg-card rounded-2xl border border-mint-secondary/25 p-8 max-w-md w-full text-center shadow-sm">
-            <h1 data-testid={TEST_IDS.COMMON.SCREEN_TITLE} className="text-xl font-bold text-mint-primary mb-2">
-              {SCREEN_NAMES.REGISTER}
-            </h1>
-            <p className="text-xs text-mint-secondary">Màn hình đăng ký tài khoản Customer.</p>
-          </div>
-        </div>
-      ),
+      element: <RegisterPage />,
     },
     {
       element: <ProtectedLayout />,
