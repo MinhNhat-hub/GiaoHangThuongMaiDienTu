@@ -205,6 +205,7 @@ This document defines the RESTful API endpoints and real-time event interfaces s
   }
   ```
 - **Response**: `200 OK` with updated order status (`RETURNING`).
+- **Errors**: `409 Conflict` with `error.code` = `RETURN_THRESHOLD_NOT_REACHED` when the order is not in `DELIVERY_FAILED` or its failed delivery attempts are below the BR-06 threshold (UC-07 7.0.E1). The order status does not change.
 
 ### 4.6 Confirm Return Received (Admin / Warehouse)
 - **POST** `/shipments/:id/confirm-returned`

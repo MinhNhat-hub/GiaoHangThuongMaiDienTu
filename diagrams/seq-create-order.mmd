@@ -16,17 +16,22 @@ sequenceDiagram
     Note over OrderService: Instantiate Order and child OrderItems
     OrderService->>Order: new Order(orderId, customerId, recipientName, recipientPhone, deliveryAddress)
     loop For each item in request
-      OrderService->>OrderItem: new OrderItem(itemId, orderId, productId, quantity, unitPrice)
+      OrderService->>OrderItem: new OrderItem(itemId, orderId, productId, quantity)
     end
 
     Note over OrderService: Record initial status history
     OrderService->>Order: updateStatus("PENDING_CONFIRMATION", customerId)
 
-    Note over OrderService: Persist order and order items in database
+    Note over OrderService: Persist order, order items and first status history together
 
-    OrderService->>NotificationService: publishOrderStatusChanged(orderId, "", "PENDING_CONFIRMATION")
-    Note over NotificationService: Broadcast real-time event to Admin dashboard
+    alt Save fails
+      Note over OrderService: Roll back every step of the save, no order is stored
+      OrderService-->>Customer: throw Error("Order could not be created") with reason
+    else Save succeeds
+      OrderService->>NotificationService: publishOrderStatusChanged(orderId, "", "PENDING_CONFIRMATION")
+      Note over NotificationService: Broadcast real-time event to Admin dashboard
 
-    OrderService-->>Customer: Order entity (status: PENDING_CONFIRMATION)
-    Note over Customer: View newly created order confirmation on screen
+      OrderService-->>Customer: Order entity (status: PENDING_CONFIRMATION)
+      Note over Customer: View newly created order confirmation on screen
+    end
   end
