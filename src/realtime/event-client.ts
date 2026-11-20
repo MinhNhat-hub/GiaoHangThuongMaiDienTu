@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { APP_CONFIG } from '@/constants/config';
-import { AUTH_CHANGE_EVENT, apiClient } from '@/api/client';
+import { AUTH_CHANGE_EVENT, AUTH_STORAGE_KEYS, apiClient } from '@/api/client';
 import type { OrderStatusCode, ReturnStatusCode } from '@/constants/status-map';
 import type { DeliveryIssueType, ShipmentSummary } from '@/types/api';
 
@@ -85,6 +85,7 @@ const STREAM_EVENT_TYPES = [
 
 class RealtimeEventClient {
   private eventSource: EventSource | null = null;
+  private streamToken: string | null = null;
   private listeners = new Map<RealtimeEventType, Set<EventListenerFn<RealtimeEventType>>>();
   private statusListeners = new Set<StatusListenerFn>();
   private browserListenersAttached = false;
@@ -121,13 +122,27 @@ class RealtimeEventClient {
       this.reconnect();
     });
 
-    window.addEventListener(AUTH_CHANGE_EVENT, () => {
-      if (!apiClient.getToken()) {
-        this.disconnect();
-      } else if (this.hasActiveSubscribers()) {
-        this.ensureConnected();
+    window.addEventListener(AUTH_CHANGE_EVENT, () => this.handleSessionChange());
+    window.addEventListener('storage', (event) => {
+      if (event.key === null || AUTH_STORAGE_KEYS.includes(event.key)) {
+        this.handleSessionChange();
       }
     });
+  }
+
+  // Drops a stream opened for a previous session so events never reach the wrong account.
+  private handleSessionChange(): void {
+    const token = apiClient.getToken();
+    if (!token) {
+      this.disconnect();
+      return;
+    }
+    if (this.eventSource && this.streamToken !== token) {
+      this.disconnect();
+    }
+    if (this.hasActiveSubscribers()) {
+      this.ensureConnected();
+    }
   }
 
   private hasActiveSubscribers(): boolean {
@@ -157,7 +172,8 @@ class RealtimeEventClient {
     if (typeof window === 'undefined' || typeof EventSource === 'undefined') {
       return;
     }
-    if (!apiClient.getToken()) {
+    const token = apiClient.getToken();
+    if (!token) {
       return;
     }
     if (this.eventSource) {
@@ -167,6 +183,7 @@ class RealtimeEventClient {
 
     const source = new EventSource(APP_CONFIG.EVENTS_URL, { withCredentials: true });
     this.eventSource = source;
+    this.streamToken = token;
 
     source.onopen = () => {
       const recovered = this.wasDisconnected || this.status.isReconnecting || this.status.isOffline;
@@ -275,6 +292,7 @@ class RealtimeEventClient {
       this.eventSource.close();
       this.eventSource = null;
     }
+    this.streamToken = null;
     this.wasDisconnected = false;
     this.setStatus({
       connected: false,
