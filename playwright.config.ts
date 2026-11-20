@@ -4,6 +4,14 @@ import { defineConfig, devices } from '@playwright/test';
 // `--grep @isolated` would match nothing. The flag is read here to lift the exclusion.
 const runsIsolatedTests = process.argv.some((argument) => argument.includes('@isolated'));
 
+// Starts the API server before the frontend when E2E_API_COMMAND is set.
+const apiCommand = process.env.E2E_API_COMMAND;
+const apiUrl = process.env.E2E_API_URL;
+if (apiCommand && !apiUrl) {
+  throw new Error('E2E_API_URL is required when E2E_API_COMMAND is set.');
+}
+const apiServers = apiCommand && apiUrl ? [{ command: apiCommand, url: apiUrl, reuseExistingServer: true }] : [];
+
 export default defineConfig({
   testDir: 'tests/e2e',
   grepInvert: runsIsolatedTests ? undefined : /@isolated/,
@@ -14,9 +22,12 @@ export default defineConfig({
     baseURL: 'http://localhost:5173',
     trace: 'retain-on-failure',
   },
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: true,
-  },
+  webServer: [
+    ...apiServers,
+    {
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: true,
+    },
+  ],
 });

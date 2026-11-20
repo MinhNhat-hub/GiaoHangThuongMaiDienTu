@@ -102,6 +102,8 @@ npm run test:e2e
 
 Bộ test chỉ chạy khi đã có server: Playwright dùng server đang chạy ở `http://localhost:5173`, nếu chưa có thì mở bằng `npm run dev`. Test dùng Chrome đã cài trên máy, không cần chạy `playwright install`.
 
+Server API cũng mở được cùng lúc: đặt `E2E_API_COMMAND` là lệnh chạy backend và `E2E_API_URL` là địa chỉ Playwright chờ trả lời trước khi chạy test. Đặt lệnh mà thiếu địa chỉ thì Playwright báo lỗi. Không đặt hai biến này thì Playwright dùng server API đang chạy sẵn. Lệnh chạy backend do TV4 cung cấp khi có server.
+
 Tài khoản dùng khi test đặt qua biến môi trường, thiếu biến nào thì test báo lỗi ngay. Chỉ ghi tên biến ở đây, giá trị đặt trên máy chạy test, không commit:
 
 - `E2E_ADMIN_EMAIL`, `E2E_ADMIN_PASSWORD`
