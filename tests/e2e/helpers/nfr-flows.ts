@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page, type Request } from '@playwright/test';
 import { TEST_IDS } from '../../../src/constants/test-ids';
 import { LOAD_MARKER_KEY } from './constants';
-import { ABSENCE_IDS, PENDING_TEST_IDS } from './pending-test-ids';
+import { ABSENCE_IDS } from './absence-ids';
 
 const ROLE_HOME_TEST_IDS = [TEST_IDS.ORDER.CREATE_BUTTON, TEST_IDS.ADMIN.DASHBOARD_TABLE, TEST_IDS.SHIPPER.ASSIGNED_LIST];
 
@@ -74,7 +74,7 @@ export function recordRequests(page: Page): () => string[] {
  * Finds the in-app notifications that mention the order code.
  */
 export function notificationsFor(page: Page, code: string): Locator {
-  return page.getByTestId(PENDING_TEST_IDS.COMMON.NOTIFICATION).filter({ hasText: code });
+  return page.getByTestId(TEST_IDS.COMMON.NOTIFICATION).filter({ hasText: code });
 }
 
 /**

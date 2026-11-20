@@ -71,16 +71,4 @@ export const SCREEN_NAME = {
   SHIPPER_DELIVERY: 'Màn hình giao hàng của Shipper',
 } as const;
 
-export const APP_PATHS = {
-  login: '/',
-  register: '/register',
-  customerHome: '/',
-  orderList: '/orders',
-  orderCreation: '/orders/new',
-  returnList: '/returns',
-  adminDashboard: '/admin',
-  shipperDeliveries: '/shipper',
-  orderDetails: (code: string): string => `/orders/${code}`,
-  returnRequest: (code: string): string => `/orders/${code}/return`,
-  tracking: (code: string): string => `/orders/${code}/tracking`,
-} as const;
+export { APP_PATHS } from '../../../src/constants/routes';

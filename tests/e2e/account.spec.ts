@@ -2,7 +2,6 @@ import { expect } from '@playwright/test';
 import { TEST_IDS } from '../../src/constants/test-ids';
 import { buildEmailOfLength, generatePassword, repeatChar } from './helpers/data';
 import { APP_PATHS } from './helpers/flows';
-import { PENDING_TEST_IDS } from './helpers/pending-test-ids';
 import {
   attemptRegistration,
   buildRegistration,
@@ -21,8 +20,8 @@ import {
 } from './helpers/session';
 import { test } from './helpers/world';
 
-const AUTH_ERRORS = PENDING_TEST_IDS.AUTH;
-const ACCOUNT_VIEW = PENDING_TEST_IDS.COMMON;
+const AUTH_ERRORS = TEST_IDS.AUTH;
+const ACCOUNT_VIEW = TEST_IDS.COMMON;
 
 test.describe('Account registration', () => {
   test('registers a customer with valid details and shows the entered name, email and phone after login', async ({ page }) => {

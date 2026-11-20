@@ -20,10 +20,7 @@ import {
   readOptionLabels,
   readSelectedProductLabel,
 } from './helpers/flows';
-import { PENDING_TEST_IDS } from './helpers/pending-test-ids';
 import { signInAsNewCustomer } from './helpers/session';
-
-const ORDER_PENDING = PENDING_TEST_IDS.ORDER;
 
 test.describe('Order creation fields', () => {
   test('lists the store products on the order creation screen and lets the customer pick one', async ({ page }) => {
@@ -67,7 +64,7 @@ test.describe('Order creation fields', () => {
         ],
       }),
     );
-    await expectOrderFieldRejected(page, ORDER_PENDING.PRODUCT_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.PRODUCT_ERROR);
     await expectNoSavedOrder(page);
   });
 
@@ -109,7 +106,7 @@ test.describe('Order creation fields', () => {
   test('rejects a recipient name longer than 100 characters', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientName: repeatChar('a', 101) }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_NAME_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_NAME_ERROR);
     await expectNoSavedOrder(page);
   });
 
@@ -144,112 +141,112 @@ test.describe('Order creation fields', () => {
   test('rejects a delivery address longer than 255 characters', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ deliveryAddress: repeatChar('a', 256) }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.DELIVERY_ADDRESS_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.DELIVERY_ADDRESS_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects an order without any product line', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [] }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.PRODUCT_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.PRODUCT_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects an order whose quantity is left empty', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [{ product: 1, quantity: '' }] }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.QUANTITY_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.QUANTITY_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects an order whose recipient name is left empty', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientName: '' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_NAME_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_NAME_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('treats a whitespace-only recipient name as missing', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientName: '   ' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_NAME_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_NAME_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects an order whose recipient phone number is left empty', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_PHONE_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects an order whose delivery address is left empty', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ deliveryAddress: '' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.DELIVERY_ADDRESS_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.DELIVERY_ADDRESS_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('treats a whitespace-only delivery address as missing', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ deliveryAddress: '   ' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.DELIVERY_ADDRESS_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.DELIVERY_ADDRESS_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a quantity of zero', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [{ product: 1, quantity: '0' }] }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.QUANTITY_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.QUANTITY_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a negative quantity', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [{ product: 1, quantity: '-1' }] }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.QUANTITY_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.QUANTITY_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a decimal quantity', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [{ product: 1, quantity: '1.5' }] }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.QUANTITY_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.QUANTITY_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a quantity written as text', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [{ product: 1, quantity: 'abc' }] }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.QUANTITY_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.QUANTITY_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a recipient phone number of 9 digits', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '091234567' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_PHONE_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a recipient phone number of 11 digits', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '09123456789' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_PHONE_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a recipient phone number that does not start with 0', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '1912345678' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_PHONE_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('rejects a recipient phone number that contains a letter', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '09123a5678' }));
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_PHONE_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR);
     await expectNoSavedOrder(page);
   });
 });
@@ -279,7 +276,7 @@ test.describe('Order review and confirmation', () => {
     await signInAsNewCustomer(page);
     await enterOrder(page, buildOrderDraft());
     await expect(page.getByTestId(TEST_IDS.ORDER.SUBMIT_ORDER_BUTTON)).toBeVisible();
-    await expect(page.getByTestId(ORDER_PENDING.EDIT_BUTTON)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.EDIT_BUTTON)).toBeVisible();
     await expect(page.getByTestId(TEST_IDS.ORDER.CANCEL_ORDER_CREATION_BUTTON)).toBeVisible();
   });
 
@@ -293,7 +290,7 @@ test.describe('Order review and confirmation', () => {
   test('returns to the entered data for editing and shows the corrected quantity after review', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrder(page, buildOrderDraft());
-    await page.getByTestId(ORDER_PENDING.EDIT_BUTTON).click();
+    await page.getByTestId(TEST_IDS.ORDER.EDIT_BUTTON).click();
     const productStep = page.getByTestId(TEST_IDS.ORDER.STEP_PRODUCT);
     await expect(productStep).toBeVisible();
     await expect(productStep.getByTestId(TEST_IDS.ORDER.QUANTITY_INPUT).first()).toHaveValue('1');
@@ -317,7 +314,7 @@ test.describe('Order saving', () => {
     await signInAsNewCustomer(page);
     const code = await createOrder(page);
     await openOrderByCode(page, code);
-    await expect(page.getByTestId(ORDER_PENDING.DETAILS_CODE)).toContainText(code);
+    await expect(page.getByTestId(TEST_IDS.ORDER.DETAILS_CODE)).toContainText(code);
     await expectOrderStatus(page, ORDER_STATUS.PENDING);
   });
 
@@ -331,7 +328,7 @@ test.describe('Order saving', () => {
     });
     const code = await createOrder(page, draft);
     await openOrderByCode(page, code);
-    await expect(page.getByTestId(ORDER_PENDING.DETAILS_LINE)).toHaveCount(2);
+    await expect(page.getByTestId(TEST_IDS.ORDER.DETAILS_LINE)).toHaveCount(2);
     const details = page.getByTestId(TEST_IDS.ORDER.ORDER_DETAILS_CONTAINER);
     await expect(details).toContainText(draft.recipientName);
     await expect(details).toContainText(draft.deliveryAddress);
@@ -372,11 +369,11 @@ test.describe('Order saving', () => {
     await signInAsNewCustomer(page);
     await enterOrder(page, buildOrderDraft());
     await page.getByTestId(TEST_IDS.ORDER.SUBMIT_ORDER_BUTTON).click();
-    await expect(page.getByTestId(ORDER_PENDING.SUCCESS_MESSAGE)).toBeVisible();
-    const shownCode = (await page.getByTestId(ORDER_PENDING.SUCCESS_CODE).textContent())?.trim() ?? '';
+    await expect(page.getByTestId(TEST_IDS.ORDER.SUCCESS_MESSAGE)).toBeVisible();
+    const shownCode = (await page.getByTestId(TEST_IDS.ORDER.SUCCESS_CODE).textContent())?.trim() ?? '';
     expect(shownCode).not.toBe('');
     await openOrderByCode(page, shownCode);
-    await expect(page.getByTestId(ORDER_PENDING.DETAILS_CODE)).toContainText(shownCode);
+    await expect(page.getByTestId(TEST_IDS.ORDER.DETAILS_CODE)).toContainText(shownCode);
   });
 });
 
@@ -384,25 +381,25 @@ test.describe('Order creation errors and recovery', () => {
   test('points to the missing recipient name when it is left empty', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientName: '' }));
-    await expect(page.getByTestId(ORDER_PENDING.RECIPIENT_NAME_ERROR)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.RECIPIENT_NAME_ERROR)).toBeVisible();
   });
 
   test('points to the recipient phone number when it is one digit short', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '091234567' }));
-    await expect(page.getByTestId(ORDER_PENDING.RECIPIENT_PHONE_ERROR)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR)).toBeVisible();
   });
 
   test('points to the quantity when it breaks the constraint', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ lines: [{ product: 1, quantity: '0' }] }));
-    await expect(page.getByTestId(ORDER_PENDING.QUANTITY_ERROR)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.QUANTITY_ERROR)).toBeVisible();
   });
 
   test('goes back to review without errors once the missing recipient name is filled in', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientName: '' }));
-    await expect(page.getByTestId(ORDER_PENDING.RECIPIENT_NAME_ERROR)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.RECIPIENT_NAME_ERROR)).toBeVisible();
     await page.getByTestId(TEST_IDS.ORDER.RECIPIENT_NAME_INPUT).fill('A');
     await goToNextStep(page, 'recipient');
     await expectReviewShows(page, buildOrderDraft());
@@ -411,17 +408,17 @@ test.describe('Order creation errors and recovery', () => {
   test('keeps pointing to the phone number when the corrected value is still wrong', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientPhone: '091234567' }));
-    await expect(page.getByTestId(ORDER_PENDING.RECIPIENT_PHONE_ERROR)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR)).toBeVisible();
     await page.getByTestId(TEST_IDS.ORDER.RECIPIENT_PHONE_INPUT).fill('09123456789');
     await goToNextStep(page, 'recipient');
-    await expectOrderFieldRejected(page, ORDER_PENDING.RECIPIENT_PHONE_ERROR);
+    await expectOrderFieldRejected(page, TEST_IDS.ORDER.RECIPIENT_PHONE_ERROR);
     await expectNoSavedOrder(page);
   });
 
   test('saves nothing when the customer cancels after an error', async ({ page }) => {
     await signInAsNewCustomer(page);
     await enterOrderUntilRejected(page, buildOrderDraft({ recipientName: '' }));
-    await expect(page.getByTestId(ORDER_PENDING.RECIPIENT_NAME_ERROR)).toBeVisible();
+    await expect(page.getByTestId(TEST_IDS.ORDER.RECIPIENT_NAME_ERROR)).toBeVisible();
     await page.getByTestId(TEST_IDS.ORDER.CANCEL_ORDER_CREATION_BUTTON).click();
     await expectNoSavedOrder(page);
   });

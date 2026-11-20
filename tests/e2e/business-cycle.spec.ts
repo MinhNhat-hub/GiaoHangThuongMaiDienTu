@@ -39,7 +39,7 @@ import {
   RETURN_STATUS,
   SHORT_TEXT,
 } from './helpers/constants';
-import { ABSENCE_IDS, PENDING_TEST_IDS } from './helpers/pending-test-ids';
+import { ABSENCE_IDS } from './helpers/absence-ids';
 import { expectNoElements, expectNoMoneyHandling } from './helpers/nfr-flows';
 import { type Actor, advance, expectLifecycle, type LifecycleStep } from './helpers/lifecycle';
 import { type Customer, expect, test, World } from './helpers/world';
@@ -53,8 +53,8 @@ interface AllowedAdminControls {
 
 async function expectAdminOrderControls(admin: Page, code: string, allowed: AllowedAdminControls): Promise<void> {
   await openAdminOrder(admin, code);
-  await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON)).toHaveCount(allowed.confirmLost === true ? 1 : 0);
-  await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON)).toHaveCount(allowed.confirmReturned === true ? 1 : 0);
+  await expect(admin.getByTestId(TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON)).toHaveCount(allowed.confirmLost === true ? 1 : 0);
+  await expect(admin.getByTestId(TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON)).toHaveCount(allowed.confirmReturned === true ? 1 : 0);
   await expectNoElements(admin, [ABSENCE_IDS.STATUS_CHANGE_CONTROL, ...SHIPPER_ACTION_IDS]);
 }
 
@@ -72,7 +72,7 @@ async function expectNoStatusChangeForAnyRole(world: World, customer: Customer, 
   await openOrderByCode(customer.page, code);
   await expectNoElements(customer.page, [
     ABSENCE_IDS.STATUS_CHANGE_CONTROL,
-    PENDING_TEST_IDS.ORDER.REQUEST_RETURN_BUTTON,
+    TEST_IDS.ORDER.REQUEST_RETURN_BUTTON,
   ]);
 }
 
@@ -117,7 +117,7 @@ test.describe('Order status transition matrix', () => {
     const { code } = await world.orderAt(ORDER_STATUS.PENDING);
     const admin = await world.admin();
     await openAssignmentList(admin);
-    await expect(assignmentRow(admin, code).getByTestId(PENDING_TEST_IDS.ADMIN.ASSIGN_BUTTON)).toHaveCount(1);
+    await expect(assignmentRow(admin, code).getByTestId(TEST_IDS.ADMIN.ASSIGN_BUTTON)).toHaveCount(1);
     await expectAdminOrderControls(admin, code, {});
   });
 
@@ -148,7 +148,7 @@ test.describe('Order status transition matrix', () => {
     const { code } = await world.orderAt(ORDER_STATUS.FAILED_DELIVERY, { failedDeliveries: FAILED_DELIVERY_LIMIT });
     const admin = await world.admin();
     const row = await openIssue(admin, code, INCIDENT_TYPE.FAILED_DELIVERY);
-    await expect(row.getByTestId(PENDING_TEST_IDS.ADMIN.ISSUE_RETURN_BUTTON)).toHaveCount(1);
+    await expect(row.getByTestId(TEST_IDS.ADMIN.ISSUE_RETURN_BUTTON)).toHaveCount(1);
     await expectAdminOrderControls(admin, code, {});
     await expectNoShipperChoices(await world.shipperA(), code);
   });
@@ -181,7 +181,7 @@ test.describe('Return request status matrix', () => {
     await openReturnForm(customer.page, code);
     await expectNoElements(customer.page, [ABSENCE_IDS.RETURN_STATUS_SELECT]);
     await submitReturnForm(customer.page, RETURN_REASON.OTHER, SHORT_TEXT);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.SUCCESS_MESSAGE)).toBeVisible();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.SUCCESS_MESSAGE)).toBeVisible();
     await expectMyReturn(customer.page, code, { status: RETURN_STATUS.PENDING });
   });
 });

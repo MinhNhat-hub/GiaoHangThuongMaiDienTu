@@ -11,9 +11,8 @@ import {
   shipmentCardByCode,
   waitForListLoaded,
 } from './flows';
-import { PENDING_TEST_IDS } from './pending-test-ids';
 
-const ADMIN_FIELDS = PENDING_TEST_IDS.ADMIN;
+const ADMIN_FIELDS = TEST_IDS.ADMIN;
 
 /**
  * Opens the incident report form of the order from its shipment card.

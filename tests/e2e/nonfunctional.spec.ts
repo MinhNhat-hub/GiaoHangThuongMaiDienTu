@@ -67,7 +67,7 @@ import {
   SHORT_TEXT,
   type OrderStatusName,
 } from './helpers/constants';
-import { ABSENCE_IDS, PENDING_TEST_IDS } from './helpers/pending-test-ids';
+import { ABSENCE_IDS } from './helpers/absence-ids';
 import {
   expectNoElements,
   expectPageNotReloaded,
@@ -86,17 +86,17 @@ const RETURN_REVIEW_IDS = [
   TEST_IDS.ADMIN.RETURNS_TAB,
   TEST_IDS.ADMIN.APPROVE_RETURN_BUTTON,
   TEST_IDS.ADMIN.REJECT_RETURN_BUTTON,
-  PENDING_TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON,
+  TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON,
 ];
 
 const INCIDENT_HANDLING_IDS = [
   TEST_IDS.ADMIN.ISSUES_TAB,
-  PENDING_TEST_IDS.ADMIN.ISSUES_LIST,
+  TEST_IDS.ADMIN.ISSUES_LIST,
   TEST_IDS.ADMIN.RESOLVE_ISSUE_BUTTON,
-  PENDING_TEST_IDS.ADMIN.ISSUE_RESULT_INPUT,
+  TEST_IDS.ADMIN.ISSUE_RESULT_INPUT,
 ];
 
-const ASSIGNMENT_IDS = [TEST_IDS.ADMIN.DASHBOARD_TABLE, PENDING_TEST_IDS.ADMIN.ASSIGN_BUTTON];
+const ASSIGNMENT_IDS = [TEST_IDS.ADMIN.DASHBOARD_TABLE, TEST_IDS.ADMIN.ASSIGN_BUTTON];
 
 const HISTORY_EDIT_IDS = [
   ABSENCE_IDS.TIMELINE_EDIT_BUTTON,
@@ -121,7 +121,7 @@ async function expectScreenShown(page: Page, path: string, marker: string): Prom
 
 async function expectScreenName(page: Page, path: string, name: string): Promise<void> {
   await page.goto(path);
-  await expect(page.getByTestId(PENDING_TEST_IDS.COMMON.SCREEN_TITLE)).toHaveText(name);
+  await expect(page.getByTestId(TEST_IDS.COMMON.SCREEN_TITLE)).toHaveText(name);
 }
 
 async function openCustomerHome(page: Page): Promise<void> {
@@ -223,7 +223,7 @@ test.describe('Access control, sign-out and passwords', () => {
     const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERED);
     await requestReturn(customer.page, code, RETURN_REASON.OTHER, SHORT_TEXT);
     await openOrderByCode(customer.page, code);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.ORDER.DETAILS_CUSTOMER)).toContainText(customer.email);
+    await expect(customer.page.getByTestId(TEST_IDS.ORDER.DETAILS_CUSTOMER)).toContainText(customer.email);
     await expectListedOrderStatus(customer.page, code, ORDER_STATUS.DELIVERED);
     await expectMyReturnCount(customer.page, code, 1);
   });
@@ -255,10 +255,10 @@ test.describe('Access control, sign-out and passwords', () => {
     const otherCustomer = await world.newCustomer();
     await openOrderList(otherCustomer.page);
     await expect(otherCustomer.page.getByTestId(TEST_IDS.ORDER.ORDER_LIST_ITEM).filter({ hasText: code })).toHaveCount(0);
-    await expectNoElements(await world.shipperA(), [PENDING_TEST_IDS.ORDER.REQUEST_RETURN_BUTTON]);
+    await expectNoElements(await world.shipperA(), [TEST_IDS.ORDER.REQUEST_RETURN_BUTTON]);
     const admin = await world.admin();
     await openAdminOrder(admin, code);
-    await expectNoElements(admin, [PENDING_TEST_IDS.ORDER.REQUEST_RETURN_BUTTON]);
+    await expectNoElements(admin, [TEST_IDS.ORDER.REQUEST_RETURN_BUTTON]);
     await expectSignedOutBlocked(await world.newPage(), APP_PATHS.returnRequest(code));
   });
 
@@ -503,7 +503,7 @@ test.describe('Operating environment', () => {
     await expectScreenShown(customer.page, APP_PATHS.customerHome, TEST_IDS.ORDER.CREATE_BUTTON);
     await expectScreenShown(customer.page, APP_PATHS.orderCreation, TEST_IDS.ORDER.STEP_PRODUCT);
     await expectScreenShown(customer.page, APP_PATHS.orderList, TEST_IDS.ORDER.ORDER_LIST_ITEM);
-    await expectScreenShown(customer.page, APP_PATHS.returnList, PENDING_TEST_IDS.RETURN.LIST);
+    await expectScreenShown(customer.page, APP_PATHS.returnList, TEST_IDS.RETURN.LIST);
     await expectScreenShown(customer.page, APP_PATHS.orderDetails(code), TEST_IDS.ORDER.ORDER_DETAILS_CONTAINER);
     await expectScreenShown(customer.page, APP_PATHS.returnRequest(code), TEST_IDS.RETURN.REQUEST_FORM);
     await expectScreenShown(customer.page, APP_PATHS.tracking(code), TEST_IDS.SHIPMENT.TIMELINE_CONTAINER);
@@ -609,7 +609,7 @@ test.describe('No periodic reload and Vietnamese wording', () => {
     ];
     for (const { code, type } of reported) {
       const row = await openIssue(admin, code, type);
-      await expect(row.getByTestId(PENDING_TEST_IDS.ADMIN.ISSUE_TYPE)).toHaveText(type);
+      await expect(row.getByTestId(TEST_IDS.ADMIN.ISSUE_TYPE)).toHaveText(type);
     }
   });
 

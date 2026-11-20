@@ -2,17 +2,16 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { TEST_IDS } from '../../../src/constants/test-ids';
 import { RETURN_STATUS, TIMESTAMP_FORMAT } from './constants';
 import { openOrderByCode, waitForListLoaded } from './flows';
-import { PENDING_TEST_IDS } from './pending-test-ids';
 
-const RETURN_FIELDS = PENDING_TEST_IDS.RETURN;
-const ADMIN_FIELDS = PENDING_TEST_IDS.ADMIN;
+const RETURN_FIELDS = TEST_IDS.RETURN;
+const ADMIN_FIELDS = TEST_IDS.ADMIN;
 
 /**
  * Opens the return request screen of the order from the customer order list.
  */
 export async function openReturnRequest(page: Page, code: string): Promise<void> {
   await openOrderByCode(page, code);
-  await page.getByTestId(PENDING_TEST_IDS.ORDER.REQUEST_RETURN_BUTTON).click();
+  await page.getByTestId(TEST_IDS.ORDER.REQUEST_RETURN_BUTTON).click();
 }
 
 /**
@@ -65,7 +64,7 @@ export async function requestReturn(page: Page, code: string, reason: string, no
  * Opens the list of return requests the customer has sent.
  */
 export async function openMyReturns(page: Page): Promise<void> {
-  await page.getByTestId(PENDING_TEST_IDS.COMMON.NAV_RETURN_LIST_LINK).click();
+  await page.getByTestId(TEST_IDS.COMMON.NAV_RETURN_LIST_LINK).click();
   const list = page.getByTestId(RETURN_FIELDS.LIST);
   await expect(list).toBeVisible();
   await waitForListLoaded(page, list.getByTestId(RETURN_FIELDS.LIST_ITEM));

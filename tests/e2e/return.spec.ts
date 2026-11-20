@@ -47,7 +47,7 @@ import {
   RETURN_STATUS,
   SHORT_TEXT,
 } from './helpers/constants';
-import { ABSENCE_IDS, PENDING_TEST_IDS } from './helpers/pending-test-ids';
+import { ABSENCE_IDS } from './helpers/absence-ids';
 import { type Customer, type DriveOptions, expect, test, World } from './helpers/world';
 
 test.describe.configure({ timeout: LONG_SCENARIO_TIMEOUT_MS });
@@ -101,7 +101,7 @@ async function expectInvalidNotes(world: World, reason: string, notes: string | 
   const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERED);
   await openReturnForm(customer.page, code);
   await submitReturnForm(customer.page, reason, notes);
-  await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.NOTES_ERROR)).toBeVisible();
+  await expect(customer.page.getByTestId(TEST_IDS.RETURN.NOTES_ERROR)).toBeVisible();
   await expectNoReturnRequest(customer.page, code);
 }
 
@@ -109,7 +109,7 @@ async function expectInvalidRejection(world: World, rejectReason: string): Promi
   const { code } = await world.orderWithReturn(RETURN_REASON.OTHER, 'A');
   const admin = await world.admin();
   await submitRejection(admin, await openReview(admin, code), rejectReason);
-  await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.REJECT_REASON_ERROR)).toBeVisible();
+  await expect(admin.getByTestId(TEST_IDS.ADMIN.REJECT_REASON_ERROR)).toBeVisible();
   await expectReviewStatus(admin, code, RETURN_STATUS.PENDING);
 }
 
@@ -243,7 +243,7 @@ test.describe('Customer view of return requests', () => {
     await expectMyReturn(customer.page, codes.rejected, { status: RETURN_STATUS.REJECTED, rejectReason: 'A' });
     await expectMyReturn(customer.page, codes.completed, { status: RETURN_STATUS.COMPLETED });
     for (const key of ['pending', 'approved', 'completed']) {
-      await expect(myReturnRows(customer.page, codes[key]).getByTestId(PENDING_TEST_IDS.RETURN.ITEM_REJECT_REASON)).toHaveCount(0);
+      await expect(myReturnRows(customer.page, codes[key]).getByTestId(TEST_IDS.RETURN.ITEM_REJECT_REASON)).toHaveCount(0);
     }
   });
 
@@ -257,7 +257,7 @@ test.describe('Customer view of return requests', () => {
   test('shows an empty return request list to a customer without requests', async ({ world }) => {
     const customer = await world.newCustomer();
     await openMyReturns(customer.page);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.LIST_ITEM)).toHaveCount(0);
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.LIST_ITEM)).toHaveCount(0);
   });
 
   test('shows the approved status when the customer views the request again after approval', async ({ world }) => {
@@ -290,7 +290,7 @@ test.describe('Admin review of return requests', () => {
     await openReturnReviewList(admin);
     for (const { code, reason } of placed) {
       await expect(reviewRow(admin, code)).toHaveCount(1);
-      await expect(reviewRow(admin, code).getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_REASON)).toHaveText(reason);
+      await expect(reviewRow(admin, code).getByTestId(TEST_IDS.ADMIN.RETURN_REASON)).toHaveText(reason);
     }
   });
 
@@ -301,7 +301,7 @@ test.describe('Admin review of return requests', () => {
     await openReturnReviewList(admin);
     for (const { code } of [first, second]) {
       await expect(reviewRow(admin, code)).toHaveCount(1);
-      await expect(reviewRow(admin, code).getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_REASON)).toHaveText(RETURN_REASON.DEFECTIVE);
+      await expect(reviewRow(admin, code).getByTestId(TEST_IDS.ADMIN.RETURN_REASON)).toHaveText(RETURN_REASON.DEFECTIVE);
     }
   });
 
@@ -333,7 +333,7 @@ test.describe('Admin review of return requests', () => {
     const admin = await world.admin();
     await clearReturnReviewList(admin, 'A');
     await openReturnReviewList(admin);
-    await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.RETURNS_LIST).getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_ITEM)).toHaveCount(0);
+    await expect(admin.getByTestId(TEST_IDS.ADMIN.RETURNS_LIST).getByTestId(TEST_IDS.ADMIN.RETURN_ITEM)).toHaveCount(0);
   });
 
   test('approves a pending request whose reason is defective', async ({ world }) => {
@@ -428,9 +428,9 @@ test.describe('Admin review of return requests', () => {
     const { customer, code } = await requestAndApprove(world, RETURN_REASON.OTHER, 'A');
     const admin = await world.admin();
     const row = await openReview(admin, code);
-    await expect(row.getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_COMPLETE_FORM)).toBeVisible();
+    await expect(row.getByTestId(TEST_IDS.ADMIN.RETURN_COMPLETE_FORM)).toBeVisible();
     await expect(row.getByTestId(ABSENCE_IDS.RETURN_MONEY_FIELD)).toHaveCount(0);
-    await row.getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON).click();
+    await row.getByTestId(TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON).click();
     await expectMyReturn(customer.page, code, { status: RETURN_STATUS.COMPLETED });
   });
 
@@ -439,13 +439,13 @@ test.describe('Admin review of return requests', () => {
     const row = await openReview(await world.admin(), code);
     await expect(row.getByTestId(TEST_IDS.ADMIN.APPROVE_RETURN_BUTTON)).toHaveCount(1);
     await expect(row.getByTestId(TEST_IDS.ADMIN.REJECT_RETURN_BUTTON)).toHaveCount(1);
-    await expect(row.getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON)).toHaveCount(0);
+    await expect(row.getByTestId(TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON)).toHaveCount(0);
   });
 
   test('offers only completion on an approved request', async ({ world }) => {
     const { code } = await requestAndApprove(world, RETURN_REASON.OTHER, 'A');
     const row = await openReview(await world.admin(), code);
-    await expect(row.getByTestId(PENDING_TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON)).toHaveCount(1);
+    await expect(row.getByTestId(TEST_IDS.ADMIN.RETURN_COMPLETE_BUTTON)).toHaveCount(1);
     await expect(row.getByTestId(TEST_IDS.ADMIN.APPROVE_RETURN_BUTTON)).toHaveCount(0);
     await expect(row.getByTestId(TEST_IDS.ADMIN.REJECT_RETURN_BUTTON)).toHaveCount(0);
   });
@@ -510,7 +510,7 @@ test.describe('Order not delivered', () => {
     const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERING);
     await openReturnRequest(customer.page, code);
     await expectReturnRequestRefused(customer.page);
-    await customer.page.getByTestId(PENDING_TEST_IDS.RETURN.CANCEL_BUTTON).click();
+    await customer.page.getByTestId(TEST_IDS.RETURN.CANCEL_BUTTON).click();
     await expectNoReturnRequest(customer.page, code);
   });
 });
@@ -520,7 +520,7 @@ test.describe('Reason missing or description missing', () => {
     const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERED);
     await openReturnForm(customer.page, code);
     await submitReturnForm(customer.page, null, null);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.REASON_ERROR)).toBeVisible();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.REASON_ERROR)).toBeVisible();
     await expectNoReturnRequest(customer.page, code);
   });
 
@@ -536,9 +536,9 @@ test.describe('Reason missing or description missing', () => {
     const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERED);
     await openReturnForm(customer.page, code);
     await submitReturnForm(customer.page, RETURN_REASON.OTHER, '');
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.NOTES_ERROR)).toBeVisible();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.NOTES_ERROR)).toBeVisible();
     await submitReturnForm(customer.page, null, 'A');
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.SUCCESS_MESSAGE)).toBeVisible();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.SUCCESS_MESSAGE)).toBeVisible();
     await expectMyReturn(customer.page, code, { status: RETURN_STATUS.PENDING });
   });
 
@@ -546,9 +546,9 @@ test.describe('Reason missing or description missing', () => {
     const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERED);
     await openReturnForm(customer.page, code);
     await submitReturnForm(customer.page, null, null);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.REASON_ERROR)).toBeVisible();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.REASON_ERROR)).toBeVisible();
     await submitReturnForm(customer.page, RETURN_REASON.NOT_RECEIVED, null);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.SUCCESS_MESSAGE)).toBeVisible();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.SUCCESS_MESSAGE)).toBeVisible();
     await expectMyReturn(customer.page, code, { status: RETURN_STATUS.PENDING });
   });
 
@@ -556,8 +556,8 @@ test.describe('Reason missing or description missing', () => {
     const { customer, code } = await world.orderAt(ORDER_STATUS.DELIVERED);
     await openReturnForm(customer.page, code);
     await submitReturnForm(customer.page, null, null);
-    await expect(customer.page.getByTestId(PENDING_TEST_IDS.RETURN.REASON_ERROR)).toBeVisible();
-    await customer.page.getByTestId(PENDING_TEST_IDS.RETURN.CANCEL_BUTTON).click();
+    await expect(customer.page.getByTestId(TEST_IDS.RETURN.REASON_ERROR)).toBeVisible();
+    await customer.page.getByTestId(TEST_IDS.RETURN.CANCEL_BUTTON).click();
     await expectNoReturnRequest(customer.page, code);
   });
 });
@@ -594,12 +594,12 @@ test.describe('Order already has a return request', () => {
       submitReturnForm(secondPage, RETURN_REASON.DEFECTIVE, null),
     ]);
     const outcome = (page: Page) =>
-      page.getByTestId(PENDING_TEST_IDS.RETURN.SUCCESS_MESSAGE).or(page.getByTestId(TEST_IDS.COMMON.ERROR_BANNER));
+      page.getByTestId(TEST_IDS.RETURN.SUCCESS_MESSAGE).or(page.getByTestId(TEST_IDS.COMMON.ERROR_BANNER));
     await expect(outcome(customer.page)).toBeVisible();
     await expect(outcome(secondPage)).toBeVisible();
     const accepted =
-      (await customer.page.getByTestId(PENDING_TEST_IDS.RETURN.SUCCESS_MESSAGE).count()) +
-      (await secondPage.getByTestId(PENDING_TEST_IDS.RETURN.SUCCESS_MESSAGE).count());
+      (await customer.page.getByTestId(TEST_IDS.RETURN.SUCCESS_MESSAGE).count()) +
+      (await secondPage.getByTestId(TEST_IDS.RETURN.SUCCESS_MESSAGE).count());
     expect(accepted).toBe(1);
     await expectMyReturnCount(customer.page, code, 1);
   });
@@ -616,7 +616,7 @@ test.describe('Order already has a return request', () => {
     const { customer, code } = await world.orderWithReturn(RETURN_REASON.DEFECTIVE);
     await openReturnRequest(customer.page, code);
     await expectReturnRequestRefused(customer.page);
-    await customer.page.getByTestId(PENDING_TEST_IDS.RETURN.CANCEL_BUTTON).click();
+    await customer.page.getByTestId(TEST_IDS.RETURN.CANCEL_BUTTON).click();
     await expectMyReturnCount(customer.page, code, 1);
   });
 });

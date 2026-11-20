@@ -48,7 +48,6 @@ import {
   RECONNECT_TIMEOUT_MS,
   TIMESTAMP_FORMAT,
 } from './helpers/constants';
-import { PENDING_TEST_IDS } from './helpers/pending-test-ids';
 import { type Customer, expect, test, World } from './helpers/world';
 
 test.describe.configure({ timeout: LONG_SCENARIO_TIMEOUT_MS });
@@ -108,8 +107,8 @@ test.describe('Order assignment to a shipper', () => {
     await assignOrderToShipper(admin, code);
     await openAdminShipment(admin, code);
     await readShipmentCode(admin);
-    await expect(admin.getByTestId(PENDING_TEST_IDS.SHIPMENT.SHIPPER)).toContainText(emailOf('Shipper'));
-    await expect(admin.getByTestId(PENDING_TEST_IDS.SHIPMENT.CREATED_AT)).toHaveText(TIMESTAMP_FORMAT);
+    await expect(admin.getByTestId(TEST_IDS.SHIPMENT.SHIPPER)).toContainText(emailOf('Shipper'));
+    await expect(admin.getByTestId(TEST_IDS.SHIPMENT.CREATED_AT)).toHaveText(TIMESTAMP_FORMAT);
   });
 
   test('gives two consecutive assignments different shipment codes', async ({ world }) => {
@@ -140,7 +139,7 @@ test.describe('Order assignment to a shipper', () => {
     await world.assign(code);
     const admin = await world.admin();
     await openAdminShipment(admin, code);
-    await expect(admin.getByTestId(PENDING_TEST_IDS.SHIPMENT.SHIPPER)).toContainText(emailOf('Shipper'));
+    await expect(admin.getByTestId(TEST_IDS.SHIPMENT.SHIPPER)).toContainText(emailOf('Shipper'));
     const shipperA = await world.shipperA();
     await openAssignedList(shipperA);
     await expect(shipmentCardByCode(shipperA, code)).toHaveCount(1);

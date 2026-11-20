@@ -1,7 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { TEST_IDS } from '../../../src/constants/test-ids';
 import { APP_PATHS, TIMESTAMP_FORMAT } from './constants';
-import { PENDING_TEST_IDS } from './pending-test-ids';
 import { readCredentials, type AccountSlot } from './session';
 
 export { APP_PATHS };
@@ -51,7 +50,7 @@ export type OrderStep = keyof typeof ORDER_STEP_TEST_ID;
  */
 async function fillOrderLine(step: Locator, position: number, line: OrderLineDraft): Promise<void> {
   if (position > 0) {
-    await step.getByTestId(PENDING_TEST_IDS.ORDER.ADD_LINE_BUTTON).click();
+    await step.getByTestId(TEST_IDS.ORDER.ADD_LINE_BUTTON).click();
   }
   if (line.product !== null) {
     await step.getByTestId(TEST_IDS.ORDER.PRODUCT_SELECT).nth(position).selectOption({ index: line.product });
@@ -90,7 +89,7 @@ export async function fillRecipientStep(page: Page, draft: OrderDraft): Promise<
  * Tells the system that the data of the given step is entered, which validates it and moves to the next step when it is valid.
  */
 export async function goToNextStep(page: Page, step: OrderStep): Promise<void> {
-  await page.getByTestId(ORDER_STEP_TEST_ID[step]).getByTestId(PENDING_TEST_IDS.ORDER.NEXT_STEP_BUTTON).click();
+  await page.getByTestId(ORDER_STEP_TEST_ID[step]).getByTestId(TEST_IDS.ORDER.NEXT_STEP_BUTTON).click();
 }
 
 /**
@@ -116,8 +115,8 @@ export async function enterOrderUntilRejected(page: Page, draft: OrderDraft): Pr
   await goToNextStep(page, 'product');
   const recipientStep = page.getByTestId(ORDER_STEP_TEST_ID.recipient);
   const productStepErrors = page
-    .getByTestId(PENDING_TEST_IDS.ORDER.PRODUCT_ERROR)
-    .or(page.getByTestId(PENDING_TEST_IDS.ORDER.QUANTITY_ERROR));
+    .getByTestId(TEST_IDS.ORDER.PRODUCT_ERROR)
+    .or(page.getByTestId(TEST_IDS.ORDER.QUANTITY_ERROR));
   await expect(recipientStep.or(productStepErrors).first()).toBeVisible();
   if (await recipientStep.isVisible()) {
     await fillRecipientStep(page, draft);
@@ -131,7 +130,7 @@ export async function enterOrderUntilRejected(page: Page, draft: OrderDraft): Pr
  */
 export async function confirmReviewedOrder(page: Page): Promise<string> {
   await page.getByTestId(TEST_IDS.ORDER.SUBMIT_ORDER_BUTTON).click();
-  const code = page.getByTestId(PENDING_TEST_IDS.ORDER.SUCCESS_CODE);
+  const code = page.getByTestId(TEST_IDS.ORDER.SUCCESS_CODE);
   await expect(code).toBeVisible();
   const text = (await code.textContent())?.trim() ?? '';
   expect(text).not.toBe('');
@@ -170,7 +169,7 @@ export async function waitForListLoaded(page: Page, items: Locator): Promise<voi
  * Opens the customer order list and waits until it has loaded.
  */
 export async function openOrderList(page: Page): Promise<void> {
-  await page.getByTestId(PENDING_TEST_IDS.COMMON.NAV_ORDER_LIST_LINK).click();
+  await page.getByTestId(TEST_IDS.COMMON.NAV_ORDER_LIST_LINK).click();
   await waitForListLoaded(page, page.getByTestId(TEST_IDS.ORDER.ORDER_LIST_ITEM));
 }
 
@@ -235,7 +234,7 @@ export async function selectOptionContaining(select: Locator, text: string): Pro
  * Opens the admin list of orders waiting for assignment and waits until loading is finished.
  */
 export async function openAssignmentList(page: Page): Promise<void> {
-  await page.getByTestId(PENDING_TEST_IDS.ADMIN.ASSIGNMENT_TAB).click();
+  await page.getByTestId(TEST_IDS.ADMIN.ASSIGNMENT_TAB).click();
   const table = page.getByTestId(TEST_IDS.ADMIN.DASHBOARD_TABLE);
   await expect(table).toBeVisible();
   await waitForListLoaded(page, table.getByTestId(TEST_IDS.ORDER.ORDER_LIST_ITEM));
@@ -255,7 +254,7 @@ export function assignmentRow(page: Page, code: string): Locator {
  * Opens the assignment dialog of the order and chooses the shipper of the given account slot without saving.
  */
 export async function chooseShipperForOrder(page: Page, code: string, slot: AccountSlot = 'primary'): Promise<Locator> {
-  await assignmentRow(page, code).getByTestId(PENDING_TEST_IDS.ADMIN.ASSIGN_BUTTON).click();
+  await assignmentRow(page, code).getByTestId(TEST_IDS.ADMIN.ASSIGN_BUTTON).click();
   const dialog = page.getByTestId(TEST_IDS.ADMIN.ASSIGN_SHIPPER_DIALOG);
   await expect(dialog).toBeVisible();
   await selectOptionContaining(dialog.getByTestId(TEST_IDS.ADMIN.SHIPPER_SELECT), readCredentials('Shipper', slot).email);
@@ -289,8 +288,8 @@ export async function assignOrderToShipper(page: Page, code: string, slot: Accou
  * Opens the admin order tracking list, which shows orders of every status.
  */
 export async function openTrackingList(page: Page): Promise<void> {
-  await page.getByTestId(PENDING_TEST_IDS.ADMIN.TRACKING_TAB).click();
-  const table = page.getByTestId(PENDING_TEST_IDS.ADMIN.TRACKING_TABLE);
+  await page.getByTestId(TEST_IDS.ADMIN.TRACKING_TAB).click();
+  const table = page.getByTestId(TEST_IDS.ADMIN.TRACKING_TABLE);
   await expect(table).toBeVisible();
   await waitForListLoaded(page, table.getByTestId(TEST_IDS.ORDER.ORDER_LIST_ITEM));
 }
@@ -300,7 +299,7 @@ export async function openTrackingList(page: Page): Promise<void> {
  */
 export function trackingRow(page: Page, code: string): Locator {
   return page
-    .getByTestId(PENDING_TEST_IDS.ADMIN.TRACKING_TABLE)
+    .getByTestId(TEST_IDS.ADMIN.TRACKING_TABLE)
     .getByTestId(TEST_IDS.ORDER.ORDER_LIST_ITEM)
     .filter({ hasText: code });
 }
@@ -328,7 +327,7 @@ export async function expectAdminOrderStatus(page: Page, code: string, status: s
 export async function openAdminShipment(page: Page, code: string): Promise<void> {
   await openAdminOrder(page, code);
   await page.getByTestId(TEST_IDS.ORDER.TAB_TRACKING).click();
-  await expect(page.getByTestId(PENDING_TEST_IDS.SHIPMENT.CODE)).toBeVisible();
+  await expect(page.getByTestId(TEST_IDS.SHIPMENT.CODE)).toBeVisible();
 }
 
 /**
@@ -353,7 +352,7 @@ export function shipmentCardByCode(page: Page, code: string): Locator {
  * Opens the shipper list of assigned orders and waits until loading is finished.
  */
 export async function openAssignedList(page: Page): Promise<void> {
-  await page.getByTestId(PENDING_TEST_IDS.SHIPPER.NAV_ASSIGNED_LINK).click();
+  await page.getByTestId(TEST_IDS.SHIPPER.NAV_ASSIGNED_LINK).click();
   const list = page.getByTestId(TEST_IDS.SHIPPER.ASSIGNED_LIST);
   await expect(list).toBeVisible();
   await waitForListLoaded(page, list.getByTestId(TEST_IDS.SHIPPER.SHIPMENT_CARD));
@@ -445,7 +444,7 @@ export async function expectShipmentStatus(page: Page, code: string, status: str
  */
 export async function openShipperHistory(page: Page, code: string): Promise<void> {
   await openAssignedList(page);
-  await shipmentCardByCode(page, code).getByTestId(PENDING_TEST_IDS.SHIPPER.HISTORY_BUTTON).click();
+  await shipmentCardByCode(page, code).getByTestId(TEST_IDS.SHIPPER.HISTORY_BUTTON).click();
   await expect(page.getByTestId(TEST_IDS.ORDER.ORDER_STATUS_TIMELINE)).toBeVisible();
 }
 
@@ -453,7 +452,7 @@ export async function openShipperHistory(page: Page, code: string): Promise<void
  * Returns every entry of the status history shown on the open screen, from oldest to newest.
  */
 export function historyEntries(page: Page): Locator {
-  return page.getByTestId(TEST_IDS.ORDER.ORDER_STATUS_TIMELINE).getByTestId(PENDING_TEST_IDS.ORDER.TIMELINE_ENTRY);
+  return page.getByTestId(TEST_IDS.ORDER.ORDER_STATUS_TIMELINE).getByTestId(TEST_IDS.ORDER.TIMELINE_ENTRY);
 }
 
 export interface HistoryEntryExpectation {
@@ -466,7 +465,7 @@ export interface HistoryEntryExpectation {
  * Asserts the content of one history entry: actor, time format, old status and new status.
  */
 export async function expectHistoryEntry(entry: Locator, expected: HistoryEntryExpectation): Promise<void> {
-  const fields = PENDING_TEST_IDS.ORDER;
+  const fields = TEST_IDS.ORDER;
   if (expected.actorEmail !== undefined) {
     await expect(entry.getByTestId(fields.TIMELINE_ENTRY_ACTOR)).toContainText(expected.actorEmail);
   }
@@ -486,7 +485,7 @@ export async function expectLatestHistoryEntry(page: Page, expected: HistoryEntr
  * Asserts the new statuses of the whole history on the open screen, from oldest to newest.
  */
 export async function expectHistoryStatuses(page: Page, statuses: string[]): Promise<void> {
-  const newStatuses = historyEntries(page).getByTestId(PENDING_TEST_IDS.ORDER.TIMELINE_ENTRY_NEW_STATUS);
+  const newStatuses = historyEntries(page).getByTestId(TEST_IDS.ORDER.TIMELINE_ENTRY_NEW_STATUS);
   await expect(newStatuses).toHaveText(statuses);
 }
 
@@ -522,7 +521,7 @@ export async function expectTrackedStatus(page: Page, code: string, status: stri
  * Reads the shipment code shown on the open shipment screen.
  */
 export async function readShipmentCode(page: Page): Promise<string> {
-  const text = (await page.getByTestId(PENDING_TEST_IDS.SHIPMENT.CODE).textContent())?.trim() ?? '';
+  const text = (await page.getByTestId(TEST_IDS.SHIPMENT.CODE).textContent())?.trim() ?? '';
   expect(text).not.toBe('');
   return text;
 }
@@ -534,7 +533,7 @@ export async function expectHistoryTimestamps(page: Page): Promise<void> {
   const entries = historyEntries(page);
   await expect(entries.first()).toBeVisible();
   const entriesWithOtherTime = entries.filter({
-    hasNot: page.getByTestId(PENDING_TEST_IDS.ORDER.TIMELINE_ENTRY_TIME).filter({ hasText: TIMESTAMP_FORMAT }),
+    hasNot: page.getByTestId(TEST_IDS.ORDER.TIMELINE_ENTRY_TIME).filter({ hasText: TIMESTAMP_FORMAT }),
   });
   await expect(entriesWithOtherTime).toHaveCount(0);
 }
@@ -553,7 +552,7 @@ export async function expectListedOrderStatus(page: Page, code: string, status: 
  * Asserts that none of the order field errors is shown.
  */
 export async function expectNoOrderFieldErrors(page: Page): Promise<void> {
-  const errors = PENDING_TEST_IDS.ORDER;
+  const errors = TEST_IDS.ORDER;
   for (const errorId of [
     errors.PRODUCT_ERROR,
     errors.QUANTITY_ERROR,

@@ -2,7 +2,6 @@ import { expect, type Page } from '@playwright/test';
 import { TEST_IDS } from '../../../src/constants/test-ids';
 import { APP_PATHS } from './constants';
 import { buildEmail, generatePassword } from './data';
-import { PENDING_TEST_IDS } from './pending-test-ids';
 
 export type Role = 'Admin' | 'Shipper' | 'Customer';
 export type AccountSlot = 'primary' | 'secondary' | 'tertiary';
@@ -126,7 +125,7 @@ export function buildRegistration(overrides: Partial<RegistrationValues> = {}): 
  */
 export async function openRegisterScreen(page: Page): Promise<void> {
   await openLoginScreen(page);
-  await page.getByTestId(PENDING_TEST_IDS.AUTH.OPEN_REGISTER_LINK).click();
+  await page.getByTestId(TEST_IDS.AUTH.OPEN_REGISTER_LINK).click();
   await expect(page.getByTestId(TEST_IDS.AUTH.REGISTER_SUBMIT_BUTTON)).toBeVisible();
 }
 

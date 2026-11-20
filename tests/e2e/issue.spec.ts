@@ -37,7 +37,7 @@ import {
   MAX_FREE_TEXT_LENGTH,
   ORDER_STATUS,
 } from './helpers/constants';
-import { ABSENCE_IDS, PENDING_TEST_IDS } from './helpers/pending-test-ids';
+import { ABSENCE_IDS } from './helpers/absence-ids';
 import { expect, test, World } from './helpers/world';
 
 test.describe.configure({ timeout: LONG_SCENARIO_TIMEOUT_MS });
@@ -97,12 +97,12 @@ async function expectResultRefused(
   await submitIssueResult(row, result);
   const refusal =
     sign === 'field-error'
-      ? row.getByTestId(PENDING_TEST_IDS.ADMIN.ISSUE_RESULT_ERROR)
+      ? row.getByTestId(TEST_IDS.ADMIN.ISSUE_RESULT_ERROR)
       : admin.getByTestId(TEST_IDS.COMMON.ERROR_BANNER);
   await expect(refusal).toBeVisible();
   await openIssuesList(admin);
   await expect(issueRows(admin, code, type)).toHaveCount(1);
-  await expect(issueRows(admin, code, type).getByTestId(PENDING_TEST_IDS.ADMIN.ISSUE_RESULT_TEXT)).toHaveCount(0);
+  await expect(issueRows(admin, code, type).getByTestId(TEST_IDS.ADMIN.ISSUE_RESULT_TEXT)).toHaveCount(0);
 }
 
 test.describe('Shipper incident reports', () => {
@@ -295,7 +295,7 @@ test.describe('Admin incident handling', () => {
     const admin = await world.admin();
     await resolveAllIssues(admin, 'A');
     await openIssuesList(admin);
-    await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.ISSUES_LIST).getByTestId(PENDING_TEST_IDS.ADMIN.ISSUE_ITEM)).toHaveCount(0);
+    await expect(admin.getByTestId(TEST_IDS.ADMIN.ISSUES_LIST).getByTestId(TEST_IDS.ADMIN.ISSUE_ITEM)).toHaveCount(0);
   });
 
   test('lists the lost incident confirmed by the admin among the unresolved incidents', async ({ world }) => {
@@ -347,7 +347,7 @@ test.describe('Admin incident handling', () => {
     const { code } = await world.orderAt(ORDER_STATUS.RETURNING);
     const admin = await world.admin();
     await openAdminOrder(admin, code);
-    await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON)).toBeVisible();
+    await expect(admin.getByTestId(TEST_IDS.ADMIN.CONFIRM_RETURNED_BUTTON)).toBeVisible();
     await expectTrackedStatus(admin, code, ORDER_STATUS.RETURNING);
   });
 
@@ -355,8 +355,8 @@ test.describe('Admin incident handling', () => {
     const code = await deliveringOrder(world);
     const admin = await world.admin();
     await openAdminOrder(admin, code);
-    await expect(admin.getByTestId(PENDING_TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON)).toBeEnabled();
-    await admin.getByTestId(PENDING_TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON).click();
+    await expect(admin.getByTestId(TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON)).toBeEnabled();
+    await admin.getByTestId(TEST_IDS.ADMIN.CONFIRM_LOST_BUTTON).click();
     await expectIncidentCount(world, code, INCIDENT_TYPE.LOST, 1);
     await expectAdminOrderStatus(await world.admin(), code, ORDER_STATUS.LOST);
   });
