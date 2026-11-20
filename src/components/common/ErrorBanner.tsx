@@ -1,4 +1,3 @@
-// Error banner component presenting user-friendly messages and diagnostic trace identifiers.
 import React from 'react';
 import { AlertCircle, X } from 'lucide-react';
 import { TEST_IDS } from '@/constants/test-ids';

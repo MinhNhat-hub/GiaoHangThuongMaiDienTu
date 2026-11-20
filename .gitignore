@@ -16,6 +16,8 @@ mutants/
 .hypothesis/
 .stryker-tmp/
 reports/mutation/
+.vite/
+*.local
 
 # Playwright
 playwright-report/

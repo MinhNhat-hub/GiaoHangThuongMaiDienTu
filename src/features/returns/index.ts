@@ -1,3 +1,3 @@
-// Return request submission and review feature module.
 export * from '@/types/api';
-
+export { ReturnRequestPage } from './ReturnRequestPage';
+export { CustomerReturnsPage } from './CustomerReturnsPage';

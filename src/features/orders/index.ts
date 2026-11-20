@@ -1,3 +1,4 @@
-// Order placement, tracking, and details feature module.
 export * from '@/types/api';
-
+export { CustomerHomePage } from './CustomerHomePage';
+export { CreateOrderPage } from './CreateOrderPage';
+export { OrderDetailPage } from './OrderDetailPage';

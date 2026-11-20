@@ -1,4 +1,3 @@
-// Authoritative RESTful API contract types and domain data models.
 import type { OrderStatusCode, ReturnStatusCode } from '@/constants/status-map';
 
 export type UserRole = 'Customer' | 'Shipper' | 'Admin';
@@ -54,6 +53,7 @@ export interface StatusHistoryEntry {
   newStatus: OrderStatusCode;
   changedBy: string;
   changedByName?: string;
+  changedByEmail?: string;
   changedAt: string;
   notes?: string;
 }
@@ -63,6 +63,7 @@ export interface ShipmentSummary {
   trackingNumber: string;
   shipperId: string;
   shipperName?: string;
+  shipperEmail?: string;
   shipperPhone?: string;
   failedAttempts: number;
   assignedAt: string;
@@ -70,8 +71,10 @@ export interface ShipmentSummary {
 
 export interface Order {
   id: string;
+  code?: string;
   customerId: string;
   customerName?: string;
+  customerEmail?: string;
   recipientName: string;
   recipientPhone: string;
   deliveryAddress: string;
@@ -87,14 +90,19 @@ export type DeliveryIssueType = 'DAMAGED' | 'FAILED_DELIVERY' | 'LOST';
 
 export interface DeliveryIssue {
   id: string;
+  code?: string;
   orderId: string;
+  orderCode?: string;
   trackingNumber?: string;
   issueType: DeliveryIssueType;
   reportedBy: string;
   reportedByName?: string;
+  reportedByEmail?: string;
   reportedAt: string;
+  notes?: string;
   resolved: boolean;
   resolutionResult?: string;
+  resolutionNotes?: string;
   resolvedBy?: string;
   resolvedAt?: string;
 }
@@ -103,7 +111,9 @@ export type ReturnReason = 'DAMAGED_OR_DEFECTIVE' | 'ITEM_NOT_RECEIVED' | 'OTHER
 
 export interface ReturnRequest {
   id: string;
+  code?: string;
   orderId: string;
+  orderCode?: string;
   customerId: string;
   reason: ReturnReason;
   status: ReturnStatusCode;
@@ -128,7 +138,7 @@ export interface CreateShipmentPayload {
   shipperId: string;
 }
 
-export type ShipmentStatusAction = 'START_DELIVERY' | 'CONFIRM_DELIVERED' | 'REPORT_FAILED_DELIVERY';
+export type ShipmentStatusAction = 'START_DELIVERY' | 'CONFIRM_DELIVERED';
 
 export interface UpdateShipmentStatusPayload {
   action: ShipmentStatusAction;
@@ -136,12 +146,14 @@ export interface UpdateShipmentStatusPayload {
 }
 
 export interface ReportIssuePayload {
+  orderId?: string;
   issueType: DeliveryIssueType;
   notes?: string;
 }
 
 export interface ResolveIssuePayload {
-  resolutionResult: string;
+  resolutionNotes?: string;
+  resolutionResult?: string;
 }
 
 export interface SubmitReturnPayload {
@@ -154,4 +166,3 @@ export interface ReviewReturnPayload {
   action: 'APPROVE' | 'REJECT';
   rejectionReason?: string;
 }
-

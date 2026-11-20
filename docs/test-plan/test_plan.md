@@ -74,7 +74,7 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 
 ### 1.5 Ràng buộc
 
-- **Môi trường.** Server và cơ sở dữ liệu chưa có mã nguồn (13/11/2026), nên §4.2 chưa ghi cấu hình cụ thể. Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
+- **Môi trường.** Server và cơ sở dữ liệu chưa có mã nguồn (13/11/2026), nên §4.2 chưa ghi cấu hình của hai phần này. Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
 - **Nhân lực.** Cả 4 thành viên tham gia kiểm thử, chia theo module (§4.1).
 - **Lịch.** Chưa có hạn cuối kỳ cho giai đoạn 2, nên các mốc sau Test design ở §5 ghi "Chưa xác định" (Test design bắt đầu 13/11/2026). Khi có hạn, Test Plan cập nhật tiếp.
 - **Công cụ.** Danh sách công cụ ở §3.3 (Playwright, GitHub Issues, GitHub Actions…). Một số công cụ, như thư viện unit test (dự kiến Jest hoặc Vitest; nhóm chốt ở giai đoạn 2), chưa được chốt.
@@ -461,7 +461,7 @@ Danh sách việc test của từng người (test gì, ai test, đã xong chưa
 | Thành phần | Cấu hình |
 |---|---|
 | Server | Chưa có mã nguồn (13/11/2026). Chưa chốt công nghệ, cập nhật ở giai đoạn 2 |
-| Client | Chưa chốt công nghệ, cập nhật ở giai đoạn 2. Trình duyệt: Chrome cho máy tính, bản ổn định mới nhất (OE-2) |
+| Client | React 18, Vite 5, TypeScript 5, Tailwind CSS 3 (theo `package.json`). Trình duyệt: Chrome cho máy tính, bản ổn định mới nhất (OE-2) |
 | Database server | Chưa có mã nguồn (13/11/2026). Chưa chốt công nghệ, cập nhật ở giai đoạn 2 |
 | Môi trường CI | GitHub Actions, chạy lại bộ test (§3.3) |
 

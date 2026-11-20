@@ -1,4 +1,3 @@
-// Empty state presentation component for lists with zero records.
 import React from 'react';
 import { PackageOpen } from 'lucide-react';
 import { TEST_IDS } from '@/constants/test-ids';

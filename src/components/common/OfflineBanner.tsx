@@ -1,4 +1,3 @@
-// Offline connectivity banner alerting users of disconnected real-time state and enabling manual reconnect.
 import React from 'react';
 import { WifiOff, RefreshCw } from 'lucide-react';
 import { TEST_IDS } from '@/constants/test-ids';
