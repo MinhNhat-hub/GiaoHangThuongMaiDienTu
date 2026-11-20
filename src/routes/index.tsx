@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { ProtectedLayout, RoleRoute, useAuthSession } from './guards';
 import { LoginPage, RegisterPage } from '@/features/auth';
-import { APP_PATHS, SCREEN_NAMES } from '@/constants/routes';
+import { APP_PATHS, ROUTE_PATTERNS, SCREEN_NAMES } from '@/constants/routes';
 import { TEST_IDS } from '@/constants/test-ids';
 import App from '@/App';
 
@@ -44,7 +44,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
       ],
     },
     {
-      path: '/login',
+      path: APP_PATHS.loginAlias,
       element: <PublicOnlyLoginRoute />,
     },
     {
@@ -66,15 +66,15 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
               element: <div className="p-8">{SCREEN_NAMES.ORDER_CREATION}</div>,
             },
             {
-              path: '/orders/:id',
+              path: ROUTE_PATTERNS.orderDetails,
               element: <div className="p-8">{SCREEN_NAMES.ORDER_DETAILS}</div>,
             },
             {
-              path: '/orders/:id/tracking',
+              path: ROUTE_PATTERNS.tracking,
               element: <div className="p-8">{SCREEN_NAMES.TRACKING}</div>,
             },
             {
-              path: '/orders/:id/return',
+              path: ROUTE_PATTERNS.returnRequest,
               element: <div className="p-8">{SCREEN_NAMES.RETURN_REQUEST}</div>,
             },
             {
