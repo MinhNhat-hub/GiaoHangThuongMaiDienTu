@@ -157,8 +157,7 @@ class RealtimeEventClient {
     if (typeof window === 'undefined' || typeof EventSource === 'undefined') {
       return;
     }
-    const token = apiClient.getToken();
-    if (!token) {
+    if (!apiClient.getToken()) {
       return;
     }
     if (this.eventSource) {
@@ -166,9 +165,7 @@ class RealtimeEventClient {
       this.eventSource = null;
     }
 
-    const separator = APP_CONFIG.EVENTS_URL.includes('?') ? '&' : '?';
-    const streamUrl = `${APP_CONFIG.EVENTS_URL}${separator}token=${encodeURIComponent(token)}`;
-    const source = new EventSource(streamUrl, { withCredentials: true });
+    const source = new EventSource(APP_CONFIG.EVENTS_URL, { withCredentials: true });
     this.eventSource = source;
 
     source.onopen = () => {
