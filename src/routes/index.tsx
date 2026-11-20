@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { ProtectedLayout, RoleRoute, useAuthSession } from './guards';
 import { LoginPage, RegisterPage } from '@/features/auth';
+import { AdminDashboardPage } from '@/features/admin';
 import { CreateOrderPage, CustomerHomePage, OrderDetailPage } from '@/features/orders';
 import { CustomerReturnsPage, ReturnRequestPage } from '@/features/returns';
 import { ShipmentTrackingPage } from '@/features/shipments';
@@ -108,17 +109,7 @@ export const createAppRouter = (currentUserRole?: 'Customer' | 'Shipper' | 'Admi
           children: [
             {
               path: APP_PATHS.adminDashboard,
-              element: (
-                <div className="bg-card rounded-2xl border border-mint-secondary/20 p-8 shadow-sm">
-                  <h1
-                    data-testid={TEST_IDS.COMMON.SCREEN_TITLE}
-                    className="text-xl font-bold text-mint-primary mb-2"
-                  >
-                    {SCREEN_NAMES.ADMIN_DASHBOARD}
-                  </h1>
-                  <div data-testid={TEST_IDS.ADMIN.DASHBOARD_TABLE} />
-                </div>
-              ),
+              element: <AdminDashboardPage />,
             },
           ],
         },
