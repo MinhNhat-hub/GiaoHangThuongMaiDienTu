@@ -7,6 +7,7 @@ const runsIsolatedTests = process.argv.some((argument) => argument.includes('@is
 export default defineConfig({
   testDir: 'tests/e2e',
   grepInvert: runsIsolatedTests ? undefined : /@isolated/,
+  workers: 1,
   use: {
     ...devices['Desktop Chrome'],
     channel: 'chrome',

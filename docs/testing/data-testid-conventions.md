@@ -61,7 +61,7 @@ Tài liệu này chuẩn hóa toàn bộ các thuộc tính `data-testid` trên 
 | `order-cancel-creation-btn` | Nút hủy bỏ quá trình tạo đơn hàng |
 | `order-list-item` | Thẻ hoặc dòng đại diện cho một đơn hàng trong danh sách |
 | `order-details-container` | Khung hiển thị chi tiết đơn hàng |
-| `order-status-timeline` | Danh sách lịch sử thay đổi trạng thái (mới nhất lên đầu) |
+| `order-status-timeline` | Danh sách lịch sử thay đổi trạng thái (cũ nhất lên đầu, theo thứ tự thời gian) |
 | `order-tab-details` | Tab chuyển sang Chi tiết đơn hàng |
 | `order-tab-tracking` | Tab chuyển sang Theo dõi vận chuyển |
 
