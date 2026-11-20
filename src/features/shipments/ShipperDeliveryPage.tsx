@@ -139,8 +139,12 @@ export const ShipperDeliveryPage: React.FC = () => {
     try {
       const detail = await apiClient.getOrderDetail(order.id);
       setHistoryOrder(detail);
-    } catch {
-      void 0;
+    } catch (err) {
+      if (err instanceof ApiClientError) {
+        setError({ message: err.message, code: err.code, traceId: err.traceId });
+      } else {
+        setError({ message: 'Không thể tải lịch sử trạng thái của đơn hàng.' });
+      }
     } finally {
       setLoadingHistory(false);
     }
