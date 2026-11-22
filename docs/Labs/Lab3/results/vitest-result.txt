@@ -1,0 +1,24 @@
+Lab 3 - Automation test with Vitest
+Tool: Vitest 2.1.9 (environment jsdom, repo vitest.config.ts)
+Code: GiaoHangThuongMaiDienTu, commit ae6fe95 (main)
+Command: npx vitest run tests/unit/lab3 --reporter=verbose
+----------------------------------------------------------------------
+
+ RUN  v2.1.9 <repo>
+
+ ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID01: 8 characters is valid
+ ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID02: 64 characters is valid
+ ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID03: 7 characters is invalid and names the length rule
+ ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID04: 65 characters is invalid and names the length rule
+ ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID05: "Ab 1#x!y" with a space and special characters is valid
+ ✓ tests/unit/lab3/email-format.test.ts > Function6 EmailFormat > UTCID01: "an@gmail.com" is valid
+ ✓ tests/unit/lab3/email-format.test.ts > Function6 EmailFormat > UTCID02: "an@localhost" is valid
+ ✓ tests/unit/lab3/email-format.test.ts > Function6 EmailFormat > UTCID03: "angmail.com" is invalid
+ ✓ tests/unit/lab3/email-format.test.ts > Function6 EmailFormat > UTCID04: "an@" is invalid
+ ✓ tests/unit/lab3/email-format.test.ts > Function6 EmailFormat > UTCID05: "an @gmail.com" is invalid
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  16:53:57
+   Duration  2.72s (transform 80ms, setup 669ms, collect 88ms, tests 9ms, environment 2.09s, prepare 663ms)
+
