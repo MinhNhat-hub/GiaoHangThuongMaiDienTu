@@ -7,6 +7,11 @@ export interface SseClient {
   user?: UserProfile;
 }
 
+export interface BroadcastOptions {
+  targetUserId?: string;
+  adminOnly?: boolean;
+}
+
 class SseEventManager {
   private clients: Set<SseClient> = new Set();
 
@@ -38,8 +43,14 @@ class SseEventManager {
     return this.clients.size;
   }
 
-  // Dispatches an event to targeted user or broadcasts to administrators
-  broadcast(eventName: string, payload: unknown, targetUserId?: string): void {
+  // Dispatches an event to targeted user, role, or broadcasts to subscribers
+  broadcast(
+    eventName: string,
+    payload: unknown,
+    options?: BroadcastOptions | string
+  ): void {
+    const targetUserId = typeof options === 'string' ? options : options?.targetUserId;
+    const adminOnly = typeof options === 'object' ? Boolean(options?.adminOnly) : false;
     const rawData = `event: ${eventName}\ndata: ${JSON.stringify(payload)}\n\n`;
 
     for (const client of this.clients) {
@@ -48,7 +59,11 @@ class SseEventManager {
         continue;
       }
 
-      if (targetUserId && client.user) {
+      if (adminOnly) {
+        if (client.user?.role !== 'Admin') {
+          continue;
+        }
+      } else if (targetUserId && client.user) {
         if (client.user.role !== 'Admin' && client.user.id !== targetUserId) {
           continue;
         }

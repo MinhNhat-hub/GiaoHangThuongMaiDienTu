@@ -401,13 +401,18 @@ export class AppStorage {
       if (order.shipment?.shipperId !== actor.id) {
         throw new Error('Bạn không được phân công đơn hàng này');
       }
-      if (payload.issueType !== 'FAILED_DELIVERY' && payload.issueType !== 'DAMAGED') {
-        throw new Error('Nhân viên giao hàng chỉ được báo sự cố giao thất bại hoặc hư hỏng');
+      if (payload.issueType !== 'FAILED_DELIVERY' && payload.issueType !== 'DAMAGED' && payload.issueType !== 'LOST') {
+        throw new Error('Loại sự cố không hợp lệ cho nhân viên giao hàng');
       }
     } else if (actor.role === 'Admin') {
+      if (order.status !== 'DELIVERING') {
+        throw new Error('Chỉ có thể xác nhận sự cố khi đơn đang trên đường giao');
+      }
       if (payload.issueType !== 'LOST') {
         throw new Error('Quản trị viên chỉ được xác nhận sự cố thất lạc');
       }
+    } else {
+      throw new Error('Không có quyền báo cáo sự cố');
     }
 
     const timestamp = new Date().toISOString();
@@ -517,6 +522,14 @@ export class AppStorage {
 
   // Submits a return request enforcing return window and active limit
   submitReturn(payload: SubmitReturnPayload, customer: UserProfile): ReturnRequest {
+    const notes = payload.notes?.trim();
+    if (payload.reason === 'OTHER' && !notes) {
+      throw new Error('Lý do khác yêu cầu phải nhập phần mô tả chi tiết');
+    }
+    if (notes && notes.length > APP_CONFIG.VALIDATION.FREE_TEXT_MAX_LENGTH) {
+      throw new Error(`Ghi chú không được vượt quá ${APP_CONFIG.VALIDATION.FREE_TEXT_MAX_LENGTH} ký tự`);
+    }
+
     const order = this.findOrderById(payload.orderId);
     if (!order) {
       throw new Error('Đơn hàng không tồn tại');
@@ -538,11 +551,6 @@ export class AppStorage {
     const existingReturn = this.returns.find((r) => r.orderId === order.id);
     if (existingReturn) {
       throw new Error('Đơn hàng đã từng tạo yêu cầu hoàn trả, không thể tạo thêm');
-    }
-
-    const notes = payload.notes?.trim();
-    if (payload.reason === 'OTHER' && !notes) {
-      throw new Error('Lý do khác yêu cầu phải nhập phần mô tả chi tiết');
     }
 
     const timestamp = new Date().toISOString();
@@ -610,6 +618,9 @@ export class AppStorage {
       const reason = payload.rejectionReason?.trim();
       if (!reason) {
         throw new Error('Lý do từ chối yêu cầu hoàn hàng không được để trống');
+      }
+      if (reason.length > APP_CONFIG.VALIDATION.FREE_TEXT_MAX_LENGTH) {
+        throw new Error(`Lý do từ chối không được vượt quá ${APP_CONFIG.VALIDATION.FREE_TEXT_MAX_LENGTH} ký tự`);
       }
       request.status = 'REJECTED';
       request.rejectionReason = reason;

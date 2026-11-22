@@ -94,6 +94,26 @@ describe('backend api endpoints and lifecycle workflows', () => {
       headers: { 'Authorization': 'Bearer token_usr_admin_1' },
     });
     expect(adminAccessUsers.status).toBe(200);
+
+    const unauthShipments = await fetch(`${baseUrl}/shipments`, { method: 'POST', body: '{}' });
+    expect(unauthShipments.status).toBe(401);
+
+    const customerShipments = await fetch(`${baseUrl}/shipments`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer token_usr_customer_1', 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    expect(customerShipments.status).toBe(403);
+
+    const unauthIssues = await fetch(`${baseUrl}/issues`, { method: 'POST', body: '{}' });
+    expect(unauthIssues.status).toBe(401);
+
+    const customerIssues = await fetch(`${baseUrl}/issues`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer token_usr_customer_1', 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    expect(customerIssues.status).toBe(403);
   });
 
   it('test_creates_order_and_handles_storage_failure_simulation', async () => {

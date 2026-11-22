@@ -374,7 +374,7 @@ export async function handleApiRequest(
           customerName: user.fullName,
           totalItems: order.items.reduce((acc, it) => acc + it.quantity, 0),
           createdAt: order.createdAt,
-        });
+        }, { adminOnly: true });
         sendSuccess(res, order, 201, traceId);
       } catch (err) {
         if (err instanceof StorageError) {
@@ -437,7 +437,11 @@ export async function handleApiRequest(
 
     if (apiPath === '/shipments' && method === 'POST') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền tạo vận đơn và phân công.', 403, traceId);
         return;
       }
@@ -476,7 +480,11 @@ export async function handleApiRequest(
 
     if (apiPath === '/shipments/assigned' && method === 'GET') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Shipper') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Shipper') {
         sendError(res, 'FORBIDDEN', 'Chỉ nhân viên giao hàng mới có thể xem danh sách phân công.', 403, traceId);
         return;
       }
@@ -489,7 +497,11 @@ export async function handleApiRequest(
     const updateShipmentStatusMatch = apiPath.match(/^\/shipments\/([^/]+)\/status$/);
     if (updateShipmentStatusMatch && method === 'PATCH') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Shipper') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Shipper') {
         sendError(res, 'FORBIDDEN', 'Chỉ nhân viên giao hàng mới có quyền cập nhật trạng thái.', 403, traceId);
         return;
       }
@@ -547,7 +559,11 @@ export async function handleApiRequest(
     const returnShipmentMatch = apiPath.match(/^\/shipments\/([^/]+)\/return$/);
     if (returnShipmentMatch && method === 'POST') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền chuyển trạng thái hoàn hàng.', 403, traceId);
         return;
       }
@@ -600,7 +616,11 @@ export async function handleApiRequest(
     const confirmReturnedMatch = apiPath.match(/^\/shipments\/([^/]+)\/confirm-returned$/);
     if (confirmReturnedMatch && method === 'POST') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xác nhận hoàn trả về kho.', 403, traceId);
         return;
       }
@@ -645,7 +665,11 @@ export async function handleApiRequest(
 
     if (apiPath === '/returns' && method === 'POST') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Customer') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Customer') {
         sendError(res, 'FORBIDDEN', 'Chỉ khách hàng mới có thể yêu cầu đổi trả.', 403, traceId);
         return;
       }
@@ -691,7 +715,11 @@ export async function handleApiRequest(
     const reviewReturnMatch = apiPath.match(/^\/returns\/([^/]+)\/review$/);
     if (reviewReturnMatch && method === 'PATCH') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xét duyệt hoàn hàng.', 403, traceId);
         return;
       }
@@ -727,7 +755,11 @@ export async function handleApiRequest(
     const completeReturnMatch = apiPath.match(/^\/returns\/([^/]+)\/complete$/);
     if (completeReturnMatch && method === 'PATCH') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền hoàn tất đổi trả.', 403, traceId);
         return;
       }
@@ -750,7 +782,11 @@ export async function handleApiRequest(
 
     if (apiPath === '/issues' && method === 'POST') {
       const user = authenticateBearerRequest(req);
-      if (!user || (user.role !== 'Shipper' && user.role !== 'Admin')) {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Shipper' && user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Shipper hoặc Admin mới có quyền báo cáo sự cố.', 403, traceId);
         return;
       }
@@ -775,7 +811,7 @@ export async function handleApiRequest(
           issueType: issue.issueType,
           reportedBy: user.id,
           notes: issue.notes,
-        });
+        }, { adminOnly: true });
         sendSuccess(res, issue, 201, traceId);
       } catch (err: any) {
         sendError(res, 'REPORT_ISSUE_FAILED', err.message || 'Không thể báo cáo sự cố.', 400, traceId);
@@ -785,7 +821,11 @@ export async function handleApiRequest(
 
     if (apiPath === '/issues' && method === 'GET') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xem danh sách sự cố.', 403, traceId);
         return;
       }
@@ -803,7 +843,11 @@ export async function handleApiRequest(
     const resolveIssueMatch = apiPath.match(/^\/issues\/([^/]+)\/resolve$/);
     if (resolveIssueMatch && method === 'PATCH') {
       const user = authenticateBearerRequest(req);
-      if (!user || user.role !== 'Admin') {
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
         sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xử lý sự cố.', 403, traceId);
         return;
       }

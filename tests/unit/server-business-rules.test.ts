@@ -26,6 +26,13 @@ describe('server domain business rules and access validation', () => {
     role: 'Admin',
   };
 
+  const shipperActor: UserProfile = {
+    id: 'shp_1',
+    email: 'shipper1@store.vn',
+    fullName: 'Nguyen Van Giao',
+    role: 'Shipper',
+  };
+
   beforeEach(() => {
     storage = new AppStorage();
   });
@@ -117,5 +124,54 @@ describe('server domain business rules and access validation', () => {
     expect(resolved.resolvedBy).toBe(adminActor.id);
     expect(resolved.resolvedAt).toBeDefined();
     expect(resolved.resolutionNotes).toContain('hẹn giao lại');
+  });
+
+  it('test_rejects_return_notes_and_rejection_reason_exceeding_max_length', () => {
+    const longNotes = 'a'.repeat(501);
+    expect(() => {
+      storage.submitReturn(
+        { orderId: 'ord_4', reason: 'OTHER', notes: longNotes },
+        validCustomer
+      );
+    }).toThrowError(/vượt quá 500 ký tự/i);
+
+    expect(() => {
+      storage.reviewReturn(
+        'ret_1',
+        { action: 'REJECT', rejectionReason: longNotes },
+        adminActor
+      );
+    }).toThrowError(/vượt quá 500 ký tự/i);
+  });
+
+  it('test_shipper_and_admin_reporting_lost_issue_rules', () => {
+    const order3 = storage.findOrderById('ord_3');
+    expect(order3?.status).toBe('DELIVERING');
+
+    const lostIssue = storage.reportIssue(
+      'ord_3',
+      { issueType: 'LOST', notes: 'Parcel lost during transport' },
+      shipperActor
+    );
+    expect(lostIssue.issueType).toBe('LOST');
+    expect(order3?.status).toBe('LOST');
+
+    const orderPending = storage.findOrderById('ord_1');
+    expect(orderPending?.status).toBe('PENDING_CONFIRMATION');
+    expect(() => {
+      storage.reportIssue(
+        'ord_1',
+        { issueType: 'LOST', notes: 'Admin reports lost before delivery' },
+        adminActor
+      );
+    }).toThrowError(/đang trên đường giao/i);
+
+    expect(() => {
+      storage.reportIssue(
+        'ord_1',
+        { issueType: 'LOST' },
+        validCustomer
+      );
+    }).toThrowError(/không có quyền/i);
   });
 });
