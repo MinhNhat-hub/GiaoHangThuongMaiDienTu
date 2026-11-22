@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { URL } from 'node:url';
 import { APP_CONFIG } from '@/constants/config';
 import type { UserProfile } from '@/types/api';
+import { hashPassword, verifyPassword } from './auth';
 import { sseManager } from './events';
 import {
   resolveFailurePointFromHeader,
@@ -9,10 +10,16 @@ import {
 } from './failureInjection';
 import { defaultStorage } from './storage';
 
-// In-memory token-to-user session mapping
 const activeSessions = new Map<string, UserProfile>();
 
-// Populates initial session tokens for pre-seeded users for testing convenience
+const ALLOWED_ORIGINS = new Set([
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+]);
+
+// Populates initial session tokens for pre-seeded users
 export function initializeSessionTokens(): void {
   const users = defaultStorage.listUsersByRole();
   for (const user of users) {
@@ -28,40 +35,43 @@ export function createSession(user: UserProfile): string {
   return token;
 }
 
-// Invalidate session on sign-out
+// Invalidates session on sign-out
 export function removeSession(token: string): void {
   activeSessions.delete(token);
 }
 
-// Resolves user from Authorization header or cookie
-function authenticateRequest(req: IncomingMessage): UserProfile | undefined {
+// Resolves user strictly from Authorization Bearer token header for REST endpoints
+function authenticateBearerRequest(req: IncomingMessage): UserProfile | undefined {
   const authHeader = req.headers['authorization'];
-  if (authHeader?.startsWith('Bearer ')) {
-    const token = authHeader.substring(7).trim();
-    if (activeSessions.has(token)) {
-      return activeSessions.get(token);
-    }
-    // Fallback: check static token pattern
-    for (const [sToken, user] of activeSessions.entries()) {
-      if (token === sToken || token.startsWith(`token_${user.id}`)) {
-        return user;
-      }
-    }
+  if (!authHeader?.startsWith('Bearer ')) {
+    return undefined;
+  }
+  const token = authHeader.substring(7).trim();
+  return activeSessions.get(token);
+}
+
+// Resolves user from cookie or Bearer token specifically for real-time event stream
+function authenticateEventStreamRequest(req: IncomingMessage): UserProfile | undefined {
+  const bearerUser = authenticateBearerRequest(req);
+  if (bearerUser) {
+    return bearerUser;
   }
 
-  // Check cookie for EventSource connections
   const cookieHeader = req.headers['cookie'];
-  if (cookieHeader) {
-    const cookies = Object.fromEntries(
-      cookieHeader.split(';').map((c) => {
-        const [k, ...v] = c.trim().split('=');
-        return [k, v.join('=')];
-      })
-    );
-    const eventToken = cookies['events_token'];
-    if (eventToken && activeSessions.has(eventToken)) {
-      return activeSessions.get(eventToken);
-    }
+  if (!cookieHeader) {
+    return undefined;
+  }
+
+  const cookies = Object.fromEntries(
+    cookieHeader.split(';').map((c) => {
+      const [k, ...v] = c.trim().split('=');
+      return [k, v.join('=')];
+    })
+  );
+
+  const eventToken = cookies['events_token'];
+  if (eventToken) {
+    return activeSessions.get(eventToken);
   }
 
   return undefined;
@@ -84,7 +94,7 @@ async function parseJsonBody<T>(req: IncomingMessage): Promise<T> {
       }
       try {
         resolve(JSON.parse(body) as T);
-      } catch (err) {
+      } catch {
         reject(new Error('Invalid JSON format'));
       }
     });
@@ -145,12 +155,14 @@ export async function handleApiRequest(
   req: IncomingMessage,
   res: ServerResponse
 ): Promise<void> {
-  const origin = req.headers['origin'] || '*';
-  const traceId = (req.headers['x-trace-id'] as string) || `tr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  const reqOrigin = req.headers['origin'];
+  const isAllowedOrigin = reqOrigin && ALLOWED_ORIGINS.has(reqOrigin);
+  const effectiveOrigin = isAllowedOrigin ? reqOrigin : (reqOrigin ? 'null' : '*');
 
-  // Default CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', origin === '*' ? '*' : origin);
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', effectiveOrigin);
+  if (isAllowedOrigin) {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Content-Type, Authorization, X-Trace-Id, X-Simulate-Failure, Accept'
@@ -160,26 +172,28 @@ export async function handleApiRequest(
     'GET, POST, PATCH, PUT, DELETE, OPTIONS'
   );
 
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
     return;
   }
 
+  const traceId = (req.headers['x-trace-id'] as string) || `tr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const parsedUrl = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   const pathname = parsedUrl.pathname;
   const method = req.method?.toUpperCase() || 'GET';
 
-  // Normalize API base path
   const apiPath = pathname.startsWith('/api/v1')
     ? pathname.substring('/api/v1'.length)
     : pathname;
 
   try {
-    // --- 1. REAL-TIME EVENTS SSE ---
     if (apiPath === '/events' && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateEventStreamRequest(req);
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập để mở kênh sự kiện thời gian thực.', 401, traceId);
+        return;
+      }
       res.writeHead(200, {
         'Content-Type': 'text/event-stream; charset=utf-8',
         'Cache-Control': 'no-cache, no-transform',
@@ -190,7 +204,6 @@ export async function handleApiRequest(
       return;
     }
 
-    // --- 2. AUTHENTICATION ---
     if (apiPath === '/auth/register' && method === 'POST') {
       const body = await parseJsonBody<{
         email?: string;
@@ -199,22 +212,42 @@ export async function handleApiRequest(
         phoneNumber?: string;
       }>(req);
 
-      if (!body.email || !body.password || !body.fullName) {
-        sendError(res, 'VALIDATION_FAILED', 'Vui lòng cung cấp đầy đủ thông tin đăng ký.', 400, traceId);
+      const email = body.email?.trim().toLowerCase() || '';
+      const password = body.password || '';
+      const fullName = body.fullName?.trim() || '';
+      const phoneNumber = body.phoneNumber?.trim() || '';
+      const validationErrors: Array<{ field: string; message: string }> = [];
+
+      if (!fullName || fullName.length > APP_CONFIG.VALIDATION.FULL_NAME_MAX_LENGTH) {
+        validationErrors.push({ field: 'fullName', message: 'Họ tên không được rỗng và tối đa 100 ký tự' });
+      }
+      if (!email || !APP_CONFIG.VALIDATION.HTML_EMAIL_REGEX.test(email) || email.length > APP_CONFIG.VALIDATION.EMAIL_MAX_LENGTH) {
+        validationErrors.push({ field: 'email', message: 'Địa chỉ email không đúng định dạng hoặc vượt quá độ dài' });
+      }
+      if (password.length < APP_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH || password.length > APP_CONFIG.VALIDATION.PASSWORD_MAX_LENGTH || !password.trim()) {
+        validationErrors.push({ field: 'password', message: 'Mật khẩu phải từ 8 đến 64 ký tự và không chỉ chứa khoảng trắng' });
+      }
+      if (!APP_CONFIG.VALIDATION.PHONE_REGEX.test(phoneNumber)) {
+        validationErrors.push({ field: 'phoneNumber', message: 'Số điện thoại phải gồm 10 chữ số bắt đầu bằng 0' });
+      }
+
+      if (validationErrors.length > 0) {
+        sendError(res, 'VALIDATION_FAILED', 'Dữ liệu đăng ký không hợp lệ.', 400, traceId, validationErrors);
         return;
       }
 
-      const existing = defaultStorage.findUserByEmail(body.email);
+      const existing = defaultStorage.findUserByEmail(email);
       if (existing) {
         sendError(res, 'EMAIL_ALREADY_EXISTS', 'Email này đã được sử dụng.', 409, traceId);
         return;
       }
 
+      const passwordHash = hashPassword(password);
       const user = defaultStorage.createUser({
-        email: body.email,
-        passwordHash: body.password,
-        fullName: body.fullName,
-        phoneNumber: body.phoneNumber,
+        email,
+        passwordHash,
+        fullName,
+        phoneNumber,
         role: 'Customer',
       });
 
@@ -225,13 +258,16 @@ export async function handleApiRequest(
 
     if (apiPath === '/auth/login' && method === 'POST') {
       const body = await parseJsonBody<{ email?: string; password?: string }>(req);
-      if (!body.email || !body.password) {
+      const email = body.email?.trim().toLowerCase() || '';
+      const password = body.password || '';
+
+      if (!email || !password) {
         sendError(res, 'INVALID_CREDENTIALS', 'Email hoặc mật khẩu không đúng.', 401, traceId);
         return;
       }
 
-      const userAccount = defaultStorage.findUserByEmail(body.email);
-      if (!userAccount || userAccount.passwordHash !== body.password) {
+      const userAccount = defaultStorage.findUserByEmail(email);
+      if (!userAccount || !verifyPassword(password, userAccount.passwordHash)) {
         sendError(res, 'INVALID_CREDENTIALS', 'Email hoặc mật khẩu không đúng.', 401, traceId);
         return;
       }
@@ -239,7 +275,6 @@ export async function handleApiRequest(
       const { passwordHash: _, ...profile } = userAccount;
       const token = createSession(profile);
 
-      // Set events cookie per Section 8.1
       const cookieHeader = `events_token=${token}; HttpOnly; SameSite=Strict; Path=/api/v1/events`;
       sendSuccess(res, { token, user: profile }, 200, traceId, { 'Set-Cookie': cookieHeader });
       return;
@@ -250,13 +285,13 @@ export async function handleApiRequest(
       if (authHeader?.startsWith('Bearer ')) {
         removeSession(authHeader.substring(7).trim());
       }
-      const clearCookie = `events_token=; HttpOnly; SameSite=Strict; Path=/api/v1/events; Max-Age=0`;
+      const clearCookie = 'events_token=; HttpOnly; SameSite=Strict; Path=/api/v1/events; Max-Age=0';
       sendSuccess(res, null, 200, traceId, { 'Set-Cookie': clearCookie });
       return;
     }
 
     if (apiPath === '/auth/me' && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user) {
         sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập để tiếp tục.', 401, traceId);
         return;
@@ -265,24 +300,35 @@ export async function handleApiRequest(
       return;
     }
 
-    // --- 3. USERS & SHIPPERS ---
     if ((apiPath === '/users' || apiPath === '/shippers') && method === 'GET') {
+      const user = authenticateBearerRequest(req);
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
+        return;
+      }
+      if (user.role !== 'Admin') {
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xem danh sách nhân sự.', 403, traceId);
+        return;
+      }
       const roleParam = parsedUrl.searchParams.get('role');
       const shippers = defaultStorage.listUsersByRole(roleParam || 'Shipper');
       sendSuccess(res, shippers, 200, traceId);
       return;
     }
 
-    // --- 4. PRODUCTS ---
     if (apiPath === '/products' && method === 'GET') {
+      const user = authenticateBearerRequest(req);
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập để xem danh mục sản phẩm.', 401, traceId);
+        return;
+      }
       const products = defaultStorage.listProducts();
       sendSuccess(res, products, 200, traceId);
       return;
     }
 
-    // --- 5. ORDERS ---
     if (apiPath === '/orders' && method === 'POST') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user) {
         sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập để tạo đơn hàng.', 401, traceId);
         return;
@@ -293,18 +339,35 @@ export async function handleApiRequest(
       }
 
       const body = await parseJsonBody<any>(req);
-      if (!body.recipientName || !body.recipientPhone || !body.deliveryAddress || !body.items?.length) {
-        sendError(res, 'VALIDATION_FAILED', 'Vui lòng điền đầy đủ thông tin đơn hàng.', 400, traceId);
+      const recipientName = (body.recipientName || '').trim();
+      const recipientPhone = (body.recipientPhone || '').trim();
+      const deliveryAddress = (body.deliveryAddress || '').trim();
+      const items = body.items;
+
+      const orderErrors: Array<{ field: string; message: string }> = [];
+      if (!recipientName || recipientName.length > APP_CONFIG.VALIDATION.RECIPIENT_NAME_MAX_LENGTH) {
+        orderErrors.push({ field: 'recipientName', message: 'Tên người nhận không hợp lệ hoặc quá dài' });
+      }
+      if (!APP_CONFIG.VALIDATION.PHONE_REGEX.test(recipientPhone)) {
+        orderErrors.push({ field: 'recipientPhone', message: 'Số điện thoại người nhận không đúng định dạng' });
+      }
+      if (!deliveryAddress || deliveryAddress.length > APP_CONFIG.VALIDATION.ADDRESS_MAX_LENGTH) {
+        orderErrors.push({ field: 'deliveryAddress', message: 'Địa chỉ giao hàng không hợp lệ hoặc quá dài' });
+      }
+      if (!Array.isArray(items) || items.length === 0) {
+        orderErrors.push({ field: 'items', message: 'Đơn hàng phải chứa ít nhất một sản phẩm' });
+      }
+
+      if (orderErrors.length > 0) {
+        sendError(res, 'VALIDATION_FAILED', 'Thông tin đơn hàng không hợp lệ.', 400, traceId, orderErrors);
         return;
       }
 
-      // Check failure injection simulation header
       const failureHeader = req.headers['x-simulate-failure'] as string | undefined;
       const failurePoint = resolveFailurePointFromHeader(failureHeader);
 
       try {
         const order = defaultStorage.createOrder(body, user, failurePoint);
-        // Broadcast real-time event to Admin dashboard
         sseManager.broadcast('order.created', {
           orderId: order.id,
           orderCode: order.code,
@@ -318,19 +381,19 @@ export async function handleApiRequest(
           sendError(res, 'ORDER_STORAGE_FAILED', err.message, 500, traceId);
           return;
         }
-        throw err;
+        sendError(res, 'ORDER_CREATION_FAILED', (err as Error).message, 400, traceId);
       }
       return;
     }
 
     if (apiPath === '/orders' && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user) {
         sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
         return;
       }
       if (user.role === 'Shipper') {
-        sendError(res, 'FORBIDDEN', 'Shipper truy cập đơn qua endpoint shipments.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Nhân viên giao hàng truy cập đơn qua endpoint shipments.', 403, traceId);
         return;
       }
 
@@ -344,10 +407,9 @@ export async function handleApiRequest(
       return;
     }
 
-    // Match /orders/:id
     const orderDetailMatch = apiPath.match(/^\/orders\/([^/]+)$/);
     if (orderDetailMatch && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user) {
         sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
         return;
@@ -360,7 +422,6 @@ export async function handleApiRequest(
         return;
       }
 
-      // Check viewing permission per SEC-2
       if (user.role === 'Customer' && order.customerId !== user.id) {
         sendError(res, 'FORBIDDEN', 'Bạn không có quyền xem đơn hàng này.', 403, traceId);
         return;
@@ -374,11 +435,10 @@ export async function handleApiRequest(
       return;
     }
 
-    // --- 6. SHIPMENTS & DELIVERY ---
     if (apiPath === '/shipments' && method === 'POST') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền tạo vận đơn và phân công.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền tạo vận đơn và phân công.', 403, traceId);
         return;
       }
 
@@ -397,7 +457,7 @@ export async function handleApiRequest(
           trackingNumber: order.shipment?.trackingNumber,
           shipperId: body.shipperId,
           address: order.deliveryAddress,
-        });
+        }, body.shipperId);
         sseManager.broadcast('order.status_changed', {
           orderId: order.id,
           orderCode: order.code,
@@ -406,7 +466,7 @@ export async function handleApiRequest(
           changedAt: order.updatedAt,
           changedBy: user.id,
           shipment: order.shipment,
-        });
+        }, order.customerId);
         sendSuccess(res, order.shipment, 201, traceId);
       } catch (err: any) {
         sendError(res, 'SHIPMENT_CREATION_FAILED', err.message || 'Không thể tạo vận đơn.', 400, traceId);
@@ -415,7 +475,7 @@ export async function handleApiRequest(
     }
 
     if (apiPath === '/shipments/assigned' && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Shipper') {
         sendError(res, 'FORBIDDEN', 'Chỉ nhân viên giao hàng mới có thể xem danh sách phân công.', 403, traceId);
         return;
@@ -426,10 +486,9 @@ export async function handleApiRequest(
       return;
     }
 
-    // Match /shipments/:id/status
     const updateShipmentStatusMatch = apiPath.match(/^\/shipments\/([^/]+)\/status$/);
     if (updateShipmentStatusMatch && method === 'PATCH') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Shipper') {
         sendError(res, 'FORBIDDEN', 'Chỉ nhân viên giao hàng mới có quyền cập nhật trạng thái.', 403, traceId);
         return;
@@ -449,7 +508,7 @@ export async function handleApiRequest(
           changedBy: user.id,
           shipment: updatedOrder.shipment,
           notes: body.notes,
-        });
+        }, updatedOrder.customerId);
         sendSuccess(res, updatedOrder, 200, traceId);
       } catch (err: any) {
         sendError(res, 'INVALID_TRANSITION', err.message || 'Chuyển trạng thái không hợp lệ.', 409, traceId);
@@ -457,25 +516,39 @@ export async function handleApiRequest(
       return;
     }
 
-    // Match /shipments/track/:identifier or /shipments/:id/tracking
     const trackMatch = apiPath.match(/^\/shipments\/(?:track\/([^/]+)|([^/]+)\/tracking)$/);
     if (trackMatch && method === 'GET') {
+      const user = authenticateBearerRequest(req);
+      if (!user) {
+        sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập để tra cứu vận đơn.', 401, traceId);
+        return;
+      }
+
       const identifier = trackMatch[1] || trackMatch[2];
       const order = defaultStorage.trackShipment(identifier);
       if (!order) {
         sendError(res, 'SHIPMENT_NOT_FOUND', 'Không tìm thấy thông tin vận chuyển.', 404, traceId);
         return;
       }
+
+      if (user.role === 'Customer' && order.customerId !== user.id) {
+        sendError(res, 'FORBIDDEN', 'Bạn không có quyền theo dõi đơn hàng này.', 403, traceId);
+        return;
+      }
+      if (user.role === 'Shipper' && order.shipment?.shipperId !== user.id) {
+        sendError(res, 'FORBIDDEN', 'Bạn không được phân công đơn hàng này.', 403, traceId);
+        return;
+      }
+
       sendSuccess(res, order, 200, traceId);
       return;
     }
 
-    // Match /shipments/:id/return (Admin processes return after 3 failed attempts)
     const returnShipmentMatch = apiPath.match(/^\/shipments\/([^/]+)\/return$/);
     if (returnShipmentMatch && method === 'POST') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền chuyển trạng thái hoàn hàng.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền chuyển trạng thái hoàn hàng.', 403, traceId);
         return;
       }
 
@@ -518,18 +591,17 @@ export async function handleApiRequest(
         newStatus: 'RETURNING',
         changedAt: order.updatedAt,
         changedBy: user.id,
-      });
+      }, order.customerId);
 
       sendSuccess(res, order, 200, traceId);
       return;
     }
 
-    // Match /shipments/:id/confirm-returned
     const confirmReturnedMatch = apiPath.match(/^\/shipments\/([^/]+)\/confirm-returned$/);
     if (confirmReturnedMatch && method === 'POST') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền xác nhận hoàn trả về kho.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xác nhận hoàn trả về kho.', 403, traceId);
         return;
       }
 
@@ -537,6 +609,10 @@ export async function handleApiRequest(
       const order = defaultStorage.findOrderById(identifier) || defaultStorage.trackShipment(identifier);
       if (!order) {
         sendError(res, 'ORDER_NOT_FOUND', 'Đơn hàng không tồn tại.', 404, traceId);
+        return;
+      }
+      if (order.status !== 'RETURNING') {
+        sendError(res, 'INVALID_TRANSITION', 'Chỉ có thể xác nhận khi đơn đang chuyển hoàn về kho.', 409, traceId);
         return;
       }
 
@@ -561,15 +637,14 @@ export async function handleApiRequest(
         newStatus: 'RETURNED_TO_SELLER',
         changedAt: order.updatedAt,
         changedBy: user.id,
-      });
+      }, order.customerId);
 
       sendSuccess(res, order, 200, traceId);
       return;
     }
 
-    // --- 7. RETURNS ---
     if (apiPath === '/returns' && method === 'POST') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Customer') {
         sendError(res, 'FORBIDDEN', 'Chỉ khách hàng mới có thể yêu cầu đổi trả.', 403, traceId);
         return;
@@ -591,7 +666,7 @@ export async function handleApiRequest(
           orderId: returnRequest.orderId,
           orderCode: returnRequest.orderCode,
           newStatus: returnRequest.status,
-        });
+        }, user.id);
         sendSuccess(res, returnRequest, 201, traceId);
       } catch (err: any) {
         sendError(res, 'RETURN_REQUEST_FAILED', err.message || 'Không thể tạo yêu cầu trả hàng.', 400, traceId);
@@ -600,7 +675,7 @@ export async function handleApiRequest(
     }
 
     if (apiPath === '/returns' && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user) {
         sendError(res, 'UNAUTHORIZED', 'Vui lòng đăng nhập.', 401, traceId);
         return;
@@ -613,12 +688,11 @@ export async function handleApiRequest(
       return;
     }
 
-    // Match /returns/:id/review
     const reviewReturnMatch = apiPath.match(/^\/returns\/([^/]+)\/review$/);
     if (reviewReturnMatch && method === 'PATCH') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền xét duyệt hoàn hàng.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xét duyệt hoàn hàng.', 403, traceId);
         return;
       }
 
@@ -642,7 +716,7 @@ export async function handleApiRequest(
           orderCode: updated.orderCode,
           newStatus: updated.status,
           rejectionReason: updated.rejectionReason,
-        });
+        }, updated.customerId);
         sendSuccess(res, updated, 200, traceId);
       } catch (err: any) {
         sendError(res, 'REVIEW_FAILED', err.message || 'Không thể duyệt yêu cầu trả hàng.', 400, traceId);
@@ -650,12 +724,11 @@ export async function handleApiRequest(
       return;
     }
 
-    // Match /returns/:id/complete
     const completeReturnMatch = apiPath.match(/^\/returns\/([^/]+)\/complete$/);
     if (completeReturnMatch && method === 'PATCH') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền hoàn tất đổi trả.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền hoàn tất đổi trả.', 403, traceId);
         return;
       }
 
@@ -667,7 +740,7 @@ export async function handleApiRequest(
           orderId: completed.orderId,
           orderCode: completed.orderCode,
           newStatus: completed.status,
-        });
+        }, completed.customerId);
         sendSuccess(res, completed, 200, traceId);
       } catch (err: any) {
         sendError(res, 'COMPLETE_FAILED', err.message || 'Không thể hoàn tất đổi trả.', 400, traceId);
@@ -675,9 +748,8 @@ export async function handleApiRequest(
       return;
     }
 
-    // --- 8. DELIVERY ISSUES ---
     if (apiPath === '/issues' && method === 'POST') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || (user.role !== 'Shipper' && user.role !== 'Admin')) {
         sendError(res, 'FORBIDDEN', 'Chỉ Shipper hoặc Admin mới có quyền báo cáo sự cố.', 403, traceId);
         return;
@@ -712,9 +784,9 @@ export async function handleApiRequest(
     }
 
     if (apiPath === '/issues' && method === 'GET') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền xem danh sách sự cố.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xem danh sách sự cố.', 403, traceId);
         return;
       }
 
@@ -728,12 +800,11 @@ export async function handleApiRequest(
       return;
     }
 
-    // Match /issues/:id/resolve
     const resolveIssueMatch = apiPath.match(/^\/issues\/([^/]+)\/resolve$/);
     if (resolveIssueMatch && method === 'PATCH') {
-      const user = authenticateRequest(req);
+      const user = authenticateBearerRequest(req);
       if (!user || user.role !== 'Admin') {
-        sendError(res, 'FORBIDDEN', 'Chỉ Admin mới có quyền xử lý sự cố.', 403, traceId);
+        sendError(res, 'FORBIDDEN', 'Chỉ Quản trị viên mới có quyền xử lý sự cố.', 403, traceId);
         return;
       }
 
@@ -750,12 +821,11 @@ export async function handleApiRequest(
         const resolved = defaultStorage.resolveIssue(issueId, { resolutionNotes: notes }, user);
         sendSuccess(res, resolved, 200, traceId);
       } catch (err: any) {
-        sendError(res, 'RESOLVE_ISSUE_FAILED', err.message || 'Không thể xử lý sự cố.', 400, traceId);
+        sendError(res, 'RESOLVE_ISSUE_FAILED', err.message || 'Không thể xử lý sự cố.', 409, traceId);
       }
       return;
     }
 
-    // 404 Route Not Found
     sendError(res, 'ROUTE_NOT_FOUND', `Không tìm thấy endpoint: ${method} ${pathname}`, 404, traceId);
   } catch (err: any) {
     sendError(res, 'INTERNAL_SERVER_ERROR', err.message || 'Lỗi xử lý nội bộ máy chủ.', 500, traceId);

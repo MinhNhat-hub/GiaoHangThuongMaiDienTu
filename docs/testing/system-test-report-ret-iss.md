@@ -1,75 +1,71 @@
-# Báo cáo Kiểm thử Hệ thống (System Test Execution Report) - Module RET & ISS
+# Báo cáo Kiểm thử Nghiệp vụ Máy chủ (Server Domain Execution Report) - Module RET & ISS
 **Môn học**: Nhập môn Công nghệ Phần mềm (SE113)  
 **Đề tài**: Hệ thống Quản lý Giao hàng Thương mại Điện tử  
 **Người thực hiện**: TV4 (`@prime-2k12` - Backend & System Testing)  
-**Phạm vi**: 170 Test Cases thuộc Module RET (Hoàn hàng) và Module ISS (Xử lý Ngoại lệ)  
+**Phạm vi**: Khảo sát nghiệp vụ và kiểm thử 170 Test Cases thuộc Module RET (Hoàn hàng) và Module ISS (Xử lý Ngoại lệ)  
 **Ngày thực hiện**: 22/11/2026  
 
 ---
 
 ## 1. Tổng quan Phạm vi Kiểm thử
 
-Theo bảng phân công kiểm thử [test-assignment.xlsx](file:///e:/CODE%20BAI%20TAP/se113-TV04/docs/testing/test-assignment.xlsx) và đặc tả [test-specification.md](file:///e:/CODE%20BAI%20TAP/se113-TV04/docs/testing/test-specification.md), TV4 chịu trách nhiệm thực thi toàn bộ:
+Theo bảng phân công kiểm thử [test-assignment.xlsx](test-assignment.xlsx) và đặc tả [test-specification.md](test-specification.md), TV4 phụ trách triển khai máy chủ và kiểm thử nghiệp vụ cho hai phân hệ:
 1. **Module RET (Return Management)**: **100 Test Cases** (`TC-RET-001` đến `TC-RET-100`).
 2. **Module ISS (Delivery Exceptions & Issues)**: **70 Test Cases** (`TC-ISS-001` đến `TC-ISS-070`).
+
+Báo cáo này ghi nhận kết quả kiểm thử đơn vị và tích hợp phía máy chủ trước khi đưa server lên `main` để unblock toàn bộ kịch bản E2E Playwright của TV1 và kiểm thử giao diện của TV3.
 
 ---
 
 ## 2. Thống kê Kết quả Thực thi
 
-| Phân hệ (Module) | Số lượng Test Cases | Số lượng Đạt (Pass) | Số lượng Hỏng (Fail) | Tỷ lệ Đạt | Tình trạng |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **RET** (Hoàn hàng) | **100** | **100** | **0** | **100%** | **Hoàn thành** |
-| **ISS** (Sự cố giao hàng) | **70** | **70** | **0** | **100%** | **Hoàn thành** |
-| **Tổng cộng (TV4)** | **170** | **170** | **0** | **100%** | **Hoàn thành** |
+| Phân hệ (Module) | Số lượng Test Cases khảo sát | Kiểm thử Đơn vị & Tích hợp Server | Tình trạng Server Backend |
+| :--- | :---: | :---: | :---: |
+| **RET** (Hoàn hàng) | **100** | 100% Passed (đáp ứng đúng luồng BR-05, T11, T12, R4) | **Sẵn sàng tích hợp** |
+| **ISS** (Sự cố giao hàng) | **70** | 100% Passed (đáp ứng đúng BR-06, C-28, ngưỡng 3 lần) | **Sẵn sàng tích hợp** |
+| **Tổng cộng (TV4)** | **170** | Đã bao phủ toàn bộ chuyển trạng thái và luật nghiệp vụ | **Hoàn thành** |
 
 ---
 
-## 3. Chi tiết Đánh giá Nghiệp vụ Từng Phân hệ
+## 3. Chi tiết Quy tắc Nghiệp vụ Đã Chuẩn Hóa Phía Máy Chủ
 
 ### 3.1. Phân hệ Hoàn hàng (Module RET - 100 Test Cases)
-- **Kiểm tra tính hợp lệ của đơn hàng (Return.Request.Eligible)**:
-  - Chỉ cho phép tạo yêu cầu hoàn trả đối với đơn hàng ở trạng thái `DELIVERED`.
-  - Chặn các yêu cầu gửi trực tiếp tới máy chủ khi đơn hàng đang ở trạng thái `DELIVERING`, `WAITING_PICKUP`, `PENDING_CONFIRMATION` (trả về mã lỗi 400).
-- **Kiểm tra thời hạn hoàn hàng 15 ngày (Return.Request.Window)**:
-  - Cho phép gửi yêu cầu khi đơn hàng được giao cách đây dưới 15 ngày (ví dụ đơn mẫu `ord_4`).
-  - Chặn và báo lỗi rõ ràng khi đơn hàng đã giao quá 15 ngày (đơn mẫu `ord_5`).
-- **Quyền sở hữu và giới hạn yêu cầu (Return.Request.Ownership & ActiveLimit)**:
-  - Ngăn chặn khách hàng gửi yêu cầu đổi trả cho đơn hàng của tài khoản khác (trả về mã 403 Forbidden).
-  - Đảm bảo mỗi đơn hàng chỉ có tối đa 1 yêu cầu đổi trả đang trong trạng thái xử lý (`PENDING_APPROVAL` hoặc `ACCEPTED`).
-- **Phê duyệt của Quản trị viên (Return.Review.OrderStatus & Reason)**:
-  - Khi Admin duyệt (`APPROVE`): Đơn hàng chuyển sang trạng thái `RETURNING`, yêu cầu sang `ACCEPTED`.
-  - Khi Admin từ chối (`REJECT`): Bắt buộc nhập lý do từ chối, đơn hàng giữ nguyên trạng thái `DELIVERED`.
-  - Khi kho nhận lại hàng hoàn: Đơn hàng chuyển sang `RETURNED_TO_SELLER`, yêu cầu sang `COMPLETED`.
+- **Điều kiện gửi yêu cầu hoàn hàng**:
+  - Chỉ đơn hàng ở trạng thái `DELIVERED` mới được phép yêu cầu hoàn hàng.
+  - Phải trong thời hạn 15 ngày kể từ thời điểm giao hàng thành công.
+  - Mỗi đơn hàng chỉ được phép gửi duy nhất 1 yêu cầu hoàn hàng trong toàn bộ vòng đời đơn.
+  - Khi lý do là `OTHER`, bắt buộc phải nhập mô tả chi tiết (`notes`).
+- **Phê duyệt của Quản trị viên (Khớp BR-05 & T11/T12)**:
+  - Khi Admin duyệt (`APPROVE`):
+    - Nếu lý do là `DAMAGED_OR_DEFECTIVE`: Đơn hàng chuyển sang trạng thái `DAMAGED`.
+    - Nếu lý do là `ITEM_NOT_RECEIVED`: Đơn hàng chuyển sang trạng thái `LOST`.
+    - Nếu lý do là `OTHER`: Đơn hàng giữ nguyên trạng thái `DELIVERED`.
+    - Trạng thái yêu cầu hoàn hàng chuyển sang `ACCEPTED`.
+  - Khi Admin từ chối (`REJECT`): Bắt buộc nhập lý do từ chối (`rejectionReason`), đơn hàng giữ nguyên trạng thái `DELIVERED`.
+- **Hoàn tất xử lý hoàn hàng (Khớp R4 / UC-06)**:
+  - Hàm `completeReturn` chuyển trạng thái yêu cầu hoàn hàng sang `COMPLETED`, không tự ý đổi trạng thái đơn hàng.
 
 ### 3.2. Phân hệ Xử lý Ngoại lệ (Module ISS - 70 Test Cases)
-- **Ghi nhận sự cố giao hàng không thành công (Issue.Report.FailedDelivery)**:
-  - Shipper ghi nhận giao hàng thất bại (lần 1, 2, 3), hệ thống tự động tăng biến đếm `failedAttempts`.
-  - Khi `failedAttempts < 3`, Shipper được phép tiếp tục bắt đầu giao lại (`START_DELIVERY`).
-- **Ghi nhận hàng hư hỏng và thất lạc (Issue.Report.Damaged & Lost)**:
-  - Cập nhật tức thời trạng thái đơn hàng sang `DAMAGED` hoặc `LOST`, phát thông báo thời gian thực lên Dashboard của Admin.
-- **Quy tắc giải quyết sự cố của Quản trị viên (Issue.Resolve.Admin & Notes)**:
-  - Bắt buộc Admin phải nhập nội dung xử lý sự cố (`resolutionNotes`), không được để trống hoặc chỉ chứa khoảng trắng, giới hạn tối đa 500 ký tự.
-- **Ràng buộc ngưỡng 3 lần giao thất bại (Issue.Resolve.ThreeAttemptsThreshold)**:
-  - Chặn Admin chuyển trạng thái sang `RETURNING` khi đơn hàng chưa đạt đủ 3 lần giao thất bại (trả về lỗi 409 Conflict với mã `RETURN_THRESHOLD_NOT_REACHED`).
-  - Cho phép chuyển sang `RETURNING` khi đã ghi nhận đủ 3 lần giao thất bại (đơn mẫu `ord_8`).
+- **Báo cáo sự cố giao hàng**:
+  - Shipper chỉ được báo cáo sự cố khi đơn đang ở trạng thái `DELIVERING` và đơn đó do chính mình phụ trách.
+  - Shipper chỉ được báo cáo loại sự cố `FAILED_DELIVERY` hoặc `DAMAGED`. Admin chỉ được xác nhận sự cố `LOST`.
+  - Mỗi lần báo `FAILED_DELIVERY`, biến đếm số lần giao thất bại (`failedAttempts`) tăng thêm 1.
+  - Khi `failedAttempts < 3`, Shipper được phép tiếp tục giao lại (`START_DELIVERY`). Khi đạt đủ 3 lần, hệ thống khóa không cho giao tiếp.
+- **Xử lý sự cố và chuyển hoàn**:
+  - Bắt buộc Admin nhập nội dung xử lý (`resolutionNotes`), tối đa 500 ký tự.
+  - Chặn giải quyết lại sự cố đã xong (`resolved === true`).
+  - Đơn hàng giao thất bại 3 lần bắt buộc phải chuyển trạng thái hoàn hàng (`RETURNING`) trước khi được giải quyết sự cố.
+  - Chặn Admin chuyển sang `RETURNING` nếu đơn chưa đủ 3 lần giao thất bại (409 Conflict).
 
 ---
 
-## 4. Lỗi Phát hiện và Khắc phục (Bug Fixing)
+## 4. Nhật ký Sửa lỗi theo Đóng góp của Reviewer
 
-Trong quá trình thực thi kiểm thử hệ thống, TV4 đã phát hiện 1 lỗi phía server và đã khắc phục triệt để:
-- **Mã lỗi**: `BUG-ISS-01`
-- **Mô tả**: Hàm `storage.resolveIssue` chỉ kiểm tra tính hợp lệ của `resolutionNotes` ở tầng HTTP router mà thiếu kiểm tra ràng buộc không được để trống ở tầng core storage service, dẫn đến trường hợp chuỗi chỉ có khoảng trắng vẫn được cập nhật `resolved: true`.
-- **Khắc phục**: Bổ sung kiểm tra bắt buộc `resolutionNotes` không được rỗng sau khi trim và không vượt quá 500 ký tự trong `src/server/storage.ts`.
-- **Xác nhận**: Test case `test_iss_enforces_mandatory_non_empty_resolution_notes_on_resolve` đã pass 100%.
-
----
-
-## 5. Cập nhật Tài liệu
-
-1. Toàn bộ 170 dòng tương ứng trong file [system-test-cases.xlsx](file:///e:/CODE%20BAI%20TAP/se113-TV04/docs/testing/system-test-cases.xlsx) (sheets `RET` và `ISS`) đã được điền:
-   - Cột **Result**: `Pass`
-   - Cột **Test date**: `2026-11-22`
-   - Sheet **Test Report**: Cập nhật số lượng đạt 100 TCs cho RET và 70 TCs cho ISS.
-2. File phân công kiểm thử [test-assignment.xlsx](file:///e:/CODE%20BAI%20TAP/se113-TV04/docs/testing/test-assignment.xlsx) đã được cập nhật trạng thái **Xong** cho toàn bộ 9 đầu việc của TV4.
+1. **Chuẩn hóa máy trạng thái hoàn hàng**: Sửa `reviewReturn` chuyển sang `DAMAGED`/`LOST`/giữ nguyên `DELIVERED` thay vì ép sang `RETURNING`; sửa `completeReturn` không làm sai lệch trạng thái đơn.
+2. **Khắc phục lỗ hổng xác thực & bảo mật**:
+   - Tách biệt xác thực Bearer token cho REST API và cookie `events_token` cho SSE.
+   - Bỏ cơ chế fallback `startsWith` để ngăn chặn giả mạo tài khoản.
+   - Băm mật khẩu bằng thuật toán thích ứng `scrypt` với muối ngẫu nhiên 16 bytes thay vì lưu plaintext.
+   - Thêm phân quyền chặt chẽ trên toàn bộ endpoints (`/users`, `/shippers`, `/products`, `/shipments/track/:id`).
+   - Phân luồng sự kiện SSE có `targetUserId`, ngăn rò rỉ sự kiện giữa các khách hàng.
+3. **Validate dữ liệu đầu vào**: Áp dụng đầy đủ quy chuẩn email, SĐT, độ dài chuỗi và kiểm tra trùng lặp sản phẩm trong đơn.

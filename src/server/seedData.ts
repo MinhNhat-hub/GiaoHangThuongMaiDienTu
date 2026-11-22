@@ -5,10 +5,13 @@ import type {
   ReturnRequest,
   DeliveryIssue,
 } from '@/types/api';
+import { hashPassword } from './auth';
 
 export interface UserAccount extends UserProfile {
   passwordHash: string;
 }
+
+const defaultPasswordHash = hashPassword('Password123!');
 
 export const SEED_USERS: UserAccount[] = [
   {
@@ -17,7 +20,7 @@ export const SEED_USERS: UserAccount[] = [
     fullName: 'Store Administrator',
     phoneNumber: '0901234567',
     role: 'Admin',
-    passwordHash: 'Password123!',
+    passwordHash: defaultPasswordHash,
   },
   {
     id: 'shp_1',
@@ -25,7 +28,7 @@ export const SEED_USERS: UserAccount[] = [
     fullName: 'Nguyen Van Shipper',
     phoneNumber: '0912345678',
     role: 'Shipper',
-    passwordHash: 'Password123!',
+    passwordHash: defaultPasswordHash,
   },
   {
     id: 'shp_2',
@@ -33,7 +36,7 @@ export const SEED_USERS: UserAccount[] = [
     fullName: 'Tran Thi Shipper',
     phoneNumber: '0923456789',
     role: 'Shipper',
-    passwordHash: 'Password123!',
+    passwordHash: defaultPasswordHash,
   },
   {
     id: 'usr_customer_1',
@@ -41,7 +44,7 @@ export const SEED_USERS: UserAccount[] = [
     fullName: 'Le Thi Khach',
     phoneNumber: '0934567890',
     role: 'Customer',
-    passwordHash: 'Password123!',
+    passwordHash: defaultPasswordHash,
   },
   {
     id: 'usr_customer_2',
@@ -49,7 +52,7 @@ export const SEED_USERS: UserAccount[] = [
     fullName: 'Pham Van Khach',
     phoneNumber: '0945678901',
     role: 'Customer',
-    passwordHash: 'Password123!',
+    passwordHash: defaultPasswordHash,
   },
 ];
 

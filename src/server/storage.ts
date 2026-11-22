@@ -46,16 +46,18 @@ export class AppStorage {
     this.issues = seed.issues;
   }
 
-  // --- USERS & AUTH ---
+  // Finds user by email address
   findUserByEmail(email: string): UserAccount | undefined {
     const normalized = email.trim().toLowerCase();
     return this.users.find((u) => u.email.toLowerCase() === normalized);
   }
 
+  // Finds user by account identifier
   findUserById(id: string): UserAccount | undefined {
     return this.users.find((u) => u.id === id);
   }
 
+  // Creates and stores a new user profile
   createUser(payload: {
     email: string;
     passwordHash: string;
@@ -77,6 +79,7 @@ export class AppStorage {
     return profile;
   }
 
+  // Lists user profiles optionally filtered by role
   listUsersByRole(role?: string): UserProfile[] {
     let list = this.users;
     if (role) {
@@ -85,16 +88,17 @@ export class AppStorage {
     return list.map(({ passwordHash: _, ...profile }) => profile);
   }
 
-  // --- PRODUCTS ---
+  // Returns all products from the catalog
   listProducts(): Product[] {
     return [...this.products];
   }
 
+  // Finds product by catalog identifier
   findProductById(id: string): Product | undefined {
     return this.products.find((p) => p.id === id);
   }
 
-  // --- ORDERS ---
+  // Lists orders matching filtering criteria
   listOrders(params?: {
     customerId?: string;
     status?: OrderStatusCode;
@@ -121,27 +125,56 @@ export class AppStorage {
     return { items, total };
   }
 
+  // Finds order by internal identifier
   findOrderById(id: string): Order | undefined {
     return this.orders.find((o) => o.id === id);
   }
 
+  // Finds order by business tracking code
   findOrderByCode(code: string): Order | undefined {
     return this.orders.find((o) => o.code === code);
   }
 
-  // Creates order with simulated failure injection and transaction rollback support
+  // Creates a customer order with validation and transactional rollback support
   createOrder(
     payload: CreateOrderPayload,
     customer: UserProfile,
     failurePoint?: FailurePoint
   ): Order {
+    const recipientName = payload.recipientName.trim();
+    const recipientPhone = payload.recipientPhone.trim();
+    const deliveryAddress = payload.deliveryAddress.trim();
+
+    if (!recipientName || recipientName.length > APP_CONFIG.VALIDATION.RECIPIENT_NAME_MAX_LENGTH) {
+      throw new Error('Tên người nhận không hợp lệ hoặc vượt quá độ dài');
+    }
+    if (!APP_CONFIG.VALIDATION.PHONE_REGEX.test(recipientPhone)) {
+      throw new Error('Số điện thoại người nhận không hợp lệ');
+    }
+    if (!deliveryAddress || deliveryAddress.length > APP_CONFIG.VALIDATION.ADDRESS_MAX_LENGTH) {
+      throw new Error('Địa chỉ giao hàng không hợp lệ hoặc vượt quá độ dài');
+    }
+    if (!payload.items || payload.items.length === 0) {
+      throw new Error('Đơn hàng phải chứa ít nhất một sản phẩm');
+    }
+
+    const seenProductIds = new Set<string>();
+    for (const it of payload.items) {
+      if (seenProductIds.has(it.productId)) {
+        throw new Error('Đơn hàng không được chứa hai dòng cùng một sản phẩm');
+      }
+      seenProductIds.add(it.productId);
+      if (!Number.isInteger(it.quantity) || it.quantity < APP_CONFIG.VALIDATION.MIN_ITEM_QUANTITY) {
+        throw new Error('Số lượng sản phẩm phải là số nguyên dương');
+      }
+    }
+
     const timestamp = new Date().toISOString();
     const orderIndex = this.orders.length + 1;
     const orderId = `ord_${Date.now()}_${orderIndex}`;
     const datePrefix = timestamp.slice(0, 10).replace(/-/g, '');
     const orderCode = `ORD-${datePrefix}-${String(orderIndex).padStart(4, '0')}`;
 
-    // Map items with product names
     const resolvedItems: OrderItem[] = payload.items.map((item, idx) => {
       const product = this.findProductById(item.productId);
       return {
@@ -171,9 +204,9 @@ export class AppStorage {
       customerId: customer.id,
       customerName: customer.fullName,
       customerEmail: customer.email,
-      recipientName: payload.recipientName.trim(),
-      recipientPhone: payload.recipientPhone.trim(),
-      deliveryAddress: payload.deliveryAddress.trim(),
+      recipientName,
+      recipientPhone,
+      deliveryAddress,
       status: 'PENDING_CONFIRMATION',
       createdAt: timestamp,
       updatedAt: timestamp,
@@ -182,7 +215,6 @@ export class AppStorage {
       history: statusHistory,
     };
 
-    // Stage 1: Order Record Persistence
     if (shouldFailAt('ORDER_STORE', failurePoint)) {
       throw new StorageError(
         'Không thể lưu đơn hàng vào cơ sở dữ liệu. Giao dịch đã được hoàn tác.',
@@ -190,13 +222,10 @@ export class AppStorage {
       );
     }
 
-    // Temporary staging
     const orderBackup = [...this.orders];
     this.orders.push(newOrder);
 
-    // Stage 2: Status History Persistence
     if (shouldFailAt('ORDER_HISTORY', failurePoint)) {
-      // Rollback staged order
       this.orders = orderBackup;
       throw new StorageError(
         'Không thể lưu lịch sử trạng thái đơn hàng. Giao dịch đã được hoàn tác.',
@@ -207,11 +236,16 @@ export class AppStorage {
     return newOrder;
   }
 
+  // Creates shipment for an order currently pending confirmation
   createShipment(orderId: string, shipperId: string, assignedBy: UserProfile): Order {
     const order = this.findOrderById(orderId);
     if (!order) {
       throw new Error('Đơn hàng không tồn tại');
     }
+    if (order.status !== 'PENDING_CONFIRMATION') {
+      throw new Error('Chỉ có thể tạo vận đơn khi đơn ở trạng thái chờ xác nhận');
+    }
+
     const shipper = this.findUserById(shipperId);
     if (!shipper || shipper.role !== 'Shipper') {
       throw new Error('Nhân viên giao hàng không hợp lệ');
@@ -251,6 +285,7 @@ export class AppStorage {
     return order;
   }
 
+  // Updates shipment status by assigned shipper enforcing valid lifecycle rules
   updateShipmentStatus(
     identifier: string,
     action: ShipmentStatusAction,
@@ -263,13 +298,21 @@ export class AppStorage {
     if (!order) {
       throw new Error('Vận đơn hoặc đơn hàng không tồn tại');
     }
+    if (order.shipment?.shipperId !== actor.id) {
+      throw new Error('Chỉ nhân viên giao hàng được phân công mới có quyền cập nhật');
+    }
 
     const timestamp = new Date().toISOString();
     const previousStatus = order.status;
     let nextStatus: OrderStatusCode = previousStatus;
 
     if (action === 'START_DELIVERY') {
-      if (previousStatus !== 'WAITING_PICKUP' && previousStatus !== 'FAILED_DELIVERY') {
+      if (previousStatus === 'FAILED_DELIVERY') {
+        const attempts = order.shipment?.failedAttempts || 0;
+        if (attempts >= APP_CONFIG.DELIVERY_RULES.MAX_FAILED_DELIVERY_ATTEMPTS) {
+          throw new Error('Đơn hàng đã đạt tối đa 3 lần giao thất bại, không thể tiếp tục giao');
+        }
+      } else if (previousStatus !== 'WAITING_PICKUP') {
         throw new Error('Trạng thái hiện tại không thể bắt đầu giao');
       }
       nextStatus = 'DELIVERING';
@@ -297,6 +340,7 @@ export class AppStorage {
     return order;
   }
 
+  // Lists assigned shipments for a specific shipper
   listAssignedShipments(shipperId: string): Order[] {
     return this.orders.filter(
       (o) =>
@@ -305,6 +349,7 @@ export class AppStorage {
     );
   }
 
+  // Looks up shipment tracking record by identifier
   trackShipment(identifier: string): Order | undefined {
     const normalized = identifier.trim().toLowerCase();
     return this.orders.find(
@@ -315,7 +360,7 @@ export class AppStorage {
     );
   }
 
-  // --- DELIVERY ISSUES ---
+  // Lists delivery issues with optional filter
   listIssues(params?: {
     resolved?: boolean;
     page?: number;
@@ -337,14 +382,32 @@ export class AppStorage {
     return { items, total };
   }
 
+  // Finds issue by identifier
   findIssueById(id: string): DeliveryIssue | undefined {
     return this.issues.find((i) => i.id === id);
   }
 
+  // Reports delivery issue by shipper or administrator
   reportIssue(orderId: string, payload: ReportIssuePayload, actor: UserProfile): DeliveryIssue {
     const order = this.findOrderById(orderId);
     if (!order) {
       throw new Error('Đơn hàng không tồn tại');
+    }
+
+    if (actor.role === 'Shipper') {
+      if (order.status !== 'DELIVERING') {
+        throw new Error('Nhân viên chỉ có thể báo sự cố khi đơn đang trên đường giao');
+      }
+      if (order.shipment?.shipperId !== actor.id) {
+        throw new Error('Bạn không được phân công đơn hàng này');
+      }
+      if (payload.issueType !== 'FAILED_DELIVERY' && payload.issueType !== 'DAMAGED') {
+        throw new Error('Nhân viên giao hàng chỉ được báo sự cố giao thất bại hoặc hư hỏng');
+      }
+    } else if (actor.role === 'Admin') {
+      if (payload.issueType !== 'LOST') {
+        throw new Error('Quản trị viên chỉ được xác nhận sự cố thất lạc');
+      }
     }
 
     const timestamp = new Date().toISOString();
@@ -367,7 +430,6 @@ export class AppStorage {
       resolved: false,
     };
 
-    // Update order status and shipment attempts
     const previousStatus = order.status;
     let nextStatus: OrderStatusCode = previousStatus;
 
@@ -400,10 +462,22 @@ export class AppStorage {
     return newIssue;
   }
 
+  // Resolves delivery issue by administrator enforcing prerequisites
   resolveIssue(issueId: string, payload: ResolveIssuePayload, actor: UserProfile): DeliveryIssue {
     const issue = this.findIssueById(issueId);
     if (!issue) {
       throw new Error('Sự cố không tồn tại');
+    }
+    if (issue.resolved) {
+      throw new Error('Sự cố đã được giải quyết trước đó, không thể xử lý lại');
+    }
+
+    const order = this.findOrderById(issue.orderId);
+    if (issue.issueType === 'FAILED_DELIVERY') {
+      const attempts = order?.shipment?.failedAttempts || 0;
+      if (attempts >= APP_CONFIG.DELIVERY_RULES.MAX_FAILED_DELIVERY_ATTEMPTS && order?.status !== 'RETURNING') {
+        throw new Error('Đơn hàng đã giao thất bại 3 lần phải được chuyển hoàn trước khi giải quyết sự cố');
+      }
     }
 
     const notes = (payload.resolutionNotes || payload.resolutionResult || '').trim();
@@ -423,7 +497,7 @@ export class AppStorage {
     return issue;
   }
 
-  // --- RETURNS ---
+  // Lists return requests with optional filtering
   listReturns(params?: { status?: ReturnStatusCode; customerId?: string }): ReturnRequest[] {
     let result = [...this.returns];
     if (params?.status) {
@@ -436,10 +510,12 @@ export class AppStorage {
     return result;
   }
 
+  // Finds return request by identifier
   findReturnById(id: string): ReturnRequest | undefined {
     return this.returns.find((r) => r.id === id);
   }
 
+  // Submits a return request enforcing return window and active limit
   submitReturn(payload: SubmitReturnPayload, customer: UserProfile): ReturnRequest {
     const order = this.findOrderById(payload.orderId);
     if (!order) {
@@ -452,7 +528,6 @@ export class AppStorage {
       throw new Error('Chỉ có thể yêu cầu trả hàng với đơn đã giao thành công');
     }
 
-    // Verify 15-day return window
     const deliveredDate = new Date(order.updatedAt || order.createdAt).getTime();
     const now = Date.now();
     const diffDays = (now - deliveredDate) / (1000 * 60 * 60 * 24);
@@ -460,12 +535,14 @@ export class AppStorage {
       throw new Error('Đơn hàng đã vượt quá thời hạn 15 ngày kể từ ngày giao');
     }
 
-    // Check for existing active return requests
-    const activeExisting = this.returns.find(
-      (r) => r.orderId === order.id && (r.status === 'PENDING_APPROVAL' || r.status === 'ACCEPTED')
-    );
-    if (activeExisting) {
-      throw new Error('Đơn hàng đã có yêu cầu hoàn trả đang được xử lý');
+    const existingReturn = this.returns.find((r) => r.orderId === order.id);
+    if (existingReturn) {
+      throw new Error('Đơn hàng đã từng tạo yêu cầu hoàn trả, không thể tạo thêm');
+    }
+
+    const notes = payload.notes?.trim();
+    if (payload.reason === 'OTHER' && !notes) {
+      throw new Error('Lý do khác yêu cầu phải nhập phần mô tả chi tiết');
     }
 
     const timestamp = new Date().toISOString();
@@ -481,7 +558,7 @@ export class AppStorage {
       customerId: customer.id,
       reason: payload.reason,
       status: 'PENDING_APPROVAL',
-      notes: payload.notes?.trim() || undefined,
+      notes: notes || undefined,
       createdAt: timestamp,
       updatedAt: timestamp,
     };
@@ -490,6 +567,7 @@ export class AppStorage {
     return newReturn;
   }
 
+  // Reviews return request approving or rejecting with mandatory reason
   reviewReturn(requestId: string, payload: ReviewReturnPayload, reviewer: UserProfile): ReturnRequest {
     const request = this.findReturnById(requestId);
     if (!request) {
@@ -500,33 +578,48 @@ export class AppStorage {
     }
 
     const timestamp = new Date().toISOString();
+    const order = this.findOrderById(request.orderId);
+
     if (payload.action === 'APPROVE') {
       request.status = 'ACCEPTED';
-      const order = this.findOrderById(request.orderId);
       if (order) {
         const previousStatus = order.status;
-        order.status = 'RETURNING';
-        order.updatedAt = timestamp;
-        order.history = order.history || [];
-        order.history.push({
-          id: `hist_${order.id}_${order.history.length + 1}`,
-          oldStatus: previousStatus,
-          newStatus: 'RETURNING',
-          changedBy: reviewer.id,
-          changedByName: reviewer.fullName,
-          changedAt: timestamp,
-          notes: 'Duyệt yêu cầu hoàn trả, chuyển sang trạng thái đang hoàn hàng',
-        });
+        let nextStatus: OrderStatusCode = previousStatus;
+        if (request.reason === 'DAMAGED_OR_DEFECTIVE') {
+          nextStatus = 'DAMAGED';
+        } else if (request.reason === 'ITEM_NOT_RECEIVED') {
+          nextStatus = 'LOST';
+        }
+
+        if (nextStatus !== previousStatus) {
+          order.status = nextStatus;
+          order.updatedAt = timestamp;
+          order.history = order.history || [];
+          order.history.push({
+            id: `hist_${order.id}_${order.history.length + 1}`,
+            oldStatus: previousStatus,
+            newStatus: nextStatus,
+            changedBy: reviewer.id,
+            changedByName: reviewer.fullName,
+            changedAt: timestamp,
+            notes: `Duyệt hoàn hàng lý do ${request.reason}, chuyển trạng thái sang ${nextStatus}`,
+          });
+        }
       }
     } else {
+      const reason = payload.rejectionReason?.trim();
+      if (!reason) {
+        throw new Error('Lý do từ chối yêu cầu hoàn hàng không được để trống');
+      }
       request.status = 'REJECTED';
-      request.rejectionReason = payload.rejectionReason?.trim() || 'Admin từ chối yêu cầu';
+      request.rejectionReason = reason;
     }
 
     request.updatedAt = timestamp;
     return request;
   }
 
+  // Completes return request workflow without altering order state
   completeReturn(requestId: string): ReturnRequest {
     const request = this.findReturnById(requestId);
     if (!request) {
@@ -539,27 +632,8 @@ export class AppStorage {
     const timestamp = new Date().toISOString();
     request.status = 'COMPLETED';
     request.updatedAt = timestamp;
-
-    const order = this.findOrderById(request.orderId);
-    if (order) {
-      const previousStatus = order.status;
-      order.status = 'RETURNED_TO_SELLER';
-      order.updatedAt = timestamp;
-      order.history = order.history || [];
-      order.history.push({
-        id: `hist_${order.id}_${order.history.length + 1}`,
-        oldStatus: previousStatus,
-        newStatus: 'RETURNED_TO_SELLER',
-        changedBy: 'system',
-        changedByName: 'Hệ thống',
-        changedAt: timestamp,
-        notes: 'Xác nhận người bán đã nhận lại kiện hàng',
-      });
-    }
-
     return request;
   }
 }
 
-// Global default storage instance
 export const defaultStorage = new AppStorage();

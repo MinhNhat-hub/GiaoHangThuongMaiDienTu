@@ -41,7 +41,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     expect(regData.data.user.role).toBe('Customer');
     expect(regData.data.token).toBeDefined();
 
-    // Login test
     const loginRes = await fetch(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -77,17 +76,27 @@ describe('backend api endpoints and lifecycle workflows', () => {
     expect(body.error.code).toBe('INVALID_CREDENTIALS');
   });
 
-  it('test_retrieves_product_catalog_with_preloaded_items', async () => {
-    const res = await fetch(`${baseUrl}/products`);
-    expect(res.status).toBe(200);
-    const body = await res.json();
-    expect(body.success).toBe(true);
-    expect(Array.isArray(body.data)).toBe(true);
-    expect(body.data.length).toBeGreaterThanOrEqual(2);
+  it('test_enforces_authentication_and_role_boundaries_on_protected_endpoints', async () => {
+    const unauthProducts = await fetch(`${baseUrl}/products`);
+    expect(unauthProducts.status).toBe(401);
+
+    const authProducts = await fetch(`${baseUrl}/products`, {
+      headers: { 'Authorization': 'Bearer token_usr_customer_1' },
+    });
+    expect(authProducts.status).toBe(200);
+
+    const customerAccessUsers = await fetch(`${baseUrl}/users`, {
+      headers: { 'Authorization': 'Bearer token_usr_customer_1' },
+    });
+    expect(customerAccessUsers.status).toBe(403);
+
+    const adminAccessUsers = await fetch(`${baseUrl}/users`, {
+      headers: { 'Authorization': 'Bearer token_usr_admin_1' },
+    });
+    expect(adminAccessUsers.status).toBe(200);
   });
 
   it('test_creates_order_and_handles_storage_failure_simulation', async () => {
-    // 1. Storage failure simulation
     const failRes = await fetch(`${baseUrl}/orders`, {
       method: 'POST',
       headers: {
@@ -108,7 +117,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     expect(failBody.success).toBe(false);
     expect(failBody.error.code).toBe('ORDER_STORAGE_FAILED');
 
-    // 2. Successful creation
     const successRes = await fetch(`${baseUrl}/orders`, {
       method: 'POST',
       headers: {
@@ -130,7 +138,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
   });
 
   it('test_executes_shipment_assignment_and_status_transitions', async () => {
-    // 1. Admin assigns shipper to ord_1
     const assignRes = await fetch(`${baseUrl}/shipments`, {
       method: 'POST',
       headers: {
@@ -148,7 +155,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     expect(assignBody.success).toBe(true);
     expect(assignBody.data.shipperId).toBe('shp_1');
 
-    // 2. Shipper retrieves assigned shipments
     const assignedRes = await fetch(`${baseUrl}/shipments/assigned`, {
       headers: {
         'Authorization': 'Bearer token_shp_1',
@@ -158,7 +164,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     const assignedBody = await assignedRes.json();
     expect(assignedBody.data.some((o: any) => o.id === 'ord_1')).toBe(true);
 
-    // 3. Shipper updates status to DELIVERING
     const statusRes = await fetch(`${baseUrl}/shipments/ord_1/status`, {
       method: 'PATCH',
       headers: {
@@ -175,7 +180,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     const statusBody = await statusRes.json();
     expect(statusBody.data.status).toBe('DELIVERING');
 
-    // 4. Shipper confirms delivery
     const deliveredRes = await fetch(`${baseUrl}/shipments/ord_1/status`, {
       method: 'PATCH',
       headers: {
@@ -193,48 +197,30 @@ describe('backend api endpoints and lifecycle workflows', () => {
     expect(deliveredBody.data.status).toBe('DELIVERED');
   });
 
-  it('test_executes_return_request_submission_and_admin_review', async () => {
-    // Customer submits return for delivered order ord_4
-    const submitRes = await fetch(`${baseUrl}/returns`, {
-      method: 'POST',
+  it('test_executes_return_review_and_maps_status_to_damaged', async () => {
+    const reviewRes = await fetch(`${baseUrl}/returns/ret_1/review`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer token_usr_customer_1',
+        'Authorization': 'Bearer token_usr_admin_1',
       },
       body: JSON.stringify({
-        orderId: 'ord_4',
-        reason: 'DAMAGED_OR_DEFECTIVE',
-        notes: 'Found a tear on the left sleeve',
+        action: 'APPROVE',
       }),
     });
 
-    // ord_4 already has ret_1 active in initial seed or created freshly
-    if (submitRes.status === 201) {
-      const returnData = await submitRes.json();
-      expect(returnData.data.status).toBe('PENDING_APPROVAL');
+    expect(reviewRes.status).toBe(200);
+    const reviewData = await reviewRes.json();
+    expect(reviewData.data.status).toBe('ACCEPTED');
 
-      // Admin reviews and approves
-      const reviewRes = await fetch(`${baseUrl}/returns/${returnData.data.id}/review`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer token_usr_admin_1',
-        },
-        body: JSON.stringify({
-          action: 'APPROVE',
-        }),
-      });
-
-      expect(reviewRes.status).toBe(200);
-      const reviewData = await reviewRes.json();
-      expect(reviewData.data.status).toBe('ACCEPTED');
-    } else {
-      expect(submitRes.status).toBe(400);
-    }
+    const orderRes = await fetch(`${baseUrl}/orders/ord_4`, {
+      headers: { 'Authorization': 'Bearer token_usr_admin_1' },
+    });
+    const orderData = await orderRes.json();
+    expect(orderData.data.status).toBe('DAMAGED');
   });
 
   it('test_executes_issue_reporting_and_admin_resolution', async () => {
-    // 1. Shipper reports failed delivery on ord_3
     const reportRes = await fetch(`${baseUrl}/issues`, {
       method: 'POST',
       headers: {
@@ -253,7 +239,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     expect(reportData.data.issueType).toBe('FAILED_DELIVERY');
     const issueId = reportData.data.id;
 
-    // 2. Admin resolves the issue
     const resolveRes = await fetch(`${baseUrl}/issues/${issueId}/resolve`, {
       method: 'PATCH',
       headers: {
@@ -272,7 +257,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
   });
 
   it('test_enforces_three_attempt_threshold_before_processing_return_to_seller', async () => {
-    // ord_6 has 1 failed attempt: processing return must be rejected with 409
     const earlyReturnRes = await fetch(`${baseUrl}/shipments/ord_6/return`, {
       method: 'POST',
       headers: {
@@ -284,7 +268,6 @@ describe('backend api endpoints and lifecycle workflows', () => {
     const earlyBody = await earlyReturnRes.json();
     expect(earlyBody.error.code).toBe('RETURN_THRESHOLD_NOT_REACHED');
 
-    // ord_8 has 3 failed attempts: processing return must succeed
     const validReturnRes = await fetch(`${baseUrl}/shipments/ord_8/return`, {
       method: 'POST',
       headers: {

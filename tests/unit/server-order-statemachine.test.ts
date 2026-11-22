@@ -53,11 +53,12 @@ describe('server order delivery state machine transitions', () => {
   });
 
   it('test_rejects_confirming_delivery_when_order_is_not_in_delivering_state', () => {
-    const order = storage.findOrderById('ord_1');
-    expect(order?.status).toBe('PENDING_CONFIRMATION');
+    const order = storage.findOrderById('ord_2');
+    expect(order?.status).toBe('WAITING_PICKUP');
+    expect(order?.shipment?.shipperId).toBe(shipperActor.id);
 
     expect(() => {
-      storage.updateShipmentStatus('ord_1', 'CONFIRM_DELIVERED', shipperActor);
+      storage.updateShipmentStatus('ord_2', 'CONFIRM_DELIVERED', shipperActor);
     }).toThrowError(/đang trong trạng thái giao/i);
   });
 

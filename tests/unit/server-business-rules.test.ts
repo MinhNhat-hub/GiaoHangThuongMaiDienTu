@@ -31,16 +31,11 @@ describe('server domain business rules and access validation', () => {
   });
 
   it('test_allows_return_submission_only_for_delivered_order_within_timeframe', () => {
-    // ord_4 is DELIVERED 2 days ago (< 15 days) and belongs to usr_customer_1
-    // First clear existing ret_1 for ord_4 so we test submission cleanly
     storage.reset();
-
-    // Re-check order ord_4
     const order = storage.findOrderById('ord_4');
     expect(order?.status).toBe('DELIVERED');
     expect(order?.customerId).toBe(validCustomer.id);
 
-    // Attempting return on order ord_1 (PENDING_CONFIRMATION) must fail
     expect(() => {
       storage.submitReturn(
         { orderId: 'ord_1', reason: 'DAMAGED_OR_DEFECTIVE' },
@@ -50,7 +45,6 @@ describe('server domain business rules and access validation', () => {
   });
 
   it('test_rejects_return_request_when_delivered_order_exceeds_window', () => {
-    // ord_5 is DELIVERED 20 days ago (> 15 days window)
     expect(() => {
       storage.submitReturn(
         { orderId: 'ord_5', reason: 'DAMAGED_OR_DEFECTIVE' },
@@ -60,7 +54,6 @@ describe('server domain business rules and access validation', () => {
   });
 
   it('test_blocks_customer_from_submitting_return_for_another_customers_order', () => {
-    // ord_4 belongs to usr_customer_1; usr_customer_2 cannot submit return
     expect(() => {
       storage.submitReturn(
         { orderId: 'ord_4', reason: 'ITEM_NOT_RECEIVED' },
@@ -70,30 +63,34 @@ describe('server domain business rules and access validation', () => {
   });
 
   it('test_prevents_duplicate_active_return_requests_for_same_order', () => {
-    // ord_4 already has ret_1 with status PENDING_APPROVAL in initial seed
     expect(() => {
       storage.submitReturn(
         { orderId: 'ord_4', reason: 'OTHER', notes: 'Second request' },
         validCustomer
       );
-    }).toThrowError(/đang được xử lý/i);
+    }).toThrowError(/đã từng tạo yêu cầu hoàn trả/i);
   });
 
-  it('test_approving_return_request_transitions_order_status_to_returning', () => {
+  it('test_approving_return_request_transitions_order_status_to_damaged_for_defect_reason', () => {
     const returnReq = storage.findReturnById('ret_1');
     expect(returnReq?.status).toBe('PENDING_APPROVAL');
+    expect(returnReq?.reason).toBe('DAMAGED_OR_DEFECTIVE');
 
     const approved = storage.reviewReturn('ret_1', { action: 'APPROVE' }, adminActor);
     expect(approved.status).toBe('ACCEPTED');
 
     const order = storage.findOrderById(returnReq!.orderId);
-    expect(order?.status).toBe('RETURNING');
+    expect(order?.status).toBe('DAMAGED');
   });
 
-  it('test_rejecting_return_request_records_reason_and_preserves_order_status', () => {
+  it('test_rejecting_return_request_requires_non_empty_reason_and_preserves_order_status', () => {
     const returnReq = storage.findReturnById('ret_1');
     const order = storage.findOrderById(returnReq!.orderId);
     const initialStatus = order?.status;
+
+    expect(() => {
+      storage.reviewReturn('ret_1', { action: 'REJECT', rejectionReason: '   ' }, adminActor);
+    }).toThrowError(/lý do từ chối/i);
 
     const rejected = storage.reviewReturn(
       'ret_1',

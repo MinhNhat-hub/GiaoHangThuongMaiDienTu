@@ -19,7 +19,6 @@ class SseEventManager {
     };
     this.clients.add(client);
 
-    // Initial connection comment to establish stream immediately
     res.write(': connected\n\n');
 
     res.on('close', () => {
@@ -39,7 +38,7 @@ class SseEventManager {
     return this.clients.size;
   }
 
-  // Dispatches an event to all connected clients that have permission to view it
+  // Dispatches an event to targeted user or broadcasts to administrators
   broadcast(eventName: string, payload: unknown, targetUserId?: string): void {
     const rawData = `event: ${eventName}\ndata: ${JSON.stringify(payload)}\n\n`;
 
@@ -49,7 +48,6 @@ class SseEventManager {
         continue;
       }
 
-      // If event is scoped to a specific customer or shipper, skip other non-admin users
       if (targetUserId && client.user) {
         if (client.user.role !== 'Admin' && client.user.id !== targetUserId) {
           continue;
@@ -64,13 +62,13 @@ class SseEventManager {
     }
   }
 
-  // Closes all client connections (used when resetting or stopping server)
+  // Closes all client connections
   closeAll(): void {
     for (const client of this.clients) {
       try {
         client.res.end();
       } catch {
-        // Ignore close errors
+        void 0;
       }
     }
     this.clients.clear();

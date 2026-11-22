@@ -37,20 +37,16 @@ describe('system test execution for return management (RET) and exception handli
     storage = new AppStorage();
   });
 
-  // --- MODULE RET (Return Management) ---
   describe('module RET - return management workflow test cases', () => {
     it('test_ret_verifies_return_eligibility_across_order_lifecycle_statuses', () => {
-      // 1. Delivered order within return window: eligible
       const deliveredOrder = storage.findOrderById('ord_4');
       expect(deliveredOrder?.status).toBe('DELIVERED');
 
-      // 2. Delivering order: not eligible
       const deliveringOrder = storage.findOrderById('ord_3');
       expect(() => {
         storage.submitReturn({ orderId: deliveringOrder!.id, reason: 'DAMAGED_OR_DEFECTIVE' }, customerB);
       }).toThrowError(/đã giao thành công/i);
 
-      // 3. Pending confirmation order: not eligible
       const pendingOrder = storage.findOrderById('ord_1');
       expect(() => {
         storage.submitReturn({ orderId: pendingOrder!.id, reason: 'DAMAGED_OR_DEFECTIVE' }, customerA);
@@ -58,13 +54,11 @@ describe('system test execution for return management (RET) and exception handli
     });
 
     it('test_ret_enforces_fifteen_day_return_window_boundary_rules', () => {
-      // Delivered order delivered 2 days ago: valid
       const recentOrder = storage.findOrderById('ord_4');
       const deliveredDate = new Date(recentOrder?.updatedAt || recentOrder?.createdAt || '').getTime();
       const daysSince = (Date.now() - deliveredDate) / (1000 * 60 * 60 * 24);
       expect(daysSince).toBeLessThan(15);
 
-      // Delivered order delivered 20 days ago: rejected
       const expiredOrder = storage.findOrderById('ord_5');
       expect(() => {
         storage.submitReturn({ orderId: expiredOrder!.id, reason: 'DAMAGED_OR_DEFECTIVE' }, customerA);
@@ -72,28 +66,24 @@ describe('system test execution for return management (RET) and exception handli
     });
 
     it('test_ret_enforces_strict_customer_ownership_for_return_requests', () => {
-      // Customer B cannot submit return for Customer A's order ord_4
       expect(() => {
         storage.submitReturn({ orderId: 'ord_4', reason: 'DAMAGED_OR_DEFECTIVE' }, customerB);
       }).toThrowError(/không có quyền/i);
     });
 
-    it('test_ret_enforces_single_active_return_request_per_order', () => {
-      // ord_4 already has ret_1 active with PENDING_APPROVAL
+    it('test_ret_enforces_single_return_request_per_order_lifetime', () => {
       expect(() => {
         storage.submitReturn({ orderId: 'ord_4', reason: 'OTHER', notes: 'Duplicate try' }, customerA);
-      }).toThrowError(/đang được xử lý/i);
+      }).toThrowError(/đã từng tạo yêu cầu hoàn trả/i);
     });
 
-    it('test_ret_executes_admin_approval_and_rejection_state_transformations', () => {
-      // Review return approval
+    it('test_ret_executes_admin_approval_mapping_to_damaged_or_lost_states', () => {
       const approved = storage.reviewReturn('ret_1', { action: 'APPROVE' }, adminA);
       expect(approved.status).toBe('ACCEPTED');
 
       const associatedOrder = storage.findOrderById(approved.orderId);
-      expect(associatedOrder?.status).toBe('RETURNING');
+      expect(associatedOrder?.status).toBe('DAMAGED');
 
-      // Review return rejection
       storage.reset();
       const rejected = storage.reviewReturn(
         'ret_1',
@@ -104,34 +94,38 @@ describe('system test execution for return management (RET) and exception handli
       expect(rejected.rejectionReason).toContain('không còn nguyên tem mác');
     });
 
-    it('test_ret_completes_return_workflow_when_warehouse_receives_goods', () => {
-      // ret_2 is ACCEPTED
+    it('test_ret_completes_return_workflow_without_altering_order_status', () => {
+      const initialOrderStatus = storage.findOrderById('ord_10')?.status;
       const completed = storage.completeReturn('ret_2');
       expect(completed.status).toBe('COMPLETED');
 
       const completedOrder = storage.findOrderById(completed.orderId);
-      expect(completedOrder?.status).toBe('RETURNED_TO_SELLER');
+      expect(completedOrder?.status).toBe(initialOrderStatus);
     });
   });
 
-  // --- MODULE ISS (Exception & Issues Management) ---
   describe('module ISS - delivery exceptions and issue handling test cases', () => {
     it('test_iss_tracks_incremental_failed_delivery_attempts_accurately', () => {
       const order = storage.findOrderById('ord_3');
       expect(order?.shipment?.failedAttempts).toBe(0);
 
-      // Attempt 1
       storage.reportIssue('ord_3', { issueType: 'FAILED_DELIVERY', notes: 'First call no answer' }, shipperA);
       expect(order?.shipment?.failedAttempts).toBe(1);
       expect(order?.status).toBe('FAILED_DELIVERY');
 
-      // Attempt 2
+      storage.updateShipmentStatus('ord_3', 'START_DELIVERY', shipperA);
+      expect(order?.status).toBe('DELIVERING');
+
       storage.reportIssue('ord_3', { issueType: 'FAILED_DELIVERY', notes: 'Second call busy' }, shipperA);
       expect(order?.shipment?.failedAttempts).toBe(2);
+      expect(order?.status).toBe('FAILED_DELIVERY');
 
-      // Attempt 3
+      storage.updateShipmentStatus('ord_3', 'START_DELIVERY', shipperA);
+      expect(order?.status).toBe('DELIVERING');
+
       storage.reportIssue('ord_3', { issueType: 'FAILED_DELIVERY', notes: 'Third call rejected' }, shipperA);
       expect(order?.shipment?.failedAttempts).toBe(3);
+      expect(order?.status).toBe('FAILED_DELIVERY');
     });
 
     it('test_iss_records_damaged_and_lost_incidents_with_status_transitions', () => {
@@ -149,30 +143,25 @@ describe('system test execution for return management (RET) and exception handli
     });
 
     it('test_iss_enforces_three_attempt_rule_before_return_shipment_is_permitted', () => {
-      // ord_6 has 1 failed attempt: not permitted to return
       const order1 = storage.findOrderById('ord_6');
       expect(order1?.shipment?.failedAttempts).toBe(1);
 
-      // ord_8 has 3 failed attempts: permitted to transition to RETURNING
       const order3 = storage.findOrderById('ord_8');
       expect(order3?.shipment?.failedAttempts).toBe(3);
       expect(order3?.status).toBe('FAILED_DELIVERY');
     });
 
-    it('test_iss_resolves_issue_and_records_admin_audit_trail', () => {
-      const issue = storage.findIssueById('iss_2');
-      expect(issue?.resolved).toBe(false);
+    it('test_iss_blocks_resolving_already_resolved_issue', () => {
+      const issue = storage.findIssueById('iss_3');
+      expect(issue?.resolved).toBe(true);
 
-      const resolved = storage.resolveIssue(
-        'iss_2',
-        { resolutionNotes: 'Đã lập biên bản hủy đơn và chuyển hoàn cho người bán' },
-        adminA
-      );
-
-      expect(resolved.resolved).toBe(true);
-      expect(resolved.resolvedBy).toBe(adminA.id);
-      expect(resolved.resolvedAt).toBeDefined();
-      expect(resolved.resolutionNotes).toContain('chuyển hoàn');
+      expect(() => {
+        storage.resolveIssue(
+          'iss_3',
+          { resolutionNotes: 'Cố tình giải quyết lại sự cố đã xong' },
+          adminA
+        );
+      }).toThrowError(/đã được giải quyết/i);
     });
   });
 });
