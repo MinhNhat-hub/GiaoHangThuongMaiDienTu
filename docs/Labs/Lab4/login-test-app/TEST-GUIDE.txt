@@ -1,0 +1,129 @@
+HƯỚNG DẪN TỰ TEST MÀN HÌNH ĐĂNG NHẬP
+Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử (GiaoHangThuongMaiDienTu)
+Giao diện: bản build của commit ae6fe95 (nhánh main), không sửa code.
+
+======================================================================
+1. CHẠY ỨNG DỤNG
+======================================================================
+Cần: máy đã cài Node.js 18 trở lên (kiểm bằng lệnh: node -v; nếu chưa có thì cài bản LTS
+tại nodejs.org). Không cần npm install, không cần mạng.
+
+1. Mở thư mục login-test-app (trong repo: docs/Labs/Lab4/login-test-app).
+2. Bấm đúp start.bat (Windows).
+   Nếu Windows hiện "Windows protected your PC", bấm "More info" -> "Run anyway".
+   Lần đầu Windows có thể hỏi tường lửa cho node.exe: chọn "Cancel"/không cho phép vẫn test
+   được, vì server chỉ mở cho chính máy này.
+   Nếu chưa cài Node.js, start.bat báo "Node.js was not found".
+3. Cửa sổ đen hiện địa chỉ, ví dụ http://localhost:4173, và trình duyệt tự mở trang đăng nhập.
+   Nếu trình duyệt không tự mở, tự gõ địa chỉ trong cửa sổ đen vào Chrome.
+4. Dừng: đóng cửa sổ đen (hoặc bấm Ctrl+C trong cửa sổ đó).
+Máy Mac/Linux: không dùng start.bat; chạy lệnh "node server/server.mjs" trong thư mục này.
+
+Cửa sổ đen ghi lại mỗi lần đăng nhập: "Login OK" (thành công) hoặc "Login FAILED" (thất bại),
+email và số ký tự mật khẩu server nhận được, ví dụ "password 64 chars" (không ghi mật khẩu).
+Dùng để kiểm TC-ACC-041.
+
+Lưu ý quan trọng:
+- Mật khẩu trong gói là mật khẩu của tài khoản test, chỉ dùng cho server giả chạy trên máy,
+  không phải mật khẩu thật.
+- Repo chưa có backend. Phần server trong gói này là server giả, làm theo đặc tả API của repo,
+  chỉ có phần đăng nhập. Sau khi đăng nhập, trang của từng vai trò mở được nhưng danh sách trống,
+  các thao tác khác (tạo đơn, hoàn hàng...) sẽ báo lỗi. Kết quả test chỉ nói về giao diện.
+- Trình duyệt nên dùng: Google Chrome cho máy tính (OE-2).
+- Không có mạng thì phông chữ hiển thị khác (phông lấy từ Google Fonts), chức năng không đổi.
+
+======================================================================
+2. TÀI KHOẢN TEST (sửa trong server\accounts.json nếu cần)
+======================================================================
+Vai trò    Tên          Email                      Mật khẩu
+Customer   Customer A   khach.moi01@example.com    Abcd1234
+Customer   Customer B   khach.moi02@example.com    aaaa...a (chữ a lặp lại 64 lần)
+Customer   An           an@gmail.com               Abcd1234
+Admin      Admin 1      admin1@example.com         Admin1Test!
+Shipper    Shipper A    shipper.a@example.com      ShipperATest!
+
+Mật khẩu 64 chữ a (chép nguyên dòng dưới):
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+======================================================================
+3. TRƯỚC MỖI TC: ĐƯA VỀ "NGƯỜI DÙNG CHƯA ĐĂNG NHẬP"
+======================================================================
+- Đang đăng nhập thì bấm nút Đăng xuất trên đầu trang.
+- Hoặc mở cửa sổ ẩn danh mới (Ctrl+Shift+N) cho mỗi TC.
+Trang đăng nhập ở địa chỉ gốc (ví dụ http://localhost:4173/) khi chưa đăng nhập.
+
+Vai trò sau khi đăng nhập xem ở địa chỉ trang:
+- Customer -> trang chủ "/" (có nút tạo đơn)
+- Admin    -> "/admin" (Bảng điều khiển)
+- Shipper  -> "/shipper" (danh sách giao hàng)
+
+======================================================================
+4. CÁC TEST CASE (TC-ACC-040 đến TC-ACC-050, sheet Module2 của System Test Case.xls)
+======================================================================
+Ghi kết quả Pass/Fail vào cột Result của file System Test Case.xls.
+
+--- Account.Login.Credentials: đăng nhập bằng email và mật khẩu đúng ---
+
+TC-ACC-040  Customer A đăng nhập bằng email và mật khẩu đúng
+  Bước: Email khach.moi01@example.com, mật khẩu Abcd1234, bấm Đăng nhập.
+  Mong đợi: Vào được với vai trò Customer (sang trang chủ Customer).
+
+TC-ACC-041  Customer B đăng nhập, mật khẩu ở độ dài tối đa (64 ký tự)
+  Bước: Email khach.moi02@example.com, mật khẩu 64 chữ a, bấm Đăng nhập.
+  Mong đợi: Vào được với vai trò Customer; mật khẩu không bị cắt bớt
+            (cửa sổ đen ghi "password 64 chars").
+
+TC-ACC-042  Customer A đăng nhập bằng email viết toàn chữ hoa
+  Bước: Email KHACH.MOI01@EXAMPLE.COM, mật khẩu Abcd1234, bấm Đăng nhập.
+  Mong đợi: Vào được, vì email so khớp không phân biệt chữ hoa, chữ thường.
+
+TC-ACC-043  Đăng nhập bằng email có khoảng trắng hai đầu và có chữ hoa
+  Bước: Email "  An@Gmail.com " (2 dấu cách ở đầu, 1 dấu cách ở cuối), mật khẩu Abcd1234.
+  Mong đợi: Vào được, vì email được bỏ khoảng trắng hai đầu và không phân biệt hoa thường.
+
+TC-ACC-044  Admin 1 đăng nhập
+  Bước: Email admin1@example.com, mật khẩu Admin1Test!, bấm Đăng nhập.
+  Mong đợi: Vào được với vai trò Admin (sang /admin).
+
+TC-ACC-045  Shipper A đăng nhập
+  Bước: Email shipper.a@example.com, mật khẩu ShipperATest!, bấm Đăng nhập.
+  Mong đợi: Vào được với vai trò Shipper (sang /shipper).
+
+--- Account.Login.Fail: đăng nhập không thành công ---
+
+TC-ACC-046  Email chưa có tài khoản, mật khẩu bất kỳ
+  Bước: Email khong.ton.tai@example.com, mật khẩu Matkhau123, bấm Đăng nhập.
+  Mong đợi: Báo đăng nhập không thành công bằng thông báo chung (SEC-11);
+            vẫn ở màn hình đăng nhập, chưa đăng nhập.
+
+TC-ACC-047  Email đúng của Customer A, mật khẩu sai
+  Bước: Email khach.moi01@example.com, mật khẩu Sai12345, bấm Đăng nhập.
+  Mong đợi: Như TC-ACC-046.
+
+TC-ACC-048  Email sai, mật khẩu đúng của Customer A
+  Bước: Email khong.ton.tai@example.com, mật khẩu Abcd1234, bấm Đăng nhập.
+  Mong đợi: Như TC-ACC-046.
+
+TC-ACC-049  So sánh thông báo của 3 lần đăng nhập thất bại
+  Bước: Lần 1: khong.ton.tai@example.com / Matkhau123. Ghi lại nguyên văn thông báo.
+        Lần 2: khach.moi01@example.com / Sai12345. Ghi lại nguyên văn thông báo.
+        Lần 3: khong.ton.tai@example.com / Sai12345. Ghi lại nguyên văn thông báo.
+        So sánh 3 thông báo từng chữ.
+  Mong đợi: 3 thông báo giống nhau từng chữ; không thông báo nào cho biết sai email
+            hay sai mật khẩu, hay tài khoản có tồn tại hay không (SEC-11).
+  Ghi chú: lần chạy 20/11/2026 ra Fail (Defect ID 1): dòng "Email hoặc mật khẩu không đúng."
+           giống nhau, nhưng dòng "Mã truy vết" khác nhau mỗi lần.
+
+TC-ACC-050  Sau khi đăng nhập thất bại, mở thẳng màn hình cần đăng nhập
+  Bước: Đăng nhập khong.ton.tai@example.com / Matkhau123 (thất bại).
+        Gõ thẳng vào thanh địa chỉ: http://localhost:4173/orders (đổi số cổng nếu khác).
+  Mong đợi: Không vào được màn hình danh sách đơn hàng; hệ thống yêu cầu đăng nhập (SEC-1).
+
+======================================================================
+5. NỘI DUNG GÓI
+======================================================================
+start.bat               Chạy server và mở trình duyệt (cần Node.js đã cài)
+app\                    Giao diện đã build từ commit ae6fe95 (không sửa)
+server\server.mjs       Server test: phục vụ giao diện + API đăng nhập giả
+server\accounts.json    Tài khoản test
+TEST-GUIDE.txt          File này
