@@ -1,19 +1,20 @@
 LAB 3: AUTOMATION TEST VỚI VITEST
 Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử (GiaoHangThuongMaiDienTu) - Nhóm 10
 
-Công cụ: Vitest 2.1.9, công cụ unit test nhóm đã chọn (khai báo trong package.json của repo,
+Công cụ: Vitest 2.1.9, công cụ unit test nhóm đã chọn (khai báo trong package.json của ứng dụng,
 lệnh "npm test" = "vitest run"). Đề Lab3 gốc dùng NUnit cho C#; ứng dụng của nhóm viết bằng
 TypeScript nên dùng Vitest.
 
-Nguồn test case: docs/Labs/Lab2/lab2-team10.xls (cùng nội dung Unit Test Case.xls của Lab4),
+Nguồn test case: Unit Test Case của Lab2 (lab2-team10.xls, cùng nội dung Unit Test Case.xls của Lab4),
 2 đơn vị, 10 UTCID.
-Code được test: hàm validateRegisterInput trong src/utils/validation.ts, commit ae6fe95 (main).
+Code được test: hàm validateRegisterInput trong src/utils/validation.ts, ứng dụng phiên bản 1.0.0
+(bản ngày 20/11/2026).
 
 ======================================================================
 1. CÁC BƯỚC CỦA ĐỀ LAB3 VÀ CÁCH LÀM
 ======================================================================
 1. Install an automation test tool
-   -> Vitest đã có trong devDependencies của repo; "npm ci" cài vào máy.
+   -> Vitest đã có trong devDependencies của ứng dụng; "npm ci" cài vào máy.
 2. Review all unit test cases
    -> lab2-team10.xls (Lab2): Function6 EmailFormat (UTCID01-05),
       Function8 PasswordLength (UTCID01-05).
@@ -42,22 +43,17 @@ Code được test: hàm validateRegisterInput trong src/utils/validation.ts, co
     UTCID05  "Ab 1#x!y"         -> hợp lệ
 
 ======================================================================
-2. TỰ CHẠY LẠI (PowerShell, cần Node.js 18+ và git, có mạng để npm ci)
+2. TỰ CHẠY LẠI (PowerShell, cần Node.js 18+, có mạng để npm ci)
 ======================================================================
-Làm trong một thư mục riêng để không đụng nhánh đang làm. Từ thư mục chứa repo:
+Mở thư mục mã nguồn ứng dụng phiên bản 1.0.0 (thư mục có file package.json) và cài thư viện:
 
-  cd <đường dẫn>\GiaoHangThuongMaiDienTu
-  git fetch origin
-  git worktree add ..\lab3-run ae6fe95
-  cd ..\lab3-run
+  cd <thư mục mã nguồn ứng dụng>
   npm ci
 
-Chép 2 file test vào chỗ Vitest của repo tự tìm (tests/unit/):
+Chép 2 file test vào chỗ Vitest của ứng dụng tự tìm (tests/unit/):
 
   New-Item -ItemType Directory -Force tests\unit\lab3
-  Copy-Item docs\Labs\Lab3\tests\*.test.ts tests\unit\lab3\
-
-(Nếu nhánh ae6fe95 chưa có thư mục docs\Labs\Lab3\tests, chép từ bản repo mới nhất hoặc từ file đã tải về.)
+  Copy-Item <thư mục Lab3>\tests\*.test.ts tests\unit\lab3\
 
 Chạy test, xem từng UTCID:
 
@@ -70,17 +66,16 @@ Tạo lại báo cáo HTML (cần gói @vitest/ui cùng phiên bản với Vites
   npm i -D --no-save @vitest/ui@2.1.9
   npx vitest run tests/unit/lab3 --reporter=verbose --reporter=html --outputFile.html=lab3-report/index.html
 
-Dọn dẹp khi xong:
+Dọn dẹp khi xong (xoá các file đã chép và báo cáo vừa tạo trong thư mục mã nguồn):
 
-  cd ..\GiaoHangThuongMaiDienTu
-  git worktree remove --force ..\lab3-run
+  Remove-Item -Recurse -Force tests\unit\lab3, lab3-report -ErrorAction SilentlyContinue
 
 ======================================================================
 3. XEM BÁO CÁO HTML
 ======================================================================
 Bấm đúp index.html sẽ thấy trang trống, vì báo cáo phải mở qua một server web. Cách mở:
 
-- Trong thư mục lab3-run ở trên:  npx vite preview --outDir <thư mục html-report>
+- Trong thư mục mã nguồn ứng dụng ở trên:  npx vite preview --outDir <thư mục html-report>
   rồi mở địa chỉ hiện ra (ví dụ http://localhost:4173).
 - Hoặc nếu máy có Python:  cd results\html-report  rồi  python -m http.server 8000
   và mở http://localhost:8000.

@@ -1,10 +1,10 @@
 Lab 3 - Automation test with Vitest
-Tool: Vitest 2.1.9 (environment jsdom, repo vitest.config.ts)
-Code: GiaoHangThuongMaiDienTu, commit ae6fe95 (main)
+Tool: Vitest 2.1.9 (environment jsdom, vitest.config.ts of the app)
+Code: GiaoHangThuongMaiDienTu, version 1.0.0 (build of 20/11/2026)
 Command: npx vitest run tests/unit/lab3 --reporter=verbose
 ----------------------------------------------------------------------
 
- RUN  v2.1.9 <repo>
+ RUN  v2.1.9 <app source folder>
 
  ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID01: 8 characters is valid
  ✓ tests/unit/lab3/password-length.test.ts > Function8 PasswordLength > UTCID02: 64 characters is valid
