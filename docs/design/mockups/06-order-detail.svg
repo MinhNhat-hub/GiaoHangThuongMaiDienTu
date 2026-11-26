@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 660" width="1120" height="660" font-family="Manrope, Segoe UI, Arial, sans-serif">
+  <rect width="1120" height="660" fill="#F3FAF5"/>
+  <rect x="0" y="0" width="1120" height="64" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="32" y="38" fill="#0D3B2E" font-size="16" font-weight="700">GHC Delivery</text>
+  <text x="220" y="36" fill="#0D3B2E" font-size="12" font-weight="600">Đơn hàng</text>
+  <text x="308" y="36" fill="#0D3B2E" font-size="12" font-weight="600">Hoàn hàng</text>
+
+  <rect x="32" y="84" width="1056" height="92" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="122" fill="#0D3B2E" font-size="22" font-weight="700">Chi tiết đơn hàng</text>
+  <text x="56" y="150" fill="#6B8679" font-size="13">Mã đơn: <tspan fill="#0D3B2E" font-weight="700">DH-2026-002</tspan>   |   Ngày tạo: 10/11/2026 14:20</text>
+  <rect x="740" y="108" width="96" height="28" rx="6" fill="#28C76F"/>
+  <text x="788" y="126" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">Đã giao</text>
+  <rect x="856" y="102" width="204" height="40" rx="10" fill="#0D3B2E"/>
+  <text x="958" y="127" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">Yêu cầu hoàn hàng</text>
+
+  <rect x="32" y="192" width="180" height="36" rx="10" fill="#28C76F"/>
+  <text x="122" y="215" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">Chi tiết đơn hàng</text>
+  <rect x="224" y="192" width="180" height="36" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.3"/>
+  <text x="314" y="215" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">Theo dõi vận chuyển</text>
+
+  <rect x="32" y="244" width="516" height="360" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="280" fill="#0D3B2E" font-size="15" font-weight="700">Thông tin người nhận &amp; sản phẩm</text>
+  <text x="56" y="314" fill="#0D3B2E" font-size="13">Người nhận: Lê Văn C</text>
+  <text x="56" y="340" fill="#0D3B2E" font-size="13">Số điện thoại: 0909876543</text>
+  <text x="56" y="366" fill="#0D3B2E" font-size="13">Địa chỉ giao: 45 Nguyễn Huệ, Quận 1, TP.HCM</text>
+  <line x1="56" y1="390" x2="524" y2="390" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="422" fill="#0D3B2E" font-size="13" font-weight="600">Danh sách sản phẩm (không hiển thị giá/tiền):</text>
+  <text x="56" y="452" fill="#0D3B2E" font-size="13">• Bàn phím cơ — Số lượng: 1</text>
+  <text x="56" y="478" fill="#0D3B2E" font-size="13">• Chuột không dây — Số lượng: 2</text>
+
+  <rect x="572" y="244" width="516" height="360" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="596" y="280" fill="#0D3B2E" font-size="15" font-weight="700">Lịch sử trạng thái (từ cũ đến mới, chỉ đọc)</text>
+  <line x1="612" y1="308" x2="612" y2="560" stroke="#6B8679" stroke-opacity="0.3" stroke-width="2"/>
+  <circle cx="612" cy="322" r="5" fill="#28C76F"/>
+  <text x="632" y="326" fill="#0D3B2E" font-size="13" font-weight="700">Chờ xác nhận</text>
+  <text x="952" y="326" fill="#6B8679" font-size="11">10/11/2026 14:20</text>
+  <circle cx="612" cy="396" r="5" fill="#28C76F"/>
+  <text x="632" y="400" fill="#0D3B2E" font-size="13" font-weight="700">Chờ xác nhận → Chờ lấy hàng</text>
+  <text x="952" y="400" fill="#6B8679" font-size="11">10/11/2026 15:00</text>
+  <circle cx="612" cy="470" r="5" fill="#28C76F"/>
+  <text x="632" y="474" fill="#0D3B2E" font-size="13" font-weight="700">Chờ lấy hàng → Đang giao</text>
+  <text x="952" y="474" fill="#6B8679" font-size="11">11/11/2026 08:30</text>
+  <circle cx="612" cy="544" r="5" fill="#28C76F"/>
+  <text x="632" y="548" fill="#0D3B2E" font-size="13" font-weight="700">Đang giao → Đã giao</text>
+  <text x="952" y="548" fill="#6B8679" font-size="11">11/11/2026 11:15</text>
+
+  <text x="560" y="636" text-anchor="middle" fill="#6B8679" font-size="11">Mockup A13 — Chi tiết đơn hàng (/orders/:id)</text>
+</svg>
