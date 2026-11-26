@@ -147,7 +147,16 @@ export const OrderDetailPage: React.FC = () => {
     setError(null);
     setSubmittingAction(true);
     try {
-      await apiClient.confirmReturnReceived(order.shipment?.id ?? order.id);
+      const cachedShipmentId = order.shipment?.id?.trim();
+      const shipmentId =
+        cachedShipmentId || (await apiClient.getOrderDetail(order.id)).shipment?.id?.trim();
+      if (!shipmentId) {
+        setError({
+          message: 'Đơn hàng chưa có thông tin vận đơn nên không thể xác nhận đã nhận lại hàng hoàn.',
+        });
+        return;
+      }
+      await apiClient.confirmReturnReceived(shipmentId);
       await loadOrder();
     } catch (err) {
       if (err instanceof ApiClientError) {

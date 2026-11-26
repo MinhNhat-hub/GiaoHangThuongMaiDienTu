@@ -18,6 +18,7 @@ import { getOrderCode, rememberOrder } from '@/utils/order';
 export const ShipmentTrackingPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [searchCode, setSearchCode] = useState('');
+  const [activeTrackingCode, setActiveTrackingCode] = useState<string | null>(null);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<{ message: string; code?: string; traceId?: string } | null>(
@@ -46,7 +47,27 @@ export const ShipmentTrackingPage: React.FC = () => {
     }
   }, [id]);
 
+  const loadByTrackingCode = useCallback(async (code: string) => {
+    setError(null);
+    setLoading(true);
+    try {
+      const found = await apiClient.trackShipment(code);
+      rememberOrder(found);
+      setOrder(found);
+      setActiveTrackingCode(code);
+    } catch (err) {
+      if (err instanceof ApiClientError) {
+        setError({ message: err.message, code: err.code, traceId: err.traceId });
+      } else {
+        setError({ message: 'Không tìm thấy vận đơn tương ứng.' });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
+    setActiveTrackingCode(null);
     void loadOrder();
   }, [loadOrder]);
 
@@ -89,14 +110,18 @@ export const ShipmentTrackingPage: React.FC = () => {
     });
 
     const unsubscribeReconnect = realtimeClient.subscribe('realtime:reconnected', () => {
-      void loadOrder();
+      if (activeTrackingCode) {
+        void loadByTrackingCode(activeTrackingCode);
+      } else {
+        void loadOrder();
+      }
     });
 
     return () => {
       unsubscribeStatus();
       unsubscribeReconnect();
     };
-  }, [loadOrder]);
+  }, [activeTrackingCode, loadByTrackingCode, loadOrder]);
 
   const handleTrackingSearch = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -104,21 +129,7 @@ export const ShipmentTrackingPage: React.FC = () => {
     if (!trimmed) {
       return;
     }
-    setError(null);
-    setLoading(true);
-    try {
-      const found = await apiClient.trackShipment(trimmed);
-      rememberOrder(found);
-      setOrder(found);
-    } catch (err) {
-      if (err instanceof ApiClientError) {
-        setError({ message: err.message, code: err.code, traceId: err.traceId });
-      } else {
-        setError({ message: 'Không tìm thấy vận đơn tương ứng.' });
-      }
-    } finally {
-      setLoading(false);
-    }
+    await loadByTrackingCode(trimmed);
   };
 
   return (

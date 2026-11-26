@@ -193,7 +193,17 @@ export const ShipperDeliveryPage: React.FC = () => {
     setConfirmLoading(true);
     try {
       if (pendingConfirm.type === 'status') {
-        const shipmentId = pendingConfirm.order.shipment?.id ?? pendingConfirm.order.id;
+        const cachedShipmentId = pendingConfirm.order.shipment?.id?.trim();
+        const shipmentId =
+          cachedShipmentId ||
+          (await apiClient.getOrderDetail(pendingConfirm.order.id)).shipment?.id?.trim();
+        if (!shipmentId) {
+          setPendingConfirm(null);
+          setError({
+            message: 'Đơn hàng chưa có thông tin vận đơn để cập nhật trạng thái giao hàng.',
+          });
+          return;
+        }
         await apiClient.updateShipmentStatus(shipmentId, {
           action: pendingConfirm.action,
         });

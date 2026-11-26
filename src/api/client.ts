@@ -1,5 +1,6 @@
 import { APP_CONFIG } from '@/constants/config';
 import { MESSAGES } from '@/constants/messages';
+import { normalizeOrderStatus, normalizeReturnStatus } from '@/constants/status-map';
 import type {
   ApiResponse,
   AuthResponse,
@@ -57,6 +58,30 @@ function notifyAuthChange(): void {
   }
 }
 
+// Normalizes order and history status codes returned by the backend.
+function normalizeOrder(order: Order): Order {
+  return {
+    ...order,
+    status: normalizeOrderStatus(order.status),
+    history: order.history?.map((entry) => ({
+      ...entry,
+      oldStatus: entry.oldStatus ? normalizeOrderStatus(entry.oldStatus) : null,
+      newStatus: normalizeOrderStatus(entry.newStatus),
+    })),
+  };
+}
+
+// Normalizes return request status codes and timestamp fields returned by the backend.
+function normalizeReturnRequest(
+  request: ReturnRequest & { submittedAt?: string }
+): ReturnRequest {
+  return {
+    ...request,
+    status: normalizeReturnStatus(request.status),
+    createdAt: request.createdAt ?? request.submittedAt ?? '',
+  };
+}
+
 // Executes a JSON request against the backend API with auth token propagation.
 async function executeRequest<T>(
   endpoint: string,
@@ -66,7 +91,9 @@ async function executeRequest<T>(
   const outgoingTraceId = generateTraceId();
 
   const headers = new Headers(options.headers || {});
-  headers.set('Content-Type', 'application/json');
+  if (options.body !== undefined && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
   headers.set('Accept', 'application/json');
   headers.set('X-Trace-Id', outgoingTraceId);
 
@@ -172,6 +199,7 @@ export const apiClient = {
     try {
       const res = await executeRequest<AuthResponse>('/auth/login', {
         method: 'POST',
+        credentials: 'include',
         body: JSON.stringify({
           email: normalizedEmail,
           password: payload.password,
@@ -199,7 +227,10 @@ export const apiClient = {
 
   // Signs out on the server, ignores request failures, and always clears the local session.
   async logout(): Promise<void> {
-    await executeRequest<void>('/auth/logout', { method: 'POST' }).catch(() => undefined);
+    await executeRequest<void>('/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    }).catch(() => undefined);
     this.clearToken();
   },
 
@@ -221,7 +252,7 @@ export const apiClient = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    return res.data;
+    return normalizeOrder(res.data);
   },
 
   async listOrders(params?: { status?: string; page?: number; limit?: number }): Promise<Order[]> {
@@ -232,12 +263,12 @@ export const apiClient = {
 
     const endpoint = `/orders${query.toString() ? '?' + query.toString() : ''}`;
     const res = await executeRequest<Order[]>(endpoint);
-    return res.data;
+    return res.data.map(normalizeOrder);
   },
 
   async getOrderDetail(orderId: string): Promise<Order> {
-    const res = await executeRequest<Order>(`/orders/${orderId}`);
-    return res.data;
+    const res = await executeRequest<Order>(`/orders/${encodeURIComponent(orderId)}`);
+    return normalizeOrder(res.data);
   },
 
   async createShipment(payload: CreateShipmentPayload): Promise<ShipmentSummary> {
@@ -250,34 +281,39 @@ export const apiClient = {
 
   async listAssignedShipments(): Promise<Order[]> {
     const res = await executeRequest<Order[]>('/shipments/assigned');
-    return res.data;
+    return res.data.map(normalizeOrder);
   },
 
   async updateShipmentStatus(shipmentId: string, payload: UpdateShipmentStatusPayload): Promise<Order> {
-    const res = await executeRequest<Order>(`/shipments/${shipmentId}/status`, {
+    const res = await executeRequest<Order>(`/shipments/${encodeURIComponent(shipmentId)}/status`, {
       method: 'PATCH',
       body: JSON.stringify(payload),
     });
-    return res.data;
+    return normalizeOrder(res.data);
   },
 
   async trackShipment(identifier: string): Promise<Order> {
-    const res = await executeRequest<Order>(`/shipments/track/${identifier}`);
-    return res.data;
+    const res = await executeRequest<Order>(`/shipments/track/${encodeURIComponent(identifier)}`);
+    return normalizeOrder(res.data);
   },
 
-  async processReturnShipment(shipmentOrOrderId: string): Promise<Order> {
-    const res = await executeRequest<Order>(`/shipments/${shipmentOrOrderId}/return`, {
+  async processReturnShipment(shipmentId: string, notes?: string): Promise<Order> {
+    const res = await executeRequest<Order>(`/shipments/${encodeURIComponent(shipmentId)}/return`, {
       method: 'POST',
+      body: JSON.stringify(notes ? { notes } : {}),
     });
-    return res.data;
+    return normalizeOrder(res.data);
   },
 
-  async confirmReturnReceived(shipmentOrOrderId: string): Promise<Order> {
-    const res = await executeRequest<Order>(`/shipments/${shipmentOrOrderId}/confirm-returned`, {
-      method: 'POST',
-    });
-    return res.data;
+  async confirmReturnReceived(shipmentId: string, notes?: string): Promise<Order> {
+    const res = await executeRequest<Order>(
+      `/shipments/${encodeURIComponent(shipmentId)}/confirm-returned`,
+      {
+        method: 'POST',
+        body: JSON.stringify(notes ? { notes } : {}),
+      }
+    );
+    return normalizeOrder(res.data);
   },
 
   async listIssues(params?: { resolved?: boolean; page?: number; limit?: number }): Promise<DeliveryIssue[]> {
@@ -305,10 +341,13 @@ export const apiClient = {
 
   async resolveIssue(issueId: string, payload: ResolveIssuePayload): Promise<DeliveryIssue> {
     const resolutionNotes = payload.resolutionNotes ?? payload.resolutionResult ?? '';
-    const res = await executeRequest<DeliveryIssue>(`/issues/${issueId}/resolve`, {
-      method: 'PATCH',
-      body: JSON.stringify({ resolutionNotes }),
-    });
+    const res = await executeRequest<DeliveryIssue>(
+      `/issues/${encodeURIComponent(issueId)}/resolve`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ resolutionNotes }),
+      }
+    );
     return res.data;
   },
 
@@ -317,7 +356,7 @@ export const apiClient = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    return res.data;
+    return normalizeReturnRequest(res.data);
   },
 
   async listReturns(params?: { status?: string }): Promise<ReturnRequest[]> {
@@ -325,22 +364,28 @@ export const apiClient = {
     if (params?.status) query.set('status', params.status);
     const endpoint = `/returns${query.toString() ? '?' + query.toString() : ''}`;
     const res = await executeRequest<ReturnRequest[]>(endpoint);
-    return res.data;
+    return res.data.map(normalizeReturnRequest);
   },
 
   async reviewReturn(requestId: string, payload: ReviewReturnPayload): Promise<ReturnRequest> {
-    const res = await executeRequest<ReturnRequest>(`/returns/${requestId}/review`, {
-      method: 'PATCH',
-      body: JSON.stringify(payload),
-    });
-    return res.data;
+    const res = await executeRequest<ReturnRequest>(
+      `/returns/${encodeURIComponent(requestId)}/review`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(payload),
+      }
+    );
+    return normalizeReturnRequest(res.data);
   },
 
   async completeReturn(requestId: string): Promise<ReturnRequest> {
-    const res = await executeRequest<ReturnRequest>(`/returns/${requestId}/complete`, {
-      method: 'PATCH',
-    });
-    return res.data;
+    const res = await executeRequest<ReturnRequest>(
+      `/returns/${encodeURIComponent(requestId)}/complete`,
+      {
+        method: 'PATCH',
+      }
+    );
+    return normalizeReturnRequest(res.data);
   },
 
   async listShippers(): Promise<Array<{ id: string; fullName: string; email?: string; phoneNumber?: string }>> {
