@@ -1,5 +1,3 @@
-// Authentic brand logo component using the official GHC graphic identity.
-// Identity: Monogram 'GHC' in Neobank Mint palette with golden tilted crown and delivery truck.
 import React from 'react';
 
 interface AppLogoProps {
@@ -22,18 +20,15 @@ export const AppLogo: React.FC<AppLogoProps> = ({
 
   return (
     <div className={`inline-flex items-center gap-3 ${className}`}>
-      {/* Official GHC Emblem Image */}
       <img
         src="/images/app-logo.png"
         onError={(e) => {
-          // Fallback to jpg if png is not found
           (e.currentTarget as HTMLImageElement).src = '/images/app-logo.jpg';
         }}
         alt="Logo GHC - Giao Hàng TMĐT"
         className={`${dimensions.imgHeight} w-auto object-contain flex-shrink-0 drop-shadow-2xs`}
       />
 
-      {/* Brand Text Identity */}
       {showText && (
         <div className="flex flex-col">
           <div className={`font-extrabold text-[#0D3B2E] tracking-tight leading-tight ${dimensions.fontSize}`}>

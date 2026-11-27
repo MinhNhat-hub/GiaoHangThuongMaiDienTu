@@ -212,7 +212,7 @@ Table component enclosed in `.card.card-padless`.
 
 ## 11 · Patterns (Order & Shipping Summaries)
 
-> **Monetary Compliance:** In strict adherence to BR-07 and SRS §1.3, this system contains NO prices, fees, monetary tiers, or payment mechanisms. The patterns below govern delivery cards and shipment status summaries.
+> **Monetary Compliance:** This system contains NO prices, fees, monetary tiers, or payment mechanisms. The patterns below govern delivery cards and shipment status summaries.
 
 2-column responsive layout (`.responsive-2`) or structural cards:
 
@@ -226,11 +226,11 @@ Table component enclosed in `.card.card-padless`.
 2. **Highlighted Active Order Card:**
    - Surface: Structural card with crisp hairline border (`border: 1px solid rgba(107, 134, 121, 0.25)`).
    - Live Tracking Pill: `.chip.chip-accent` with live dot indicator.
-   - Timeline Events: Chronological progression sorted newest-to-oldest (C-13).
+   - Timeline Events: Chronological progression sorted oldest-to-newest.
 
 ---
 
-## 12 · Domain Delivery Statuses (SRS Appendix A.2)
+## 12 · Domain Delivery Statuses
 
 13 lifecycle statuses mapped directly to Neobank Mint semantic badge components (Outlined Flat & High-Contrast System):
 
