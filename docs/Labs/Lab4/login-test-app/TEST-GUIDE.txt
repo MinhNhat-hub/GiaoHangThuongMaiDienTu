@@ -1,6 +1,7 @@
 HƯỚNG DẪN TỰ TEST MÀN HÌNH ĐĂNG NHẬP
 Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử (GiaoHangThuongMaiDienTu)
-Giao diện: bản build của commit ae6fe95 (nhánh main), không sửa code.
+Giao diện: ứng dụng web phiên bản 1.0.0 (bản build ngày 20/11/2026), không sửa code.
+Gói này chỉ dành cho Lab4, không dùng để test ứng dụng hiện tại.
 
 ======================================================================
 1. CHẠY ỨNG DỤNG
@@ -26,10 +27,11 @@ Dùng để kiểm TC-ACC-041.
 Lưu ý quan trọng:
 - Mật khẩu trong gói là mật khẩu của tài khoản test, chỉ dùng cho server giả chạy trên máy,
   không phải mật khẩu thật.
-- Repo chưa có backend. Phần server trong gói này là server giả, làm theo đặc tả API của repo,
-  chỉ có phần đăng nhập. Sau khi đăng nhập, trang của từng vai trò mở được nhưng danh sách trống,
+- Phần server trong gói này là server giả, làm theo đặc tả API của repo, chỉ có phần đăng nhập.
+  Kết quả trong các file xls của Lab4 chạy trên server giả này, trước khi server thật (PR #36)
+  vào main. Sau khi đăng nhập, trang của từng vai trò mở được nhưng danh sách trống,
   các thao tác khác (tạo đơn, hoàn hàng...) sẽ báo lỗi. Kết quả test chỉ nói về giao diện.
-- Trình duyệt nên dùng: Google Chrome cho máy tính (OE-2).
+- Trình duyệt nên dùng: Google Chrome cho máy tính.
 - Không có mạng thì phông chữ hiển thị khác (phông lấy từ Google Fonts), chức năng không đổi.
 
 ======================================================================
@@ -58,7 +60,7 @@ Vai trò sau khi đăng nhập xem ở địa chỉ trang:
 - Shipper  -> "/shipper" (danh sách giao hàng)
 
 ======================================================================
-4. CÁC TEST CASE (TC-ACC-040 đến TC-ACC-050, sheet Module2 của System Test Case.xls)
+4. CÁC TEST CASE (TC-ACC-040 đến TC-ACC-050, sheet Module1 của System Test Case.xls)
 ======================================================================
 Ghi kết quả Pass/Fail vào cột Result của file System Test Case.xls.
 
@@ -93,7 +95,7 @@ TC-ACC-045  Shipper A đăng nhập
 
 TC-ACC-046  Email chưa có tài khoản, mật khẩu bất kỳ
   Bước: Email khong.ton.tai@example.com, mật khẩu Matkhau123, bấm Đăng nhập.
-  Mong đợi: Báo đăng nhập không thành công bằng thông báo chung (SEC-11);
+  Mong đợi: Hiện thông báo "Email hoặc mật khẩu không đúng.";
             vẫn ở màn hình đăng nhập, chưa đăng nhập.
 
 TC-ACC-047  Email đúng của Customer A, mật khẩu sai
@@ -110,20 +112,20 @@ TC-ACC-049  So sánh thông báo của 3 lần đăng nhập thất bại
         Lần 3: khong.ton.tai@example.com / Sai12345. Ghi lại nguyên văn thông báo.
         So sánh 3 thông báo từng chữ.
   Mong đợi: 3 thông báo giống nhau từng chữ; không thông báo nào cho biết sai email
-            hay sai mật khẩu, hay tài khoản có tồn tại hay không (SEC-11).
+            hay sai mật khẩu, hay tài khoản có tồn tại hay không.
   Ghi chú: lần chạy 20/11/2026 ra Fail (Defect ID 1): dòng "Email hoặc mật khẩu không đúng."
            giống nhau, nhưng dòng "Mã truy vết" khác nhau mỗi lần.
 
 TC-ACC-050  Sau khi đăng nhập thất bại, mở thẳng màn hình cần đăng nhập
   Bước: Đăng nhập khong.ton.tai@example.com / Matkhau123 (thất bại).
         Gõ thẳng vào thanh địa chỉ: http://localhost:4173/orders (đổi số cổng nếu khác).
-  Mong đợi: Không vào được màn hình danh sách đơn hàng; hệ thống yêu cầu đăng nhập (SEC-1).
+  Mong đợi: Không vào được màn hình danh sách đơn hàng; hệ thống yêu cầu đăng nhập.
 
 ======================================================================
 5. NỘI DUNG GÓI
 ======================================================================
 start.bat               Chạy server và mở trình duyệt (cần Node.js đã cài)
-app\                    Giao diện đã build từ commit ae6fe95 (không sửa)
+app\                    Giao diện đã build, phiên bản 1.0.0 (không sửa)
 server\server.mjs       Server test: phục vụ giao diện + API đăng nhập giả
 server\accounts.json    Tài khoản test
 TEST-GUIDE.txt          File này

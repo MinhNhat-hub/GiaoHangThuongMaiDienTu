@@ -120,9 +120,16 @@ async function handleApi(req, res, url) {
 }
 
 // Serves a file of the built web app, falling back to index.html for client-side routes.
+// Answers 400 for a path that cannot be decoded and 403 for a path outside the app folder.
 function serveStatic(req, res, url) {
-  let file = path.join(APP_DIR, decodeURIComponent(url.pathname));
-  if (!file.startsWith(APP_DIR)) {
+  let file;
+  try {
+    file = path.join(APP_DIR, decodeURIComponent(url.pathname));
+  } catch {
+    res.writeHead(400);
+    return res.end();
+  }
+  if (!file.startsWith(APP_DIR + path.sep)) {
     res.writeHead(403);
     return res.end();
   }
