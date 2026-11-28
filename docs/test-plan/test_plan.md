@@ -12,7 +12,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 |---|---|---|---|
 | TV2 | 06/11/2026 | Bản đầu tiên | 1.0 |
 | TV1 | 13/11/2026 | Đồng bộ với SRS 1.0 (93 ID, bỏ TBD); đổi mẫu sang Lab1, Lab2; phân công test theo module; thêm module ACC, BCT | 1.1 |
-| TV2 | 28/11/2026 | Rà lại trước khi nộp: dựa trên SRS 1.0.1; ghi server, Vitest và hệ thống đã có từ PR #36; ghi số TC thật; sửa các tệp chưa lên `main` | 1.1 |
+| TV2 | 28/11/2026 | Rà lại trước khi nộp: dựa trên SRS 1.0.1; ghi server, Vitest và hệ thống đã có từ PR #36; ghi số TC thật; sửa các tệp chưa lên `main`; chốt lưu dữ liệu trong bộ nhớ | 1.1 |
 
 ## 1 Giới thiệu
 
@@ -76,7 +76,7 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 
 ### 1.5 Ràng buộc
 
-- **Môi trường.** Server có từ PR #36 (27/11/2026), cấu hình ở §4.2. Server giữ dữ liệu trong bộ nhớ, không có database server, nên dữ liệu mất khi server khởi động lại và được nạp lại từ dữ liệu seed. Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
+- **Môi trường.** Server có từ PR #36 (27/11/2026), cấu hình ở §4.2. Server giữ dữ liệu trong bộ nhớ, không có database server, nên dữ liệu mất khi server khởi động lại và được nạp lại từ dữ liệu seed. Nhóm chốt cách lưu này cho phiên bản 1.0 (28/11/2026). Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
 - **Nhân lực.** Cả 4 thành viên tham gia kiểm thử, chia theo module (§4.1).
 - **Lịch.** Chưa có hạn cuối kỳ cho giai đoạn 2, nên các mốc sau Test design ở §5 ghi "Chưa xác định" (Test design bắt đầu 13/11/2026). Khi có hạn, Test Plan cập nhật tiếp.
 - **Công cụ.** Danh sách công cụ ở §3.3. Unit test dùng Vitest. Kịch bản Playwright còn ở PR #31, chưa merge, và trên `main` chưa có workflow GitHub Actions (28/11/2026).
@@ -89,7 +89,7 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 | Unit test case mẫu Lab2 chưa lên `main` (PR #30 merge vào nhánh trung gian) | Unit Test Report (`docs/testing/unit-test-report.md`) có kết quả chạy Vitest nhưng chưa đối chiếu được với unit test case | Đưa `docs/testing/unit-test-cases.xlsx` lên `main` trước khi nộp Unit Test Report |
 | SRS có thể đổi ID sau 06/11/2026 (task A43, A71 sửa SRS theo code thực tế) | Dòng ở §2 bị lệch ID so với SRS | Trước mỗi lần xuất, kiểm lại rằng mọi ID của SRS đều có một dòng ở §2 hoặc lý do ở §2.3; khi SRS đổi thì cập nhật §2 và nâng phiên bản Test Plan |
 | Mockup chưa lên `main` (9 mockup ở PR #39, đang mở) | Chưa chạy được test giao diện chi tiết (UI-1) | Ghi tiêu chí "khớp mockup" ở §3.1.3; chạy test giao diện sau khi PR #39 merge |
-| Server giữ dữ liệu trong bộ nhớ, không có database server | Các ca đọc lại dữ liệu đã lưu (Track.Update.History, DI-1, DI-2, SEC-10) chỉ đọc được qua API hoặc qua đối tượng lưu trữ trong test server; dữ liệu mất khi server khởi động lại | Mỗi lần chạy nạp lại dữ liệu seed; nhóm chốt có cần database cho bản demo hay không |
+| Server giữ dữ liệu trong bộ nhớ, không có database server | Các ca đọc lại dữ liệu đã lưu (Track.Update.History, DI-1, DI-2, SEC-10) chỉ đọc được qua API hoặc qua đối tượng lưu trữ trong test server; dữ liệu mất khi server khởi động lại | Nhóm chốt giữ cách lưu này (28/11/2026). Mỗi lượt test bắt đầu từ dữ liệu seed; các ca đọc lại dữ liệu chạy trong cùng một lần chạy server với thao tác tạo ra dữ liệu đó (§3.1.4) |
 | Phụ lục C của SRS 1.0.1: C-16 đến C-33 đã chốt nhưng chưa ghi vào yêu cầu (chờ SRS 1.1), C-34 đến C-37 chưa chốt | Kết quả mong đợi của các TC liên quan có thể đổi | TC bị ảnh hưởng chỉ kiểm phần SRS đã nêu; khi SRS 1.1 ra thì rà lại §2 và nâng phiên bản Test Plan |
 | Bốn người cùng viết test case và chạy test, chia theo module | Cách ghi test case, ID và dữ liệu có thể lệch giữa các module | Dùng chung mẫu Lab1, ID `TC-<MODULE>-<NNN>` và bảng biên chung; TV2 là trưởng test rà soát; ưu tiên test tự động bằng Playwright và chạy lại qua GitHub Actions |
 | Chưa có hạn cuối kỳ | Không đặt được lịch cho test design, execution, evaluation | Ghi "Chưa xác định" ở §5; cập nhật Test Plan khi có hạn |
@@ -467,7 +467,7 @@ Danh sách việc test của từng người (test gì, ai test, đã xong chưa
 |---|---|
 | Server | Node.js, module `http`, TypeScript, mã ở `src/server/` (PR #36). Chạy bằng `npm run server` (vite-node), cổng 3000. API REST ở `/api/v1`, cập nhật real-time qua SSE ở `/api/v1/events`. Mật khẩu băm bằng scrypt (SEC-10) |
 | Client | React 18, Vite 5, TypeScript 5, Tailwind CSS 3 (theo `package.json`). Trình duyệt: Chrome cho máy tính, bản ổn định mới nhất (OE-2) |
-| Database server | Không có. Server giữ dữ liệu trong bộ nhớ và nạp lại từ dữ liệu seed khi khởi động (§1.5, §1.6) |
+| Database server | Không có. Server giữ dữ liệu trong bộ nhớ và nạp lại từ dữ liệu seed khi khởi động; nhóm chốt cách lưu này cho phiên bản 1.0 (§1.5, §1.6) |
 | Môi trường CI | GitHub Actions, chạy lại bộ test (§3.3); chưa có workflow trên `main` (28/11/2026) |
 
 ## 5 Mốc kiểm thử và ước lượng
