@@ -19,6 +19,7 @@ docs/srs/         SRS: SRS.md (bản gốc), SRS.docx (xuất từ SRS.md, chỉ
 docs/plan/        kế hoạch SRS, Test Plan, phân công theo backlog
 docs/test-plan/   Test Plan: test_plan.md (bản gốc), TestPlan.docx (xuất từ test_plan.md, chỉ để đọc và nộp)
 docs/testing/     Test Specification: test-specification.md (thiết kế test, nguồn của mọi test case), quy ước data-testid
+docs/test-tracking/ theo dõi test case và code test đã làm so với Test Plan (tc-gap-report.md)
 docs/templates/   mẫu mô tả PR, mẫu review / comment và mẫu test case
 diagrams/         sơ đồ Mermaid (.mmd) cho thiết kế
 src/              mã nguồn (giai đoạn 2)
