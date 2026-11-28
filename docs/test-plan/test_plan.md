@@ -12,7 +12,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 |---|---|---|---|
 | TV2 | 06/11/2026 | Bản đầu tiên | 1.0 |
 | TV1 | 13/11/2026 | Đồng bộ với SRS 1.0 (93 ID, bỏ TBD); đổi mẫu sang Lab1, Lab2; phân công test theo module; thêm module ACC, BCT | 1.1 |
-| TV2 | 28/11/2026 | Rà lại trước khi nộp: dựa trên SRS 1.0.1; ghi server, Vitest và hệ thống đã có từ PR #36; ghi số TC thật; sửa các tệp chưa lên `main`; chốt lưu dữ liệu trong bộ nhớ | 1.1 |
+| TV2 | 28/11/2026 | Rà lại trước khi nộp: dựa trên SRS 1.0.1; ghi server, Vitest và hệ thống đã có từ PR #36; ghi số TC thật; sửa các tệp chưa lên `main`; chốt lưu dữ liệu trong bộ nhớ; đóng mốc Test design, ước lượng công Test execution | 1.1 |
 
 ## 1 Giới thiệu
 
@@ -78,7 +78,7 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 
 - **Môi trường.** Server có từ PR #36 (27/11/2026), cấu hình ở §4.2. Server giữ dữ liệu trong bộ nhớ, không có database server, nên dữ liệu mất khi server khởi động lại và được nạp lại từ dữ liệu seed. Nhóm chốt cách lưu này cho phiên bản 1.0 (28/11/2026). Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
 - **Nhân lực.** Cả 4 thành viên tham gia kiểm thử, chia theo module (§4.1).
-- **Lịch.** Chưa có hạn cuối kỳ cho giai đoạn 2, nên các mốc sau Test design ở §5 ghi "Chưa xác định" (Test design bắt đầu 13/11/2026). Khi có hạn, Test Plan cập nhật tiếp.
+- **Lịch.** Test design chạy từ 13/11/2026 đến 27/11/2026. Chưa có hạn cuối kỳ cho giai đoạn 2, nên ngày kết thúc của Test execution và Test evaluation ở §5 ghi "Chưa xác định". Khi có hạn, Test Plan cập nhật tiếp.
 - **Công cụ.** Danh sách công cụ ở §3.3. Unit test dùng Vitest. Kịch bản Playwright còn ở PR #31, chưa merge, và trên `main` chưa có workflow GitHub Actions (28/11/2026).
 
 ### 1.6 Rủi ro
@@ -90,9 +90,8 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 | SRS có thể đổi ID sau 06/11/2026 (task A43, A71 sửa SRS theo code thực tế) | Dòng ở §2 bị lệch ID so với SRS | Trước mỗi lần xuất, kiểm lại rằng mọi ID của SRS đều có một dòng ở §2 hoặc lý do ở §2.3; khi SRS đổi thì cập nhật §2 và nâng phiên bản Test Plan |
 | Mockup chưa lên `main` (9 mockup ở PR #39, đang mở) | Chưa chạy được test giao diện chi tiết (UI-1) | Ghi tiêu chí "khớp mockup" ở §3.1.3; chạy test giao diện sau khi PR #39 merge |
 | Server giữ dữ liệu trong bộ nhớ, không có database server | Các ca đọc lại dữ liệu đã lưu (Track.Update.History, DI-1, DI-2, SEC-10) chỉ đọc được qua API hoặc qua đối tượng lưu trữ trong test server; dữ liệu mất khi server khởi động lại | Nhóm chốt giữ cách lưu này (28/11/2026). Mỗi lượt test bắt đầu từ dữ liệu seed; các ca đọc lại dữ liệu chạy trong cùng một lần chạy server với thao tác tạo ra dữ liệu đó (§3.1.4) |
-| Phụ lục C của SRS 1.0.1: C-16 đến C-33 đã chốt nhưng chưa ghi vào yêu cầu (chờ SRS 1.1), C-34 đến C-37 chưa chốt | Kết quả mong đợi của các TC liên quan có thể đổi | TC bị ảnh hưởng chỉ kiểm phần SRS đã nêu; khi SRS 1.1 ra thì rà lại §2 và nâng phiên bản Test Plan |
 | Bốn người cùng viết test case và chạy test, chia theo module | Cách ghi test case, ID và dữ liệu có thể lệch giữa các module | Dùng chung mẫu Lab1, ID `TC-<MODULE>-<NNN>` và bảng biên chung; TV2 là trưởng test rà soát; ưu tiên test tự động bằng Playwright và chạy lại qua GitHub Actions |
-| Chưa có hạn cuối kỳ | Không đặt được lịch cho test design, execution, evaluation | Ghi "Chưa xác định" ở §5; cập nhật Test Plan khi có hạn |
+| Chưa có hạn cuối kỳ | Không đặt được ngày kết thúc cho test execution, evaluation | Ghi "Chưa xác định" ở §5; cập nhật Test Plan khi có hạn |
 
 ## 2 Yêu cầu cần kiểm thử
 
@@ -455,7 +454,7 @@ Cả 4 thành viên tham gia kiểm thử, chia theo module (§3.4).
 | Vai trò | Người | Trách nhiệm |
 |---|---|---|
 | Tester (ACC, NFR); cập nhật SRS | TV1 | Test case hệ thống và chạy test của module ACC, NFR; chạy Real-time test (A80); sửa SRS khi lỗi do yêu cầu sai hoặc SRS lệch code (A43, A71) và review cuối SRS (A87) |
-| Test Leader, Tester (TRK, BCT) | TV2 | Viết Test Plan; test case hệ thống và chạy test của module TRK, BCT; điều phối test case hệ thống (A69); chạy System test (A83) và Regression test (A84); viết Test Report; cùng TV4 chạy Shipper và ngoại lệ (A81) với phần luồng Shipper của TRK |
+| Test Leader, Tester (TRK, BCT) | TV2 | Viết Test Plan; test case hệ thống và chạy test của module TRK, BCT; điều phối test case hệ thống (A69); chạy System test (A83) và Regression test (A84); viết workflow GitHub Actions chạy lại bộ test (A84); viết Test Report; cùng TV4 chạy Shipper và ngoại lệ (A81) với phần luồng Shipper của TRK |
 | Tester (ORD); unit test frontend | TV3 | Test case hệ thống và chạy test của module ORD; unit test phía frontend (A73, A74, A76, A77, A79); sửa lỗi giao diện (A75, A78, A82); dựng nền Playwright |
 | Tester (RET, ISS); unit test server | TV4 | Test case hệ thống và chạy test của module RET, ISS; chạy Shipper và ngoại lệ (A81) với phần ISS; unit test phía server (A73, A74, A76, A77, A79); dữ liệu seed và cách giả lỗi lưu đơn cho test; sửa lỗi server (A75, A78, A82) |
 
@@ -481,16 +480,26 @@ Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dự
 | Phức tạp | 26 | 1,5 (12 giờ) | 39 |
 | Cộng | 93 | Không áp dụng | 68,75 |
 
+Công Test execution do TV2 ước lượng cùng phương pháp, nhưng tính theo test case vì đã có 423 TC (§3.4). Số TC tự động (332) và thủ công (91) lấy từ cột Note của workbook ở PR #31, chưa merge nên có thể đổi. Một TC tự động tính 0,05 person-day (24 phút: chạy, đọc kết quả, ghi Result, mở Issue nếu `Fail`); một TC thủ công tính 0,125 person-day (1 giờ). Lượt regression trước demo (A84) chạy lại các TC tự động trên GitHub Actions, nên chỉ tính 1 person-day để đọc và so kết quả với lượt trước.
+
+| Lượt chạy | Số TC | Công mỗi TC (person-day) | Tổng (person-day) |
+|---|---|---|---|
+| Lượt đầu, tự động | 332 | 0,05 (24 phút) | 16,6 |
+| Lượt đầu, thủ công | 91 | 0,125 (1 giờ) | 11,375 |
+| Regression trước demo, tự động | 332 | Không áp dụng | 1 |
+| Regression trước demo, thủ công | 91 | 0,125 (1 giờ) | 11,375 |
+| Cộng | 423 | Không áp dụng | 40,35 |
+
 Các mốc (slide 33):
 
 | Mốc | Công (person-day) | Bắt đầu | Kết thúc |
 |---|---|---|---|
 | Test planning | 1 | 28/10/2026 | 06/11/2026 |
-| Test design (viết test case) | 68,75 (bằng dòng Cộng ở bảng trên) | 13/11/2026 | Chưa xác định |
-| Test execution | Chưa xác định (chưa có bản build để ước lượng số vòng chạy và số lỗi) | Chưa xác định | Chưa xác định |
+| Test design (viết test case) | 68,75 (bằng dòng Cộng ở bảng độ phức tạp) | 13/11/2026 | 27/11/2026 |
+| Test execution | 40,35 (bằng dòng Cộng ở bảng lượt chạy) | 27/11/2026 | Chưa xác định |
 | Test evaluation (Test Report) | 1 | Chưa xác định | Chưa xác định |
 
-Chưa có hạn cuối kỳ, nên ngày kết thúc Test design và các mốc sau chưa xác định. Khi có hạn, Test Plan cập nhật tiếp.
+Test design kết thúc 27/11/2026, ngày 423 TC lên `main` (PR #36); Test execution bắt đầu cùng ngày. Chưa có hạn cuối kỳ, nên ngày kết thúc của Test execution và Test evaluation chưa xác định. Khi có hạn, Test Plan cập nhật tiếp.
 
 ## 6 Sản phẩm bàn giao
 
