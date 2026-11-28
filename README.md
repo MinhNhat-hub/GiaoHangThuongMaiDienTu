@@ -94,4 +94,14 @@ Ví dụ:
 
 ## Chạy và kiểm thử
 
-<!-- Ghi lệnh cài đặt, chạy và test khi đã chọn công nghệ ở giai đoạn 2. -->
+Cần Node.js 20 trở lên.
+
+```
+npm install        # cài thư viện
+npm run server     # chạy server ở http://localhost:3000/api/v1
+npm run dev        # chạy client ở http://localhost:5173, chuyển /api sang server
+npm test           # chạy toàn bộ unit test (Vitest)
+npm run build      # kiểm kiểu và build client
+```
+
+Chạy server và client ở hai cửa sổ terminal. Hiện `npm run server` chỉ mở server khi có biến môi trường `RUN_STANDALONE=true`; trên PowerShell chạy `$env:RUN_STANDALONE="true"; npm run server`. Tài khoản Admin, Shipper và danh sách sản phẩm có sẵn trong dữ liệu seed (`src/server/seedData.ts`). Dữ liệu nằm trong bộ nhớ nên mất khi tắt server.
