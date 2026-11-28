@@ -12,7 +12,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 |---|---|---|---|
 | TV2 | 06/11/2026 | Bản đầu tiên | 1.0 |
 | TV1 | 13/11/2026 | Đồng bộ với SRS 1.0 (93 ID, bỏ TBD); đổi mẫu sang Lab1, Lab2; phân công test theo module; thêm module ACC, BCT | 1.1 |
-| TV2 | 28/11/2026 | Rà lại trước khi nộp: dựa trên SRS 1.0.1; ghi server, Vitest và hệ thống đã có từ PR #36; ghi số TC thật; sửa các tệp chưa lên `main`; chốt lưu dữ liệu trong bộ nhớ; đóng mốc Test design, ước lượng công Test execution | 1.1 |
+| TV2 | 28/11/2026 | Ghi server và công cụ đang dùng; chốt lưu dữ liệu trong bộ nhớ; đóng mốc Test design, ước lượng công Test execution | 1.1 |
 
 ## 1 Giới thiệu
 
@@ -76,19 +76,19 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 
 ### 1.5 Ràng buộc
 
-- **Môi trường.** Server có từ PR #36 (27/11/2026), cấu hình ở §4.2. Server giữ dữ liệu trong bộ nhớ, không có database server, nên dữ liệu mất khi server khởi động lại và được nạp lại từ dữ liệu seed. Nhóm chốt cách lưu này cho phiên bản 1.0 (28/11/2026). Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
+- **Môi trường.** Server có từ 27/11/2026, cấu hình ở §4.2. Server giữ dữ liệu trong bộ nhớ, không có database server, nên dữ liệu mất khi server khởi động lại và được nạp lại từ dữ liệu seed. Nhóm chốt cách lưu này cho phiên bản 1.0 (28/11/2026). Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
 - **Nhân lực.** Cả 4 thành viên tham gia kiểm thử, chia theo module (§4.1).
 - **Lịch.** Test design chạy từ 13/11/2026 đến 27/11/2026. Chưa có hạn cuối kỳ cho giai đoạn 2, nên ngày kết thúc của Test execution và Test evaluation ở §5 ghi "Chưa xác định". Khi có hạn, Test Plan cập nhật tiếp.
-- **Công cụ.** Danh sách công cụ ở §3.3. Unit test dùng Vitest. Kịch bản Playwright còn ở PR #31, chưa merge, và trên `main` chưa có workflow GitHub Actions (28/11/2026).
+- **Công cụ.** Danh sách công cụ ở §3.3. Unit test dùng Vitest. Kịch bản Playwright chưa lên `main`, và trên `main` chưa có workflow GitHub Actions (28/11/2026).
 
 ### 1.6 Rủi ro
 
 | Rủi ro | Ảnh hưởng | Cách giảm |
 |---|---|---|
-| Server đã có nhưng giao diện chưa nối xong với server (PR #39 đang mở) và kịch bản Playwright chưa merge (PR #31) | System test chưa chạy được trên hệ thống đã ghép; lỗi ở chỗ nối chỉ lộ khi chạy | Chạy system test khi PR #31, #39 merge; trong lúc chờ, người test module chạy thử trên API của server |
-| Unit test case mẫu Lab2 chưa lên `main` (PR #30 merge vào nhánh trung gian) | Unit Test Report (`docs/testing/unit-test-report.md`) có kết quả chạy Vitest nhưng chưa đối chiếu được với unit test case | Đưa `docs/testing/unit-test-cases.xlsx` lên `main` trước khi nộp Unit Test Report |
+| Server đã có nhưng giao diện chưa nối xong với server và kịch bản Playwright chưa lên `main` | System test chưa chạy được trên hệ thống đã ghép; lỗi ở chỗ nối chỉ lộ khi chạy | Chạy system test khi phần nối giao diện và kịch bản Playwright lên `main`; trong lúc chờ, người test module chạy thử trên API của server |
+| Unit test case mẫu Lab2 chưa lên `main` | Unit Test Report (`docs/testing/unit-test-report.md`) có kết quả chạy Vitest nhưng chưa đối chiếu được với unit test case | Đưa `docs/testing/unit-test-cases.xlsx` lên `main` trước khi nộp Unit Test Report |
 | SRS có thể đổi ID sau 06/11/2026 (task A43, A71 sửa SRS theo code thực tế) | Dòng ở §2 bị lệch ID so với SRS | Trước mỗi lần xuất, kiểm lại rằng mọi ID của SRS đều có một dòng ở §2 hoặc lý do ở §2.3; khi SRS đổi thì cập nhật §2 và nâng phiên bản Test Plan |
-| Mockup chưa lên `main` (9 mockup ở PR #39, đang mở) | Chưa chạy được test giao diện chi tiết (UI-1) | Ghi tiêu chí "khớp mockup" ở §3.1.3; chạy test giao diện sau khi PR #39 merge |
+| Mockup chưa lên `main` | Chưa chạy được test giao diện chi tiết (UI-1) | Ghi tiêu chí "khớp mockup" ở §3.1.3; chạy test giao diện sau khi mockup lên `main` |
 | Server giữ dữ liệu trong bộ nhớ, không có database server | Các ca đọc lại dữ liệu đã lưu (Track.Update.History, DI-1, DI-2, SEC-10) chỉ đọc được qua API hoặc qua đối tượng lưu trữ trong test server; dữ liệu mất khi server khởi động lại | Nhóm chốt giữ cách lưu này (28/11/2026). Mỗi lượt test bắt đầu từ dữ liệu seed; các ca đọc lại dữ liệu chạy trong cùng một lần chạy server với thao tác tạo ra dữ liệu đó (§3.1.4) |
 | Bốn người cùng viết test case và chạy test, chia theo module | Cách ghi test case, ID và dữ liệu có thể lệch giữa các module | Dùng chung mẫu Lab1, ID `TC-<MODULE>-<NNN>` và bảng biên chung; TV2 là trưởng test rà soát; ưu tiên test tự động bằng Playwright và chạy lại qua GitHub Actions |
 | Chưa có hạn cuối kỳ | Không đặt được ngày kết thúc cho test execution, evaluation | Ghi "Chưa xác định" ở §5; cập nhật Test Plan khi có hạn |
@@ -354,7 +354,7 @@ Giá trị biên của BR-06 (giới hạn 3 lần): đơn giao không thành c�
 
 **Tiêu chí hoàn thành:** Mọi màn hình ở UI-1 khớp mockup tương ứng. Chỗ lệch được ghi Issue mức Thấp hoặc Trung bình (§1.4) và chỉ chấp nhận được khi Issue còn mở có mức Thấp.
 
-**Lưu ý đặc biệt:** Mockup làm ở giai đoạn 2 (A8 đến A16), nên test giao diện chi tiết viết sau khi TV3 có mockup. 9 mockup đang ở PR #39, chưa merge (28/11/2026). Ngôn ngữ giao diện là tiếng Việt (CO-2) và trình duyệt là Chrome cho máy tính (OE-2).
+**Lưu ý đặc biệt:** Mockup làm ở giai đoạn 2 (A8 đến A16), nên test giao diện chi tiết viết sau khi TV3 có mockup. 9 mockup chưa lên `main` (28/11/2026). Ngôn ngữ giao diện là tiếng Việt (CO-2) và trình duyệt là Chrome cho máy tính (OE-2).
 
 #### 3.1.4 Data and Database Integrity Testing
 
@@ -407,7 +407,7 @@ Xếp theo các nhóm công cụ của slide.
 |---|---|
 | Ghi lỗi | GitHub Issues, nhãn `bug` |
 | Unit test | Vitest 2.1.9, môi trường jsdom, Testing Library cho component (`vitest.config.ts`, chạy bằng `npm test`) |
-| Function test | Playwright (cấu hình và kịch bản ở PR #31, chưa merge) |
+| Function test | Playwright (cấu hình và kịch bản chưa lên `main`) |
 | Real-time | Playwright, nhiều browser context (phiên Customer, phiên Shipper hoặc Admin đổi trạng thái, phiên Bảng điều khiển Admin, thêm phiên Customer khác); server đẩy cập nhật qua SSE ở `/api/v1/events` |
 | Chạy lại bộ test | GitHub Actions (chưa có workflow trên `main`, 28/11/2026) |
 | Load / Performance test | Không dùng (lý do ở §1.4) |
@@ -464,7 +464,7 @@ Danh sách việc test của từng người (test gì, ai test, đã xong chưa
 
 | Thành phần | Cấu hình |
 |---|---|
-| Server | Node.js, module `http`, TypeScript, mã ở `src/server/` (PR #36). Chạy bằng `npm run server` (vite-node), cổng 3000. API REST ở `/api/v1`, cập nhật real-time qua SSE ở `/api/v1/events`. Mật khẩu băm bằng scrypt (SEC-10) |
+| Server | Node.js, module `http`, TypeScript, mã ở `src/server/`. Chạy bằng `npm run server` (vite-node), cổng 3000. API REST ở `/api/v1`, cập nhật real-time qua SSE ở `/api/v1/events`. Mật khẩu băm bằng scrypt (SEC-10) |
 | Client | React 18, Vite 5, TypeScript 5, Tailwind CSS 3 (theo `package.json`). Trình duyệt: Chrome cho máy tính, bản ổn định mới nhất (OE-2) |
 | Database server | Không có. Server giữ dữ liệu trong bộ nhớ và nạp lại từ dữ liệu seed khi khởi động; nhóm chốt cách lưu này cho phiên bản 1.0 (§1.5, §1.6) |
 | Môi trường CI | GitHub Actions, chạy lại bộ test (§3.3); chưa có workflow trên `main` (28/11/2026) |
@@ -480,7 +480,7 @@ Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dự
 | Phức tạp | 26 | 1,5 (12 giờ) | 39 |
 | Cộng | 93 | Không áp dụng | 68,75 |
 
-Công Test execution do TV2 ước lượng cùng phương pháp, nhưng tính theo test case vì đã có 423 TC (§3.4). Số TC tự động (332) và thủ công (91) lấy từ cột Note của workbook ở PR #31, chưa merge nên có thể đổi. Một TC tự động tính 0,05 person-day (24 phút: chạy, đọc kết quả, ghi Result, mở Issue nếu `Fail`); một TC thủ công tính 0,125 person-day (1 giờ). Lượt regression trước demo (A84) chạy lại các TC tự động trên GitHub Actions, nên chỉ tính 1 person-day để đọc và so kết quả với lượt trước.
+Công Test execution do TV2 ước lượng cùng phương pháp, nhưng tính theo test case vì đã có 423 TC (§3.4). Số TC tự động (332) và thủ công (91) lấy từ cột Note của bản workbook đi kèm kịch bản tự động; bản này chưa lên `main` nên số có thể đổi. Một TC tự động tính 0,05 person-day (24 phút: chạy, đọc kết quả, ghi Result, mở Issue nếu `Fail`); một TC thủ công tính 0,125 person-day (1 giờ). Lượt regression trước demo (A84) chạy lại các TC tự động trên GitHub Actions, nên chỉ tính 1 person-day để đọc và so kết quả với lượt trước.
 
 | Lượt chạy | Số TC | Công mỗi TC (person-day) | Tổng (person-day) |
 |---|---|---|---|
@@ -499,7 +499,7 @@ Các mốc (slide 33):
 | Test execution | 40,35 (bằng dòng Cộng ở bảng lượt chạy) | 27/11/2026 | Chưa xác định |
 | Test evaluation (Test Report) | 1 | Chưa xác định | Chưa xác định |
 
-Test design kết thúc 27/11/2026, ngày 423 TC lên `main` (PR #36); Test execution bắt đầu cùng ngày. Chưa có hạn cuối kỳ, nên ngày kết thúc của Test execution và Test evaluation chưa xác định. Khi có hạn, Test Plan cập nhật tiếp.
+Test design kết thúc 27/11/2026, ngày 423 TC lên `main`; Test execution bắt đầu cùng ngày. Chưa có hạn cuối kỳ, nên ngày kết thúc của Test execution và Test evaluation chưa xác định. Khi có hạn, Test Plan cập nhật tiếp.
 
 ## 6 Sản phẩm bàn giao
 
