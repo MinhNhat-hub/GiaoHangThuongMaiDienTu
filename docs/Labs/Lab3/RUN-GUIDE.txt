@@ -1,0 +1,91 @@
+LAB 3: AUTOMATION TEST VỚI VITEST
+Ứng dụng Quản lý Dịch vụ Giao hàng Thương mại điện tử (GiaoHangThuongMaiDienTu) - Nhóm 10
+
+Công cụ: Vitest 2.1.9, công cụ unit test nhóm đã chọn (khai báo trong package.json của ứng dụng,
+lệnh "npm test" = "vitest run"). Đề Lab3 gốc dùng NUnit cho C#; ứng dụng của nhóm viết bằng
+TypeScript nên dùng Vitest.
+
+Nguồn test case: Unit Test Case của Lab2 (lab2-team10.xls, cùng nội dung Unit Test Case.xls của Lab4),
+2 đơn vị, 10 UTCID.
+Code được test: hàm validateRegisterInput trong src/utils/validation.ts, ứng dụng phiên bản 1.0.0
+(bản ngày 20/11/2026).
+
+======================================================================
+1. CÁC BƯỚC CỦA ĐỀ LAB3 VÀ CÁCH LÀM
+======================================================================
+1. Install an automation test tool
+   -> Vitest đã có trong devDependencies của ứng dụng; "npm ci" cài vào máy.
+2. Review all unit test cases
+   -> lab2-team10.xls (Lab2): Function6 EmailFormat (UTCID01-05),
+      Function8 PasswordLength (UTCID01-05).
+3, 4. Write test code for each test case of each function
+   -> Mỗi hàm một file, mỗi UTCID một test (giống bài Lab3 NUnit của nhóm):
+      tests/email-format.test.ts      Function6 EmailFormat, 5 test
+      tests/password-length.test.ts   Function8 PasswordLength, 5 test
+5. Perform the test tool and see the result
+   -> results/vitest-result.txt         log kết quả (từng UTCID và dòng tổng)
+      results/html-report/              báo cáo HTML của Vitest
+      results/vitest-html-report.png    ảnh chụp báo cáo HTML
+   Kết quả: 2 file test, 10/10 UTCID passed.
+
+Đối chiếu UTCID với test:
+  Function6 EmailFormat
+    UTCID01  "an@gmail.com"     -> hợp lệ
+    UTCID02  "an@localhost"     -> hợp lệ
+    UTCID03  "angmail.com"      -> không hợp lệ
+    UTCID04  "an@"              -> không hợp lệ
+    UTCID05  "an @gmail.com"    -> không hợp lệ
+  Function8 PasswordLength
+    UTCID01  8 ký tự            -> hợp lệ
+    UTCID02  64 ký tự           -> hợp lệ
+    UTCID03  7 ký tự            -> không hợp lệ, báo sai độ dài
+    UTCID04  65 ký tự           -> không hợp lệ, báo sai độ dài
+    UTCID05  "Ab 1#x!y"         -> hợp lệ
+
+======================================================================
+2. TỰ CHẠY LẠI (PowerShell, cần Node.js 18+, có mạng để npm ci)
+======================================================================
+Mở thư mục mã nguồn ứng dụng phiên bản 1.0.0 (thư mục có file package.json) và cài thư viện:
+
+  cd <thư mục mã nguồn ứng dụng>
+  npm ci
+
+Chép 2 file test vào chỗ Vitest của ứng dụng tự tìm (tests/unit/):
+
+  New-Item -ItemType Directory -Force tests\unit\lab3
+  Copy-Item <thư mục Lab3>\tests\*.test.ts tests\unit\lab3\
+
+Chạy test, xem từng UTCID:
+
+  npx vitest run tests/unit/lab3 --reporter=verbose
+
+Kết quả đúng: 10 dòng có dấu ✓ và dòng "Tests  10 passed (10)".
+
+Tạo lại báo cáo HTML (cần gói @vitest/ui cùng phiên bản với Vitest; --no-save để không sửa package.json):
+
+  npm i -D --no-save @vitest/ui@2.1.9
+  npx vitest run tests/unit/lab3 --reporter=verbose --reporter=html --outputFile.html=lab3-report/index.html
+
+Dọn dẹp khi xong (xoá các file đã chép và báo cáo vừa tạo trong thư mục mã nguồn):
+
+  Remove-Item -Recurse -Force tests\unit\lab3, lab3-report -ErrorAction SilentlyContinue
+
+======================================================================
+3. XEM BÁO CÁO HTML
+======================================================================
+Bấm đúp index.html sẽ thấy trang trống, vì báo cáo phải mở qua một server web. Cách mở:
+
+- Trong thư mục mã nguồn ứng dụng ở trên:  npx vite preview --outDir <thư mục html-report>
+  rồi mở địa chỉ hiện ra (ví dụ http://localhost:4173).
+- Hoặc nếu máy có Python:  cd results\html-report  rồi  python -m http.server 8000
+  và mở http://localhost:8000.
+- Xem nhanh không cần chạy gì: results\vitest-html-report.png.
+
+======================================================================
+4. THỬ XEM TEST CÓ BẮT ĐƯỢC LỖI KHÔNG (khi demo)
+======================================================================
+1. Mở src\constants\config.ts, đổi PASSWORD_MAX_LENGTH: 64 thành 63, lưu file.
+2. Chạy lại lệnh test: 3 test của Function8 chuyển thành ✗, kết quả "3 failed | 7 passed (10)":
+   - UTCID02: mật khẩu 64 ký tự bị từ chối.
+   - UTCID03, UTCID04: thông báo lỗi thành "từ 8 đến 63 ký tự", không còn khớp quy tắc 8 đến 64.
+3. Đổi lại 64 rồi chạy lại để thấy 10/10 pass.
