@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 640" width="1120" height="640" font-family="Manrope, Segoe UI, Arial, sans-serif">
+  <rect width="1120" height="640" fill="#F3FAF5"/>
+  <rect x="0" y="0" width="1120" height="64" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="32" y="38" fill="#0D3B2E" font-size="16" font-weight="700">GHC Delivery</text>
+
+  <rect x="32" y="84" width="1056" height="84" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="122" fill="#0D3B2E" font-size="22" font-weight="700">Theo dõi vận chuyển</text>
+  <text x="56" y="146" fill="#6B8679" font-size="12">Theo dõi hành trình vận đơn và thời gian cập nhật trạng thái theo thời gian thực.</text>
+  <rect x="880" y="106" width="184" height="38" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="972" y="130" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">Quay lại chi tiết đơn hàng</text>
+
+  <rect x="32" y="184" width="1056" height="68" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <rect x="56" y="198" width="880" height="40" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="72" y="223" fill="#6B8679" font-size="13">Nhập mã vận đơn cần tra cứu (ví dụ: TRK987654)...</text>
+  <rect x="952" y="198" width="112" height="40" rx="10" fill="#28C76F"/>
+  <text x="1008" y="223" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">Tra cứu</text>
+
+  <rect x="32" y="270" width="1056" height="316" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="308" fill="#0D3B2E" font-size="16" font-weight="700">Vận đơn TRK987654 — Đơn hàng DH-2026-001</text>
+  <rect x="956" y="290" width="104" height="26" rx="6" fill="#ECFDF5" stroke="#28C76F"/>
+  <text x="1008" y="307" text-anchor="middle" fill="#0D3B2E" font-size="11" font-weight="700">Đang giao</text>
+  <text x="56" y="336" fill="#6B8679" font-size="12">Shipper phụ trách: Lê Văn Shipper (0987654321)   |   Tạo vận đơn: 13/11/2026 08:30</text>
+  <line x1="56" y1="356" x2="1064" y2="356" stroke="#6B8679" stroke-opacity="0.2"/>
+
+  <text x="56" y="388" fill="#0D3B2E" font-size="14" font-weight="700">Lịch sử cập nhật trạng thái (tự động đồng bộ real-time)</text>
+  <text x="56" y="424" fill="#0D3B2E" font-size="13">• 13/11/2026 08:00 — Chờ xác nhận</text>
+  <text x="56" y="460" fill="#0D3B2E" font-size="13">• 13/11/2026 08:30 — Chờ xác nhận → Chờ lấy hàng</text>
+  <text x="56" y="496" fill="#0D3B2E" font-size="13">• 13/11/2026 09:15 — Chờ lấy hàng → Đang giao</text>
+
+  <text x="560" y="616" text-anchor="middle" fill="#6B8679" font-size="11">Mockup A15 — Theo dõi vận chuyển (/orders/:id/tracking)</text>
+</svg>

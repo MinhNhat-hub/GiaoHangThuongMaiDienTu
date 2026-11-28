@@ -1,4 +1,4 @@
-import { ORDER_STATUS_MAP, type OrderStatusCode } from '@/constants/status-map';
+import { getOrderStatusMeta, type OrderStatusCode } from '@/constants/status-map';
 import type {
   DeliveryIssue,
   Order,
@@ -108,10 +108,10 @@ export function formatStatusTransitionText(
   oldStatus: OrderStatusCode | null,
   newStatus: OrderStatusCode
 ): string {
-  const newLabel = ORDER_STATUS_MAP[newStatus]?.labelVi ?? newStatus;
+  const newLabel = getOrderStatusMeta(newStatus).labelVi;
   if (!oldStatus) {
     return newLabel;
   }
-  const oldLabel = ORDER_STATUS_MAP[oldStatus]?.labelVi ?? oldStatus;
+  const oldLabel = getOrderStatusMeta(oldStatus).labelVi;
   return `${oldLabel} → ${newLabel}`;
 }

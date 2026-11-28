@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { APP_CONFIG } from '@/constants/config';
 import { AUTH_CHANGE_EVENT, AUTH_STORAGE_KEYS, apiClient } from '@/api/client';
-import type { OrderStatusCode, ReturnStatusCode } from '@/constants/status-map';
+import {
+  normalizeOrderStatus,
+  normalizeReturnStatus,
+  type OrderStatusCode,
+  type ReturnStatusCode,
+} from '@/constants/status-map';
 import type { DeliveryIssueType, ShipmentSummary } from '@/types/api';
 
 export interface OrderCreatedEventPayload {
@@ -301,14 +306,40 @@ class RealtimeEventClient {
     });
   }
 
+  // Normalizes status aliases in real-time payloads before broadcasting to listeners.
+  private normalizePayload<K extends RealtimeEventType>(
+    eventType: K,
+    payload: RealtimeEventPayloads[K]
+  ): RealtimeEventPayloads[K] {
+    if (eventType === 'order.status_changed') {
+      const statusPayload = payload as OrderStatusChangedEventPayload;
+      return {
+        ...statusPayload,
+        oldStatus: statusPayload.oldStatus
+          ? normalizeOrderStatus(statusPayload.oldStatus)
+          : null,
+        newStatus: normalizeOrderStatus(statusPayload.newStatus),
+      } as RealtimeEventPayloads[K];
+    }
+    if (eventType === 'return.status_changed') {
+      const returnPayload = payload as ReturnStatusChangedEventPayload;
+      return {
+        ...returnPayload,
+        newStatus: normalizeReturnStatus(returnPayload.newStatus),
+      } as RealtimeEventPayloads[K];
+    }
+    return payload;
+  }
+
   // Dispatches an event payload to all registered listeners for that event type.
   emit<K extends RealtimeEventType>(eventType: K, payload: RealtimeEventPayloads[K]): void {
     const group = this.listeners.get(eventType);
     if (!group) {
       return;
     }
+    const normalized = this.normalizePayload(eventType, payload);
     for (const listener of group) {
-      listener(payload);
+      listener(normalized);
     }
   }
 

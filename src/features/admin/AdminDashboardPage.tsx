@@ -284,15 +284,19 @@ export const AdminDashboardPage: React.FC = () => {
     setError(null);
     setBusyIssueId(issue.id);
     try {
+      const cachedOrder = findAssociatedOrder(issue);
+      const cachedShipmentId = cachedOrder?.shipment?.id?.trim();
       const associatedOrder =
-        findAssociatedOrder(issue) ?? (await apiClient.getOrderDetail(issue.orderId));
+        cachedOrder && cachedShipmentId
+          ? cachedOrder
+          : await apiClient.getOrderDetail(issue.orderId);
 
       if (!canMoveToReturning(associatedOrder)) {
         setError({ message: 'Chỉ có thể chuyển sang trạng thái Đang hoàn hàng khi đơn hàng đã đạt đủ 3 lần giao không thành công.' });
         return;
       }
 
-      const shipmentId = associatedOrder.shipment?.id;
+      const shipmentId = associatedOrder.shipment?.id?.trim();
       if (!shipmentId) {
         setError({ message: 'Đơn hàng chưa có vận đơn nên không chuyển sang hoàn hàng được.' });
         return;

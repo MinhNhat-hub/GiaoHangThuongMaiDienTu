@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" font-family="Manrope, Segoe UI, Arial, sans-serif">
+  <rect width="960" height="600" fill="#F3FAF5"/>
+  <rect x="260" y="64" width="440" height="472" rx="20" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.25"/>
+  <rect x="444" y="96" width="72" height="28" rx="8" fill="#0D3B2E"/>
+  <text x="480" y="115" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">GHC</text>
+  <text x="480" y="156" text-anchor="middle" fill="#0D3B2E" font-size="24" font-weight="700">Đăng nhập</text>
+  <text x="480" y="180" text-anchor="middle" fill="#6B8679" font-size="12">Hệ thống Quản lý Dịch vụ Giao hàng TMĐT</text>
+
+  <text x="300" y="226" fill="#0D3B2E" font-size="12" font-weight="600">EMAIL</text>
+  <rect x="300" y="236" width="360" height="44" rx="12" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="316" y="263" fill="#6B8679" font-size="13">customer@example.com</text>
+
+  <text x="300" y="310" fill="#0D3B2E" font-size="12" font-weight="600">MẬT KHẨU</text>
+  <rect x="300" y="320" width="360" height="44" rx="12" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="316" y="347" fill="#6B8679" font-size="13">••••••••••••</text>
+
+  <rect x="300" y="392" width="360" height="46" rx="12" fill="#28C76F"/>
+  <text x="480" y="420" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="700">Đăng nhập</text>
+
+  <line x1="300" y1="466" x2="660" y2="466" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="480" y="498" text-anchor="middle" fill="#6B8679" font-size="12">Chưa có tài khoản Customer? <tspan fill="#28C76F" font-weight="700" text-decoration="underline">Đăng ký ngay</tspan></text>
+  <text x="480" y="576" text-anchor="middle" fill="#6B8679" font-size="11">Mockup A8 — Đăng nhập (/login)</text>
+</svg>

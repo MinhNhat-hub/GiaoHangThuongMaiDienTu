@@ -178,16 +178,67 @@ export const ALL_STATUS_MAP: Record<AnyStatusCode, StatusMeta> = {
   ...RETURN_STATUS_MAP,
 };
 
-export function getOrderStatusMeta(code: OrderStatusCode): StatusMeta {
-  return ORDER_STATUS_MAP[code];
+const ORDER_STATUS_ALIASES: Record<string, OrderStatusCode> = {
+  DELIVERY_FAILED: 'FAILED_DELIVERY',
+};
+
+const RETURN_STATUS_ALIASES: Record<string, ReturnStatusCode> = {
+  APPROVED: 'ACCEPTED',
+};
+
+// Checks whether a dictionary contains the given key as an own property.
+function hasOwnKey(record: Record<string, unknown>, key: string): boolean {
+  return Object.prototype.hasOwnProperty.call(record, key);
 }
 
-export function getReturnStatusMeta(code: ReturnStatusCode): StatusMeta {
-  return RETURN_STATUS_MAP[code];
+// Normalizes incoming backend order status aliases to canonical frontend codes.
+export function normalizeOrderStatus(code: string): OrderStatusCode {
+  return (hasOwnKey(ORDER_STATUS_ALIASES, code) ? ORDER_STATUS_ALIASES[code] : code) as OrderStatusCode;
 }
 
-export function getStatusMeta(code: AnyStatusCode): StatusMeta {
-  return ALL_STATUS_MAP[code];
+// Normalizes incoming backend return status aliases to canonical frontend codes.
+export function normalizeReturnStatus(code: string): ReturnStatusCode {
+  return (hasOwnKey(RETURN_STATUS_ALIASES, code) ? RETURN_STATUS_ALIASES[code] : code) as ReturnStatusCode;
+}
+
+// Builds a safe fallback status metadata object when an unrecognized status code is received.
+function buildFallbackStatusMeta(code: string): StatusMeta {
+  return {
+    code: code as AnyStatusCode,
+    labelVi: code,
+    labelEn: code,
+    group: 'pending',
+    tone: 'default',
+    badgeClass: 'badge badge-pending',
+    dotClass: 'bg-[#6B8679]',
+    descriptionVi: code,
+  };
+}
+
+export function getOrderStatusMeta(code: OrderStatusCode | string): StatusMeta {
+  const normalized = normalizeOrderStatus(code);
+  return hasOwnKey(ORDER_STATUS_MAP, normalized)
+    ? ORDER_STATUS_MAP[normalized]
+    : buildFallbackStatusMeta(code);
+}
+
+export function getReturnStatusMeta(code: ReturnStatusCode | string): StatusMeta {
+  const normalized = normalizeReturnStatus(code);
+  return hasOwnKey(RETURN_STATUS_MAP, normalized)
+    ? RETURN_STATUS_MAP[normalized]
+    : buildFallbackStatusMeta(code);
+}
+
+export function getStatusMeta(code: AnyStatusCode | string): StatusMeta {
+  const normalizedOrder = normalizeOrderStatus(code);
+  if (hasOwnKey(ORDER_STATUS_MAP, normalizedOrder)) {
+    return ORDER_STATUS_MAP[normalizedOrder];
+  }
+  const normalizedReturn = normalizeReturnStatus(code);
+  if (hasOwnKey(RETURN_STATUS_MAP, normalizedReturn)) {
+    return RETURN_STATUS_MAP[normalizedReturn];
+  }
+  return buildFallbackStatusMeta(code);
 }
 
 export function getAllStatusMetas(): StatusMeta[] {

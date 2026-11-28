@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 680" width="1120" height="680" font-family="Manrope, Segoe UI, Arial, sans-serif">
+  <rect width="1120" height="680" fill="#F3FAF5"/>
+  <rect x="0" y="0" width="1120" height="64" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="32" y="38" fill="#0D3B2E" font-size="16" font-weight="700">GHC Delivery</text>
+  <text x="860" y="36" fill="#0D3B2E" font-size="12" font-weight="600">Admin Store (admin@shop.vn)</text>
+  <rect x="1008" y="18" width="84" height="30" rx="8" fill="#FFF1F2" stroke="#FECDD3"/>
+  <text x="1050" y="37" text-anchor="middle" fill="#BE123C" font-size="12" font-weight="600">Đăng xuất</text>
+
+  <rect x="32" y="84" width="1056" height="82" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="120" fill="#0D3B2E" font-size="22" font-weight="700">Bảng điều khiển Admin</text>
+  <text x="56" y="144" fill="#6B8679" font-size="12">Phân công vận đơn, theo dõi đơn hàng theo thời gian thực, xử lý sự cố và duyệt hoàn hàng.</text>
+
+  <rect x="32" y="184" width="210" height="38" rx="10" fill="#28C76F"/>
+  <text x="137" y="208" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">Chờ phân công Shipper</text>
+  <rect x="254" y="184" width="210" height="38" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.3"/>
+  <text x="359" y="208" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">Theo dõi tất cả đơn hàng</text>
+  <rect x="476" y="184" width="180" height="38" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.3"/>
+  <text x="566" y="208" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">Sự cố giao hàng</text>
+  <rect x="668" y="184" width="180" height="38" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.3"/>
+  <text x="758" y="208" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">Yêu cầu hoàn hàng</text>
+
+  <rect x="32" y="240" width="1056" height="380" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <rect x="32" y="240" width="1056" height="44" rx="16" fill="#F3FAF5"/>
+  <text x="56" y="267" fill="#6B8679" font-size="11" font-weight="700">MÃ ĐƠN</text>
+  <text x="200" y="267" fill="#6B8679" font-size="11" font-weight="700">NGƯỜI NHẬN</text>
+  <text x="410" y="267" fill="#6B8679" font-size="11" font-weight="700">ĐỊA CHỈ GIAO</text>
+  <text x="720" y="267" fill="#6B8679" font-size="11" font-weight="700">TRẠNG THÁI</text>
+  <text x="900" y="267" fill="#6B8679" font-size="11" font-weight="700">THAO TÁC</text>
+
+  <line x1="32" y1="284" x2="1088" y2="284" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="56" y="324" fill="#0D3B2E" font-size="13" font-weight="700">DH-2026-001</text>
+  <text x="200" y="318" fill="#0D3B2E" font-size="13">Trần Thị B</text>
+  <text x="200" y="336" fill="#6B8679" font-size="11">0912345678</text>
+  <text x="410" y="324" fill="#0D3B2E" font-size="12">123 Lê Lợi, Quận 1, TP.HCM</text>
+  <rect x="720" y="308" width="110" height="24" rx="6" fill="#F3FAF5" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="775" y="324" text-anchor="middle" fill="#0D3B2E" font-size="11" font-weight="600">Chờ xác nhận</text>
+  <rect x="900" y="304" width="152" height="32" rx="8" fill="#28C76F"/>
+  <text x="976" y="324" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">Phân công Shipper</text>
+
+  <line x1="32" y1="364" x2="1088" y2="364" stroke="#6B8679" stroke-opacity="0.15"/>
+  <rect x="640" y="392" width="420" height="204" rx="14" fill="#F3FAF5" stroke="#28C76F" stroke-width="1.5"/>
+  <text x="664" y="424" fill="#0D3B2E" font-size="15" font-weight="700">Hộp thoại: Phân công Shipper (DH-2026-001)</text>
+  <text x="664" y="454" fill="#6B8679" font-size="12" font-weight="600">CHỌN SHIPPER *</text>
+  <rect x="664" y="464" width="372" height="40" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="680" y="489" fill="#0D3B2E" font-size="13">Lê Văn Shipper (0987654321)</text>
+  <rect x="816" y="532" width="100" height="38" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="866" y="556" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">Hủy</text>
+  <rect x="928" y="532" width="108" height="38" rx="10" fill="#28C76F"/>
+  <text x="982" y="556" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">Xác nhận</text>
+
+  <text x="560" y="656" text-anchor="middle" fill="#6B8679" font-size="11">Mockup A10 — Bảng điều khiển Admin (/admin)</text>
+</svg>

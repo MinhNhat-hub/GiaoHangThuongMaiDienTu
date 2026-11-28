@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 660" width="1120" height="660" font-family="Manrope, Segoe UI, Arial, sans-serif">
+  <rect width="1120" height="660" fill="#F3FAF5"/>
+  <rect x="0" y="0" width="1120" height="64" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="32" y="38" fill="#0D3B2E" font-size="16" font-weight="700">GHC Delivery</text>
+  <text x="220" y="36" fill="#0D3B2E" font-size="12" font-weight="600">Đơn hàng</text>
+  <text x="308" y="36" fill="#0D3B2E" font-size="12" font-weight="600">Hoàn hàng</text>
+  <rect x="1008" y="18" width="84" height="30" rx="8" fill="#FFF1F2" stroke="#FECDD3"/>
+  <text x="1050" y="37" text-anchor="middle" fill="#BE123C" font-size="12" font-weight="600">Đăng xuất</text>
+
+  <rect x="140" y="88" width="840" height="84" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="168" y="126" fill="#0D3B2E" font-size="22" font-weight="700">Tạo đơn hàng</text>
+  <text x="168" y="150" fill="#6B8679" font-size="12">Bước 1: Chọn sản phẩm &amp; số lượng  →  Bước 2: Thông tin người nhận  →  Bước 3: Xem lại &amp; xác nhận</text>
+
+  <rect x="140" y="192" width="840" height="412" rx="16" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="168" y="232" fill="#0D3B2E" font-size="15" font-weight="700">Bước 1: Chọn sản phẩm và số lượng</text>
+  <rect x="168" y="248" width="460" height="42" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="184" y="274" fill="#0D3B2E" font-size="13">Chuột không dây (prod_01)</text>
+  <rect x="644" y="248" width="120" height="42" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="664" y="274" fill="#0D3B2E" font-size="13">2</text>
+  <rect x="780" y="248" width="172" height="42" rx="10" fill="#F3FAF5" stroke="#28C76F"/>
+  <text x="866" y="274" text-anchor="middle" fill="#0D3B2E" font-size="12" font-weight="600">+ Thêm dòng sản phẩm</text>
+
+  <line x1="168" y1="316" x2="952" y2="316" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="168" y="348" fill="#0D3B2E" font-size="15" font-weight="700">Bước 2: Thông tin người nhận và địa chỉ giao</text>
+  <rect x="168" y="364" width="380" height="42" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="184" y="390" fill="#6B8679" font-size="13">Tên người nhận (tối đa 100 ký tự)</text>
+  <rect x="564" y="364" width="388" height="42" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="580" y="390" fill="#6B8679" font-size="13">Số điện thoại (10 chữ số, bắt đầu bằng 0)</text>
+  <rect x="168" y="420" width="784" height="42" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="184" y="446" fill="#6B8679" font-size="13">Địa chỉ giao hàng (tối đa 255 ký tự)</text>
+
+  <line x1="168" y1="488" x2="952" y2="488" stroke="#6B8679" stroke-opacity="0.2"/>
+  <text x="168" y="518" fill="#0D3B2E" font-size="14" font-weight="700">Bước 3: Xem lại và xác nhận đơn</text>
+  <rect x="536" y="540" width="120" height="42" rx="10" fill="#FFFFFF" stroke="#6B8679" stroke-opacity="0.4"/>
+  <text x="596" y="566" text-anchor="middle" fill="#0D3B2E" font-size="13" font-weight="600">Hủy bỏ</text>
+  <rect x="668" y="540" width="120" height="42" rx="10" fill="#FFFFFF" stroke="#0D3B2E"/>
+  <text x="728" y="566" text-anchor="middle" fill="#0D3B2E" font-size="13" font-weight="600">Sửa đơn</text>
+  <rect x="800" y="540" width="152" height="42" rx="10" fill="#28C76F"/>
+  <text x="876" y="566" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">Xác nhận đơn</text>
+
+  <text x="560" y="636" text-anchor="middle" fill="#6B8679" font-size="11">Mockup A12 — Tạo đơn hàng (/orders/new)</text>
+</svg>
