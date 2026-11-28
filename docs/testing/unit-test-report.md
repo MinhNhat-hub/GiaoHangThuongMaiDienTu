@@ -1,5 +1,5 @@
 # Báo cáo Kiểm thử Đơn vị (Unit Test Report) - Lab 2
-**Môn học**: Nhập môn Công nghệ Phần mềm (SE113)  
+**Môn học**: Kiểm chứng phần mềm (SE113)  
 **Đề tài**: Hệ thống Quản lý Giao hàng Thương mại Điện tử  
 **Người thực hiện**: TV4 (`@prime-2k12` - Backend & System Testing)  
 **Phạm vi**: Mã nguồn máy chủ và các dịch vụ xử lý nghiệp vụ trung tâm  

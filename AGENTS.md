@@ -29,10 +29,16 @@ Agent đọc tệp này trước khi làm việc trong kho. Agent xuyên qua ran
 
 ## Kiến trúc
 
-<!-- Điền khi chốt công nghệ ở giai đoạn 2: phân tầng, bất biến nghiệp vụ (BR-xx đặt ở lớp nào), ranh giới agent không được vượt. -->
+- **Client** (`src/`, trừ `src/server/`): React 18, Vite 5, TypeScript 5, Tailwind CSS 3. Màn hình theo tính năng ở `src/features/`, gọi server qua `src/api/client.ts`, nhận cập nhật real-time qua `src/realtime/event-client.ts`. Kiểm tra dữ liệu nhập ở `src/utils/validation.ts` chỉ để báo lỗi sớm cho người dùng, không thay cho kiểm tra ở server.
+- **Server** (`src/server/`): Node.js `http`, TypeScript, API REST ở `/api/v1`, đẩy cập nhật trạng thái qua SSE ở `/api/v1/events`.
+  - `router.ts`: xác thực và phân quyền theo vai trò (SEC-x), đọc request, trả mã lỗi HTTP.
+  - `storage.ts`: dữ liệu và quy tắc nghiệp vụ. Mọi bước chuyển trạng thái (Hình A.2, BR-01) và BR-02 đến BR-07 kiểm ở đây, kể cả khi request gửi thẳng tới server.
+  - `auth.ts`: băm mật khẩu bằng scrypt (SEC-10). `events.ts`: kênh SSE. `seedData.ts`: dữ liệu seed. `failureInjection.ts`: giả lỗi lưu cho test, bật bằng header `X-Simulate-Failure`.
+- **Dữ liệu** giữ trong bộ nhớ của server, không có database server. Khởi động lại server thì dữ liệu nạp lại từ seed.
+- Ranh giới: không đưa quy tắc nghiệp vụ hay kiểm tra phân quyền chỉ vào client. Không sửa `seedData.ts` hay `failureInjection.ts` để test qua.
 
 ## Kiểm thử
 
 - Tên test mô tả hành vi, không chứa ID SRS, ví dụ `test_cannot_cancel_delivered_order`.
 - Xong việc thì chạy toàn bộ test.
-<!-- Ghi lệnh chạy test của nhóm khi đã chọn công nghệ. -->
+- Unit test dùng Vitest, đặt ở `tests/unit/`, cấu hình ở `vitest.config.ts`. Chạy toàn bộ: `npm test`.

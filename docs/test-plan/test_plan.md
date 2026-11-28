@@ -4,7 +4,7 @@ Soạn bởi TV2
 
 Nhóm 10 – SE113 Kiểm chứng phần mềm
 
-13/11/2026
+28/11/2026
 
 ## Lịch sử sửa đổi
 
@@ -12,6 +12,7 @@ Nhóm 10 – SE113 Kiểm chứng phần mềm
 |---|---|---|---|
 | TV2 | 06/11/2026 | Bản đầu tiên | 1.0 |
 | TV1 | 13/11/2026 | Đồng bộ với SRS 1.0 (93 ID, bỏ TBD); đổi mẫu sang Lab1, Lab2; phân công test theo module; thêm module ACC, BCT | 1.1 |
+| TV2 | 28/11/2026 | Ghi server và công cụ đang dùng; chốt lưu dữ liệu trong bộ nhớ; đóng mốc Test design, ước lượng công Test execution | 1.1 |
 
 ## 1 Giới thiệu
 
@@ -25,14 +26,15 @@ Tài liệu gồm sáu mục theo cấu trúc của slide Test Plan (tài liệu
 
 ### 1.2 Thông tin nền
 
-Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên bản 1.0 nằm ở SRS §1.3, tài liệu này không viết lại. Test Plan dựa trên bản SRS 1.0 ngày 13/11/2026.
+Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên bản 1.0 nằm ở SRS §1.3, tài liệu này không viết lại. Test Plan dựa trên bản SRS 1.0.1 ngày 16/11/2026. Bản 1.0.1 giữ nguyên 93 ID của bản 1.0, chỉ thêm các vấn đề C-16 đến C-37 vào Phụ lục C.
 
 ### 1.3 Tài liệu tham chiếu
 
-1. Nhóm 10. Đặc tả yêu cầu phần mềm (SRS) v1.0, `docs/srs/SRS.md`. Nguồn của mọi ID ở §2.
+1. Nhóm 10. Đặc tả yêu cầu phần mềm (SRS) v1.0.1, `docs/srs/SRS.md`. Nguồn của mọi ID ở §2.
 2. Giảng viên. Test Plan, slide bài giảng môn SE113 (`4_Test-Plan_v1.0.pdf`), cập nhật 03/2014. Đây là tài liệu [4] của SRS và là nguồn của cấu trúc sáu mục.
 3. Nhóm 10. Backlog dự án (`BackLogPlan.xlsx`) và bản phân công theo backlog, `docs/plan/04_backlog_assignment.md`.
 4. Giảng viên. Mẫu `Template_Test Case.xls` (Lab1), dùng cho test case hệ thống, và mẫu `Template_Unit Test Case.xls` (Lab2), dùng cho unit test case.
+5. Nhóm 10. Test Specification 1.0, `docs/testing/test-specification.md`. Nguồn của mọi test case và của bảng giá trị biên.
 
 ### 1.4 Phạm vi kiểm thử
 
@@ -74,21 +76,22 @@ Tóm tắt dự án, các vai trò người dùng và 4 tính năng của phiên
 
 ### 1.5 Ràng buộc
 
-- **Môi trường.** Server và cơ sở dữ liệu chưa có mã nguồn (13/11/2026), nên §4.2 chưa ghi cấu hình của hai phần này. Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
+- **Môi trường.** Server có từ 27/11/2026, cấu hình ở §4.2. Server giữ dữ liệu trong bộ nhớ, không có database server, nên dữ liệu mất khi server khởi động lại và được nạp lại từ dữ liệu seed. Nhóm chốt cách lưu này cho phiên bản 1.0 (28/11/2026). Trình duyệt là Chrome cho máy tính (OE-2). Mọi test thiết kế từ SRS; mã sẽ sửa theo SRS.
 - **Nhân lực.** Cả 4 thành viên tham gia kiểm thử, chia theo module (§4.1).
-- **Lịch.** Chưa có hạn cuối kỳ cho giai đoạn 2, nên các mốc sau Test design ở §5 ghi "Chưa xác định" (Test design bắt đầu 13/11/2026). Khi có hạn, Test Plan cập nhật tiếp.
-- **Công cụ.** Danh sách công cụ ở §3.3 (Playwright, GitHub Issues, GitHub Actions…). Một số công cụ, như thư viện unit test (dự kiến Jest hoặc Vitest; nhóm chốt ở giai đoạn 2), chưa được chốt.
+- **Lịch.** Test design chạy từ 13/11/2026 đến 27/11/2026. Chưa có hạn cuối kỳ cho giai đoạn 2, nên ngày kết thúc của Test execution và Test evaluation ở §5 ghi "Chưa xác định". Khi có hạn, Test Plan cập nhật tiếp.
+- **Công cụ.** Danh sách công cụ ở §3.3. Unit test dùng Vitest. Kịch bản Playwright chưa lên `main`, và trên `main` chưa có workflow GitHub Actions (28/11/2026).
 
 ### 1.6 Rủi ro
 
 | Rủi ro | Ảnh hưởng | Cách giảm |
 |---|---|---|
-| Chưa có server nên system test chỉ viết, chưa chạy | Chưa biết test case có chạy đúng với hệ thống thật không; lỗi chỉ lộ khi chạy | Viết test case và kịch bản tự động từ SRS; chạy khi server có mã nguồn |
-| Chưa có hàm theo SRS nên unit test mới có test case, chưa có code test | Unit Test Report chưa có kết quả chạy, mọi ca ghi Untested | Viết unit test case theo quy tắc SRS; viết code test khi có hàm |
+| Server đã có nhưng giao diện chưa nối xong với server và kịch bản Playwright chưa lên `main` | System test chưa chạy được trên hệ thống đã ghép; lỗi ở chỗ nối chỉ lộ khi chạy | Chạy system test khi phần nối giao diện và kịch bản Playwright lên `main`; trong lúc chờ, người test module chạy thử trên API của server |
+| Unit test case mẫu Lab2 chưa lên `main` | Unit Test Report (`docs/testing/unit-test-report.md`) có kết quả chạy Vitest nhưng chưa đối chiếu được với unit test case | Đưa `docs/testing/unit-test-cases.xlsx` lên `main` trước khi nộp Unit Test Report |
 | SRS có thể đổi ID sau 06/11/2026 (task A43, A71 sửa SRS theo code thực tế) | Dòng ở §2 bị lệch ID so với SRS | Trước mỗi lần xuất, kiểm lại rằng mọi ID của SRS đều có một dòng ở §2 hoặc lý do ở §2.3; khi SRS đổi thì cập nhật §2 và nâng phiên bản Test Plan |
-| Giao diện chưa có, mockup làm ở giai đoạn 2 | Chưa thiết kế được test giao diện chi tiết | Ghi tiêu chí "khớp mockup" ở §3.1.3; viết test giao diện sau khi TV3 có mockup |
+| Mockup chưa lên `main` | Chưa chạy được test giao diện chi tiết (UI-1) | Ghi tiêu chí "khớp mockup" ở §3.1.3; chạy test giao diện sau khi mockup lên `main` |
+| Server giữ dữ liệu trong bộ nhớ, không có database server | Các ca đọc lại dữ liệu đã lưu (Track.Update.History, DI-1, DI-2, SEC-10) chỉ đọc được qua API hoặc qua đối tượng lưu trữ trong test server; dữ liệu mất khi server khởi động lại | Nhóm chốt giữ cách lưu này (28/11/2026). Mỗi lượt test bắt đầu từ dữ liệu seed; các ca đọc lại dữ liệu chạy trong cùng một lần chạy server với thao tác tạo ra dữ liệu đó (§3.1.4) |
 | Bốn người cùng viết test case và chạy test, chia theo module | Cách ghi test case, ID và dữ liệu có thể lệch giữa các module | Dùng chung mẫu Lab1, ID `TC-<MODULE>-<NNN>` và bảng biên chung; TV2 là trưởng test rà soát; ưu tiên test tự động bằng Playwright và chạy lại qua GitHub Actions |
-| Chưa có hạn cuối kỳ | Không đặt được lịch cho test design, execution, evaluation | Ghi "Chưa xác định" ở §5; cập nhật Test Plan khi có hạn |
+| Chưa có hạn cuối kỳ | Không đặt được ngày kết thúc cho test execution, evaluation | Ghi "Chưa xác định" ở §5; cập nhật Test Plan khi có hạn |
 
 ## 2 Yêu cầu cần kiểm thử
 
@@ -259,7 +262,7 @@ Mục này nêu cách kiểm thử: các loại kiểm thử và kỹ thuật ch
 
 **Tiêu chí hoàn thành:** Mọi test case của các dòng §2 loại Function Testing có Result `Pass`, hoặc `Fail` kèm Issue mức Thấp còn mở (mức độ ở §1.4).
 
-**Lưu ý đặc biệt:** Thư viện unit test (dự kiến Jest hoặc Vitest; nhóm chốt ở giai đoạn 2, §3.3) là của TV3, TV4; phần Function Testing ở system test không thay unit test của họ. Trình duyệt chạy test là Chrome cho máy tính (OE-2).
+**Lưu ý đặc biệt:** Unit test (Vitest, §3.3) là của TV3, TV4; phần Function Testing ở system test không thay unit test của họ. Trình duyệt chạy test là Chrome cho máy tính (OE-2).
 
 #### 3.1.2 Business Cycle Testing
 
@@ -351,7 +354,7 @@ Giá trị biên của BR-06 (giới hạn 3 lần): đơn giao không thành c�
 
 **Tiêu chí hoàn thành:** Mọi màn hình ở UI-1 khớp mockup tương ứng. Chỗ lệch được ghi Issue mức Thấp hoặc Trung bình (§1.4) và chỉ chấp nhận được khi Issue còn mở có mức Thấp.
 
-**Lưu ý đặc biệt:** Mockup làm ở giai đoạn 2 (A8 đến A16), nên test giao diện chi tiết viết sau khi TV3 có mockup. Ngôn ngữ giao diện là tiếng Việt (CO-2) và trình duyệt là Chrome cho máy tính (OE-2).
+**Lưu ý đặc biệt:** Mockup làm ở giai đoạn 2 (A8 đến A16), nên test giao diện chi tiết viết sau khi TV3 có mockup. 9 mockup chưa lên `main` (28/11/2026). Ngôn ngữ giao diện là tiếng Việt (CO-2) và trình duyệt là Chrome cho máy tính (OE-2).
 
 #### 3.1.4 Data and Database Integrity Testing
 
@@ -361,7 +364,7 @@ Giá trị biên của BR-06 (giới hạn 3 lần): đơn giao không thành c�
 
 **Tiêu chí hoàn thành:** Mọi thao tác đổi trạng thái đơn (T1 đến T12) ở vòng đời 1 đến 5 (§3.1.2) để lại đúng một bản ghi lịch sử với bốn trường đúng; không có mã trùng; rollback không để lại dữ liệu; DI-1 bị từ chối ở mọi lần thử; SEC-10 đạt (không có mật khẩu đọc lại được, mật khẩu 64 ký tự đăng nhập được).
 
-**Lưu ý đặc biệt:** Công nghệ cơ sở dữ liệu chưa chốt (§1.5), nên cách đọc dữ liệu ghi ở giai đoạn 2 khi biết công nghệ. Ép lỗi giữa chừng cần cách giả lỗi do TV4 cung cấp. Lịch sử hiển thị theo thứ tự từ cũ đến mới (Track.View.History); kiểm lưu trữ không phụ thuộc điều đó.
+**Lưu ý đặc biệt:** Server giữ dữ liệu trong bộ nhớ, không có database server (§1.5, §4.2), nên "đọc lại cơ sở dữ liệu" nghĩa là đọc qua API hoặc qua đối tượng lưu trữ của server trong test. Ép lỗi giữa chừng dùng header `X-Simulate-Failure` của server, với ba điểm lỗi `ORDER_STORE`, `ORDER_HISTORY`, `DELIVERY_STORE` (TV4 làm). Lịch sử hiển thị theo thứ tự từ cũ đến mới (Track.View.History); kiểm lưu trữ không phụ thuộc điều đó.
 
 #### 3.1.5 Security and Access Control Testing
 
@@ -389,7 +392,7 @@ Bốn giai đoạn theo slide, chọn theo task trong backlog (`docs/plan/04_bac
 
 | Giai đoạn | Task backlog | Ai làm | Cách thực hiện |
 |---|---|---|---|
-| Unit test | A73, A74, A76, A77, A79 | TV3 (frontend), TV4 (server) | Unit test case viết theo quy tắc SRS (mẫu Lab2); code test viết khi có hàm. Test từng hàm và module bằng thư viện unit test (dự kiến Jest hoặc Vitest; nhóm chốt ở giai đoạn 2, §3.3). TV2 không làm giai đoạn này |
+| Unit test | A73, A74, A76, A77, A79 | TV3 (frontend), TV4 (server) | Unit test case viết theo quy tắc SRS (mẫu Lab2); code test ở `tests/unit/`. Test từng hàm và module bằng Vitest (§3.3), chạy bằng `npm test`. TV2 không làm giai đoạn này |
 | Integration test | A59, A60, A62 (các task "Integrate …") | Cả 4 thành viên theo module (§4.1) | Người test module liên quan (§4.1) kiểm chỗ nối sau khi TV3, TV4 xong A59, A60, A62: Admin với đơn hàng, Admin với sự cố giao hàng, quản lý đơn với quản lý hoàn hàng |
 | System test | A80, A81, A83 | Cả 4 thành viên theo module (§4.1) | Chạy trọn các loại ở §3.1 trên hệ thống đã ghép: real-time (A80, TV1), Shipper và ngoại lệ (A81, TV2 và TV4), toàn hệ thống (A83, TV2), bằng Playwright |
 | Acceptance test | Không có trong backlog | Cả nhóm | Nhóm không có khách hàng thật, nên buổi demo với giảng viên được coi là nghiệm thu (giả định ở §1.4) |
@@ -403,18 +406,19 @@ Xếp theo các nhóm công cụ của slide.
 | Nhóm công cụ | Dùng gì |
 |---|---|
 | Ghi lỗi | GitHub Issues, nhãn `bug` |
-| Unit test | Dự kiến Jest hoặc Vitest; nhóm chốt ở giai đoạn 2 |
-| Function test | Playwright |
-| Real-time | Playwright, nhiều browser context (phiên Customer, phiên Shipper hoặc Admin đổi trạng thái, phiên Bảng điều khiển Admin, thêm phiên Customer khác) |
-| Chạy lại bộ test | GitHub Actions |
+| Unit test | Vitest 2.1.9, môi trường jsdom, Testing Library cho component (`vitest.config.ts`, chạy bằng `npm test`) |
+| Function test | Playwright (cấu hình và kịch bản chưa lên `main`) |
+| Real-time | Playwright, nhiều browser context (phiên Customer, phiên Shipper hoặc Admin đổi trạng thái, phiên Bảng điều khiển Admin, thêm phiên Customer khác); server đẩy cập nhật qua SSE ở `/api/v1/events` |
+| Chạy lại bộ test | GitHub Actions (chưa có workflow trên `main`, 28/11/2026) |
 | Load / Performance test | Không dùng (lý do ở §1.4) |
-| Sinh dữ liệu test | Script seed dữ liệu của dự án |
+| Sinh dữ liệu test | Dữ liệu seed của server (`src/server/seedData.ts`) |
+| Giả lỗi | Header `X-Simulate-Failure` của server (`src/server/failureInjection.ts`) |
 | Kiểm giao diện | So với mockup bằng tay |
 | Mẫu tài liệu test | Lab1, Lab2 của môn |
 
 ### 3.4 Định dạng test case
 
-Test case hệ thống ở workbook `docs/testing/system-test-cases.xlsx`, dựng từ mẫu `Template_Test Case.xls` (Lab1), gồm các sheet Cover, Test case List, ORD, TRK, RET, ISS, ACC, NFR, BCT, Test Report. Mỗi module một sheet, giữ nguyên cột của mẫu. Unit test case ở `docs/testing/unit-test-cases.xlsx`, theo mẫu `Template_Unit Test Case.xls` (Lab2). Thiết kế test (kỹ thuật, dữ liệu, bảng biên) ở `docs/testing/test-specification.md`.
+Test case hệ thống ở workbook `docs/testing/system-test-cases.xlsx`, dựng từ mẫu `Template_Test Case.xls` (Lab1), gồm các sheet Cover, Test case List, ORD, TRK, RET, ISS, ACC, NFR, BCT, Test Report. Mỗi module một sheet, giữ nguyên cột của mẫu. Ngày 28/11/2026 workbook có 423 TC: ORD 55, TRK 48, RET 100, ISS 70, ACC 50, NFR 66, BCT 34. Unit test case ở `docs/testing/unit-test-cases.xlsx`, theo mẫu `Template_Unit Test Case.xls` (Lab2), chưa lên `main`; kết quả chạy unit test ở `docs/testing/unit-test-report.md`. Thiết kế test (kỹ thuật, dữ liệu, bảng biên) ở `docs/testing/test-specification.md`.
 
 ID test case là chuỗi cố định dạng `TC-<MODULE>-<NNN>`, không dùng công thức đánh số của mẫu, vì công thức đó tự đổi số khi chèn dòng và làm gãy liên kết tới script và Issue. Module Code và tiền tố ID:
 
@@ -450,9 +454,9 @@ Cả 4 thành viên tham gia kiểm thử, chia theo module (§3.4).
 | Vai trò | Người | Trách nhiệm |
 |---|---|---|
 | Tester (ACC, NFR); cập nhật SRS | TV1 | Test case hệ thống và chạy test của module ACC, NFR; chạy Real-time test (A80); sửa SRS khi lỗi do yêu cầu sai hoặc SRS lệch code (A43, A71) và review cuối SRS (A87) |
-| Test Leader, Tester (TRK, BCT) | TV2 | Viết Test Plan; test case hệ thống và chạy test của module TRK, BCT; điều phối test case hệ thống (A69); chạy System test (A83) và Regression test (A84); viết Test Report; cùng TV4 chạy Shipper và ngoại lệ (A81) với phần luồng Shipper của TRK |
+| Test Leader, Tester (TRK, BCT) | TV2 | Viết Test Plan; test case hệ thống và chạy test của module TRK, BCT; điều phối test case hệ thống (A69); chạy System test (A83) và Regression test (A84); viết workflow GitHub Actions chạy lại bộ test (A84); viết Test Report; cùng TV4 chạy Shipper và ngoại lệ (A81) với phần luồng Shipper của TRK |
 | Tester (ORD); unit test frontend | TV3 | Test case hệ thống và chạy test của module ORD; unit test phía frontend (A73, A74, A76, A77, A79); sửa lỗi giao diện (A75, A78, A82); dựng nền Playwright |
-| Tester (RET, ISS); unit test server | TV4 | Test case hệ thống và chạy test của module RET, ISS; chạy Shipper và ngoại lệ (A81) với phần ISS; unit test phía server (A73, A74, A76, A77, A79); sửa lỗi server (A75, A78, A82) |
+| Tester (RET, ISS); unit test server | TV4 | Test case hệ thống và chạy test của module RET, ISS; chạy Shipper và ngoại lệ (A81) với phần ISS; unit test phía server (A73, A74, A76, A77, A79); dữ liệu seed và cách giả lỗi lưu đơn cho test; sửa lỗi server (A75, A78, A82) |
 
 Danh sách việc test của từng người (test gì, ai test, đã xong chưa, ghi chú) ở `docs/testing/test-assignment.xlsx`.
 
@@ -460,10 +464,10 @@ Danh sách việc test của từng người (test gì, ai test, đã xong chưa
 
 | Thành phần | Cấu hình |
 |---|---|
-| Server | Chưa có mã nguồn (13/11/2026). Chưa chốt công nghệ, cập nhật ở giai đoạn 2 |
+| Server | Node.js, module `http`, TypeScript, mã ở `src/server/`. Chạy bằng `npm run server` (vite-node), cổng 3000. API REST ở `/api/v1`, cập nhật real-time qua SSE ở `/api/v1/events`. Mật khẩu băm bằng scrypt (SEC-10) |
 | Client | React 18, Vite 5, TypeScript 5, Tailwind CSS 3 (theo `package.json`). Trình duyệt: Chrome cho máy tính, bản ổn định mới nhất (OE-2) |
-| Database server | Chưa có mã nguồn (13/11/2026). Chưa chốt công nghệ, cập nhật ở giai đoạn 2 |
-| Môi trường CI | GitHub Actions, chạy lại bộ test (§3.3) |
+| Database server | Không có. Server giữ dữ liệu trong bộ nhớ và nạp lại từ dữ liệu seed khi khởi động; nhóm chốt cách lưu này cho phiên bản 1.0 (§1.5, §1.6) |
+| Môi trường CI | GitHub Actions, chạy lại bộ test (§3.3); chưa có workflow trên `main` (28/11/2026) |
 
 ## 5 Mốc kiểm thử và ước lượng
 
@@ -476,16 +480,26 @@ Người ước lượng: TV2. Phương pháp: expert-based (slide 30), TV2 dự
 | Phức tạp | 26 | 1,5 (12 giờ) | 39 |
 | Cộng | 93 | Không áp dụng | 68,75 |
 
+Công Test execution do TV2 ước lượng cùng phương pháp, nhưng tính theo test case vì đã có 423 TC (§3.4). Số TC tự động (332) và thủ công (91) lấy từ cột Note của bản workbook đi kèm kịch bản tự động; bản này chưa lên `main` nên số có thể đổi. Một TC tự động tính 0,05 person-day (24 phút: chạy, đọc kết quả, ghi Result, mở Issue nếu `Fail`); một TC thủ công tính 0,125 person-day (1 giờ). Lượt regression trước demo (A84) chạy lại các TC tự động trên GitHub Actions, nên chỉ tính 1 person-day để đọc và so kết quả với lượt trước.
+
+| Lượt chạy | Số TC | Công mỗi TC (person-day) | Tổng (person-day) |
+|---|---|---|---|
+| Lượt đầu, tự động | 332 | 0,05 (24 phút) | 16,6 |
+| Lượt đầu, thủ công | 91 | 0,125 (1 giờ) | 11,375 |
+| Regression trước demo, tự động | 332 | Không áp dụng | 1 |
+| Regression trước demo, thủ công | 91 | 0,125 (1 giờ) | 11,375 |
+| Cộng | 423 | Không áp dụng | 40,35 |
+
 Các mốc (slide 33):
 
 | Mốc | Công (person-day) | Bắt đầu | Kết thúc |
 |---|---|---|---|
 | Test planning | 1 | 28/10/2026 | 06/11/2026 |
-| Test design (viết test case) | 68,75 (bằng dòng Cộng ở bảng trên) | 13/11/2026 | Chưa xác định |
-| Test execution | Chưa xác định (chưa có bản build để ước lượng số vòng chạy và số lỗi) | Chưa xác định | Chưa xác định |
+| Test design (viết test case) | 68,75 (bằng dòng Cộng ở bảng độ phức tạp) | 13/11/2026 | 27/11/2026 |
+| Test execution | 40,35 (bằng dòng Cộng ở bảng lượt chạy) | 27/11/2026 | Chưa xác định |
 | Test evaluation (Test Report) | 1 | Chưa xác định | Chưa xác định |
 
-Chưa có hạn cuối kỳ, nên ngày kết thúc Test design và các mốc sau chưa xác định. Khi có hạn, Test Plan cập nhật tiếp.
+Test design kết thúc 27/11/2026, ngày 423 TC lên `main`; Test execution bắt đầu cùng ngày. Chưa có hạn cuối kỳ, nên ngày kết thúc của Test execution và Test evaluation chưa xác định. Khi có hạn, Test Plan cập nhật tiếp.
 
 ## 6 Sản phẩm bàn giao
 
@@ -495,7 +509,7 @@ Chưa có hạn cuối kỳ, nên ngày kết thúc Test design và các mốc s
 | Test Plan 1.1 | Chưa xác định | TV2 | Giảng viên |
 | Test Specification (`docs/testing/test-specification.md`) | Chưa xác định | Cả nhóm (§4.1) | Giảng viên |
 | System Test Cases (`docs/testing/system-test-cases.xlsx`, mẫu Lab1) | Chưa xác định | Cả nhóm (§4.1) | Giảng viên |
-| Unit Test Cases kèm Unit Test Report (`docs/testing/unit-test-cases.xlsx`, mẫu Lab2) | Chưa xác định | TV3, TV4 | Giảng viên |
+| Unit Test Cases (`docs/testing/unit-test-cases.xlsx`, mẫu Lab2, chưa lên `main`) kèm Unit Test Report (`docs/testing/unit-test-report.md`) | Chưa xác định | TV3, TV4 | Giảng viên |
 | Kịch bản test tự động (`tests/e2e`) | Chưa xác định | Cả nhóm (§4.1) | Giảng viên |
 | Bảng phân công (`docs/testing/test-assignment.xlsx`) | Chưa xác định | TV2 | Giảng viên |
 | Test Report | Chưa xác định | TV2 | Giảng viên |
