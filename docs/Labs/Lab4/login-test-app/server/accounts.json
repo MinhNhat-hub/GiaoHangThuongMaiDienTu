@@ -1,0 +1,10 @@
+{
+  "_note": "Test-only accounts for the local test server. They are not real credentials. Edit this file to add or change test accounts, then run start.bat again.",
+  "accounts": [
+    { "id": "cust_a", "email": "khach.moi01@example.com", "password": "Abcd1234", "fullName": "Customer A", "phoneNumber": "0123456789", "role": "Customer" },
+    { "id": "cust_b", "email": "khach.moi02@example.com", "password": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "fullName": "Customer B", "phoneNumber": "0123456780", "role": "Customer" },
+    { "id": "cust_an", "email": "an@gmail.com", "password": "Abcd1234", "fullName": "Nguyen Van An", "phoneNumber": "0912345678", "role": "Customer" },
+    { "id": "admin_1", "email": "admin1@example.com", "password": "Admin1Test!", "fullName": "Admin 1", "phoneNumber": "0900000001", "role": "Admin" },
+    { "id": "shipper_a", "email": "shipper.a@example.com", "password": "ShipperATest!", "fullName": "Shipper A", "phoneNumber": "0900000002", "role": "Shipper" }
+  ]
+}
