@@ -1,5 +1,5 @@
 # Báo cáo Kiểm thử Đơn vị & API Máy chủ Trước Tích hợp (Server Unit & API Pre-Integration Report) - Module RET & ISS
-**Môn học**: Nhập môn Công nghệ Phần mềm (SE113)  
+**Môn học**: Kiểm chứng phần mềm (SE113)  
 **Đề tài**: Hệ thống Quản lý Giao hàng Thương mại Điện tử  
 **Người thực hiện**: TV4 (`@prime-2k12` - Backend & System Testing)  
 **Phạm vi**: Khảo sát nghiệp vụ và kiểm thử đơn vị / API máy chủ cho 170 Test Cases thuộc Module RET (Hoàn hàng) và Module ISS (Xử lý Ngoại lệ) trước tích hợp  
