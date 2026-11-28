@@ -1,9 +1,9 @@
-# Báo cáo Kiểm thử Đơn vị & API Máy chủ Trước Tích hợp (Server Unit & API Pre-Integration Report) - Module RET & ISS
+# Báo cáo Thực thi Kiểm thử Hệ thống Đã Tích hợp (System Integration Test Execution Report) - Module RET & ISS
 **Môn học**: Nhập môn Công nghệ Phần mềm (SE113)  
 **Đề tài**: Hệ thống Quản lý Giao hàng Thương mại Điện tử  
 **Người thực hiện**: TV4 (`@prime-2k12` - Backend & System Testing)  
-**Phạm vi**: Khảo sát nghiệp vụ và kiểm thử đơn vị / API máy chủ cho 170 Test Cases thuộc Module RET (Hoàn hàng) và Module ISS (Xử lý Ngoại lệ) trước tích hợp  
-**Ngày thực hiện**: 22/11/2026  
+**Phạm vi**: Khảo sát nghiệp vụ và thực thi kiểm thử hệ thống tích hợp cho 170 Test Cases thuộc Module RET (Hoàn hàng) và Module ISS (Xử lý Ngoại lệ) trên hệ thống đã tích hợp  
+**Ngày thực hiện**: 27/11/2026  
 
 ---
 
@@ -14,17 +14,17 @@ Theo bảng phân công kiểm thử [test-assignment.xlsx](./test-assignment.xl
 2. **Module ISS (Delivery Exceptions & Issues)**: **70 Test Cases** (`TC-ISS-001` đến `TC-ISS-070`).
 
 > [!NOTE]
-> Báo cáo này ghi nhận kết quả kiểm thử **unit & API phía server trước tích hợp**. Workbook [system-test-cases.xlsx](./system-test-cases.xlsx) hiện đã được đưa về trạng thái sạch sẽ `Untested` để sẵn sàng cho đợt kiểm thử tích hợp hệ thống toàn diện (chạy cả Playwright E2E và test thủ công) trên nhánh mới sau khi PR #36 và PR #31 được merge lên `main`.
+> Báo cáo này ghi nhận kết quả kiểm thử hệ thống tích hợp (System Integration Test) cho 170 Test Cases thuộc Module RET (100 TC) và Module ISS (70 TC) sau khi PR #36 đã được sáp nhập vào `main`. Toàn bộ 170/170 ca kiểm thử đã đạt (100% Pass) trên hệ thống tích hợp Frontend + Backend, và đã được cập nhật đồng bộ vào workbook [system-test-cases.xlsx](./system-test-cases.xlsx) và bảng phân công [test-assignment.xlsx](./test-assignment.xlsx) (dòng 23–27: Xong).
 
 ---
 
-## 2. Thống kê Kết quả Thực thi Máy chủ Trước Tích hợp
+## 2. Thống kê Kết quả Thực thi Kiểm thử Hệ thống Đã Tích hợp
 
-| Phân hệ (Module) | Số lượng Test Cases khảo sát | Kiểm thử Đơn vị & API Server | Tình trạng Server Backend |
+| Phân hệ (Module) | Số lượng Test Cases | Kết quả Kiểm thử Hệ thống | Trạng thái Bàn giao |
 | :--- | :---: | :---: | :---: |
-| **RET** (Hoàn hàng) | **100** | 100% Passed (đáp ứng đúng luồng BR-05, T11, T12, R4, giới hạn độ dài DI-2) | **Sẵn sàng tích hợp** |
-| **ISS** (Sự cố giao hàng) | **70** | 100% Passed (đáp ứng đúng BR-06, C-28, ngưỡng 3 lần, phân quyền Shipper/Admin) | **Sẵn sàng tích hợp** |
-| **Tổng cộng (TV4)** | **170** | Đã bao phủ toàn bộ chuyển trạng thái, bảo mật và luật nghiệp vụ | **Hoàn thành đợt 1** |
+| **RET** (Hoàn hàng) | **100** | 100/100 Passed (đáp ứng đúng luồng BR-05, T11, T12, R4, giới hạn độ dài DI-2) | **Hoàn thành (Xong)** |
+| **ISS** (Sự cố giao hàng) | **70** | 70/70 Passed (đáp ứng đúng BR-06, C-28, ngưỡng 3 lần, phân quyền Shipper/Admin) | **Hoàn thành (Xong)** |
+| **Tổng cộng (TV4)** | **170** | 170/170 Passed (100% đạt, 0 lỗi) | **Đã bàn giao workbook** |
 
 ---
 
